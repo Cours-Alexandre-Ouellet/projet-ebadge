@@ -13,9 +13,10 @@ class CreateTeacherCodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('teacher_codes', function (Blueprint $table) {
+        Schema::create('teacher_code', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('code');
+            $table->foreignId('user_id')->constrained('user');
         });
     }
 

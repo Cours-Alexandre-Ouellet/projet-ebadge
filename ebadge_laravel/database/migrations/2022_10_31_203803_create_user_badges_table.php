@@ -13,8 +13,10 @@ class CreateUserBadgesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_badges', function (Blueprint $table) {
+        Schema::create('user_badge', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('user');
+            $table->foreignId('badge_id')->constrained('badge');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateUserBadgesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_badges');
+        Schema::dropIfExists('user_badge');
     }
 }
