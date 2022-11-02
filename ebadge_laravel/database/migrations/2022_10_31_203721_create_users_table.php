@@ -15,12 +15,12 @@ class CreateUsersTable extends Migration
     {
         Schema::create('user', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('salt');
+            $table->string('first_name', 50);
+            $table->string('last_name', 50);
+            $table->string('username', 50)->unique();
+            $table->string('email', 125)->unique();
+            $table->string('password', 60);
+            $table->string('salt', 60);
             $table->foreignId('role_id')->constrained('role');
             $table->boolean('privacy')->default(0);
             $table->foreignId('organisation_id')->constrained('organisation');

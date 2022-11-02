@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
+
+use function Psy\debug;
 
 class UserController extends Controller
 {
@@ -14,17 +16,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $users = User::all();
+        // return all user as json
+        return response()->json($users);
     }
 
     /**

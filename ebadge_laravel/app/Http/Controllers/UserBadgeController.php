@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\UserBadge;
+use App\Models\UserBadge;
 use Illuminate\Http\Request;
 
 class UserBadgeController extends Controller

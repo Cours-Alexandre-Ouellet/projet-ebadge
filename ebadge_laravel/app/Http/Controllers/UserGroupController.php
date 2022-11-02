@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\UserGroup;
+use App\Models\UserGroup;
 use Illuminate\Http\Request;
+use App\User;
 
 class UserGroupController extends Controller
 {
@@ -14,7 +15,6 @@ class UserGroupController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
