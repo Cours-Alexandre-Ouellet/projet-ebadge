@@ -13,8 +13,12 @@ class CreateBadgesTable extends Migration
      */
     public function up()
     {
-        Schema::create('badges', function (Blueprint $table) {
+        Schema::create('Badge', function (Blueprint $table) {
             $table->id();
+            $table->string('title', 45);
+            $table->string('description', 255);
+            $table->string('imagePath', 125);
+            $table->char('color', 6);
             $table->timestamps();
         });
     }
@@ -26,6 +30,6 @@ class CreateBadgesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('badges');
+        Schema::dropIfExists('Badge');
     }
 }

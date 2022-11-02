@@ -13,8 +13,9 @@ class CreateOrganisationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('organisations', function (Blueprint $table) {
+        Schema::create('Organisation', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 60);
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ class CreateOrganisationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organisations');
+        Schema::dropIfExists('Organisation');
     }
 }
