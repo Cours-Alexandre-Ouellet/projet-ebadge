@@ -9,30 +9,48 @@ class Login extends React.Component {
         this.state = {
             identifier: '',
             password: '',
-            identifierValid: false,
-            passwordValid: false,
-            submitDisabled: true
+            identifierError: '',
+            passwordError: ''
         }
+
+        this.handleChange = this.handleChange.bind(this);
+        this.validateIdentifier = this.validateIdentifier.bind(this);
+        this.validatePassword = this.validatePassword.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChangeIdentifier(e) {
-        let identifierValid = e.target.value ? true : false; 
-        let submitValid = this.state.textValid && identifierValid;
+    handleChange(event) {
+        const { name, value } = event.target;
         this.setState({
-            identifier: e.target.value,
-            identifierValid: identifierValid,
-            identifierDisabled: !submitValid
-        })
+            [name]: value
+        });
     }
 
-    handleChangePassword(e) {
-        let passwordValid = e.target.value ? true : false;
-        let submitValid = this.state.emailValid && passwordValid;
-        this.setState({
-            password: '',
-            passwordValid: passwordValid,
-            submitDisabled: !submitValid
-        })
+    validateIdentifier() {
+        if (this.state.identifier.length === 0) {
+            this.setState({ identifierError: 'Veuillez renseigner votre identifiant' });
+            return false;
+        } else {
+            this.setState({ identifierError: '' });
+            return true;
+        } // TODO: check format of identifier
+    }
+
+    validatePassword() {
+        if (this.state.password.length === 0) {
+            this.setState({ passwordError: 'Veuillez renseigner votre mot de passe' });
+            return false;
+        } else {
+            this.setState({ passwordError: '' });
+            return true;
+        } // TODO: check format of password
+    }
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        if (this.validateIdentifier() && this.validatePassword()) {
+            // TODO: Appel API
+        }
     }
 
     render() {
@@ -47,28 +65,38 @@ class Login extends React.Component {
                             <form>
                                 <TextField
                                     id="identifier"
+                                    name="identifier"
                                     label="Identifiant"
                                     variant="outlined"
                                     margin="normal"
                                     required
-                                    onChange={this.handleChangeIdentifier.bind(this)}
+                                    onChange={this.handleChange}
+                                    onBlur={this.validateIdentifier.bind(this)}
                                     value={this.state.identifier}
+                                    error={this.state.identifierError !== ''}
+                                    helperText={this.state.identifierError === "" ? "" : this.state.identifierError}
                                     sx={{ width: '100%' }}
                                 />
                                 <TextField
                                     id="password"
+                                    name="password"
                                     label="Mot de passe"
                                     variant="outlined"
                                     margin="normal"
                                     required
-                                    onChange={this.handleChangePassword.bind(this)}
+                                    onChange={this.handleChange}
+                                    onBlur={this.validatePassword.bind(this)}
                                     value={this.state.password}
+                                    error={this.state.passwordError !== ""}
+                                    helperText={this.state.passwordError === "" ? "" : this.state.passwordError}
                                     sx={{ width: '100%' }}
                                 />
+
                                 <Button
                                     variant="contained"
                                     size="Large"
-                                    enable={this.state.submitDisabled}
+                                    disabled={this.state.identifier === '' || this.state.password === ''}
+                                    onClick={this.handleSubmit}
                                     sx={{
                                         width: '60%',
                                         marginTop: '20px'
