@@ -1,0 +1,141 @@
+/*3949b5 / FAC710*/
+
+.avatar {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    margin-right: 100px;
+}
+
+.profil {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    margin: 50px;
+    font-size: 24px;
+    font-family: 'Barlow', sans-serif;
+}
+
+.infosUser {
+    text-align: left;
+    width: 40%;
+}
+.checkbox {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    vertical-align: middle;
+    cursor: pointer;
+    accent-color: #3949b5;
+}
+
+.button {
+    margin-top: 15px;
+    padding: 10px;
+    height: 50px;
+    cursor: pointer;
+    color: white;
+    background-color: #3949b5;
+    border-radius: 10px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 24px;
+}
+
+.button:hover {
+    background-color: #FAC710;
+}
+
+.infosLevel {
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: bold;
+}
+
+.progressBar {
+    width: 80%;
+    height: 40px;
+    background-color: #ddd;
+    margin-left: 20px;
+    border-radius: 10px;
+}
+
+.progressBarFill {
+    height: 100%;
+    width: 40%;
+    background-color: #3949b5;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 40px;
+    color: white;       
+}
+
+.BadgeArray {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    border: 5px solid black;
+    margin: 50px;
+}
+
+.rowBadge {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: center;
+    margin-top: 20px;
+}
+.rowBadge {
+    height: 400px;  
+    align-items: center;
+}
+
+.badgeIcon {
+    transition: ease-in-out 0.25s;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    box-shadow: 0 4px 8px 0 lightgray, 0 6px 5px 0 gray;
+    
+}
+
+.Badge {
+    margin: 20px;
+}
+.badgeIcon:hover{
+    transition: ease-in-out 0.25s;
+    height: 150px;
+    width: 150px;
+}
+.badgeIcon:hover + .hide {
+    display: block;
+  }
+
+
+.hide {
+    display: none;
+    margin-top: -10px;
+    position: absolute;    
+    text-align: justify;
+    font-size: 10px;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, #3949b5 0%, #FAC710 100%);
+}
+
+
+th, td {
+    border: 1px solid black;
+    padding: 5px;
+  }
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+.textBadge {
+    font-size: 14;
+}
