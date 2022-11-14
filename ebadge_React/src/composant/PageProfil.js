@@ -1,5 +1,7 @@
 import React from 'react';
 import './pageProfil.css';
+import '@mui/material';
+import { Button, TextField } from '@mui/material';
 class PageProfil extends React.Component {
     render() {
         return (
@@ -14,7 +16,9 @@ class PageProfil extends React.Component {
                         <div>
                             <label>Compte privé :<input type="checkbox" className='checkbox'/></label>
                         </div>
-                        <button className='button'>Modifier le fond d'écran</button>
+                        <Button variant="contained" className="Button">Test</Button>
+
+
                     </div>
                     <div class="infosLevel">
                         <p>Level : 1</p>
