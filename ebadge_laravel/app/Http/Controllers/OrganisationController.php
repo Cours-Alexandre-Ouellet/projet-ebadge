@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Organisation;
+use App\Models\Organisation;
 use Illuminate\Http\Request;
 
 class OrganisationController extends Controller

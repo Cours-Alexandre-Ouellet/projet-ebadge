@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\TeacherCode;
+use App\Models\TeacherCode;
 use Illuminate\Http\Request;
 
 class TeacherCodeController extends Controller
