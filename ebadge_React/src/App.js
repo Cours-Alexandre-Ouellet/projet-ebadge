@@ -1,7 +1,9 @@
-import logo from './logo.svg';
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Test from './composant/Test';
-import Login from './composant/Login';
+import Layout from "./pages/Layout";
+import Login from "./composant/Login";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -17,26 +19,17 @@ const theme = createTheme({
 
 function App() {
   return (
-    <div className="App">
+    <BrowserRouter>
       <ThemeProvider theme={theme}>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Test />
-      <Login />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Test />} />
+            <Route path="login" element={<Login />} />
+          </Route>
+        </Routes>
       </ThemeProvider>
-    </div>
+    </BrowserRouter>
+
   );
 }
 
