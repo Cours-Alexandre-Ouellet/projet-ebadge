@@ -4,17 +4,32 @@ import './App.css';
 import Test from './composant/Test';
 import Layout from "./pages/Layout";
 import Login from "./composant/Login";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#3949B5',
+    },
+    secondary: {
+      main: '#FAC710',
+    },
+  },
+});
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Test />} />
-          <Route path="login" element={<Login />} />          
-        </Route>
-      </Routes>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Test />} />
+            <Route path="login" element={<Login />} />
+          </Route>
+        </Routes>
+      </ThemeProvider>
     </BrowserRouter>
+
   );
 }
 
