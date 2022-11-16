@@ -85,6 +85,12 @@ class Login extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if (localStorage.getItem('token')) {
+            this.setState({ redirect: true });
+        }
+    }
+
     render() {
         if (this.state.redirect) {
             return (
