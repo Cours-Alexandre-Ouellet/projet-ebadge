@@ -2,7 +2,8 @@ import React from 'react';
 import './Login.css';
 import '@mui/material';
 import { Button, TextField } from '@mui/material';
-
+import Api from '../../utils/Api';
+import { Navigate } from 'react-router-dom';
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -10,7 +11,8 @@ class Login extends React.Component {
             identifier: '',
             password: '',
             identifierError: '',
-            passwordError: ''
+            passwordError: '',
+            redirect: false,
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -29,6 +31,10 @@ class Login extends React.Component {
     validateIdentifier() {
         if (this.state.identifier.length === 0) {
             this.setState({ identifierError: 'Veuillez renseigner votre identifiant' });
+            return false;
+            //regex email
+        } else if (!this.state.identifier.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+            this.setState({ identifierError: 'Le format de l\'adresse couriel est invalide' });
             return false;
         } else {
             this.setState({ identifierError: '' });
@@ -50,10 +56,41 @@ class Login extends React.Component {
         event.preventDefault();
         if (this.validateIdentifier() && this.validatePassword()) {
             // TODO: Appel API
+            Api.post('/auth/login', {
+                email: this.state.identifier,
+                password: this.state.password
+            }).then((response) => {
+                localStorage.setItem('token', response.data.access_token);
+                this.setState({ redirect: true });
+            }).catch((error) => {
+                if (error.response) {
+                    switch (error.response.status) {
+                        case 401:
+                            this.setState({ identifierError: 'Identifiant ou mot de passe incorrect' });
+                            this.setState({ passwordError: 'Identifiant ou mot de passe incorrect' });
+                            break;
+                        case 422:
+                            this.setState({ identifierError: 'Le format de l\'adresse couriel est invalide' });
+                            break;
+                        default:
+                            this.setState({ identifierError: 'Une erreur est survenue' });
+                            this.setState({ passwordError: 'Une erreur est survenue' });
+                            break;
+                    }
+                    console.log(error.response.data);
+                } else {
+                    console.error(error);
+                }
+            });
         }
     }
 
     render() {
+        if (this.state.redirect) {
+            return (
+                <Navigate to="/" />
+            );
+        }
         return (
             <div className="login">
                 <div className="login-container">
@@ -66,7 +103,7 @@ class Login extends React.Component {
                                 <TextField
                                     id="identifier"
                                     name="identifier"
-                                    label="Identifiant"
+                                    label="Adresse courriel"
                                     variant="outlined"
                                     margin="normal"
                                     required
@@ -79,6 +116,7 @@ class Login extends React.Component {
                                 />
                                 <TextField
                                     id="password"
+                                    type="password"
                                     name="password"
                                     label="Mot de passe"
                                     variant="outlined"
