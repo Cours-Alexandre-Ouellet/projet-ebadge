@@ -19,6 +19,7 @@ const theme = createTheme({
 });
 
 function App() {
+  console.log(process.env);
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
