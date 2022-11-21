@@ -40,7 +40,7 @@ class Login extends React.Component {
         } else {
             this.setState({ identifierError: '' });
             return true;
-        } // TODO: check format of identifier
+        }
     }
 
     validatePassword() {
@@ -50,13 +50,12 @@ class Login extends React.Component {
         } else {
             this.setState({ passwordError: '' });
             return true;
-        } // TODO: check format of password
+        }
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.validateIdentifier() && this.validatePassword()) {
-            // TODO: Appel API
             Api.post('/auth/login', {
                 email: this.state.identifier,
                 password: this.state.password

@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "http://localhost:8000/api",
+    baseURL: process.env.REACT_APP_LARAVEL_API_URL,
     responseType: "json",
     headers: {
         "Content-Type": "application/json",
