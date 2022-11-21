@@ -5,6 +5,7 @@ import Test from './composant/Test';
 import Layout from "./pages/Layout";
 import Login from "./composant/Login";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import BadgeCreateForm from "./composant/BadgeCreateForm";
 
 const theme = createTheme({
   palette: {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Test />} />
             <Route path="login" element={<Login />} />
+            <Route path="createbadge" element={<BadgeCreateForm />} />
           </Route>
         </Routes>
       </ThemeProvider>

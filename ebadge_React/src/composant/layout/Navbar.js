@@ -16,7 +16,8 @@ import { Link } from 'react-router-dom';
 
 const pages = [
     { name: 'Accueil', href: '/' },
-    { name: 'Se connecter', href: '/login' }
+    { name: 'Se connecter', href: '/login' },
+    { name: 'Créer un badge', href: '/createbadge' },
 ];
 
 
