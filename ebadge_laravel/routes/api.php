@@ -16,7 +16,28 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->middleware("auth:api")->middleware('roles:Administrateur');
+Route::group([
+    'middleware' => [
+        'auth:api',
+        'roles:Administrateur',
+    ],
+], function () {
+    Route::get('/user', [App\Http\Controllers\UserController::class, 'index']);
+});
+
+
+Route::group([
+    'middleware' => [
+        'auth:api',
+        'roles:Administrateur,Enseigant',
+    ],
+], function () {
+    Route::post('/badge', [App\Http\Controllers\BadgeController::class, 'create'])->middleware("auth:api")->middleware('roles:Administrateur');
+});
+
+
+
+
 
 Route::group([
     'prefix' => 'auth'
