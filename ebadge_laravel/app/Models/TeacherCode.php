@@ -12,4 +12,6 @@ class TeacherCode extends Model
      * @var string
      */
     protected $table = 'teacher_code';
+
+    public $timestamps = false;
 }
