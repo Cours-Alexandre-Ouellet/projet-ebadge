@@ -4,7 +4,7 @@ import '@mui/material';
 import { Button, TextField } from '@mui/material';
 import Api from '../../utils/Api';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
+import { isLogin } from '../../utils/AuthUtils';
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -85,17 +85,10 @@ class Login extends React.Component {
         }
     }
 
-    componentDidMount() {
-        if (localStorage.getItem('token')) {
-            Api.get('/auth/current_user', {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then((response) => {
-                this.setState({ redirect: true });
-            }).catch((error) => {
-                console.error(error);
-            });
+    async componentDidMount() {
+        let redirect = await isLogin()
+        if (redirect) {
+            this.setState({ redirect: true });
         }
     }
 

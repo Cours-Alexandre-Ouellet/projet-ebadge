@@ -4,7 +4,9 @@ import './App.css';
 import Test from './composant/Test';
 import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
+import Admin from "./pages/Admin/Admin";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 const theme = createTheme({
   palette: {
@@ -26,6 +28,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Test />} />
             <Route path="login" element={<Login />} />
+            <Route path="admin" element={<Admin />} />
           </Route>
         </Routes>
       </ThemeProvider>
