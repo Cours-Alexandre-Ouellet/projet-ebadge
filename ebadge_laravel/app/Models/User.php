@@ -15,8 +15,20 @@ class User extends Authenticatable
      */
     protected $table = 'user';
 
-    public function role()
+
+    public function getRoleName()
     {
-        return $this->role;
+        $role = Role::where('id', $this->role_id)->first();
+
+        if($role != null)
+        {
+            return $role->name;
+        }
+        return "";
+    }
+
+    public function hasRole($role)
+    {
+        return $this->getRoleName() == $role;
     }
 }

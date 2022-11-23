@@ -16,7 +16,16 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->middleware("auth:api")->middleware('roles:Administrateur');
+Route::group([
+    'prefix' => 'users'
+], function () {
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
+    });
+});
+
 
 Route::group([
     'prefix' => 'auth'

@@ -2,45 +2,43 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'first_name', headerName: 'Prénom', width: 130 },
-    { field: 'last_name', headerName: 'Côté', width: 130 },
-    { field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      width: 90,
-    },
-    {
-      field: 'full_name',
-      headerName: 'Nom complet',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 160,
-      valueGetter: (params) =>
-        `${params.row.first_name || ''} ${params.row.last_name || ''}`,
-    },
-  ];
+  { field: 'id', headerName: 'ID', flex: 1 },
+  { field: 'email', headerName: 'Email', flex: 1 },
+  { field: 'first_name', headerName: 'Prénom', flex: 1 },
+  { field: 'last_name', headerName: 'Nom', flex: 1 },
+  {
+    field: 'full_name',
+    flex: 1,
+    headerName: 'Nom complet',
+    description: 'Cette colonne ne peut être filtrer ou trié.',
+    sortable: false,
+    valueGetter: (params) =>
+      `${params.row.first_name || ''} ${params.row.last_name || ''}`,
+  },
 
-  
+
+];
+
+
 
 class UserGrid extends React.Component {
 
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return (
-            <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-              rows={this.props.users || []}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-            />
-          </div>
-        )
-    }
+  render() {
+    return (
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={this.props.rows ?? []}
+          columns={columns}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+        />
+      </div>
+    )
+  }
 }
 
 export default (UserGrid);
