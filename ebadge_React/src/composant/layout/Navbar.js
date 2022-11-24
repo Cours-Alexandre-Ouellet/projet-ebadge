@@ -18,6 +18,7 @@ const pages = [
     { name: 'Accueil', href: '/' },
     { name: 'Se connecter', href: '/login' },
     { name: 'Créer un badge', href: '/createbadge' },
+    { name: 'Classement', href: '/classement' },
 ];
 
 
