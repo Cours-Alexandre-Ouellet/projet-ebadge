@@ -51,7 +51,14 @@ form {
     width: 100%;
 }
 
-.badge-create-form-button {
+.badge-create-form-button-field {
+    display: flex;
+    width: 80%;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.badge-create-form-button-submit {
     display: flex;
     width: 80%;
     justify-content: space-between;
