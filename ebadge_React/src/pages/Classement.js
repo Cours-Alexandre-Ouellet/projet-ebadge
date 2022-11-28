@@ -11,71 +11,85 @@ class Classement extends React.Component {
             classement: [
                 {
                     "id": 1,
+                    "position": 1,
                     "name": "Jean",
                     "score": 100
                 },
                 {
                     "id": 2,
+                    "position": 2,
                     "name": "Pierre",
                     "score": 50
                 },
                 {
                     "id": 3,
+                    "position": 3,
                     "name": "Paul",
                     "score": 25
                 },
                 {
                     "id": 4,
+                    "position": 4,
                     "name": "Jacques",
                     "score": 10
                 },
                 {
                     "id": 5,
+                    "position": 5,
                     "name": "Marie",
                     "score": 5
                 },
                 {
                     "id": 6,
+                    "position": 6,
                     "name": "Jeanne",
                     "score": 2
                 },
                 {
                     "id": 7,
+                    "position": 7,
                     "name": "Pierre",
                     "score": 1
                 },
                 {
                     "id": 8,
+                    "position": 8,
                     "name": "Paul",
                     "score": 0
                 },
                 {
                     "id": 9,
+                    "position": 9,
                     "name": "Jacques",
                     "score": 0
                 },
                 {
                     "id": 10,
+                    "position": 10,
                     "name": "Marie",
                     "score": 0
                 },
                 {
                     "id": 11,
+                    "position": 11,
                     "name": "Jeanne",
                     "score": 0
                 },
                 {
                     "id": 12,
+                    "position": 12,
                     "name": "Pierre",
                     "score": 0
                 },
                 {
                     "id": 13,
+                    "position": 13,
                     "name": "Paul",
                     "score": 0
                 },
                 {
                     "id": 14,
+                    "position": 14,
                     "name": "Jacques",
                     "score": 0
                 }
@@ -99,12 +113,19 @@ class Classement extends React.Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.filterClassement = this.filterClassement.bind(this);
     }
 
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
             [name]: value
+        });
+    }
+
+    filterClassement() {
+        return this.state.classement.filter((item) => {
+            return item.name.toLowerCase().includes(this.state.search.toLowerCase());
         });
     }
 
@@ -167,16 +188,11 @@ class Classement extends React.Component {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {this.state.classement.map((row) => (
-                                            <TableRow
-                                                key={row.id}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell component="th" scope="row">
-                                                    {row.id}
-                                                </TableCell>
-                                                <TableCell>{row.name}</TableCell>
-                                                <TableCell>{row.score}</TableCell>
+                                        {this.filterClassement().map((item) => (
+                                            <TableRow key={item.id}>
+                                                <TableCell>{item.position}</TableCell>
+                                                <TableCell>{item.name}</TableCell>
+                                                <TableCell>{item.score}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
