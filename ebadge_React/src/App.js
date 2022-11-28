@@ -6,6 +6,7 @@ import Login from "./pages/Login/Login";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PageProfile from "./composant/PageProfile";
 import BadgeCreateForm from "./composant/BadgeCreateForm";
+import Classement from "./pages/Classement";
 
 const theme = createTheme({
   palette: {
@@ -27,6 +28,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<PageProfile />} />
             <Route path="login" element={<Login />} />
+            <Route path="classement" element={<Classement />} />
+            <Route path="*" element={<h1>404: Page non trouvée</h1>} />
           </Route>
         </Routes>
       </ThemeProvider>

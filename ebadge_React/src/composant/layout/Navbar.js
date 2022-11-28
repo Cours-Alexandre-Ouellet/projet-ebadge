@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 const pages = [
     { name: 'Accueil', href: '/' },
     { name: 'Se connecter', href: '/login' },
+    { name: 'Classement', href: '/classement' },
 ];
 
 
