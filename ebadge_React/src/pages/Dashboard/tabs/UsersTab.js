@@ -3,7 +3,7 @@ import '@mui/material';
 import Item from '@mui/material/Grid';
 import './../Dashboard.css';
 import Api from '../../../utils/Api';
-import UserGrid from '../../../composant/dashboard/UserGrid';
+import UserGrid from '../../../composant/Dashboard/UserGrid';
 
 class Dashboard extends React.Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
      * Recupere la liste des utilisateurs depuis l'API
      */
     getUsers() {
-        Api.get('/users', {
+        Api.get('/user', {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
