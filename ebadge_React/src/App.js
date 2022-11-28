@@ -17,6 +17,12 @@ const theme = createTheme({
       main: '#FAC710',
     },
   },
+  typography: {
+    fontFamily: [
+      'Barlow',
+      'sans-serif',
+    ].join(','),
+  },
 });
 
 function App() {

@@ -210,16 +210,6 @@
   }
 
 
-th, td {
-    border: 1px solid black;
-    padding: 5px;
-  }
-table {
-    border: 1px solid black;
-    border-collapse: collapse;
-    border-spacing: 0px;
-}
-
 .textBadge {
     font-size: 14;
 }

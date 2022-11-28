@@ -58,6 +58,7 @@ h1 {
     font-size: 3em;
     font-weight: 700;
     color: #151d53;
+    font-family: 'Barlow', sans-serif;
 }
 
 @media screen and (max-width: 900px) {
