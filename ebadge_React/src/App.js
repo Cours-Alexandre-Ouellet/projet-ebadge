@@ -27,7 +27,6 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Test />} />
             <Route path="login" element={<Login />} />
-            <Route path="createbadge" element={<BadgeCreateForm />} />
           </Route>
         </Routes>
       </ThemeProvider>
