@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import { Button } from '@mui/material';
 
 const columns = [
   { field: 'id', headerName: 'ID', flex: 1 },
@@ -7,15 +8,35 @@ const columns = [
   { field: 'first_name', headerName: 'Prénom', flex: 1 },
   { field: 'last_name', headerName: 'Nom', flex: 1 },
   {
-    field: 'full_name',
-    flex: 1,
-    headerName: 'Nom complet',
-    description: 'Cette colonne ne peut être filtrer ou trié.',
+    field: "profileAction",
+    minWidth: 200,
+    headerName: "",
     sortable: false,
-    valueGetter: (params) =>
-      `${params.row.first_name || ''} ${params.row.last_name || ''}`,
-  },
+    renderCell: (params) => {
+      const onClick = (e) => {
+        e.stopPropagation();
 
+        return alert("Go to profile");
+      };
+
+      return (<Button variant="outlined" onClick={onClick}>Voir le profile</Button>);
+    }
+  },
+  {
+    field: "assignBadgeAction",
+    minWidth: 200,
+    headerName: "",
+    sortable: false,
+    renderCell: (params) => {
+      const onClick = (e) => {
+        e.stopPropagation();
+
+        return alert("Assigner un badge");
+      };
+
+      return <Button variant="outlined" onClick={onClick}>Assigner un badge</Button>;
+    }
+  }
 
 ];
 

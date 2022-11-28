@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 const pages = [
     { name: 'Accueil', href: '/' },
     { name: 'Se connecter', href: '/login' },
-    { name: 'Tableau de bord', href: '/dashboard' },
+    { name: 'Tableau de bord', href: '/admin/users' },
 ];
 
 
@@ -43,7 +43,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
