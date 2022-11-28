@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Badge\CreateBadgeRequest;
 use App\Models\Badge;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BadgeController extends Controller
 {
@@ -22,20 +24,18 @@ class BadgeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(CreateBadgeRequest $request)
     {
-        //
-    }
+        $badge = new Badge();
+        $badge->title = $request->title;
+        $badge->description = $request->description;
+        $badge->color = $request->color;
+        //insertion de l'image dans le dossier public avec un nom original
+        $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());
+        $badge->imagePath = Storage::url($path);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $badge->save();
+        return response()->json($badge);
     }
 
     /**

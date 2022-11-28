@@ -5,6 +5,7 @@ import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PageProfile from "./composant/PageProfile";
+import BadgeCreateForm from "./composant/BadgeCreateForm";
 
 const theme = createTheme({
   palette: {
