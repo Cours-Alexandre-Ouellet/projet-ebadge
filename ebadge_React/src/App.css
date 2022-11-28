@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+html * {
+  font-family: 'Barlow', sans-serif;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
