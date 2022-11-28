@@ -29,7 +29,7 @@ class AuthController extends Controller
             $code->user_id = $user->id;
             $code->save();
 
-            $user->role_id = Role::where('name', 'Enseignant')->first()->id;
+            $user->role_id = Role::where('name', Role::ENSEIGNANT)->first()->id;
             $user->save();
         }
         return response()->json($user, 201);
@@ -80,7 +80,7 @@ class AuthController extends Controller
         $user->last_name = $request->last_name;
         $user->organisation_id = $request->organisation_id;
         $user->program_id = $request->program_id;
-        $user->role_id = Role::where('name', 'Étudiant')->first()->id;
+        $user->role_id = Role::where('name', Role::ETUDIANT)->first()->id;
         return $user->save() ? $user : null;
     }
 }
