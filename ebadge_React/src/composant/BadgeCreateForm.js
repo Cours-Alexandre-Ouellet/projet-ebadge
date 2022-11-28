@@ -1,7 +1,8 @@
 import React from 'react';
 import './BadgeCreateForm.css';
 import '@mui/material';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, InputAdornment } from '@mui/material';
+import { PhotoCamera } from '@mui/icons-material';
 
 class BadgeCreateForm extends React.Component {
     constructor(props) {
@@ -89,25 +90,57 @@ class BadgeCreateForm extends React.Component {
                                     required
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
-                                <TextField
-                                    id="image"
-                                    name="image"
-                                    label="Image"
-                                    variant="outlined"
-                                    value={this.state.image}
-                                    onChange={this.handleChange}
-                                    sx={{ width: '80%', marginTop: '20px' }}
-                                />
-                                <TextField
-                                    id="color"
-                                    name="color"
-                                    label="Couleur"
-                                    variant="outlined"
-                                    value={this.state.color}
-                                    onChange={this.handleChange}
-                                    sx={{ width: '80%', marginTop: '20px' }}
-                                />
-                                <div className="badge-create-form-button">
+                                <div className="badge-create-form-button-field">
+                                    <Button
+                                        variant="contained"
+                                        color='secondary'
+                                        id='image'
+                                        name='image'
+                                        value={this.state.image}
+                                        onChange={this.handleChange}
+                                        sx={{
+                                            width: '100%',
+                                            marginTop: '20px',
+                                            marginRight: '20px'
+                                        }}
+                                        startIcon={<PhotoCamera />}
+                                    >
+                                        Image
+                                        <input
+                                            type="file"
+                                            accept='image/*'
+                                            hidden
+                                        />
+                                    </Button>
+                                    <TextField
+                                        id="color"
+                                        name="color"
+                                        label="Hex couleur background"
+                                        variant="standard"
+                                        value={this.state.color}
+                                        onChange={this.handleChange}
+                                        sx={{
+                                            width: '100%',
+                                            marginTop: '20px'
+                                        }}
+                                        InputProps={{
+                                            startAdornment: (
+                                                <InputAdornment position="start">
+                                                    #
+                                                </InputAdornment>
+                                            ),
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <div
+                                                        className="badge-create-form-color"
+                                                        style={{ backgroundColor: "#" + this.state.color, width: '20px', height: '20px' }}
+                                                    />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                </div>
+                                <div className="badge-create-form-button-submit">
                                     <Button variant="outlined" sx={{
                                         width: '100%',
                                         marginTop: '20px',

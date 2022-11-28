@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 import Test from './composant/Test';
 import Layout from "./pages/Layout";
-import Login from "./composant/Login";
+import Login from "./pages/Login/Login";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BadgeCreateForm from "./composant/BadgeCreateForm";
 import Classement from "./pages/Classement";
@@ -20,6 +20,7 @@ const theme = createTheme({
 });
 
 function App() {
+  console.log(process.env);
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
