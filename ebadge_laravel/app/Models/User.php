@@ -19,4 +19,9 @@ class User extends Authenticatable
     {
         return $this->role;
     }
+
+    public function badges()
+    {
+        return $this->belongsToMany('App\Models\Badge', 'user_badge', 'user_id', 'badge_id');
+    }
 }
