@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class TeacherCode extends Model
@@ -14,4 +15,12 @@ class TeacherCode extends Model
     protected $table = 'teacher_code';
 
     public $timestamps = false;
+
+    public function generateCode()
+    {
+        $code = Str::random(6);
+        $this->code = $code;
+        $this->save();
+        return $code;
+    }
 }

@@ -11,4 +11,17 @@ class Badge extends Model
      *
      * @var string
      */
-    protected $table = 'badge';}
+    protected $table = 'badge';
+
+    protected $fillable = [
+        'title',
+        'description',
+        'imagePath',
+        'color',
+    ];
+
+    public function users()
+    {
+        return $this->belongsToMany('App\Models\User', 'user_badge', 'badge_id', 'user_id');
+    }
+}
