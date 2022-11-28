@@ -28,7 +28,6 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Test />} />
             <Route path="login" element={<Login />} />
-            <Route path="createbadge" element={<BadgeCreateForm />} />
             <Route path="classement" element={<Classement />} />
             <Route path="*" element={<h1>404: Page non trouvée</h1>} />
           </Route>
