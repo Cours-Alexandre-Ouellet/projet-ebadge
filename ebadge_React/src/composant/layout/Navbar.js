@@ -18,6 +18,7 @@ const pages = [
     { name: 'Accueil', href: '/' },
     { name: 'Se connecter', href: '/login' },
     { name: 'Tableau de bord', href: '/admin/users' },
+    { name: 'Classement', href: '/classement' }
 ];
 
 

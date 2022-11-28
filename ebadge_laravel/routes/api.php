@@ -26,6 +26,16 @@ Route::group([
     });
 });
 
+Route::group([
+    'middleware' => [
+        'auth:api',
+        'roles:Administrateur,Enseigant',
+    ],
+], function () {
+    Route::post('/badge', [App\Http\Controllers\BadgeController::class, 'create'])->middleware("auth:api")->middleware('roles:Administrateur');
+});
+
+
 
 Route::group([
     'prefix' => 'auth'
