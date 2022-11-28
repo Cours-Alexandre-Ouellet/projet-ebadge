@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TeacherCode;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class TeacherCodeController extends Controller
 {
@@ -24,52 +25,11 @@ class TeacherCodeController extends Controller
      */
     public function create()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\TeacherCode  $teacherCode
-     * @return \Illuminate\Http\Response
-     */
-    public function show(TeacherCode $teacherCode)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\TeacherCode  $teacherCode
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TeacherCode $teacherCode)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\TeacherCode  $teacherCode
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, TeacherCode $teacherCode)
-    {
-        //
+        $code = new TeacherCode();
+        $code->generateCode();
+        return response()->json([
+            'code' => $code->code
+        ]);
     }
 
     /**
@@ -78,8 +38,16 @@ class TeacherCodeController extends Controller
      * @param  \App\TeacherCode  $teacherCode
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TeacherCode $teacherCode)
+    public function destroy(Request $request)
     {
-        //
+        $request->validate([
+            'code' => 'required|exists:teacher_code,code'
+        ]);
+
+        $code = TeacherCode::where('code', $request->code)->first();
+        $code->delete();
+        return response()->json([
+            'message' => 'Code deleted'
+        ]);
     }
 }

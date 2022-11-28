@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Badge\BadgeUdpateRequest;
 use App\Http\Requests\Badge\CreateBadgeRequest;
 use App\Models\Badge;
 use Illuminate\Http\Request;
@@ -16,7 +17,10 @@ class BadgeController extends Controller
      */
     public function index()
     {
-        //
+        $badges = Badge::all();
+        return response()->json([
+            'badges' => $badges
+        ]);
     }
 
     /**
@@ -44,20 +48,13 @@ class BadgeController extends Controller
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function show(Badge $badge)
+    public function show(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Badge  $badge
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Badge $badge)
-    {
-        //
+        $request->validate([
+            'id' => 'required|exists:badges,id'
+        ]);
+        $badge = Badge::find($request->id);
+        return response()->json($badge);
     }
 
     /**
@@ -67,9 +64,19 @@ class BadgeController extends Controller
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Badge $badge)
+    public function update(BadgeUdpateRequest $request)
     {
-        //
+        $badge = Badge::updateOrCreate(
+            ['id' => $request->id],
+            [
+                'title' => $request->title,
+                'description' => $request->description,
+                'color' => $request->color,
+                'imagePath' => $request->imagePath
+            ]
+        );
+
+        return response()->json($badge);
     }
 
     /**
@@ -78,8 +85,13 @@ class BadgeController extends Controller
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Badge $badge)
+    public function destroy(Request $request)
     {
-        //
+        $request->validate([
+            'id' => 'required|exists:badges,id'
+        ]);
+        $badge = Badge::find($request->id);
+        $badge->delete();
+        return response()->json($badge);
     }
 }
