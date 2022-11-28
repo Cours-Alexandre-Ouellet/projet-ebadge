@@ -4,9 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
 use App\Http\Controllers\AuthController;
+use App\Models\Role;
 
 Route::group([
     'prefix' => 'teacher-code',
+    'middleware' => [
+        'auth:api',
+        'roles:' . Role::ADMIN,
+    ],
 ], function () {
     Route::post('/', [App\Http\Controllers\TeacherCodeController::class, 'create']);
     Route::delete('/', [App\Http\Controllers\TeacherCodeController::class, 'destroy']);
@@ -21,7 +26,7 @@ Route::group([
     Route::group([
         'middleware' => [
             'auth:api',
-            'roles:Administrateur,Enseigant',
+            'roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT,
         ],
     ], function () {
         Route::post('/', [App\Http\Controllers\BadgeController::class, 'create']);
@@ -39,6 +44,9 @@ Route::group([
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:Administrateur,Enseigant');
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:Administrateur,Enseigant');
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:Administrateur,Enseigant');
+    Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
+    Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
+    Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
     Route::post('/edit-background', [App\Http\Controllers\UserController::class, 'editBackground']);
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);
 });
