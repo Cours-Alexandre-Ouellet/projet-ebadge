@@ -269,7 +269,7 @@ export default class PageProfile extends React.Component {
                         <div>
                             <label>Compte privé :<input type="checkbox" className='checkbox' /></label>
                         </div>
-                        <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier le l'arrière plan</Button>
+                        <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
                         <Dialog open={this.state.open} onClose={this.handleClose}>
                             <DialogTitle>Modifier l'arrière plan</DialogTitle>
                             <DialogContent>
