@@ -1,5 +1,6 @@
 /*3949b5 / FAC710*/
 .background {
+    background-image: url(../background.png);
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -16,8 +17,6 @@
     border: solid 5px black;
     line-height: 200px;
 }
-
-
 .profil {
     display: flex;
     flex-direction: row;
@@ -30,7 +29,9 @@
     background-color: rgba(255, 255, 255, 0.5);
     padding: 25px;
     border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    backdrop-filter: blur(15px);
+    box-shadow: rgba(77, 77, 77, 0.1) 0px 19px 20px, rgba(66, 66, 66, 0.1) 0px -12px 30px, rgba(72, 71, 71, 0.1) 0px 4px 6px, rgba(63, 63, 63, 0.1) 0px 12px 13px, rgba(62, 62, 62, 0.1) 0px -3px 5px;
+
 }
 
 @media screen and (max-width: 600px) {
@@ -128,7 +129,8 @@
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.5);
     margin: 50px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    backdrop-filter: blur(15px);
+    box-shadow: rgba(77, 77, 77, 0.1) 0px 19px 20px, rgba(66, 66, 66, 0.1) 0px -12px 30px, rgba(72, 71, 71, 0.1) 0px 4px 6px, rgba(63, 63, 63, 0.1) 0px 12px 13px, rgba(62, 62, 62, 0.1) 0px -3px 5px;
 }
 
 .badgeIcon {
