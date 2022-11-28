@@ -11,9 +11,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import BadgeComposant from './BadgeComponent';
 import Alert from '@mui/material/Alert';
 
-var background = "";
+var background = "../background.png";
 var styleBackground = {
-    backgroundImage: "url(" + background + ")"
+    backgroundImage: "url(../background.png))"
 };
 
 function isImage(url) {
@@ -253,7 +253,7 @@ export default class PageProfile extends React.Component {
 
     render() {
         return (
-            <div className='background' style={styleBackground} >
+            <div className='background' style={styleBackground}>
                 <div className='profil'>
                     <div>
                         <img className='avatar' src={this.state.avatarImage} />
