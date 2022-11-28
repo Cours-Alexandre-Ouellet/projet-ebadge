@@ -4,8 +4,8 @@ import './App.css';
 import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import UsersTab from "./pages/dashboard/tabs/UsersTab";
-import AdminLayout from "./pages/dashboard/AdminLayout";
+import UsersTab from "./pages/Dashboard/tabs/UsersTab";
+import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
 import Classement from "./pages/Classement";
 
