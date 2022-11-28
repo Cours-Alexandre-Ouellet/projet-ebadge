@@ -1,6 +1,5 @@
 /*3949b5 / FAC710*/
 .background {
-    background-color: #FAC710;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -14,7 +13,6 @@
     height: 200px;
     width: 200px;
     border-radius: 50%;
-    margin-right: 100px;
     border: solid 5px black;
     line-height: 200px;
 }
@@ -23,16 +21,59 @@
 .profil {
     display: flex;
     flex-direction: row;
-    align-items: left;
+    flex-wrap: wrap;
     justify-content: left;
+    align-items: left;
     margin: 50px;
     font-size: 24px;
     font-family: 'Barlow', sans-serif;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
+@media screen and (max-width: 600px) {
+    .profil {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 50px;
+        font-size: 24px;
+        font-family: 'Barlow', sans-serif;
+    }
+
+    .infosUser {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin: 20px;
+        font-size: 24px;
+        padding-left: 0px !important;
+        font-family: 'Barlow', sans-serif;
+    }
+
+    .infosLevel {
+        display: flex;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center;
+        font-weight: bold;
+        width: 100%;
+    }
+}
+
+
+
 .infosUser {
-    text-align: left;
-    width: 40%;
+    justify-content: center;
+    align-items: center;
+    padding-left: 50px;
 }
 .checkbox {
     width: 20px;
@@ -42,21 +83,26 @@
     cursor: pointer;
     accent-color: #3949b5;
 }  
+.backgroundButton {
+    margin-top: 25px !important;
+}
 
 .infosLevel {
-    width: 60%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    margin-top: 15px;
+    justify-content: left;
+    align-items: left;
     font-weight: bold;
+    width: 100%;
 }
 
 .progressBar {
     width: 80%;
     height: 40px;
     background-color: #ddd;
-    margin-left: 20px;
     border-radius: 10px;
+    margin: 15px;
 }
 
 .progressBarFill {
@@ -68,15 +114,19 @@
     color: white;       
 }
 
+.hiddenAlert {
+    margin-top: 15px;
+    display: none;
+}
+
 .BadgeArray {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
     padding-bottom: 100px;
-    align-items: left;
     border-radius: 10px;
-    background: rgb(255,255,255);
-    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(147,161,255,1) 100%); 
+    background-color: rgba(255, 255, 255, 0.5);
     margin: 50px;
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
@@ -86,19 +136,20 @@
     width: 100px;
     height: 100px;
     border-radius: 100%;
-    box-shadow: 0 4px 8px 0 lightgray, 0 6px 5px 0 gray;   
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.45), 0 6px 5px 0 rgba(0, 0, 0, 0.45);   
 }
 
 .Badge {
-    margin-top: 20px;
     width: 200px;
-    height: 125px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .badgeIcon:hover{
     transition: ease-in-out 0.25s;
     height: 150px;
     width: 150px;
-    transform: translateX(0%) translateY(-8%);
 }
 .badgeIcon:hover + .hideDisplay {
     display: block;
@@ -118,7 +169,7 @@
     text-align: center;
     font-size: 12px;
     margin-left: 10px;
-    margin-top: -15px;
+    margin-top: 200px;
     z-index: -1000;
     background-color: #3949b5;
     color: white;
@@ -128,12 +179,12 @@
     width: 175px;
 }
 
-.theCog {
+.editImage {
     position: absolute;
-    left: 200px;
-    top: 215px;
     width: 25px;
     height: 25px;
+    margin-left: 170px;
+    margin-top: -70px;
     border-radius: 50%;
     background-color: #fff;
     padding: 5px;
@@ -141,7 +192,7 @@
     border: solid 2px black;
 }
 
-.theCog:hover {
+.editImage:hover {
     filter: brightness(85%);
 }
 

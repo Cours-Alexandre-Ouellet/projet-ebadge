@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './pageProfil.css';
+import './PageProfile.css';
 import '@mui/material';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
@@ -9,13 +9,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import BadgeComposant from './BadgeComponent';
+import Alert from '@mui/material/Alert';
 
 var background = "";
 var styleBackground = {
     backgroundImage: "url(" + background + ")"
-};
-var styleAvatar = {
-    content: "url(" + "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png" + ")"
 };
 
 function isImage(url) {
@@ -23,12 +21,13 @@ function isImage(url) {
 }
 
 
-export default class PageProfil extends React.Component {
+export default class PageProfile extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             open: false,
+            newUrl: "",
             openAvatar: false,
             avatarImage: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png",
             background: "",
@@ -200,20 +199,31 @@ export default class PageProfil extends React.Component {
         };
     }
 
+
     handleClickOpen = () => {
         this.setState({ open: true });
     };
 
     handleClose = () => {
+
         this.setState({ open: false });
     };
 
     handleModify = () => {
 
-        background = this.state.background;
+        if (isImage(this.state.background)) {
+            styleBackground = {
+                backgroundImage: "url(" + this.state.background + ")"
+            };
+            this.setState({ open: false });
+        } else {
+        }
+    };
+    handleDelete = () => {
         styleBackground = {
-            backgroundImage: "url(" + background + ")"
+            backgroundImage: ""
         };
+
         this.setState({ open: false });
     };
 
@@ -227,15 +237,17 @@ export default class PageProfil extends React.Component {
 
     handleModifyAvatar = () => {
 
-        if (isImage(this.state.avatarImage)) {
-            styleAvatar = {
-                content: "url(" + this.state.avatarImage + ")"
-            };
+        if (isImage(this.state.newUrl)) {
+            this.setState({ avatarImage: this.state.newUrl });
+            this.setState({ openAvatar: false });
         } else {
-            styleAvatar = {
-                content: "url(" + "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png" + ")"
-            };
+
         }
+    };
+
+    handleDeleteAvatar = () => {
+        this.setState({ avatarImage: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png" });
+    
         this.setState({ openAvatar: false });
     };
 
@@ -245,9 +257,9 @@ export default class PageProfil extends React.Component {
                 <div className='profil'>
                     <div>
                         <img className='avatar' src={this.state.avatarImage} />
-                        <div>
+                        <div className='imageProfile'>
                             <label htmlFor="avatar">
-                                <img className='theCog' onClick={this.handleClickOpenAvatar} src='http://cdn.onlinewebfonts.com/svg/img_520583.png' alt="profil" title='image de profil' />
+                                <img className='editImage' onClick={this.handleClickOpenAvatar} src='http://cdn.onlinewebfonts.com/svg/img_520583.png' alt="profil" title='image de profil' />
                             </label>
                         </div>
                     </div>
@@ -257,8 +269,7 @@ export default class PageProfil extends React.Component {
                         <div>
                             <label>Compte privé :<input type="checkbox" className='checkbox' /></label>
                         </div>
-                        <br />
-                        <Button variant="contained" onClick={this.handleClickOpen}>Modifier le l'arrière plan</Button>
+                        <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier le l'arrière plan</Button>
                         <Dialog open={this.state.open} onClose={this.handleClose}>
                             <DialogTitle>Modifier l'arrière plan</DialogTitle>
                             <DialogContent>
@@ -293,9 +304,15 @@ export default class PageProfil extends React.Component {
                                         hidden
                                     />
                                 </Button>
+                                <div className="hiddenAlert">
+                                    <Alert variant="filled" severity="error" >
+                                        L'url de l'image n'est pas valide.
+                                    </Alert>
+                                </div>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={this.handleClose}>Cancel</Button>
+                                <Button onClick={this.handleDelete}>Supprimer</Button>
                                 <Button onClick={this.handleModify}>Modifier</Button>
                             </DialogActions>
                         </Dialog>
@@ -313,7 +330,7 @@ export default class PageProfil extends React.Component {
                                     type="url"
                                     fullWidth
                                     variant="standard"
-                                    onChange={e => this.setState({ avatarImage: e.target.value })}
+                                    onChange={e => this.setState({ newUrl: e.target.value })}
                                 />
                                 <br />
                                 <br />
@@ -332,10 +349,16 @@ export default class PageProfil extends React.Component {
                                         accept="image/png, image/jpeg"
                                         hidden
                                     />
-                                </Button>
+                                </Button>   
+                                <div className="hiddenAlert">
+                                    <Alert variant="filled" severity="error" >
+                                        L'url de l'image n'est pas valide.
+                                    </Alert>
+                                </div>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={this.handleCloseAvatar}>Cancel</Button>
+                                <Button onClick={this.handleDeleteAvatar}>Supprimer</Button>
                                 <Button onClick={this.handleModifyAvatar}>Modifier</Button>
                             </DialogActions>
                         </Dialog>
