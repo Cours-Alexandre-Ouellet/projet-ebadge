@@ -34,14 +34,13 @@ Route::group([
     });
 });
 
-
 Route::group([
     'prefix' => 'user',
     'middleware' => [
         'auth:api',
     ],
 ], function () {
-    Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->middleware('roles:' . Role::ADMIN);
+    Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
