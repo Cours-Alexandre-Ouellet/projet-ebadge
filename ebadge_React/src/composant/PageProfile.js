@@ -8,7 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import BadgeComposant from './BadgeComponent';
+import BadgeComponent from './BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 var styleBackground = {
@@ -31,7 +31,6 @@ export default class PageProfile extends React.Component {
             background: "",
             user: null,
             levelAvatar: 23.90,
-            Badge: [],
         };
     }
 
@@ -122,9 +121,9 @@ export default class PageProfile extends React.Component {
                         </div>
                     </div>
                     <div className='infosUser'>
-                        <p>{this.state.user.first_name} {this.state.user.last_name}</p>
+                        <p><strong>{this.state.user.first_name} {this.state.user.last_name}</strong></p>
                         <p>{this.state.user.program_name}</p>
-                        <div>
+                        <div style={{width: "188px" }}>
                             <label>Compte privé :<input type="checkbox" className='checkbox' value={this.state.user.privacy}/></label>
                         </div>
                         <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
@@ -226,16 +225,16 @@ export default class PageProfile extends React.Component {
                         </Dialog>
                     </div>
                     <div className="infosLevel">
-                        <p>Level : {Math.floor(this.state.levelAvatar)}</p>
+                        <p className='progressLevel'>Level : {Math.floor(this.state.levelAvatar)}</p>
                         <div className="progressBar">
                             <div className="progressBarFill" style={{ width: (this.state.levelAvatar % 1) * 100 + "%" }}></div>
                         </div>
                     </div>
                 </div>
                 <div className='BadgeArray'>
-                    {this.state.user.badges.map((badge, index) => {
-                        return <BadgeComposant badge={badge} />
-                    })}
+                    {this.state.badges.length ? this.state.user.badges.map((badge, index) => {
+                        return <BadgeComponent badge={badge} />
+                    }) : <h1>Vous n'avez pas encore de badge.</h1>}
                 </div>
             </div>
         );
