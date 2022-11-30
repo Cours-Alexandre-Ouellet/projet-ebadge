@@ -8,7 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import BadgeComposant from './BadgeComponent';
+import BadgeComponent from './BadgeComponent';
 import Alert from '@mui/material/Alert';
 
 var background = "../background.png";
@@ -34,167 +34,168 @@ export default class PageProfile extends React.Component {
             levelAvatar: 23.90,
             Badge: [
                 {
-                    titre: "Badge 1",
+                    title: "Badge 1",
                     description: "Description du badge 1",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
-                },
+                },  
                 {
-                    titre: "Badge 2",
+                    title: "Badge 2",
                     description: "Description du badge 2",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 3",
+                    title: "Badge 3",
                     description: "Description du badge 3",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 4",
+                    title: "Badge 4",
                     description: "Description du badge 4",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 5",
+                    title: "Badge 5",
                     description: "Description du badge 5",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 6",
+                    title: "Badge 6",
                     description: "Description du badge 6",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 7",
+                    title: "Badge 7",
                     description: "Description du badge 7",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
-                },
+                },/*
                 {
-                    titre: "Badge 8",
+                    title: "Badge 8",
                     description: "Description du badge 8",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 9",
+                    title: "Badge 9",
                     description: "Description du badge 9",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
+                    imagePath: "https://cdn.pixabay.com/photo/2015/10/01/17/17/car-967387__480.png",
+                    pourcentage: "50%",
+                    color: "#0000FF"
                 },
                 {
-                    titre: "Badge 1",
+                    title: "Badge 1",
                     description: "Description du badge 1",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 2",
+                    title: "Badge 2",
                     description: "Description du badge 2",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 3",
+                    title: "Badge 3",
                     description: "Description du badge 3",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 4",
+                    title: "Badge 4",
                     description: "Description du badge 4",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 5",
+                    title: "Badge 5",
                     description: "Description du badge 5",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 6",
+                    title: "Badge 6",
                     description: "Description du badge 6",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 7",
+                    title: "Badge 7",
                     description: "Description du badge 7",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 8",
+                    title: "Badge 8",
                     description: "Description du badge 8",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 9",
+                    title: "Badge 9",
                     description: "Description du badge 9",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 1",
+                    title: "Badge 1",
                     description: "Description du badge 1",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 2",
+                    title: "Badge 2",
                     description: "Description du badge 2",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 3",
+                    title: "Badge 3",
                     description: "Description du badge 3",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 4",
+                    title: "Badge 4",
                     description: "Description du badge 4",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 5",
+                    title: "Badge 5",
                     description: "Description du badge 5",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 6",
+                    title: "Badge 6",
                     description: "Description du badge 6",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 7",
+                    title: "Badge 7",
                     description: "Description du badge 7",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 8",
+                    title: "Badge 8",
                     description: "Description du badge 8",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
                 },
                 {
-                    titre: "Badge 9",
+                    title: "Badge 9",
                     description: "Description du badge 9",
-                    imageurl: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
+                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
                     pourcentage: "50%"
-                }
+                }*/
             ],
         };
     }
@@ -264,9 +265,9 @@ export default class PageProfile extends React.Component {
                         </div>
                     </div>
                     <div className='infosUser'>
-                        <p>Nom d'utilisateur</p>
+                        <p><strong>Nom d'utilisateur</strong></p>
                         <p># de groupe</p>
-                        <div>
+                        <div style={{width: "188px" }}>
                             <label>Compte privé :<input type="checkbox" className='checkbox' /></label>
                         </div>
                         <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
@@ -364,16 +365,16 @@ export default class PageProfile extends React.Component {
                         </Dialog>
                     </div>
                     <div className="infosLevel">
-                        <p>Level : {Math.floor(this.state.levelAvatar)}</p>
+                        <p className='progressLevel'>Level : {Math.floor(this.state.levelAvatar)}</p>
                         <div className="progressBar">
                             <div className="progressBarFill" style={{width: (this.state.levelAvatar % 1) * 100 + "%" }}></div>
                         </div>
                     </div>
                 </div>
                 <div className='BadgeArray'>
-                    {this.state.Badge.map((leBadge, index) => {
-                        return <BadgeComposant badge={leBadge} />
-                    })}
+                    {this.state.Badge.length ? this.state.Badge.map((leBadge, index) => {
+                        return <BadgeComponent badge={leBadge} />
+                    }) : <h1>Vous n'avez pas encore de badge.</h1>}
                 </div>
             </div>
         );
