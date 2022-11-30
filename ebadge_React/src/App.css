@@ -6,6 +6,10 @@ html * {
   font-family: 'Barlow', sans-serif;
 }
 
+.main {
+  padding-top: 70px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -35,13 +35,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<PageProfile />} />
-            <Route path="login" element={<Login />} />
-            <Route path="logout" element={<Logout/>} />
             <Route path="classement" element={<Classement />} />
             <Route path="*" element={<h1>404: Page non trouvée</h1>} />
           </Route>
+          <Route path="/auth" >
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/logout" element={<Logout />} />
+          </Route>
           <Route path="/admin" element={<AdminLayout />} >
-            <Route path="/admin/users" element={<UsersTab/>} />
+            <Route path="/admin/users" element={<UsersTab />} />
           </Route>
         </Routes>
       </ThemeProvider>

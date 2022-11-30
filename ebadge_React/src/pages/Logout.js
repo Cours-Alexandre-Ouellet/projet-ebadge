@@ -7,7 +7,7 @@ class Logout extends React.Component {
     componentDidMount() {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
-        window.location = '/login';
+        window.location = '/auth/login';
     }
 
     render() {
