@@ -22,26 +22,50 @@ class Navbar extends React.Component {
 
     this.handleCloseNavMenu = this.handleCloseNavMenu.bind(this);
     this.handleOpenNavMenu = this.handleOpenNavMenu.bind(this);
+    this.handleCloseUserMenu = this.handleCloseUserMenu.bind(this);
+    this.handleOpenUserMenu = this.handleOpenUserMenu.bind(this);
 
     this.state = {
       anchorElNav: false,
+      anchorElUser: false,
       pages: [
-        { name: 'Accueil', href: '/' },
+        { name: 'Mon profile', href: '/' },
         { name: 'Classement', href: '/classement' },
         { name: 'Tableau de bord', href: '/admin/users' },
-        { name: 'Se connecter', href: '/login' }
+      ],
+      initials: 'ND',
+      userSettings: [
+        { name: 'Mon profile', href: '/' },
+        { name: 'Se déconnecter', href: '/logout' }
       ]
     };
+  }
 
+  componentDidMount() {
+    this.setState({ initials: this.getInitials(localStorage.getItem('username') ?? "na") });
   }
 
   handleOpenNavMenu = (event) => {
     this.setState({ anchorElNav: true });
   };
 
+  handleOpenUserMenu = (event) => {
+    this.setState({ anchorElUser: true });
+  };
+
   handleCloseNavMenu = () => {
     this.setState({ anchorElNav: false });
   };
+
+  handleCloseUserMenu = () => {
+    this.setState({ anchorElUser: false });
+  };
+
+  getInitials = (name) => {
+    let initials = name.match(/\b\w/g) || [];
+    initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+    return initials;
+  }
 
   render() {
     return (
@@ -98,7 +122,7 @@ class Navbar extends React.Component {
               >
                 {this.state.pages.map((page) => (
                   <MenuItem key={page.href} component={Link}
-                  to={page.href} onClick={this.handleCloseNavMenu}>
+                    to={page.href} onClick={this.handleCloseNavMenu}>
                     <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
                 ))}
@@ -136,6 +160,46 @@ class Navbar extends React.Component {
                 </Button>
               ))}
             </Box>
+
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <Tooltip title="Mon compte">
+                <IconButton
+                  size="large"
+                  component={Link}
+                  onClick={this.handleOpenUserMenu}
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  <Avatar sx={{ bgcolor: 'secondary.main' }}>{this.state.initials}</Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={this.state.anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={this.state.anchorElUser}
+                onClose={this.handleCloseUserMenu}
+              >
+                {this.state.userSettings.map((setting) => (
+                  <MenuItem key={setting.name} component={Link}
+                  to={setting.href} onClick={this.handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+
           </Toolbar>
         </Container>
       </AppBar>)
