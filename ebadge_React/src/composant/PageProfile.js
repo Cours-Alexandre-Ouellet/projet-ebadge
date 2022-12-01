@@ -312,7 +312,7 @@ export default class PageProfile extends React.Component {
                                 </div>
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={this.handleClose}>Cancel</Button>
+                                <Button onClick={this.handleClose}>Annuler</Button>
                                 <Button onClick={this.handleDelete}>Supprimer</Button>
                                 <Button onClick={this.handleModify}>Modifier</Button>
                             </DialogActions>
@@ -358,7 +358,7 @@ export default class PageProfile extends React.Component {
                                 </div>
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={this.handleCloseAvatar}>Cancel</Button>
+                                <Button onClick={this.handleCloseAvatar}>Annuler</Button>
                                 <Button onClick={this.handleDeleteAvatar}>Supprimer</Button>
                                 <Button onClick={this.handleModifyAvatar}>Modifier</Button>
                             </DialogActions>

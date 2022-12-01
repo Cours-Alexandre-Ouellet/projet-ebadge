@@ -1,7 +1,7 @@
 import React from 'react';
 import './BadgeCreateForm.css';
 import '@mui/material';
-import { Button, TextField, InputAdornment, Autocomplete } from '@mui/material';
+import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert } from '@mui/material';
 import { PhotoCamera } from '@mui/icons-material';
 import Api from '../utils/Api';
 import BadgeComposant from './BadgeComponent';
@@ -12,7 +12,8 @@ class BadgeCreateForm extends React.Component {
         this.state = {
             titleError: '',
             descriptionError: '',
-            colorAutoComplete: null,
+            openImageDialog: false,
+            tempImage: '',
             badge: {
                 title: '',
                 description: '',
@@ -23,19 +24,32 @@ class BadgeCreateForm extends React.Component {
         }
 
         this.handleBadgeChange = this.handleBadgeChange.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleImageDialog = this.handleImageDialog.bind(this);
+        this.handleImageDelete = this.handleImageDelete.bind(this);
+        this.handleImageModify = this.handleImageModify.bind(this);
         this.validateTitle = this.validateTitle.bind(this);
         this.validateDescription = this.validateDescription.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleBadgeChange(event) {
-        // change state of badge.name
         this.setState({ badge: { ...this.state.badge, [event.target.name]: event.target.value } });
     }
 
-    handleChange(event) {
-        this.setState({ [event.target.name]: event.target.value });
+    handleImageDialog() {
+        this.setState({ openImageDialog: !this.state.openImageDialog });
+        this.setState({ tempImage: this.state.badge.imagePath });
+    }
+
+    handleImageDelete() {
+        this.setState({ badge: { ...this.state.badge, imagePath: '' } });
+        this.setState({ tempImage: '' });
+        this.handleImageDialog();
+    }
+
+    handleImageModify() {
+        this.setState({ badge: { ...this.state.badge, imagePath: this.state.tempImage } });
+        this.handleImageDialog();
     }
 
     validateTitle() {
@@ -76,6 +90,16 @@ class BadgeCreateForm extends React.Component {
                     console.log(error);
                 }
                 );
+
+            this.setState({
+                badge: {
+                    title: '',
+                    description: '',
+                    imagePath: '',
+                    color: '',
+                    pourcentage: 0
+                }
+            });
         }
     }
 
@@ -117,10 +141,7 @@ class BadgeCreateForm extends React.Component {
                                     <Button
                                         variant="contained"
                                         color='secondary'
-                                        id='image'
-                                        name='image'
-                                        value={this.state.badge.imagePath}
-                                        onChange={this.handleBadgeChange}
+                                        onClick={this.handleImageDialog}
                                         sx={{
                                             width: '100%',
                                             marginTop: '20px',
@@ -128,13 +149,55 @@ class BadgeCreateForm extends React.Component {
                                         }}
                                         startIcon={<PhotoCamera />}
                                     >
-                                        Image
-                                        <input
-                                            type="file"
-                                            accept='image/*'
-                                            hidden
-                                        />
+                                        {this.state.badge.imagePath.length === 0 ? 'Ajouter une image' : 'Modifier l\'image'}
                                     </Button>
+                                    <Dialog open={this.state.openImageDialog} onClose={this.handleClose}>
+                                        <DialogTitle>Modifier l'image du badge</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Pour changer l'image du badge, veuillez entrer l'URL de l'image.
+                                            </DialogContentText>
+                                            <TextField
+                                                autoFocus
+                                                margin="dense"
+                                                name='imagePath'
+                                                label="URL"
+                                                type="url"
+                                                fullWidth
+                                                variant="standard"
+                                                value={this.state.tempImage}
+                                                onChange={(event) => this.setState({ tempImage: event.target.value })}
+                                            />
+                                            <br />
+                                            <br />
+                                            <br />
+                                            <DialogContentText>
+                                                Vous pouvez également importé une image.
+                                            </DialogContentText>
+                                            <br />
+                                            <Button
+                                                variant="contained"
+                                                component="label"
+                                            >
+                                                Importer une image
+                                                <input
+                                                    type="file"
+                                                    accept="image/png, image/jpeg"
+                                                    hidden
+                                                />
+                                            </Button>
+                                            <div className="hiddenAlert">
+                                                <Alert variant="filled" severity="error" >
+                                                    L'url de l'image n'est pas valide.
+                                                </Alert>
+                                            </div>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={this.handleImageDialog}>Annuler</Button>
+                                            <Button onClick={this.handleImageDelete}>Supprimer</Button>
+                                            <Button onClick={this.handleImageModify}>Modifier</Button>
+                                        </DialogActions>
+                                    </Dialog>
                                     <Autocomplete
                                         id="color"
                                         name="color"
