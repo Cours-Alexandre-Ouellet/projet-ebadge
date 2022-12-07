@@ -11,4 +11,4 @@ class Organisation extends Model
      *
      * @var string
      */
-    protected $table = 'orgranisation';}
+    protected $table = 'organisation';}

@@ -14,7 +14,7 @@ class User extends Authenticatable
      * @var string
      */
     protected $table = 'user';
-
+    public $timestamps = true;
 
     public function getRoleName()
     {
@@ -34,6 +34,6 @@ class User extends Authenticatable
 
     public function badges()
     {
-        return $this->belongsToMany('App\Models\Badge', 'user_badge', 'user_id', 'badge_id');
+        return $this->belongsToMany('App\Models\Badge', 'user_badge', 'user_id', 'badge_id')->withTimestamps();
     }
 }
