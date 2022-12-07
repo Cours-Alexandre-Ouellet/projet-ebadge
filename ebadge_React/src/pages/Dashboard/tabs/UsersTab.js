@@ -21,11 +21,7 @@ class Dashboard extends React.Component {
      * Recupere la liste des utilisateurs depuis l'API
      */
     getUsers() {
-        Api.get('/user', {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(res => {
+        Api.get('/user').then(res => {
             const users = res.data;
             this.setState({ users: users });
         }

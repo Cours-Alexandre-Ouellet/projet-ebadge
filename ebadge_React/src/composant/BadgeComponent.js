@@ -7,7 +7,7 @@ class BadgeComponent extends React.Component {
                 <div className="hideDisplay">
                   <h3 className='textBadge'>{this.props.badge.title}</h3>
                   <p>{this.props.badge.description}</p>
-                  <p>Pourcentage d'obtention : {this.props.badge.pourcentage}</p>
+                  <p>Pourcentage d'obtention : TODO</p>
                 </div>
             </div>
       );

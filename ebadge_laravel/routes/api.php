@@ -46,6 +46,7 @@ Route::group([
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
     Route::post('/edit-background', [App\Http\Controllers\UserController::class, 'editBackground']);
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);
+    Route::post('/edit-privacy', [App\Http\Controllers\UserController::class, 'editPrivacy']);
 });
 
 
