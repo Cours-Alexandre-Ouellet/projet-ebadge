@@ -13,11 +13,30 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        // return all user as json
-        return response()->json($users);
+        $currentUser = $request->user();
+
+        if ($currentUser != null) {
+
+            $role = $currentUser->getRoleName();
+
+            switch ($role) {
+                case 'Administrateur':
+                    // retourne tous les élèves de tous les groupes
+                    return User::all();
+                    break;
+                case 'Professeur':
+                    // retourne tous les eleve du meme groupe que l'utilisateur
+                    return User::where('program_id', $currentUser->program_id)->get();
+                    break;
+                default:
+                    return response()->json(['error' => 'Unauthorized'], 401);
+                    break;
+            }
+        }
+
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     public function show(int $id)

@@ -4,8 +4,9 @@ import './App.css';
 import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import UsersTab from "./pages/Dashboard/tabs/UsersTab";
+import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
-import BadgeCreateForm from "./composant/BadgeCreateForm";
 import Classement from "./pages/Classement";
 
 const theme = createTheme({
@@ -36,6 +37,9 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="classement" element={<Classement />} />
             <Route path="*" element={<h1>404: Page non trouvée</h1>} />
+          </Route>
+          <Route path="/admin" element={<AdminLayout />} >
+            <Route path="/admin/users" element={<UsersTab/>} />
           </Route>
         </Routes>
       </ThemeProvider>
