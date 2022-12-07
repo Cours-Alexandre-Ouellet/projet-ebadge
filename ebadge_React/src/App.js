@@ -29,12 +29,13 @@ const theme = createTheme({
 
 function App() {
   console.log(process.env);
+  
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<PageProfile />} />
+            <Route index path="/" element={<PageProfile />} />
             <Route path="classement" element={<Classement />} />
             <Route path="*" element={<h1>404: Page non trouvée</h1>} />
           </Route>
