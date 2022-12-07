@@ -24,7 +24,8 @@ class UserController extends Controller
             switch ($role) {
                 case 'Administrateur':
                     // retourne tous les élèves de tous les groupes
-                    return User::all();
+                    // return User::all();
+                    return User::withCount('badges')->orderBy('badges_count', 'desc')->get();
                     break;
                 case 'Professeur':
                     // retourne tous les eleve du meme groupe que l'utilisateur
@@ -91,7 +92,8 @@ class UserController extends Controller
         $user->backgroundImagePath = $backgroundUrl;
         $user->save();
         return response()->json([
-            'message' => 'Background changed'
+            'message' => 'Background changed',
+            'url' => $backgroundUrl
         ]);
     }
 
@@ -113,7 +115,23 @@ class UserController extends Controller
         $user->avatarImagePath = $avatarUrl;
         $user->save();
         return response()->json([
-            'message' => 'Avatar changed'
+            'message' => 'Avatar changed',
+            'url' => $avatarUrl
+        ]);
+    }
+
+    public function editPrivacy(Request $request)
+    {
+        $request->validate([
+            'privacy' => 'required|boolean'
+        ]);
+
+        $user = $request->user();
+        $user->privacy = $request->privacy;
+        $user->save();
+        return response()->json([
+            'message' => 'Privacy changed',
+            'privacy' => $user->privacy
         ]);
     }
 }
