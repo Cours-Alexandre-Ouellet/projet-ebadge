@@ -13,9 +13,9 @@ import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 
 
-// function isImage(url) {
-//     return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
-// }
+function isImage(url) {
+    return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
+}
 
 
 export default class PageProfile extends React.Component {
@@ -75,7 +75,7 @@ export default class PageProfile extends React.Component {
                 console.log(error);
             });
 
-        } else {
+        } else if(isImage(this.state.backgroundUrlField)){
             this.state.user.backgroundImagePath = this.state.backgroundUrlField;
             this.setState({ openBackground: false });
 
@@ -125,7 +125,7 @@ export default class PageProfile extends React.Component {
                 console.log(error);
             });
 
-        } else {
+        } else if(isImage(this.state.avatarUrlField)){
             this.state.user.avatarImagePath = this.state.avatarUrlField;
             this.setState({ openAvatar: false });
 
