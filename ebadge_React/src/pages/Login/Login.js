@@ -88,11 +88,7 @@ class Login extends React.Component {
 
     componentDidMount() {
         if (localStorage.getItem('token')) {
-            Api.get('/auth/current_user', {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then((response) => {
+            Api.get('/auth/current_user').then((response) => {
                 this.setState({ redirect: true });
             }).catch((error) => {
                 console.error(error);
