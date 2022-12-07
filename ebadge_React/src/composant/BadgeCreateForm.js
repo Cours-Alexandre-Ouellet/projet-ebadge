@@ -77,6 +77,10 @@ class BadgeCreateForm extends React.Component {
         if (this.validateTitle() && this.validateDescription()) {
             // TODO: Appel API
             Api.post('/badge', {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }, {
                 title: this.state.badge.title,
                 description: this.state.badge.description,
                 image: this.state.badge.image,
