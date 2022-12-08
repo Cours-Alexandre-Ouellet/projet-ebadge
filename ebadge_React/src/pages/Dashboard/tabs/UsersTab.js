@@ -5,7 +5,7 @@ import './../Dashboard.css';
 import Api from '../../../utils/Api';
 import UserGrid from '../../../composant/Dashboard/UserGrid';
 
-class Dashboard extends React.Component {
+class UsersTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,4 +42,4 @@ class Dashboard extends React.Component {
     }
 }
 
-export default Dashboard;
+export default UsersTab;
