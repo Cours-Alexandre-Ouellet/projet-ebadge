@@ -36,7 +36,7 @@ class BadgeController extends Controller
         $badge->color = $request->color;
         //insertion de l'image dans le dossier public avec un nom original
         $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());
-        $badge->imagePath = Storage::url($path);
+        $badge->imagePath = asset(Storage::url($path));
 
         $badge->save();
         return response()->json($badge);

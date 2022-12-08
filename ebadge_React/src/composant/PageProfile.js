@@ -10,14 +10,11 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import BadgeComponent from './BadgeComponent';
 import Alert from '@mui/material/Alert';
+import Api from '../utils/Api';
 
-var background = "../background.png";
-var styleBackground = {
-    backgroundImage: "url(../background.png))"
-};
 
 function isImage(url) {
-    return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+    return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
 }
 
 
@@ -26,206 +23,81 @@ export default class PageProfile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false,
-            newUrl: "",
+            openBackground: false,
             openAvatar: false,
-            avatarImage: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png",
-            background: "",
+            avatarUrlField: "",
+            avatarImageFile: null,
+            user: null,
+            backgroundUrlField: "",
+            backgroundImageFile: null,
             levelAvatar: 23.90,
-            Badge: [
-                {
-                    title: "Badge 1",
-                    description: "Description du badge 1",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },  
-                {
-                    title: "Badge 2",
-                    description: "Description du badge 2",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 3",
-                    description: "Description du badge 3",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 4",
-                    description: "Description du badge 4",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 5",
-                    description: "Description du badge 5",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 6",
-                    description: "Description du badge 6",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 7",
-                    description: "Description du badge 7",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },/*
-                {
-                    title: "Badge 8",
-                    description: "Description du badge 8",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 9",
-                    description: "Description du badge 9",
-                    imagePath: "https://cdn.pixabay.com/photo/2015/10/01/17/17/car-967387__480.png",
-                    pourcentage: "50%",
-                    color: "#0000FF"
-                },
-                {
-                    title: "Badge 1",
-                    description: "Description du badge 1",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 2",
-                    description: "Description du badge 2",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 3",
-                    description: "Description du badge 3",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 4",
-                    description: "Description du badge 4",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 5",
-                    description: "Description du badge 5",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 6",
-                    description: "Description du badge 6",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 7",
-                    description: "Description du badge 7",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 8",
-                    description: "Description du badge 8",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 9",
-                    description: "Description du badge 9",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 1",
-                    description: "Description du badge 1",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 2",
-                    description: "Description du badge 2",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 3",
-                    description: "Description du badge 3",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 4",
-                    description: "Description du badge 4",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 5",
-                    description: "Description du badge 5",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 6",
-                    description: "Description du badge 6",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 7",
-                    description: "Description du badge 7",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 8",
-                    description: "Description du badge 8",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                },
-                {
-                    title: "Badge 9",
-                    description: "Description du badge 9",
-                    imagePath: "https://www.gifcen.com/wp-content/uploads/2022/01/meme-gif-3.gif",
-                    pourcentage: "50%"
-                }*/
-            ],
         };
     }
 
+    async componentDidMount() {
+        try {
+
+            let response = await Api.get("/auth/current_user", {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            console.log(response.data);
+            this.setState({ user: response.data });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     handleClickOpen = () => {
-        this.setState({ open: true });
+        this.setState({ openBackground: true });
     };
 
     handleClose = () => {
 
-        this.setState({ open: false });
+        this.setState({ openBackground: false });
     };
 
     handleModify = () => {
+        if (this.state.backgroundImageFile != null) {
+            let formData = new FormData();
+            formData.append('background', this.state.backgroundImageFile);
 
-        if (isImage(this.state.background)) {
-            styleBackground = {
-                backgroundImage: "url(" + this.state.background + ")"
-            };
-            this.setState({ open: false });
-        } else {
+            Api.post('/user/edit-background', formData, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((response) => {
+                this.state.user.backgroundImagePath = response.data.url;
+                this.setState({ openBackground: false });
+            }).catch((error) => {
+                console.log(error);
+            });
+
+        } else if(isImage(this.state.backgroundUrlField)){
+            this.state.user.backgroundImagePath = this.state.backgroundUrlField;
+            this.setState({ openBackground: false });
+
+            Api.post('/user/edit-background', {
+                backgroundUrl: this.state.user.backgroundImagePath
+            }, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
         }
     };
     handleDelete = () => {
-        styleBackground = {
-            backgroundImage: ""
-        };
+        let user = this.state.user;
+        user.backgroundImagePath = "./background.png";
 
-        this.setState({ open: false });
+        this.setState({
+            user: user,
+            openBackground: false
+        });
     };
 
     handleClickOpenAvatar = () => {
@@ -237,27 +109,72 @@ export default class PageProfile extends React.Component {
     };
 
     handleModifyAvatar = () => {
+        if (this.state.avatarImageFile != null) {
+            let formData = new FormData();
+            formData.append('avatar', this.state.avatarImageFile);
 
-        if (isImage(this.state.newUrl)) {
-            this.setState({ avatarImage: this.state.newUrl });
+            Api.post('/user/edit-avatar', formData, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((response) => {
+                this.state.user.avatarImagePath = response.data.url;
+                this.setState({ openBackground: false });
+            }).catch((error) => {
+                console.log(error);
+            });
+
+        } else if(isImage(this.state.avatarUrlField)){
+            this.state.user.avatarImagePath = this.state.avatarUrlField;
             this.setState({ openAvatar: false });
-        } else {
 
+            Api.post('/user/edit-avatar', {
+                avatarUrl: this.state.user.avatarImagePath
+            }, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
         }
     };
 
     handleDeleteAvatar = () => {
-        this.setState({ avatarImage: "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png" });
-    
+        let user = this.state.user;
+        user.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
+        this.setState({ user: user });
+
         this.setState({ openAvatar: false });
     };
 
+    setPrivacy = (e) => {
+        let user = this.state.user;
+        user.privacy = !user.privacy;
+        this.setState({ user: user });
+        
+        console.log("PRIVACY : " + this.state.user.privacy);
+        Api.post('/user/edit-privacy', {
+            privacy: this.state.user.privacy
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
     render() {
+        if (this.state.user == null) {
+            return <div></div>
+        }
         return (
-            <div className='background' style={styleBackground}>
+            <div className='background' style={{ backgroundImage: `url(${this.state.user.backgroundImagePath})` }} >
                 <div className='profil'>
                     <div>
-                        <img className='avatar' src={this.state.avatarImage} />
+                        <img className='avatar' src={this.state.user.avatarImagePath} />
                         <div className='imageProfile'>
                             <label htmlFor="avatar">
                                 <img className='editImage' onClick={this.handleClickOpenAvatar} src='http://cdn.onlinewebfonts.com/svg/img_520583.png' alt="profil" title='image de profil' />
@@ -265,13 +182,13 @@ export default class PageProfile extends React.Component {
                         </div>
                     </div>
                     <div className='infosUser'>
-                        <p><strong>Nom d'utilisateur</strong></p>
-                        <p># de groupe</p>
-                        <div style={{width: "188px" }}>
-                            <label>Compte privé :<input type="checkbox" className='checkbox' /></label>
+                        <p><strong>{this.state.user.first_name} {this.state.user.last_name}</strong></p>
+                        <p>{this.state.user.program_name}</p>
+                        <div style={{ width: "188px" }}>
+                            <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.user.privacy} onChange={this.setPrivacy} /></label>
                         </div>
                         <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
-                        <Dialog open={this.state.open} onClose={this.handleClose}>
+                        <Dialog open={this.state.openBackground} onClose={this.handleClose}>
                             <DialogTitle>Modifier l'arrière plan</DialogTitle>
                             <DialogContent>
                                 <DialogContentText>
@@ -285,7 +202,11 @@ export default class PageProfile extends React.Component {
                                     type="url"
                                     fullWidth
                                     variant="standard"
-                                    onChange={e => this.setState({ background: e.target.value })}
+                                    onChange={e => {
+                                        this.setState({
+                                            backgroundUrlField: e.target.value
+                                        });
+                                    }}
                                 />
                                 <br />
                                 <br />
@@ -303,6 +224,11 @@ export default class PageProfile extends React.Component {
                                         type="file"
                                         accept="image/png, image/jpeg"
                                         hidden
+                                        onChange={e => {
+                                            this.setState({
+                                                backgroundImageFile: e.target.files[0]
+                                            });
+                                        }}
                                     />
                                 </Button>
                                 <div className="hiddenAlert">
@@ -312,7 +238,7 @@ export default class PageProfile extends React.Component {
                                 </div>
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={this.handleClose}>Cancel</Button>
+                                <Button onClick={this.handleClose}>Annuler</Button>
                                 <Button onClick={this.handleDelete}>Supprimer</Button>
                                 <Button onClick={this.handleModify}>Modifier</Button>
                             </DialogActions>
@@ -331,7 +257,7 @@ export default class PageProfile extends React.Component {
                                     type="url"
                                     fullWidth
                                     variant="standard"
-                                    onChange={e => this.setState({ newUrl: e.target.value })}
+                                    onChange={e => this.setState({ avatarUrlField: e.target.value })}
                                 />
                                 <br />
                                 <br />
@@ -349,8 +275,13 @@ export default class PageProfile extends React.Component {
                                         type="file"
                                         accept="image/png, image/jpeg"
                                         hidden
+                                        onChange={e => {
+                                            this.setState({
+                                                avatarImageFile: e.target.files[0]
+                                            });
+                                        }}
                                     />
-                                </Button>   
+                                </Button>
                                 <div className="hiddenAlert">
                                     <Alert variant="filled" severity="error" >
                                         L'url de l'image n'est pas valide.
@@ -358,22 +289,23 @@ export default class PageProfile extends React.Component {
                                 </div>
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={this.handleCloseAvatar}>Cancel</Button>
+                                <Button onClick={this.handleCloseAvatar}>Annuler</Button>
                                 <Button onClick={this.handleDeleteAvatar}>Supprimer</Button>
                                 <Button onClick={this.handleModifyAvatar}>Modifier</Button>
                             </DialogActions>
                         </Dialog>
                     </div>
-                    <div className="infosLevel">
+                    {/* TODO: AFFICHE LE LEVEL UN FOIS CALCULER */}
+                    {/* <div className="infosLevel">
                         <p className='progressLevel'>Level : {Math.floor(this.state.levelAvatar)}</p>
                         <div className="progressBar">
-                            <div className="progressBarFill" style={{width: (this.state.levelAvatar % 1) * 100 + "%" }}></div>
+                            <div className="progressBarFill" style={{ width: (this.state.levelAvatar % 1) * 100 + "%" }}></div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className='BadgeArray'>
-                    {this.state.Badge.length ? this.state.Badge.map((leBadge, index) => {
-                        return <BadgeComponent badge={leBadge} />
+                    {this.state.user.badges.length ? this.state.user.badges.map((badge, index) => {
+                        return <BadgeComponent badge={badge} />
                     }) : <h1>Vous n'avez pas encore de badge.</h1>}
                 </div>
             </div>
