@@ -11,8 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import BadgeComponent from './BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
-import { ConnectedTvSharp } from '@mui/icons-material';
-
+import Loading from './Loading/LoadingComponent';
 
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
@@ -35,15 +34,12 @@ export default class PageProfile extends React.Component {
         };
     }
 
-    async componentDidMount() {
-        try {
-
-            let response = await Api.get("/auth/current_user", {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            });
-            console.log(response.data);
+    componentDidMount() {
+        Api.get("/auth/current_user", {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then((response) => {
             if (response.data.avatarImagePath == null) {
                 console.log("avatar null");
                 response.data.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
@@ -53,9 +49,10 @@ export default class PageProfile extends React.Component {
                 response.data.backgroundImagePath = "./background.png";
             }
             this.setState({ user: response.data });
-        } catch (error) {
+            console.log(response.data);
+        }).catch((error) => {
             console.log(error);
-        }
+        });
     }
 
     handleClickOpen = () => {
@@ -188,7 +185,7 @@ export default class PageProfile extends React.Component {
 
     render() {
         if (this.state.user == null) {
-            return <div></div>
+            return <Loading></Loading>
         }
         return (
             <div className='background' style={{ backgroundImage: `url(${this.state.user.backgroundImagePath})` }} >

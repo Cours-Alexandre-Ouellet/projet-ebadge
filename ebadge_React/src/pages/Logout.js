@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from '../composant/layout/Navbar';
 import React, { useLayoutEffect } from "react";
+import Loading from "../composant/Loading/LoadingComponent";
 
 class Logout extends React.Component {
 
@@ -12,9 +13,7 @@ class Logout extends React.Component {
 
     render() {
         return (
-            <>
-                <p>Déconnexion en cours...</p>
-            </>
+            <Loading></Loading>
         )
     }
 }
