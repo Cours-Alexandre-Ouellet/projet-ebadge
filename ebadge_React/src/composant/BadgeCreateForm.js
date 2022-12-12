@@ -6,6 +6,10 @@ import { PhotoCamera } from '@mui/icons-material';
 import Api from '../utils/Api';
 import BadgeComposant from './BadgeComponent';
 
+function isImage(url) {
+    return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
+}
+
 class BadgeCreateForm extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +17,8 @@ class BadgeCreateForm extends React.Component {
             titleError: '',
             descriptionError: '',
             openImageDialog: false,
-            tempImage: '',
+            imageUrlField: "",
+            imageFile: null,
             badge: {
                 title: '',
                 description: '',
@@ -29,6 +34,8 @@ class BadgeCreateForm extends React.Component {
         this.handleImageModify = this.handleImageModify.bind(this);
         this.validateTitle = this.validateTitle.bind(this);
         this.validateDescription = this.validateDescription.bind(this);
+        this.validateImage = this.validateImage.bind(this);
+        this.validateColor = this.validateColor.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -48,8 +55,10 @@ class BadgeCreateForm extends React.Component {
     }
 
     handleImageModify() {
-        this.setState({ badge: { ...this.state.badge, imagePath: this.state.tempImage } });
-        this.handleImageDialog();
+        if (isImage(this.state.imageUrlField)) {
+            this.setState({ badge: { ...this.state.badge, imagePath: this.state.imageUrlField } });
+            this.handleImageDialog();
+        }
     }
 
     validateTitle() {
@@ -72,29 +81,54 @@ class BadgeCreateForm extends React.Component {
         }
     }
 
+    validateImage() {
+        if (!isImage(this.state.badge.imagePath)) {
+            this.setState({ imageError: 'Image invalide' });
+            return false;
+        }
+        else {
+            this.setState({ imageError: '' });
+            return true;
+        }
+    }
+
+    validateColor() {
+        if (this.state.badge.color.length < 6 || this.state.badge.color.length > 8) {
+            this.setState({ colorError: 'Couleur invalide' });
+            return false;
+        }
+        else {
+            this.setState({ colorError: '' });
+            return true;
+        }
+    }
+
     handleSubmit = (event) => {
         event.preventDefault();
-        if (this.validateTitle() && this.validateDescription()) {
-            // TODO: Appel API
-            Api.post('/badge', {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            }, {
-                title: this.state.badge.title,
-                description: this.state.badge.description,
-                image: this.state.badge.image,
-                color: this.state.badge.color
-            })
-                .then((response) => {
-                    console.log(response);
-                }
-                )
+        if (this.validateTitle() && this.validateDescription() && this.validateImage() && this.validateColor()) {
+            if (this.state.imageFile != null) {
+                let formData = new FormData();
+
+                formData.append('title', this.state.badge.title);
+                formData.append('description', this.state.badge.description);
+                formData.append('image', this.state.imageFile);  
+                formData.append('color', this.state.badge.color);
+
+                Api.post('/badge/create', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                });
+
+            } else if (isImage(this.state.badge.imagePath)) {
+                Api.post('/badge/create', this.state.badge)
                 .catch((error) => {
                     console.log(error);
-                }
-                );
-
+                });
+            }
+        
             this.setState({
                 badge: {
                     title: '',
@@ -102,7 +136,11 @@ class BadgeCreateForm extends React.Component {
                     imagePath: '',
                     color: '',
                     pourcentage: 0
-                }
+                },
+                titleError: '',
+                descriptionError: '',
+                imageError: '',
+                colorError: ''
             });
         }
     }
@@ -169,8 +207,11 @@ class BadgeCreateForm extends React.Component {
                                                 type="url"
                                                 fullWidth
                                                 variant="standard"
-                                                value={this.state.tempImage}
-                                                onChange={(event) => this.setState({ tempImage: event.target.value })}
+                                                onChange={e => {
+                                                    this.setState({
+                                                        imageUrlField: e.target.value
+                                                    });
+                                                }}
                                             />
                                             <br />
                                             <br />
@@ -188,6 +229,11 @@ class BadgeCreateForm extends React.Component {
                                                     type="file"
                                                     accept="image/png, image/jpeg"
                                                     hidden
+                                                    onChange={e => {
+                                                        this.setState({
+                                                            imageFile: e.target.files[0]
+                                                        });
+                                                    }}
                                                 />
                                             </Button>
                                             <div className="hiddenAlert">
@@ -236,8 +282,6 @@ class BadgeCreateForm extends React.Component {
                                                 </InputAdornment>
                                             ),
                                         }} />}
-
-
                                     />
                                 </div>
                                 <div className="badge-create-form-button-submit">

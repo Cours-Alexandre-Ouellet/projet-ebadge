@@ -5,6 +5,7 @@ import { Button, TextField } from '@mui/material';
 import Api from '../../utils/Api';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -118,6 +119,7 @@ class Login extends React.Component {
                                     variant="outlined"
                                     margin="normal"
                                     required
+                                    autoFocus
                                     onChange={this.handleChange}
                                     onBlur={this.validateIdentifier.bind(this)}
                                     value={this.state.identifier}
