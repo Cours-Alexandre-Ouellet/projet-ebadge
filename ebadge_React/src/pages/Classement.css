@@ -6,6 +6,7 @@
     height: 100vh;
     background-color: #f1f6fd;
     background-image: url(../background.png);
+    background-size: cover;
 }
 
 .classement-container {

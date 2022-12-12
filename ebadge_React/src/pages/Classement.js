@@ -3,13 +3,15 @@ import './Classement.css';
 import '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Select, InputAdornment } from '@mui/material';
 import { Search } from "@mui/icons-material";
+import Api from "../utils/Api";
 
 class Classement extends React.Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             classement: [
-                {
+                /*{
                     "id": 1,
                     "position": 1,
                     "name": "Jean",
@@ -92,7 +94,7 @@ class Classement extends React.Component {
                     "position": 14,
                     "name": "Jacques",
                     "score": 0
-                }
+                }*/
             ],
             sessions: [
                 {
@@ -111,10 +113,18 @@ class Classement extends React.Component {
             session: 1,
             search: ""
         }
-
         this.handleChange = this.handleChange.bind(this);
         this.filterClassement = this.filterClassement.bind(this);
     }
+
+    componentDidMount() {
+        Api.get('/stats/leaderboard') 
+            .then(response => {
+                this.setState({ classement: response.data });
+            }
+        );
+    }
+
 
     handleChange(event) {
         const { name, value } = event.target;
@@ -125,7 +135,7 @@ class Classement extends React.Component {
 
     filterClassement() {
         return this.state.classement.filter((item) => {
-            return item.name.toLowerCase().includes(this.state.search.toLowerCase());
+            return item.username.toLowerCase().includes(this.state.search.toLowerCase());
         });
     }
 
@@ -188,11 +198,11 @@ class Classement extends React.Component {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {this.filterClassement().map((item) => (
+                                        {this.filterClassement().map((item, index) => (
                                             <TableRow key={item.id}>
-                                                <TableCell>{item.position}</TableCell>
-                                                <TableCell>{item.name}</TableCell>
-                                                <TableCell>{item.score}</TableCell>
+                                                <TableCell>{index + 1}</TableCell>
+                                                <TableCell>{item.username}</TableCell>
+                                                <TableCell>{item.badges_count}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>

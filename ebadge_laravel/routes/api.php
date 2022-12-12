@@ -63,3 +63,11 @@ Route::group([
         Route::get('current_user', [AuthController::class, 'current_user']);
     });
 });
+
+
+//add route stats
+Route::group([
+    'prefix' => 'stats',
+], function () {
+    Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'LeaderBoard']);
+});
