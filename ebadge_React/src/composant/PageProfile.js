@@ -11,7 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import BadgeComponent from './BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
-
+import Loading from './Loading/LoadingComponent';
 
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
@@ -34,19 +34,17 @@ export default class PageProfile extends React.Component {
         };
     }
 
-    async componentDidMount() {
-        try {
-
-            let response = await Api.get("/auth/current_user", {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            });
-            console.log(response.data);
+    componentDidMount() {
+        Api.get("/auth/current_user", {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then((response) => {
             this.setState({ user: response.data });
-        } catch (error) {
+            console.log(response.data);
+        }).catch((error) => {
             console.log(error);
-        }
+        });
     }
 
     handleClickOpen = () => {
@@ -75,7 +73,7 @@ export default class PageProfile extends React.Component {
                 console.log(error);
             });
 
-        } else if(isImage(this.state.backgroundUrlField)){
+        } else if (isImage(this.state.backgroundUrlField)) {
             this.state.user.backgroundImagePath = this.state.backgroundUrlField;
             this.setState({ openBackground: false });
 
@@ -125,7 +123,7 @@ export default class PageProfile extends React.Component {
                 console.log(error);
             });
 
-        } else if(isImage(this.state.avatarUrlField)){
+        } else if (isImage(this.state.avatarUrlField)) {
             this.state.user.avatarImagePath = this.state.avatarUrlField;
             this.setState({ openAvatar: false });
 
@@ -153,7 +151,7 @@ export default class PageProfile extends React.Component {
         let user = this.state.user;
         user.privacy = !user.privacy;
         this.setState({ user: user });
-        
+
         console.log("PRIVACY : " + this.state.user.privacy);
         Api.post('/user/edit-privacy', {
             privacy: this.state.user.privacy
@@ -168,7 +166,7 @@ export default class PageProfile extends React.Component {
 
     render() {
         if (this.state.user == null) {
-            return <div></div>
+            return <Loading></Loading>
         }
         return (
             <div className='background' style={{ backgroundImage: `url(${this.state.user.backgroundImagePath})` }} >
