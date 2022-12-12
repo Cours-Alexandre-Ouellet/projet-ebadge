@@ -126,7 +126,12 @@ class Classement extends React.Component {
 
     componentDidMount() {
         Api.get('/stats/leaderboard') 
-            .then(response => {
+            .then(response => { 
+                let position = 1;
+                response.data.forEach(element => {
+                    element.position = position;
+                    position++;
+                });
                 this.setState({ classement: response.data });
             }
         );
@@ -198,6 +203,7 @@ class Classement extends React.Component {
                                 borderStyle: 'solid',
                                 borderRadius: 1,
                                 maxHeight: 'calc(100vh - 350px)',
+                                width: '98%',
                                 
                             }}>
                                 <Table stickyHeader>
@@ -211,7 +217,7 @@ class Classement extends React.Component {
                                     <TableBody>
                                         {this.filterClassement().map((item, index) => (
                                             <TableRow key={item.id}>
-                                                <TableCell>{index + 1}</TableCell>
+                                                <TableCell>{item.position}</TableCell>
                                                 <TableCell>{item.username}</TableCell>
                                                 <TableCell>{item.badges_count}</TableCell>
                                             </TableRow>
@@ -219,13 +225,6 @@ class Classement extends React.Component {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-
-                            {/* Raccourci temporaire vers la création de badge, à supprimé une fois implémentée */}
-                            <button className="classement-button" onClick={this.handleBadgeForm}>Créer badge</button>
-                            <Dialog fullScreen open={this.state.closeBadgeForm} onClose={this.handleBadgeForm} TransitionComponent={Transition}>
-                                <BadgeCreateForm handleClose={this.handleBadgeForm} />
-                            </Dialog>
-
                         </div>
                     </div>
                 </div>
