@@ -60,6 +60,7 @@ class Login extends React.Component {
                 password: this.state.password
             }).then((response) => {
                 localStorage.setItem('token', response.data.access_token);
+                localStorage.setItem('username', response.data.username);
                 this.setState({ redirect: true });
             }).catch((error) => {
                 if (error.response) {
@@ -86,11 +87,7 @@ class Login extends React.Component {
 
     componentDidMount() {
         if (localStorage.getItem('token')) {
-            Api.get('/auth/current_user', {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then((response) => {
+            Api.get('/auth/current_user').then((response) => {
                 this.setState({ redirect: true });
             }).catch((error) => {
                 console.error(error);

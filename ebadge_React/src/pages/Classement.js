@@ -1,15 +1,21 @@
 import React from "react";
 import './Classement.css';
 import '@mui/material';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Select, InputAdornment } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Select, InputAdornment, Dialog, Slide } from '@mui/material';
 import { Search } from "@mui/icons-material";
 import Api from "../utils/Api";
+import BadgeCreateForm from "../composant/BadgeCreateForm";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class Classement extends React.Component {
     constructor(props) {
         super(props);
         
         this.state = {
+            closeBadgeForm: false,
             classement: [
                 /*{
                     "id": 1,
@@ -114,6 +120,7 @@ class Classement extends React.Component {
             search: ""
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleBadgeForm = this.handleBadgeForm.bind(this);
         this.filterClassement = this.filterClassement.bind(this);
     }
 
@@ -131,6 +138,10 @@ class Classement extends React.Component {
         this.setState({
             [name]: value
         });
+    }
+
+    handleBadgeForm() {
+        this.setState({ closeBadgeForm: !this.state.closeBadgeForm });
     }
 
     filterClassement() {
@@ -208,6 +219,13 @@ class Classement extends React.Component {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+
+                            {/* Raccourci temporaire vers la création de badge, à supprimé une fois implémentée */}
+                            <button className="classement-button" onClick={this.handleBadgeForm}>Créer badge</button>
+                            <Dialog fullScreen open={this.state.closeBadgeForm} onClose={this.handleBadgeForm} TransitionComponent={Transition}>
+                                <BadgeCreateForm handleClose={this.handleBadgeForm} />
+                            </Dialog>
+
                         </div>
                     </div>
                 </div>

@@ -13,11 +13,30 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        // return all user as json
-        return response()->json($users);
+        $currentUser = $request->user();
+
+        if ($currentUser != null) {
+
+            $role = $currentUser->getRoleName();
+
+            switch ($role) {
+                case 'Administrateur':
+                    // retourne tous les élèves de tous les groupes
+                    return User::all();
+                    break;
+                case 'Professeur':
+                    // retourne tous les eleve du meme groupe que l'utilisateur
+                    return User::where('program_id', $currentUser->program_id)->get();
+                    break;
+                default:
+                    return response()->json(['error' => 'Unauthorized'], 401);
+                    break;
+            }
+        }
+
+        return response()->json(['error' => 'Unauthorized'], 401);
     }
 
     public function show(int $id)
@@ -62,18 +81,18 @@ class UserController extends Controller
 
         if($request->hasFile('background')) {
             $path = $request->file('background')->storeAs('public/backgrounds', $request->file('background')->getClientOriginalName());
-            $backgroundUrl = Storage::url($path);
+            $backgroundUrl = asset(Storage::url($path));
         } else {
             $backgroundUrl = $request->backgroundUrl;
         }
 
-        $path = $request->file('background')->storeAs('public/background', $request->file('image')->getClientOriginalName());
 
         $user = $request->user();
-        $user->background = $backgroundUrl;
+        $user->backgroundImagePath = $backgroundUrl;
         $user->save();
         return response()->json([
-            'message' => 'Background changed'
+            'message' => 'Background changed',
+            'url' => $backgroundUrl
         ]);
     }
 
@@ -86,16 +105,32 @@ class UserController extends Controller
 
         if($request->hasFile('avatar')) {
             $path = $request->file('avatar')->storeAs('public/avatars', $request->file('avatar')->getClientOriginalName());
-            $avatarUrl = Storage::url($path);
+            $avatarUrl = asset(Storage::url($path));
         } else {
             $avatarUrl = $request->avatarUrl;
         }
 
         $user = $request->user();
-        $user->avatar = $avatarUrl;
+        $user->avatarImagePath = $avatarUrl;
         $user->save();
         return response()->json([
-            'message' => 'Avatar changed'
+            'message' => 'Avatar changed',
+            'url' => $avatarUrl
+        ]);
+    }
+
+    public function editPrivacy(Request $request)
+    {
+        $request->validate([
+            'privacy' => 'required|boolean'
+        ]);
+
+        $user = $request->user();
+        $user->privacy = $request->privacy;
+        $user->save();
+        return response()->json([
+            'message' => 'Privacy changed',
+            'privacy' => $user->privacy
         ]);
     }
 }

@@ -14,14 +14,26 @@ class User extends Authenticatable
      * @var string
      */
     protected $table = 'user';
+    public $timestamps = true;
 
-    public function role()
+    public function getRoleName()
     {
-        return $this->role;
+        $role = Role::where('id', $this->role_id)->first();
+
+        if($role != null)
+        {
+            return $role->name;
+        }
+        return "";
+    }
+
+    public function hasRole($role)
+    {
+        return $this->getRoleName() == $role;
     }
 
     public function badges()
     {
-        return $this->belongsToMany('App\Models\Badge', 'user_badge', 'user_id', 'badge_id');
+        return $this->belongsToMany('App\Models\Badge', 'user_badge', 'user_id', 'badge_id')->withTimestamps();
     }
 }
