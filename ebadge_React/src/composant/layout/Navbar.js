@@ -28,14 +28,14 @@ class Navbar extends React.Component {
       anchorElNav: false,
       anchorElUser: false,
       pages: [
-        { name: 'Mon profile', href: '/' },
+        { name: 'Mon profil', href: '/' },
         { name: 'Classement', href: '/classement' },
         { name: 'Tableau de bord', href: '/admin/users' },
         { name: 'Badges', href: '/admin/badges' },
       ],
       initials: 'ND',
       userSettings: [
-        { name: 'Mon profile', href: '/' },
+        { name: 'Mon profil', href: '/' },
         { name: 'Se déconnecter', href: '/auth/logout' }
       ]
     };
