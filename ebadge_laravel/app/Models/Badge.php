@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Role;
 
 class Badge extends Model
 {
     /**
      * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'badge';
@@ -28,7 +28,7 @@ class Badge extends Model
     public function setPossessionPercentage()
     {
         $users = $this->users;
-        $totalUsers = User::all()->where('role_id', '=', 2)->count();
+        $totalUsers = User::all()->where('role_id', '=', Role::Student()->id)->count();
         $this->possession = $users->count() / $totalUsers * 100;
     }
 }

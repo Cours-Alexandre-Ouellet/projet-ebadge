@@ -64,6 +64,14 @@ Route::group([
     });
 });
 
+
+//add route stats
+Route::group([
+    'prefix' => 'stats',
+], function () {
+    Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'LeaderBoard']);
+});
+
 Route::group([
     'prefix' => 'organisation',
 ], function (){
