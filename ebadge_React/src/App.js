@@ -9,6 +9,7 @@ import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
 import Classement from "./pages/Classement";
 import Logout from "./pages/Logout";
+import Signup from "./pages/Signup/Signup";
 
 const theme = createTheme({
   palette: {
@@ -37,11 +38,14 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index path="/" element={<PageProfile />} />
             <Route path="classement" element={<Classement />} />
+            
             <Route path="*" element={<h1>404: Page non trouvée</h1>} />
           </Route>
           <Route path="/auth" >
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/logout" element={<Logout />} />
+            <Route path="signup" element={<Signup />} />
+            
           </Route>
           <Route path="/admin" element={<AdminLayout />} >
             <Route path="/admin/users" element={<UsersTab />} />

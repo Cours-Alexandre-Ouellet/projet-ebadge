@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
-
+use Laravel\Passport\PersonalAccessTokenResult;
 
 class AuthController extends Controller
 {
@@ -35,7 +35,10 @@ class AuthController extends Controller
             $user->role_id = Role::where('name', Role::ENSEIGNANT)->first()->id;
             $user->save();
         }
-        return response()->json($user, 201);
+
+        $acessToken = $this->createToken($user);
+
+        return response()->json(['user' => $user, 'access_token' => $acessToken->accessToken], 201);
     }
 
     public function login(LoginRequest $request)
@@ -46,11 +49,7 @@ class AuthController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
-        $token->save();
+        $tokenResult = $this->createToken($user);
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'username' => $user->username,
@@ -91,5 +90,13 @@ class AuthController extends Controller
         $user->program_id = $request->program_id;
         $user->role_id = Role::where('name', Role::ETUDIANT)->first()->id;
         return $user->save() ? $user : null;
+    }
+
+    private function createToken(User $user): PersonalAccessTokenResult
+    {
+        $token = $user->createToken('Personal Access Token');
+        $token->token->expires_at = Carbon::now()->addWeeks(1);
+        $token->token->save();
+        return $token;
     }
 }
