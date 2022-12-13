@@ -40,6 +40,14 @@ export default class PageProfile extends React.Component {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         }).then((response) => {
+            if (response.data.avatarImagePath == null) {
+                console.log("avatar null");
+                response.data.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
+            }
+            if (response.data.backgroundImagePath == null) {
+                console.log("background null");
+                response.data.backgroundImagePath = "./background.png";
+            }
             this.setState({ user: response.data });
             console.log(response.data);
         }).catch((error) => {
@@ -72,7 +80,7 @@ export default class PageProfile extends React.Component {
             }).catch((error) => {
                 console.log(error);
             });
-
+            this.setState({ backgroundImageFile: null });
         } else if (isImage(this.state.backgroundUrlField)) {
             this.state.user.backgroundImagePath = this.state.backgroundUrlField;
             this.setState({ openBackground: false });
@@ -163,6 +171,16 @@ export default class PageProfile extends React.Component {
             console.log(error);
         });
     }
+
+    badgePercentage = () => {
+        Api.get("/badge")
+            .then((response) => {
+                this.setState({ badges: response.data });
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
 
     render() {
         if (this.state.user == null) {
@@ -301,7 +319,7 @@ export default class PageProfile extends React.Component {
                         </div>
                     </div> */}
                 </div>
-                <div className='BadgeArray'>
+                <div className='BadgeArray' onMouseEnter={this.badgePercentage}>
                     {this.state.user.badges.length ? this.state.user.badges.map((badge, index) => {
                         return <BadgeComponent badge={badge} />
                     }) : <h1>Vous n'avez pas encore de badge.</h1>}

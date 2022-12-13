@@ -4,7 +4,6 @@ import '@mui/material';
 import { Button, TextField } from '@mui/material';
 import Api from '../../utils/Api';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
 class Login extends React.Component {
     constructor(props) {
         super(props);
