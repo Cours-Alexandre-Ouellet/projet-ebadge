@@ -23,7 +23,7 @@ class UsersTab extends React.Component {
     getUsers() {
         Api.get('/user').then(res => {
             const users = res.data;
-            this.setState({ users: users });
+            this.setState({ users: users.users });
         }
         )
     }

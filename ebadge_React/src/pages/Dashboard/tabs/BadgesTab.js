@@ -1,11 +1,10 @@
 import React from 'react';
-import '@mui/material';
 import Api from '../../../utils/Api';
 import BadgeGrid from '../../../composant/Dashboard/BadgeGrid';
 import Item from '@mui/material/Grid';
 import BadgeCreateForm from '../../../composant/BadgeCreateForm';
 import { Button, Dialog, Slide } from '@mui/material';
-import './BadgesTab.css'
+import './../Dashboard.css';
 import { Add } from '@mui/icons-material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -21,6 +20,7 @@ class BadgesTab extends React.Component {
         }
 
         this.handleBadgeForm = this.handleBadgeForm.bind(this);
+        this.addBadge = this.addBadge.bind(this);
     }
 
     componentDidMount() {
@@ -33,13 +33,17 @@ class BadgesTab extends React.Component {
     getBadges() {
         Api.get('/badge').then(res => {
             const badges = res.data;
-            this.setState({ users: badges });
+            this.setState({ badges: badges.badges });
         }
         )
     }
 
     handleBadgeForm() {
         this.setState({ closeBadgeForm: !this.state.closeBadgeForm });
+    }
+
+    addBadge(badge) {
+        this.setState({ badges: [badge, ...this.state.badges] });
     }
 
     render() {
@@ -49,7 +53,7 @@ class BadgesTab extends React.Component {
                     <h4>Liste des badges</h4>
                     <Button variant="contained" onClick={this.handleBadgeForm} startIcon={<Add></Add>}>Créer un badge</Button>
                     <Dialog fullScreen open={this.state.closeBadgeForm} onClose={this.handleBadgeForm} TransitionComponent={Transition}>
-                        <BadgeCreateForm handleClose={this.handleBadgeForm} />
+                        <BadgeCreateForm handleClose={this.handleBadgeForm} addBadge={this.addBadge} />
                     </Dialog>
                 </div>
                 <BadgeGrid rows={this.state.badges} />

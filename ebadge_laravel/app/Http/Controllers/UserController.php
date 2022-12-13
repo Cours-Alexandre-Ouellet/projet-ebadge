@@ -24,11 +24,13 @@ class UserController extends Controller
             switch ($role) {
                 case 'Administrateur':
                     // retourne tous les élèves de tous les groupes
-                    return User::all();
+                    $users = User::all();
+                    return response()->json(['users' => $users]);
                     break;
                 case 'Professeur':
                     // retourne tous les eleve du meme groupe que l'utilisateur
-                    return User::where('program_id', $currentUser->program_id)->get();
+                    $users = User::where('program_id', $currentUser->program_id)->get();
+                    return response()->json(['users' => $users]);
                     break;
                 default:
                     return response()->json(['error' => 'Unauthorized'], 401);
