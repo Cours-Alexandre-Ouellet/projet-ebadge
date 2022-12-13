@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Role;
 class InsertRoles extends Migration
 {
     /**
@@ -13,9 +13,9 @@ class InsertRoles extends Migration
     public function up()
     {
         DB::table('Role')->insert([
-            ['name' => 'Administrateur'],
-            ['name' => 'Étudiant'],
-            ['name' => 'Enseignant']
+            ['name' => Role::ADMIN],
+            ['name' => Role::ENSEIGNANT],
+            ['name' => Role::ETUDIANT]
         ]);
     }
 
@@ -26,6 +26,6 @@ class InsertRoles extends Migration
      */
     public function down()
     {
-        DB::table('Role')->whereIn('name', ['Administrateur', 'Étudiant', 'Enseignant'])->delete();
+        DB::table('Role')->whereIn('name', [Role::ADMIN, Role::ETUDIANT, Role::ENSEIGNANT])->delete();
     }
 }
