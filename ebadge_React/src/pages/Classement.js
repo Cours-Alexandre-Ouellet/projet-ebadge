@@ -131,8 +131,14 @@ class Classement extends React.Component {
                 response.data.forEach(element => {
                     element.position = position;
                     position++;
+                }).catch((error) => {
+                    console.log(error);
                 });
-                this.setState({ classement: response.data });
+                if (response.data.length === 0) {
+                    this.setState({ classement: [] });
+                } else {
+                    this.setState({ classement: response.data });
+                }
             }
         );
     }
