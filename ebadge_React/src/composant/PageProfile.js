@@ -176,8 +176,7 @@ export default class PageProfile extends React.Component {
         Api.get("/badge")
             .then((response) => {
                 this.setState({ badges: response.data });
-            }
-            ).catch((error) => {
+            }).catch((error) => {
                 console.log(error);
             });
     }
