@@ -265,6 +265,7 @@ class Signup extends React.Component {
                                 >
                                     Créer un compte
                                 </Button>
+                                <p>Vous avez déjà un compte ? <a href="/auth/login">Se connecter</a></p>
                             </form>
                         </div>
                     </div>
