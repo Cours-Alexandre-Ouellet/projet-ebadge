@@ -9,7 +9,6 @@ class Badge extends Model
 {
     /**
      * The table associated with the model.
-     * C'est pour voir s'il vérifie réellement leur pull request
      * @var string
      */
     protected $table = 'badge';

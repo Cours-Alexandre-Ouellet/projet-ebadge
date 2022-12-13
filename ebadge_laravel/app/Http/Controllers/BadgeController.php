@@ -17,10 +17,6 @@ class BadgeController extends Controller
      */
     public function index()
     {
-        /*$badges = Badge::all();
-        return response()->json([
-            'badges' => $badges
-        ]);*/
         $badges = Badge::all();
         foreach ($badges as $badge) {
             $badge->calculatePossession();
