@@ -139,7 +139,6 @@ class Login extends React.Component {
                                     helperText={this.state.passwordError === "" ? "" : this.state.passwordError}
                                     sx={{ width: '100%' }}
                                 />
-
                                 <Button
                                     variant="contained"
                                     size="Large"
@@ -152,7 +151,8 @@ class Login extends React.Component {
                                     Connexion →
                                 </Button>
                             </form>
-                            <p><a href='/'>Mot de passe oublié?</a></p>
+                            <p>Pas de compte ? <a href='/auth/signup'>Créer un compte</a></p>
+
                         </div>
                     </div>
                 </div>

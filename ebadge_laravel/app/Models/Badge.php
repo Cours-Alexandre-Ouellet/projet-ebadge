@@ -25,7 +25,7 @@ class Badge extends Model
         return $this->belongsToMany('App\Models\User', 'user_badge', 'badge_id', 'user_id');
     }
 
-    public function calculatePossession()
+    public function setPossessionPercentage()
     {
         $users = $this->users;
         $totalUsers = User::all()->where('role_id', '=', Role::Student()->id)->count();
