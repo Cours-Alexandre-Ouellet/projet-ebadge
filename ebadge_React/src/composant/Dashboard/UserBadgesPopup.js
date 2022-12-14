@@ -1,18 +1,12 @@
 import React from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import Api from '../../utils/Api';
-import { DataGrid } from '@mui/x-data-grid';
 import './UserBadgesPopup.css';
-import Avatar from '@mui/material/Avatar';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+import Api from '../../utils/Api';
+
+import { FormControl, InputLabel, Select, MenuItem, Button, Avatar } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, DialogContentText  } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
+import { Backdrop, CircularProgress } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 
 
 class UserBadgesPopup extends React.Component {
