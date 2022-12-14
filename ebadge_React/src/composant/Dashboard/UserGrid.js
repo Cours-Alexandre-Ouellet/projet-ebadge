@@ -9,6 +9,8 @@ class UserGrid extends React.Component {
   constructor(props) {
     super(props);
 
+    this.badgeAssignationPopup = React.createRef();
+
     this.state = {
       open: false,
       selectedUser: null,
@@ -18,20 +20,6 @@ class UserGrid extends React.Component {
         { field: 'first_name', headerName: 'Prénom', flex: 1 },
         { field: 'last_name', headerName: 'Nom', flex: 1 },
         {
-          field: "profileAction",
-          minWidth: 200,
-          headerName: "",
-          sortable: false,
-          renderCell: (params) => {
-            const onClick = (e) => {
-              e.stopPropagation();
-              this.setState({ open: true, selectedUser: params.row });
-            };
-
-            return (<Button variant="outlined" onClick={onClick}>Voir le profile</Button>);
-          }
-        },
-        {
           field: "assignBadgeAction",
           minWidth: 200,
           headerName: "",
@@ -40,12 +28,12 @@ class UserGrid extends React.Component {
             const onClick = (e) => {
               e.stopPropagation();
               this.setState({ open: true, selectedUser: params.row });
+              this.badgeAssignationPopup.current.refreshBadgesAssignation(true);
             };
 
-            return <Button variant="outlined" onClick={onClick}>Assigner un badge</Button>;
+            return <Button variant="outlined" onClick={onClick}>Gestion des badges</Button>;
           }
         }
-
       ]
     };
 
@@ -66,7 +54,11 @@ class UserGrid extends React.Component {
           rowsPerPageOptions={[5]}
         />
 
-        <UserBadgesPopup isOpen={this.state.open} handleClose={this.handleClose} />
+        <UserBadgesPopup 
+        isOpen={this.state.open} 
+        selectedUser={this.state.selectedUser} 
+        handleClose={this.handleClose}
+        ref={this.badgeAssignationPopup} />
       </div>
     )
   }
