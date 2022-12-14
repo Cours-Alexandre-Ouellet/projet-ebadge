@@ -19,7 +19,7 @@ class BadgeController extends Controller
     {
         $badges = Badge::all();
         foreach ($badges as $badge) {
-            $badge->calculatePossession();
+            $badge->setPossessionPercentage();
         }
         return response()->json($badges);
     }

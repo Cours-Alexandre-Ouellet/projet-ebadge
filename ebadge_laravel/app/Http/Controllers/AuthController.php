@@ -67,9 +67,8 @@ class AuthController extends Controller
         $user->role_name = Role::where('id', $user->role_id)->first()->name;
         $user->organisation_name = Organisation::where('id', $user->organisation_id)->first()->name;
         $user->badges = $user->badges()->get();
-        //foreach badge, get the possession
         foreach ($user->badges as $badge) {
-            $badge->calculatePossession();
+            $badge->setPossessionPercentage();
         }
         return response()->json($request->user());
     }
