@@ -18,6 +18,8 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { Button } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Role from '../../policies/Role';
+import PoliciesHelper from '../../policies/PoliciesHelper';
 
 const drawerWidth = 240;
 
@@ -25,6 +27,8 @@ class AdminLayout extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.policiesHelper = new PoliciesHelper();
 
         this.container = window !== undefined ? () => window.document.body : undefined;
         this.mobileOpen = false;
@@ -35,17 +39,17 @@ class AdminLayout extends React.Component {
             tabs: [
                 {
                     sectionName: "Gestion des utilisateurs",
-                    tabs: [
-                        { id: 1, label: 'Mes utilisateurs', icon: <InboxIcon />, path: '/admin/users' },
-                        { id: 2, label: 'Mes groupes', icon: <InboxIcon />, path: "/admin/groups" },
-                        {id: 4, label: 'Mes programmes', icon: <InboxIcon />, path: '/admin/programs'}
-                    ]
+                    tabs: this.policiesHelper.getvisibleRoutes([
+                        { id: 1, label: 'Mes utilisateurs', icon: <InboxIcon />, path: '/admin/users', minimumRole: Role.Teacher },
+                        { id: 2, label: 'Mes groupes', icon: <InboxIcon />, path: "/admin/groups", minimumRole: Role.Teacher },
+                        {id: 4, label: 'Mes programmes', icon: <InboxIcon />, path: '/admin/programs', minimumRole: Role.Admin},
+                    ])
                 },
                 {
                     sectionName: "Gestion des badges",
-                    tabs: [
-                        { id: 3, label: 'Liste des badges', icon: <InboxIcon />, path: "/admin/badges" },
-                    ]
+                    tabs: this.policiesHelper.getvisibleRoutes([
+                        { id: 3, label: 'Liste des badges', icon: <InboxIcon />, path: "/admin/badges", minimumRole: Role.Teacher },
+                    ])
                 }
             ],
         };

@@ -53,6 +53,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'username' => $user->username,
+            'role' => Role::where('id', $user->role_id)->first()->name,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse(
                 $tokenResult->token->expires_at
@@ -67,6 +68,9 @@ class AuthController extends Controller
         $user->role_name = Role::where('id', $user->role_id)->first()->name;
         $user->organisation_name = Organisation::where('id', $user->organisation_id)->first()->name;
         $user->badges = $user->badges()->get();
+        foreach ($user->badges as $badge) {
+            $badge->setPossessionPercentage();
+        }
         return response()->json($request->user());
     }
 

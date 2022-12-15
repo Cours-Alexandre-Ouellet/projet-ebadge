@@ -1,24 +1,30 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import { Link } from 'react-router-dom';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+} from '@mui/material';
 
+import AdbIcon from '@mui/icons-material/Adb';
+import MenuIcon from '@mui/icons-material/Menu';
+import Role from '../../policies/Role';
+import PoliciesHelper from '../../policies/PoliciesHelper';
+import { Link } from 'react-router-dom';
 
 class Navbar extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.PoliciesHelper = new PoliciesHelper();
 
     this.handleCloseNavMenu = this.handleCloseNavMenu.bind(this);
     this.handleOpenNavMenu = this.handleOpenNavMenu.bind(this);
@@ -28,14 +34,15 @@ class Navbar extends React.Component {
     this.state = {
       anchorElNav: false,
       anchorElUser: false,
-      pages: [
-        { name: 'Mon profile', href: '/' },
-        { name: 'Classement', href: '/classement' },
-        { name: 'Tableau de bord', href: '/admin/users' },
-      ],
+      pages: this.PoliciesHelper.getvisibleRoutes([
+        { name: 'Mon profil', href: '/', minimumRole: Role.User },
+        { name: 'Classement', href: '/classement', minimumRole: Role.User },
+        { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher },
+        { name: 'Badges', href: '/admin/badges', minimumRole: Role.Teacher },
+      ]),
       initials: 'ND',
       userSettings: [
-        { name: 'Mon profile', href: '/' },
+        { name: 'Mon profil', href: '/' },
         { name: 'Se déconnecter', href: '/auth/logout' }
       ]
     };
@@ -193,7 +200,7 @@ class Navbar extends React.Component {
               >
                 {this.state.userSettings.map((setting) => (
                   <MenuItem key={setting.name} component={Link}
-                  to={setting.href} onClick={this.handleCloseUserMenu}>
+                    to={setting.href} onClick={this.handleCloseUserMenu}>
                     <Typography textAlign="center">{setting.name}</Typography>
                   </MenuItem>
                 ))}

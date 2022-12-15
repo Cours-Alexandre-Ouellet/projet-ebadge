@@ -1,128 +1,74 @@
 import React from "react";
 import './Classement.css';
 import '@mui/material';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Select, InputAdornment, Dialog, Slide } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Select, InputAdornment } from '@mui/material';
 import { Search } from "@mui/icons-material";
-import BadgeCreateForm from "../composant/BadgeCreateForm";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+import Api from "../utils/Api";
 
 class Classement extends React.Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             closeBadgeForm: false,
-            classement: [
-                {
-                    "id": 1,
-                    "position": 1,
-                    "name": "Jean",
-                    "score": 100
-                },
-                {
-                    "id": 2,
-                    "position": 2,
-                    "name": "Pierre",
-                    "score": 50
-                },
-                {
-                    "id": 3,
-                    "position": 3,
-                    "name": "Paul",
-                    "score": 25
-                },
-                {
-                    "id": 4,
-                    "position": 4,
-                    "name": "Jacques",
-                    "score": 10
-                },
-                {
-                    "id": 5,
-                    "position": 5,
-                    "name": "Marie",
-                    "score": 5
-                },
-                {
-                    "id": 6,
-                    "position": 6,
-                    "name": "Jeanne",
-                    "score": 2
-                },
-                {
-                    "id": 7,
-                    "position": 7,
-                    "name": "Pierre",
-                    "score": 1
-                },
-                {
-                    "id": 8,
-                    "position": 8,
-                    "name": "Paul",
-                    "score": 0
-                },
-                {
-                    "id": 9,
-                    "position": 9,
-                    "name": "Jacques",
-                    "score": 0
-                },
-                {
-                    "id": 10,
-                    "position": 10,
-                    "name": "Marie",
-                    "score": 0
-                },
-                {
-                    "id": 11,
-                    "position": 11,
-                    "name": "Jeanne",
-                    "score": 0
-                },
-                {
-                    "id": 12,
-                    "position": 12,
-                    "name": "Pierre",
-                    "score": 0
-                },
-                {
-                    "id": 13,
-                    "position": 13,
-                    "name": "Paul",
-                    "score": 0
-                },
-                {
-                    "id": 14,
-                    "position": 14,
-                    "name": "Jacques",
-                    "score": 0
-                }
-            ],
+            classement: [],
             sessions: [
                 {
                     "id": 1,
-                    "name": "Session 1"
+                    "name": "Session 1",
+                    "dateDebut": "2022-01-25",
+                    "dateFin": "2022-05-30"
                 },
                 {
                     "id": 2,
-                    "name": "Session 2"
+                    "name": "Session 2",
+                    "dateDebut": "2022-08-25",
+                    "dateFin": "2022-12-30"
                 },
                 {
                     "id": 3,
-                    "name": "Session 3"
+                    "name": "Session 3",
+                    "dateDebut": "2021-08-23",
+                    "dateFin": "2021-12-30"
                 }
             ],
             session: 1,
             search: ""
         }
-
         this.handleChange = this.handleChange.bind(this);
-        this.handleBadgeForm = this.handleBadgeForm.bind(this);
         this.filterClassement = this.filterClassement.bind(this);
     }
 
+    componentDidMount() {
+        Api.get('/stats/leaderboard/' + this.state.sessions[0].dateDebut + '/' + this.state.sessions[0].dateFin) 
+            .then(response => { 
+                const leaderboard = response.data;
+
+                for (let i = 0; i < leaderboard.length; i++) {
+                    leaderboard[i].position = i + 1;
+                }
+                this.setState({ classement: leaderboard });
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    handleChangeSession = (event) => {
+        this.setState({ session: event.target.value });
+        console.log('/stats/leaderboard/' + this.state.sessions[event.target.value - 1].dateDebut + '/' + this.state.sessions[event.target.value - 1].dateFin);
+        Api.get('/stats/leaderboard/' + this.state.sessions[event.target.value - 1].dateDebut + '/' + this.state.sessions[event.target.value - 1].dateFin) 
+            .then(response => { 
+                const leaderboard = response.data;
+
+                for (let i = 0; i < leaderboard.length; i++) {
+                    leaderboard[i].position = i + 1;
+                }
+                this.setState({ classement: leaderboard });
+            }).catch((error) => {
+                console.log(error);
+            }
+        );
+    };
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
@@ -130,13 +76,9 @@ class Classement extends React.Component {
         });
     }
 
-    handleBadgeForm() {
-        this.setState({ closeBadgeForm: !this.state.closeBadgeForm });
-    }
-
     filterClassement() {
         return this.state.classement.filter((item) => {
-            return item.name.toLowerCase().includes(this.state.search.toLowerCase());
+            return item.username.toLowerCase().includes(this.state.search.toLowerCase());
         });
     }
 
@@ -153,7 +95,7 @@ class Classement extends React.Component {
                                 <Select
                                     native
                                     value={this.state.session}
-                                    onChange={this.handleChange}
+                                    onChange={this.handleChangeSession}
                                     inputProps={{
                                         name: 'session',
                                         id: 'session',
@@ -188,6 +130,7 @@ class Classement extends React.Component {
                                 borderStyle: 'solid',
                                 borderRadius: 1,
                                 maxHeight: 'calc(100vh - 350px)',
+                                width: '98%',
                                 
                             }}>
                                 <Table stickyHeader>
@@ -199,23 +142,16 @@ class Classement extends React.Component {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {this.filterClassement().map((item) => (
+                                        {this.filterClassement().map((item, index) => (
                                             <TableRow key={item.id}>
                                                 <TableCell>{item.position}</TableCell>
-                                                <TableCell>{item.name}</TableCell>
-                                                <TableCell>{item.score}</TableCell>
+                                                <TableCell>{item.username}</TableCell>
+                                                <TableCell>{item.badges_count}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-
-                            {/* Raccourci temporaire vers la création de badge, à supprimé une fois implémentée */}
-                            <button className="classement-button" onClick={this.handleBadgeForm}>Créer badge</button>
-                            <Dialog fullScreen open={this.state.closeBadgeForm} onClose={this.handleBadgeForm} TransitionComponent={Transition}>
-                                <BadgeCreateForm handleClose={this.handleBadgeForm} />
-                            </Dialog>
-
                         </div>
                     </div>
                 </div>
