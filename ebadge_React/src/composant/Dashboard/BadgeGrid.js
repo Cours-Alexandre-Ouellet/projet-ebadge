@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
+import { Edit, Delete } from '@mui/icons-material';
 import BadgeComponent from '../BadgeComponent';
 
 const columns = [
@@ -14,21 +15,21 @@ const columns = [
     { field: 'color', headerName: 'Couleur', flex: 1, align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
         return <div style={{ backgroundColor: `#${params.value}`, width: '100%', height: '100%' }}></div>;
     } },
-    { field : 'BadgeEditAction', minWidth: 200, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
+    { field : 'BadgeEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
         const onClick = (e) => {
             // TODO: EDIT
             e.stopPropagation();
             return alert("Modifier le badge");
         };
-        return <Button variant="outlined" onClick={onClick}>Modifier le badge</Button>;
+        return <Button variant="outlined" onClick={onClick} startIcon={<Edit></Edit>} >Modifier</Button>;
     } },
-    { field : 'BadgeDeleteAction', minWidth: 200, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
+    { field : 'BadgeDeleteAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
         const onClick = (e) => {
             // TODO: DELETE
             e.stopPropagation();
             return alert("Supprimer le badge");
         };
-        return <Button variant="outlined" color='error' onClick={onClick}>Supprimer le badge</Button>;
+        return <Button variant="outlined" color='error' onClick={onClick} startIcon={<Delete></Delete>} >Supprimer</Button>;
     } }
 ];
 
