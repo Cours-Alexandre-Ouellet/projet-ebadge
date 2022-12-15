@@ -38,6 +38,7 @@ class AdminLayout extends React.Component {
                     tabs: [
                         { id: 1, label: 'Mes utilisateurs', icon: <InboxIcon />, path: '/admin/users' },
                         { id: 2, label: 'Mes groupes', icon: <InboxIcon />, path: "/admin/groups" },
+                        {id: 4, label: 'Mes programmes', icon: <InboxIcon />, path: '/admin/programs'}
                     ]
                 },
                 {
