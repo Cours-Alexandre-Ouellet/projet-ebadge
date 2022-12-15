@@ -8,10 +8,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import BadgeComponent from './BadgeComponent';
+import BadgeComponent from './PageProfil/BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
+import BadgeList from './PageProfil/BadgeList';
 
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
@@ -313,11 +314,7 @@ export default class PageProfile extends React.Component {
                         </div>
                     </div> */}
                 </div>
-                <div className='BadgeArray' onMouseEnter={this.badgePercentage}>
-                    {this.state.user.badges.length ? this.state.user.badges.map((badge, index) => {
-                        return <BadgeComponent badge={badge} />
-                    }) : <h1>Vous n'avez pas encore de badge.</h1>}
-                </div>
+                <BadgeList user={this.state.user}/>
             </div>
         );
     }

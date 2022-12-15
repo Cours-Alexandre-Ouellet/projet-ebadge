@@ -67,10 +67,7 @@ class AuthController extends Controller
         $user->program_name = Program::where('id', $user->program_id)->first()->name;
         $user->role_name = Role::where('id', $user->role_id)->first()->name;
         $user->organisation_name = Organisation::where('id', $user->organisation_id)->first()->name;
-        $user->badges = $user->badges()->get();
-        foreach ($user->badges as $badge) {
-            $badge->setPossessionPercentage();
-        }
+
         return response()->json($request->user());
     }
 

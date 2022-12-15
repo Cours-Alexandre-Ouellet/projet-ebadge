@@ -3,7 +3,7 @@ import '@mui/material';
 import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert } from '@mui/material';
 import { PhotoCamera, Check } from '@mui/icons-material';
 import Api from '../utils/Api';
-import BadgeComponent from './BadgeComponent';
+import BadgeComponent from './PageProfil/BadgeComponent';
 import './BadgeCreateForm.css';
 
 function isImage(url) {
