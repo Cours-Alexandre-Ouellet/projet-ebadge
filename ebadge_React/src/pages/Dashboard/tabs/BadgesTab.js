@@ -73,7 +73,7 @@ class BadgesTab extends React.Component {
                         <BadgeCreateForm handleClose={this.handleBadgeForm} addBadge={this.addBadge} editBadge={this.editBadge} deleteBadge={this.deleteBadge} />
                     </Dialog>
                 </div>
-                <BadgeGrid rows={this.state.badges} />
+                <BadgeGrid rows={this.state.badges} refresh={this.getBadges} />
             </Item>
         );
     }
