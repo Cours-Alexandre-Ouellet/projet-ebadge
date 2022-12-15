@@ -34,11 +34,7 @@ export default class PageProfile extends React.Component {
     }
 
     componentDidMount() {
-        Api.get("/auth/current_user", {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then((response) => {
+        Api.get("/auth/current_user").then((response) => {
             if (response.data.avatarImagePath == null) {
                 console.log("avatar null");
                 response.data.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
@@ -70,7 +66,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-background', formData, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
@@ -84,10 +79,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-background', {
                 backgroundUrl: this.state.user.backgroundImagePath
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
             }).catch((error) => {
                 console.log(error);
             });
@@ -118,7 +109,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-avatar', formData, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
@@ -134,10 +124,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-avatar', {
                 avatarUrl: this.state.user.avatarImagePath
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
             }).catch((error) => {
                 console.log(error);
             });
@@ -157,10 +143,6 @@ export default class PageProfile extends React.Component {
         console.log("PRIVACY : " + this.state.user.privacy);
         Api.post('/user/edit-privacy', {
             privacy: this.state.user.privacy
-        }, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
         }).catch((error) => {
             console.log(error);
         });
