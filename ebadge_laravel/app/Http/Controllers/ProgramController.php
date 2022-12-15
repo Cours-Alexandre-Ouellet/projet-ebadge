@@ -33,13 +33,15 @@ class ProgramController extends Controller
         ]);
 
         $program = Program::find($request->id);
-        $program->delete();
 
         $users = User::where('program_id', $program->id)->get();
         foreach ($users as $user) {
             $user->program_id = 0;
             $user->save();
         }
+
+        $program->delete();
+
 
         return response()->json([
             'deleted' => $program->id
