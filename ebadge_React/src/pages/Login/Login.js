@@ -5,6 +5,7 @@ import { Button, TextField } from '@mui/material';
 import Api from '../../utils/Api';
 import { Navigate } from 'react-router-dom';
 import Loading from '../../composant/Loading/LoadingComponent';
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -64,7 +65,9 @@ class Login extends React.Component {
             }).then((response) => {
                 localStorage.setItem('token', response.data.access_token);
                 localStorage.setItem('username', response.data.username);
+                localStorage.setItem('role', response.data.role);
                 this.setState({ redirect: true, isLoading: false });
+
             }).catch((error) => {
                 this.setState({isLoading: false})
                 if (error.response) {
@@ -122,6 +125,7 @@ class Login extends React.Component {
                                     variant="outlined"
                                     margin="normal"
                                     required
+                                    autoFocus
                                     onChange={this.handleChange}
                                     onBlur={this.validateIdentifier.bind(this)}
                                     value={this.state.identifier}
