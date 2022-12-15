@@ -15,15 +15,21 @@ class Classement extends React.Component {
             sessions: [
                 {
                     "id": 1,
-                    "name": "Session 1"
+                    "name": "Session 1",
+                    "dateDebut": "2022-01-25",
+                    "dateFin": "2022-05-30"
                 },
                 {
                     "id": 2,
-                    "name": "Session 2"
+                    "name": "Session 2",
+                    "dateDebut": "2022-08-25",
+                    "dateFin": "2022-12-30"
                 },
                 {
                     "id": 3,
-                    "name": "Session 3"
+                    "name": "Session 3",
+                    "dateDebut": "2021-08-23",
+                    "dateFin": "2021-12-30"
                 }
             ],
             session: 1,
@@ -34,25 +40,35 @@ class Classement extends React.Component {
     }
 
     componentDidMount() {
-        Api.get('/stats/leaderboard') 
+        Api.get('/stats/leaderboard/' + this.state.sessions[0].dateDebut + '/' + this.state.sessions[0].dateFin) 
             .then(response => { 
-                let position = 1;
-                response.data.forEach(element => {
-                    element.position = position;
-                    position++;
-                }).catch((error) => {
-                    console.log(error);
-                });
-                if (response.data.length === 0) {
-                    this.setState({ classement: [] });
-                } else {
-                    this.setState({ classement: response.data });
+                const leaderboard = response.data;
+
+                for (let i = 0; i < leaderboard.length; i++) {
+                    leaderboard[i].position = i + 1;
                 }
-            }
-        );
+                this.setState({ classement: leaderboard });
+            }).catch((error) => {
+                console.log(error);
+            });
     }
 
+    handleChangeSession = (event) => {
+        this.setState({ session: event.target.value });
+        console.log('/stats/leaderboard/' + this.state.sessions[event.target.value - 1].dateDebut + '/' + this.state.sessions[event.target.value - 1].dateFin);
+        Api.get('/stats/leaderboard/' + this.state.sessions[event.target.value - 1].dateDebut + '/' + this.state.sessions[event.target.value - 1].dateFin) 
+            .then(response => { 
+                const leaderboard = response.data;
 
+                for (let i = 0; i < leaderboard.length; i++) {
+                    leaderboard[i].position = i + 1;
+                }
+                this.setState({ classement: leaderboard });
+            }).catch((error) => {
+                console.log(error);
+            }
+        );
+    };
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
@@ -79,7 +95,7 @@ class Classement extends React.Component {
                                 <Select
                                     native
                                     value={this.state.session}
-                                    onChange={this.handleChange}
+                                    onChange={this.handleChangeSession}
                                     inputProps={{
                                         name: 'session',
                                         id: 'session',

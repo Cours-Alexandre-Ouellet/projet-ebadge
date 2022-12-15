@@ -72,7 +72,8 @@ Route::group([
 Route::group([
     'prefix' => 'stats',
 ], function () {
-    Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'LeaderBoard']);
+    Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'Leaderboard']);
+    Route::get('/leaderboard/{startDate}/{endDate}', [App\Http\Controllers\StatsController::class, 'LeaderboardBySession']);
 });
 
 Route::group([
