@@ -35,11 +35,6 @@ const theme = createTheme({
 function App() {
   console.log(process.env);
 
-  //lors du chargement de la page, on vérifie si l'utilisateur est connecté
-  useEffect(() => {
-    console.log('App.js: useEffect');
-  }, []);
-
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
