@@ -12,4 +12,13 @@ class Program extends Model
      * @var string
      */
     protected $table = 'program';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
 }

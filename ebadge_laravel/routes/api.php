@@ -86,4 +86,6 @@ Route::group([
     'prefix' => 'program',
 ], function (){
     Route::get('/', [App\Http\Controllers\ProgramController::class, 'index']);
+    Route::delete('/', [App\Http\Controllers\ProgramController::class, 'delete'])->withoutMiddleware('auth:api', 'roles:' . Role::ADMIN);
+    Route::post('/', [App\Http\Controllers\ProgramController::class, 'create'])->withoutMiddleware('auth:api', 'roles:' . Role::ADMIN);
 });
