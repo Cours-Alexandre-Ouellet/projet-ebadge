@@ -62,6 +62,7 @@ class Login extends React.Component {
             }).then((response) => {
                 localStorage.setItem('token', response.data.access_token);
                 localStorage.setItem('username', response.data.username);
+                localStorage.setItem('role', response.data.role);
                 this.setState({ redirect: true });
             }).catch((error) => {
                 if (error.response) {
