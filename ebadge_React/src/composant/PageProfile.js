@@ -17,7 +17,6 @@ function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
 }
 
-
 export default class PageProfile extends React.Component {
 
     constructor(props) {
@@ -75,15 +74,13 @@ export default class PageProfile extends React.Component {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
-                this.state.user.backgroundImagePath = response.data.url;
-                this.setState({ openBackground: false });
+                this.setState({ openBackground: false, user: { ...this.state.user, backgroundImagePath: response.data.url} });
             }).catch((error) => {
                 console.log(error);
             });
             this.setState({ backgroundImageFile: null });
         } else if (isImage(this.state.backgroundUrlField)) {
-            this.state.user.backgroundImagePath = this.state.backgroundUrlField;
-            this.setState({ openBackground: false });
+            this.setState({ openBackground: false, user: {...this.user, backgroundImagePath: this.state.backgroundUrlField} });
 
             Api.post('/user/edit-background', {
                 backgroundUrl: this.state.user.backgroundImagePath

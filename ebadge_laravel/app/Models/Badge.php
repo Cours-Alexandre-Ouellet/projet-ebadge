@@ -29,6 +29,6 @@ class Badge extends Model
     {
         $users = $this->users;
         $totalUsers = User::all()->where('role_id', '=', Role::Student()->id)->count();
-        $this->possession = $users->count() / $totalUsers * 100;
+        $this->possession = $totalUsers == 0 ? 0 : $users->count() / $totalUsers * 100;
     }
 }

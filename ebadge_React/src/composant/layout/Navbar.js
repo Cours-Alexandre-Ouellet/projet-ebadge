@@ -14,7 +14,6 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 
-
 class Navbar extends React.Component {
 
   constructor(props) {
@@ -32,6 +31,7 @@ class Navbar extends React.Component {
         { name: 'Mon profil', href: '/' },
         { name: 'Classement', href: '/classement' },
         { name: 'Tableau de bord', href: '/admin/users' },
+        { name: 'Badges', href: '/admin/badges' },
       ],
       initials: 'ND',
       userSettings: [

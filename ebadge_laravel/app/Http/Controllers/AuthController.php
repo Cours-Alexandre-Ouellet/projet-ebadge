@@ -69,7 +69,7 @@ class AuthController extends Controller
         $user->badges = $user->badges()->get();
         //foreach badge, get the possession
         foreach ($user->badges as $badge) {
-            $badge->calculatePossession();
+            $badge->setPossessionPercentage();
         }
         return response()->json($request->user());
     }

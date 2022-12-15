@@ -8,6 +8,7 @@ import UsersTab from "./pages/Dashboard/tabs/UsersTab";
 import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
 import Classement from "./pages/Classement";
+import BadgesTab from "./pages/Dashboard/tabs/BadgesTab";
 import Logout from "./pages/Logout";
 import Signup from "./pages/Signup/Signup";
 
@@ -49,6 +50,7 @@ function App() {
           </Route>
           <Route path="/admin" element={<AdminLayout />} >
             <Route path="/admin/users" element={<UsersTab />} />
+            <Route path="/admin/badges" element={<BadgesTab />} />
           </Route>
         </Routes>
       </ThemeProvider>
