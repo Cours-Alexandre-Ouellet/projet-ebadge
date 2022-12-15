@@ -1,0 +1,7 @@
+.form-dialog{
+    min-width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
