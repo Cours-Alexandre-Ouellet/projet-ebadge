@@ -13,12 +13,8 @@ import BadgesTab from "./pages/Dashboard/tabs/BadgesTab";
 import Logout from "./pages/Logout";
 import ProtectedRoute from "./policies/ProtectedRoute";
 import Role from './policies/Role';
-
 import Signup from "./pages/Signup/Signup";
 import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
-import ProtectedRoute from "./policies/ProtectedRoute";
-import Role from './policies/Role';
-import Signup from "./pages/Signup/Signup";
 
 const theme = createTheme({
   palette: {

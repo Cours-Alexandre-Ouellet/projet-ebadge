@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
         this.showAddProgram = this.showAddProgram.bind(this);
         this.handleDialogClose = this.handleDialogClose.bind(this);
         this.addProgram = this.addProgram.bind(this);
-
+        this.deleteProgram = this.deleteProgram.bind(this);
     }
 
     componentDidMount() {
@@ -45,14 +45,24 @@ class Dashboard extends React.Component {
     }
 
     addProgram(name) {
-        console.log(name);
-        this.setState({ showProgramForm: false });
+        this.setState({  });
+        Api.post('/program', {
+            name: name
+        }).then(res => {
+            this.setState({ programs: [...this.state.programs, res.data], showProgramForm: false });
+        });
     }
 
     handleDialogClose() {
         this.setState({ showProgramForm: false });
     }
 
+    deleteProgram(id){
+        Api.delete("/program?id=" + id).then(res => {
+            console.log(res);
+            this.setState({programs: this.state.programs.filter(program => program.id !== res.data.deleted)});
+        });
+    }
     render() {
         return (
             <Item className='bordered'>
@@ -63,7 +73,7 @@ class Dashboard extends React.Component {
                         <ProgramForm addProgram={this.addProgram}></ProgramForm>
                     </Dialog>
                 </div>
-                <ProgramGrid rows={this.state.programs} />
+                <ProgramGrid rows={this.state.programs} deleteProgram={this.deleteProgram} />
             </Item>
         );
     }

@@ -179,12 +179,6 @@ class AdminLayout extends React.Component {
                     >
                         <Toolbar />
                         <div className='dashboard'>
-                            <h3>{
-                            this.state.tabs.map((tab, index) => (
-                                tab.tabs.map((tab, index) => (
-                                    tab.path === window.location.pathname ? tab.label : null
-                                ))
-                            ))}</h3>
                             <Outlet />
                         </div>
                     </Box>
