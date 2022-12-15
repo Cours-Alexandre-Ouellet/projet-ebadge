@@ -1,5 +1,6 @@
-import ReactDOM from "react-dom/client";
+import React, { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import './App.css';
 import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
@@ -10,8 +11,10 @@ import PageProfile from "./composant/PageProfile";
 import Classement from "./pages/Classement";
 import BadgesTab from "./pages/Dashboard/tabs/BadgesTab";
 import Logout from "./pages/Logout";
-import Signup from "./pages/Signup/Signup";
+import ProtectedRoute from "./policies/ProtectedRoute";
+import Role from './policies/Role';
 
+import Signup from "./pages/Signup/Signup";
 const theme = createTheme({
   palette: {
     primary: {
@@ -31,7 +34,7 @@ const theme = createTheme({
 
 function App() {
   console.log(process.env);
-  
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
@@ -48,9 +51,11 @@ function App() {
             <Route path="signup" element={<Signup />} />
             
           </Route>
-          <Route path="/admin" element={<AdminLayout />} >
-            <Route path="/admin/users" element={<UsersTab />} />
-            <Route path="/admin/badges" element={<BadgesTab />} />
+          <Route path="/admin" element={ProtectedRoute(Role.Teacher)}>
+            <Route path="/admin" element={<AdminLayout />} >
+              <Route path="/admin/users" element={<UsersTab />} />
+              <Route path="/admin/badges" element={<BadgesTab />} />
+            </Route>
           </Route>
         </Routes>
       </ThemeProvider>

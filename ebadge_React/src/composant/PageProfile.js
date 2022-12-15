@@ -147,11 +147,8 @@ export default class PageProfile extends React.Component {
     handleDeleteAvatar = () => {
         let user = this.state.user;
         user.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
-        this.setState({ user: user });
-
-        this.setState({ openAvatar: false });
+        this.setState({ user: user, openAvatar: false  });
     };
-
     setPrivacy = (e) => {
         let user = this.state.user;
         user.privacy = !user.privacy;

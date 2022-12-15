@@ -4,6 +4,7 @@ import '@mui/material';
 import { Button, TextField } from '@mui/material';
 import Api from '../../utils/Api';
 import { Navigate } from 'react-router-dom';
+import Loading from '../../composant/Loading/LoadingComponent';
 
 class Login extends React.Component {
     constructor(props) {
@@ -14,6 +15,7 @@ class Login extends React.Component {
             identifierError: '',
             passwordError: '',
             redirect: false,
+            isLoading: false
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -56,14 +58,18 @@ class Login extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.validateIdentifier() && this.validatePassword()) {
+            this.setState({ isLoading: true });
             Api.post('/auth/login', {
                 email: this.state.identifier,
                 password: this.state.password
             }).then((response) => {
                 localStorage.setItem('token', response.data.access_token);
                 localStorage.setItem('username', response.data.username);
-                this.setState({ redirect: true });
+                localStorage.setItem('role', response.data.role);
+                this.setState({ redirect: true, isLoading: false });
+
             }).catch((error) => {
+                this.setState({isLoading: false})
                 if (error.response) {
                     switch (error.response.status) {
                         case 401:
@@ -104,6 +110,7 @@ class Login extends React.Component {
         }
         return (
             <div className="login">
+                {this.state.isLoading ? <Loading></Loading> : null}
                 <div className="login-container">
                     <div className="login-background">
                     </div>

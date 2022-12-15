@@ -6,6 +6,9 @@ use App\Models\User;
 use App\Models\UserBadge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Role;
+use App\Models\Badge;
+
 class UserController extends Controller
 {
     /**
@@ -22,12 +25,12 @@ class UserController extends Controller
             $role = $currentUser->getRoleName();
 
             switch ($role) {
-                case 'Administrateur':
+                case Role::ADMIN:
                     // retourne tous les élèves de tous les groupes
                     $users = User::all();
                     return response()->json(['users' => $users]);
                     break;
-                case 'Professeur':
+                case Role::ENSEIGNANT:
                     // retourne tous les eleve du meme groupe que l'utilisateur
                     $users = User::where('program_id', $currentUser->program_id)->get();
                     return response()->json(['users' => $users]);
@@ -71,6 +74,42 @@ class UserController extends Controller
         $user->badges()->detach($request->badge_id);
         return response()->json([
             'message' => 'Badge removed'
+        ]);
+    }
+
+    /**
+     * Get all badges of a user
+     */
+    public function getUserBadges(int $id)
+    {
+        $user = User::find($id);
+
+        if ($user == null) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $badges = $user->badges;
+        return response()->json([
+            'badges' => $badges
+        ]);
+    }
+
+    /**
+     * Get all missing badges of a user
+     */
+    public function getUserBadgeLeft(int $id)
+    {
+        $user = User::find($id);
+
+        if ($user == null) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        //TODO: valider avec le group
+
+        $badges = $user->badges;
+        $missingBadges = Badge::whereNotIn('id', $badges->pluck('id'))->get();
+        return response()->json([
+            'badges' => $missingBadges
         ]);
     }
 
