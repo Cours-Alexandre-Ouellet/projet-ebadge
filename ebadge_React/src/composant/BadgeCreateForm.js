@@ -103,11 +103,7 @@ class BadgeCreateForm extends React.Component {
                 formData.append('image', this.state.imageFile);  
                 formData.append('color', this.state.badge.color);
 
-                Api.post('/badge', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
+                Api.post('/badge', formData)
                 .then((response) => {
                     this.props.addBadge(response.data);
                 })
