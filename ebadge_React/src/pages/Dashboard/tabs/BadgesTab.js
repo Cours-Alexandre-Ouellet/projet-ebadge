@@ -3,7 +3,7 @@ import Api from '../../../utils/Api';
 import BadgeGrid from '../../../composant/Dashboard/BadgeGrid';
 import Item from '@mui/material/Grid';
 import BadgeCreateForm from '../../../composant/BadgeCreateForm';
-import { Button, Dialog, Slide } from '@mui/material';
+import { Button, Dialog, Slide, Snackbar, Alert } from '@mui/material';
 import './../Dashboard.css';
 import { Add } from '@mui/icons-material';
 
@@ -16,6 +16,8 @@ class BadgesTab extends React.Component {
         super(props);
         this.state = {
             closeBadgeForm: false,
+            showSuccessMessage: false,
+            successMessage: '',
             badges: []
         }
 
@@ -24,6 +26,7 @@ class BadgesTab extends React.Component {
         this.addBadge = this.addBadge.bind(this);
         this.editBadge = this.editBadge.bind(this);
         this.deleteBadge = this.deleteBadge.bind(this);
+        this.handleCloseSuccessMessage = this.handleCloseSuccessMessage.bind(this);
     }
 
     componentDidMount() {
@@ -46,21 +49,25 @@ class BadgesTab extends React.Component {
     }
 
     addBadge(badge) {
-        this.setState({ badges: [badge, ...this.state.badges] });
+        this.setState({ badges: [badge, ...this.state.badges], successMessage: 'Le badge a été ajouté avec succès !', showSuccessMessage: true });
     }
 
     editBadge(badge) {
         const badges = this.state.badges;
         const index = badges.findIndex(b => b.id === badge.id);
         badges[index] = badge;
-        this.setState({ badges: badges });
+        this.setState({ badges: badges, successMessage: 'Le badge a été modifié avec succès !', showSuccessMessage: true });
     }
 
     deleteBadge(badge) {
         const badges = this.state.badges;
         const index = badges.findIndex(b => b.id === badge.id);
         badges.splice(index, 1);
-        this.setState({ badges: badges });
+        this.setState({ badges: badges, successMessage: 'Le badge a été supprimé avec succès !', showSuccessMessage: true });
+    }
+
+    handleCloseSuccessMessage() {
+        this.setState({ showSuccessMessage: false, successMessage: '' });
     }
 
     render() {
@@ -74,6 +81,11 @@ class BadgesTab extends React.Component {
                     </Dialog>
                 </div>
                 <BadgeGrid rows={this.state.badges} />
+                <Snackbar onClose={this.handleCloseSuccessMessage} open={this.state.showSuccessMessage} autoHideDuration={3000}>
+                    <Alert onClose={this.handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }} md={{ minWidth: '300px' }}>
+                        {this.state.successMessage}
+                    </Alert>
+                </Snackbar>
             </Item>
         );
     }
