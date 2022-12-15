@@ -1,10 +1,10 @@
 import React from 'react';
-import './BadgeCreateForm.css';
 import '@mui/material';
 import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert } from '@mui/material';
 import { PhotoCamera, Check } from '@mui/icons-material';
 import Api from '../utils/Api';
 import BadgeComponent from './BadgeComponent';
+import './BadgeCreateForm.css';
 
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
@@ -25,7 +25,7 @@ class BadgeCreateForm extends React.Component {
                 description: '',
                 imagePath: '',
                 color: 'ffffff',
-                pourcentage: 0
+                possession: 0
             }
         }
 
@@ -135,7 +135,7 @@ class BadgeCreateForm extends React.Component {
                     <div className="badge-create-form-background">
                         <div className="badge-create-form-content">
                             <h1>Créer un badge</h1>
-                            <form onSubmit={this.handleSubmit}>
+                            <form className='create-badge' onSubmit={this.handleSubmit}>
                                 <TextField
                                     id="title"
                                     name="title"

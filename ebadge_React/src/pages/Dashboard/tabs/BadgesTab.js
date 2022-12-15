@@ -20,7 +20,10 @@ class BadgesTab extends React.Component {
         }
 
         this.handleBadgeForm = this.handleBadgeForm.bind(this);
+        this.getBadges = this.getBadges.bind(this);
         this.addBadge = this.addBadge.bind(this);
+        this.editBadge = this.editBadge.bind(this);
+        this.deleteBadge = this.deleteBadge.bind(this);
     }
 
     componentDidMount() {
@@ -46,6 +49,20 @@ class BadgesTab extends React.Component {
         this.setState({ badges: [badge, ...this.state.badges] });
     }
 
+    editBadge(badge) {
+        const badges = this.state.badges;
+        const index = badges.findIndex(b => b.id === badge.id);
+        badges[index] = badge;
+        this.setState({ badges: badges });
+    }
+
+    deleteBadge(badge) {
+        const badges = this.state.badges;
+        const index = badges.findIndex(b => b.id === badge.id);
+        badges.splice(index, 1);
+        this.setState({ badges: badges });
+    }
+
     render() {
         return (
             <Item className='bordered'>
@@ -53,7 +70,7 @@ class BadgesTab extends React.Component {
                     <h4>Liste des badges</h4>
                     <Button variant="contained" onClick={this.handleBadgeForm} startIcon={<Add></Add>}>Créer un badge</Button>
                     <Dialog fullScreen open={this.state.closeBadgeForm} onClose={this.handleBadgeForm} TransitionComponent={Transition}>
-                        <BadgeCreateForm handleClose={this.handleBadgeForm} addBadge={this.addBadge} />
+                        <BadgeCreateForm handleClose={this.handleBadgeForm} addBadge={this.addBadge} editBadge={this.editBadge} deleteBadge={this.deleteBadge} />
                     </Dialog>
                 </div>
                 <BadgeGrid rows={this.state.badges} />
