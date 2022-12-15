@@ -19,7 +19,6 @@ import Role from '../../policies/Role';
 import PoliciesHelper from '../../policies/PoliciesHelper';
 import { Link } from 'react-router-dom';
 
-
 class Navbar extends React.Component {
 
   constructor(props) {
@@ -36,15 +35,16 @@ class Navbar extends React.Component {
       anchorElNav: false,
       anchorElUser: false,
       pages: this.PoliciesHelper.getvisibleRoutes([
-        { name: 'Mon profile', href: '/', minimumRole: Role.User },
+        { name: 'Mon profil', href: '/', minimumRole: Role.User },
         { name: 'Classement', href: '/classement', minimumRole: Role.User },
         { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher },
+        { name: 'Badges', href: '/admin/badges', minimumRole: Role.Teacher },
       ]),
       initials: 'ND',
-      userSettings: this.PoliciesHelper.getvisibleRoutes([
-        { name: 'Mon profile', href: '/', minimumRole: Role.User },
-        { name: 'Se déconnecter', href: '/auth/logout', minimumRole: Role.User  }
-      ])
+      userSettings: [
+        { name: 'Mon profil', href: '/' },
+        { name: 'Se déconnecter', href: '/auth/logout' }
+      ]
     };
   }
 

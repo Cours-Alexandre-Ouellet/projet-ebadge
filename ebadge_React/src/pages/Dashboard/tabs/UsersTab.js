@@ -5,7 +5,7 @@ import './../Dashboard.css';
 import Api from '../../../utils/Api';
 import UserGrid from '../../../composant/Dashboard/UserGrid';
 
-class Dashboard extends React.Component {
+class UsersTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +23,7 @@ class Dashboard extends React.Component {
     getUsers() {
         Api.get('/user').then(res => {
             const users = res.data;
-            this.setState({ users: users });
+            this.setState({ users: users.users });
         }
         )
     }
@@ -38,4 +38,4 @@ class Dashboard extends React.Component {
     }
 }
 
-export default Dashboard;
+export default UsersTab;

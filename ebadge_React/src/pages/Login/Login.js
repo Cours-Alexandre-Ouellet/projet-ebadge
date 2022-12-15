@@ -4,7 +4,7 @@ import '@mui/material';
 import { Button, TextField } from '@mui/material';
 import Api from '../../utils/Api';
 import { Navigate } from 'react-router-dom';
-import axios from 'axios';
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -119,6 +119,7 @@ class Login extends React.Component {
                                     variant="outlined"
                                     margin="normal"
                                     required
+                                    autoFocus
                                     onChange={this.handleChange}
                                     onBlur={this.validateIdentifier.bind(this)}
                                     value={this.state.identifier}
@@ -141,7 +142,6 @@ class Login extends React.Component {
                                     helperText={this.state.passwordError === "" ? "" : this.state.passwordError}
                                     sx={{ width: '100%' }}
                                 />
-
                                 <Button
                                     variant="contained"
                                     size="Large"
@@ -154,7 +154,8 @@ class Login extends React.Component {
                                     Connexion →
                                 </Button>
                             </form>
-                            <p><a href='/'>Mot de passe oublié?</a></p>
+                            <p>Pas de compte ? <a href='/auth/signup'>Créer un compte</a></p>
+
                         </div>
                     </div>
                 </div>

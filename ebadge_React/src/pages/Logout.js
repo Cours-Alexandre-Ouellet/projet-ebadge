@@ -1,4 +1,5 @@
 import React from "react";
+import Loading from "../composant/Loading/LoadingComponent";
 
 class Logout extends React.Component {
 
@@ -11,9 +12,7 @@ class Logout extends React.Component {
 
     render() {
         return (
-            <>
-                <p>Déconnexion en cours...</p>
-            </>
+            <Loading></Loading>
         )
     }
 }

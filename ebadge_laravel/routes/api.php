@@ -53,7 +53,6 @@ Route::group([
 });
 
 
-
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -66,4 +65,24 @@ Route::group([
         Route::get('logout', [AuthController::class, 'logout']);
         Route::get('current_user', [AuthController::class, 'current_user']);
     });
+});
+
+
+//add route stats
+Route::group([
+    'prefix' => 'stats',
+], function () {
+    Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'LeaderBoard']);
+});
+
+Route::group([
+    'prefix' => 'organisation',
+], function (){
+    Route::get('/', [App\Http\Controllers\OrganisationController::class, 'index']);
+});
+
+Route::group([
+    'prefix' => 'program',
+], function (){
+    Route::get('/', [App\Http\Controllers\ProgramController::class, 'index']);
 });
