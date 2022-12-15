@@ -80,7 +80,7 @@ class BadgesTab extends React.Component {
                         <BadgeCreateForm handleClose={this.handleBadgeForm} addBadge={this.addBadge} editBadge={this.editBadge} deleteBadge={this.deleteBadge} />
                     </Dialog>
                 </div>
-                <BadgeGrid rows={this.state.badges} />
+                <BadgeGrid rows={this.state.badges} refresh={this.getBadges} />
                 <Snackbar onClose={this.handleCloseSuccessMessage} open={this.state.showSuccessMessage} autoHideDuration={3000}>
                     <Alert onClose={this.handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }} md={{ minWidth: '300px' }}>
                         {this.state.successMessage}

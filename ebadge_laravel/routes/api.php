@@ -31,6 +31,7 @@ Route::group([
     ], function () {
         Route::post('/', [App\Http\Controllers\BadgeController::class, 'create']);
         Route::put('/', [App\Http\Controllers\BadgeController::class, 'update']);
+        Route::delete('/{id}', [App\Http\Controllers\BadgeController::class, 'destroy']);
     });
 });
 
@@ -80,10 +81,14 @@ Route::group([
     'prefix' => 'organisation',
 ], function (){
     Route::get('/', [App\Http\Controllers\OrganisationController::class, 'index']);
+    Route::delete('/', [App\Http\Controllers\OrganisationController::class, 'delete'])->middleware('auth:api', 'roles:' . Role::ADMIN);
+    Route::post('/', [App\Http\Controllers\OrganisationController::class, 'create'])->middleware('auth:api', 'roles:' . Role::ADMIN);
 });
 
 Route::group([
     'prefix' => 'program',
 ], function (){
     Route::get('/', [App\Http\Controllers\ProgramController::class, 'index']);
+    Route::delete('/', [App\Http\Controllers\ProgramController::class, 'delete'])->middleware('auth:api', 'roles:' . Role::ADMIN);
+    Route::post('/', [App\Http\Controllers\ProgramController::class, 'create'])->middleware('auth:api', 'roles:' . Role::ADMIN);
 });

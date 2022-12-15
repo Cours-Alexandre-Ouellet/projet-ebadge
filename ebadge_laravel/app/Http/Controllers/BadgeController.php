@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Badge\BadgeUdpateRequest;
 use App\Http\Requests\Badge\CreateBadgeRequest;
 use App\Models\Badge;
+use App\Models\UserBadge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -89,12 +90,12 @@ class BadgeController extends Controller
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        $request->validate([
-            'id' => 'required|exists:badges,id'
-        ]);
-        $badge = Badge::find($request->id);
+        $badge = Badge::find($id);
+
+        UserBadge::where('badge_id', $badge->id)->delete();
+
         $badge->delete();
         return response()->json($badge);
     }

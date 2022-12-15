@@ -8,10 +8,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import BadgeComponent from './BadgeComponent';
+import BadgeComponent from './PageProfil/BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
+import BadgeList from './PageProfil/BadgeList';
 
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
@@ -34,11 +35,7 @@ export default class PageProfile extends React.Component {
     }
 
     componentDidMount() {
-        Api.get("/auth/current_user", {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then((response) => {
+        Api.get("/auth/current_user").then((response) => {
             if (response.data.avatarImagePath == null) {
                 console.log("avatar null");
                 response.data.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
@@ -70,7 +67,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-background', formData, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
@@ -84,10 +80,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-background', {
                 backgroundUrl: this.state.user.backgroundImagePath
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
             }).catch((error) => {
                 console.log(error);
             });
@@ -118,7 +110,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-avatar', formData, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
@@ -134,10 +125,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-avatar', {
                 avatarUrl: this.state.user.avatarImagePath
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
             }).catch((error) => {
                 console.log(error);
             });
@@ -157,10 +144,6 @@ export default class PageProfile extends React.Component {
         console.log("PRIVACY : " + this.state.user.privacy);
         Api.post('/user/edit-privacy', {
             privacy: this.state.user.privacy
-        }, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
         }).catch((error) => {
             console.log(error);
         });
@@ -313,11 +296,7 @@ export default class PageProfile extends React.Component {
                         </div>
                     </div> */}
                 </div>
-                <div className='BadgeArray' onMouseEnter={this.badgePercentage}>
-                    {this.state.user.badges.length ? this.state.user.badges.map((badge, index) => {
-                        return <BadgeComponent badge={badge} />
-                    }) : <h1>Vous n'avez pas encore de badge.</h1>}
-                </div>
+                <BadgeList user={this.state.user}/>
             </div>
         );
     }

@@ -89,6 +89,11 @@ class UserController extends Controller
         }
 
         $badges = $user->badges;
+
+        foreach ($user->badges as $badge) {
+            $badge->setPossessionPercentage();
+        }
+
         return response()->json([
             'badges' => $badges
         ]);

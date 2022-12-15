@@ -37,8 +37,7 @@ class Navbar extends React.Component {
       pages: this.PoliciesHelper.getvisibleRoutes([
         { name: 'Mon profil', href: '/', minimumRole: Role.User },
         { name: 'Classement', href: '/classement', minimumRole: Role.User },
-        { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher },
-        { name: 'Badges', href: '/admin/badges', minimumRole: Role.Teacher },
+        { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher }
       ]),
       initials: 'ND',
       userSettings: [
