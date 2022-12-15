@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
+import { Button, Avatar } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import BadgeComponent from '../BadgeComponent';
 
 const columns = [
     { field: 'id', headerName: 'ID', flex: 1, align: 'center', headerAlign: 'center'},
-    { field: 'image', headerName: 'Image', sortable: false, flex: 2, headerAlign: 'center', renderCell: (params) => {
-        return <BadgeComponent badge={params.row}></BadgeComponent>;
+    { field: 'imagePath', headerName: 'Image', sortable: false, flex: 2, align: 'center' , headerAlign: 'center', renderCell: (params) => {
+        return <Avatar alt={params.row.title} src={params.value} sx={{ width: 70, height: 70, bgcolor: `#${params.row.color}` }}/>;
      },
     },
     { field: 'title', headerName: 'Titre', flex: 2, headerAlign: 'center' },
@@ -37,7 +36,7 @@ class BadgeGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pageSize: 3,
+            pageSize: 5,
         };
     }
 
@@ -48,9 +47,9 @@ class BadgeGrid extends React.Component {
                 <DataGrid
                     rows={this.props.rows ?? []}
                     columns={columns}
-                    rowHeight={160}
+                    rowHeight={100}
                     pageSize={this.state.pageSize}
-                    rowsPerPageOptions={[3, 5, 10]}
+                    rowsPerPageOptions={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
                     onPageSizeChange={(newPageSize) => {
                         this.setState({ pageSize: newPageSize });
                     }}
