@@ -19,9 +19,6 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
-        $app->singleton('app', 'Illuminate\Container\Container');
-
-        Facade::setFacadeApplication($app);
 
         return $app;
     }
