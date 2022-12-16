@@ -3,19 +3,14 @@ import '@mui/material';
 import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert } from '@mui/material';
 import { PhotoCamera, Check } from '@mui/icons-material';
 import Api from '../utils/Api';
-import BadgeComponent from './PageProfil/BadgeComponent';
 import './BadgeCreateForm.css';
+import BadgeComponent from './PageProfil/BadgeComponent';
 
-/**
- *  Fonction qui vérifie si l'url est une image
- * @param {*} url 
- * @returns 
- */
 function isImage(url) {
-    return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
+    return /(http(s?):)*\.(?:jpg|gif|png)/.test(url);
 }
 
-class BadgeCreateForm extends React.Component {
+class BadgeUpdateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -26,6 +21,7 @@ class BadgeCreateForm extends React.Component {
             imageUrlField: "",
             imageFile: null,
             badge: {
+                id: 0,
                 title: '',
                 description: '',
                 imagePath: '',
@@ -44,33 +40,24 @@ class BadgeCreateForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    /**
-     * fonction qui change la valeur du champ quand on tape dedans
-     * @param {*} event 
-     */
+    componentDidMount() {
+        this.setState({ badge: this.props.selectedBadge });
+    }
+
     handleBadgeChange(event) {
         this.setState({ badge: { ...this.state.badge, [event.target.name]: event.target.value } });
     }
 
-    /**
-     * fonction qui ouvre ou ferme la fenêtre de dialogue
-     */
     handleImageDialog() {
         this.setState({ openImageDialog: !this.state.openImageDialog });
     }
 
-    /**
-     * fonction qui supprime l'image
-     */
     handleImageDelete() {
         this.setState({ badge: { ...this.state.badge, imagePath: '' } });
         this.setState({ imageFile: null, imageUrlField: '' });
         this.handleImageDialog();
     }
 
-    /**
-     * fonction qui modifie l'image
-     */
     handleImageModify() {
         if (this.state.imageFile !== null) {
             this.setState({ badge: { ...this.state.badge, imagePath: URL.createObjectURL(this.state.imageFile) }});
@@ -83,10 +70,6 @@ class BadgeCreateForm extends React.Component {
         }
     }
 
-    /**
-     * Fonction qui vérifie si le titre est valide
-     * @returns boolean 
-     */
     validateTitle() {
         if (this.state.badge.title.length === 0) {
             this.setState({ titleError: 'Veuillez renseigner le titre' });
@@ -97,10 +80,6 @@ class BadgeCreateForm extends React.Component {
         }
     }
 
-    /**
-     * Fonction qui vérifie si la description est valide
-     * @returns boolean
-     */
     validateDescription() {
         if (this.state.badge.description.length === 0) {
             this.setState({ descriptionError: 'Veuillez renseigner la description' });
@@ -111,10 +90,6 @@ class BadgeCreateForm extends React.Component {
         }
     }
 
-    /**
-     * fonction qui vérifie si la couleur est valide
-     * @returns boolean
-     */
     validateColor() {
         if (this.state.badge.color.length < 6 || this.state.badge.color.length > 8) {
             this.setState({ badge: { ...this.state.badge, color: 'ffffff' } });
@@ -122,41 +97,34 @@ class BadgeCreateForm extends React.Component {
         return true;
     }
 
-    /**
-     * fonction qui envoie les données au serveur
-     * @param {*} event 
-     */
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.validateTitle() && this.validateDescription() && this.validateColor()) {
             if (this.state.imageFile != null) {
                 let formData = new FormData();
 
+                formData.append('id', this.state.badge.id);
                 formData.append('title', this.state.badge.title);
                 formData.append('description', this.state.badge.description);
                 formData.append('image', this.state.imageFile);  
                 formData.append('color', this.state.badge.color);
 
-                Api.post('/badge', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
+                Api.put('/badge', formData)
                 .then((response) => {
-                    this.props.addBadge(response.data);
+                    this.props.editBadge(response.data);
                 })
                 .catch((error) => {
-                    this.props.errorBadge('Erreur lors de la création du badge');
+                    this.props.errorBadge('Une erreur est survenue');
                     console.log(error);
                 });
 
             } else if (isImage(this.state.badge.imagePath)) {
-                Api.post('/badge', this.state.badge)
+                Api.put('/badge', this.state.badge)
                 .then((response) => {
-                    this.props.addBadge(response.data);
+                    this.props.editBadge(response.data);
                 })
                 .catch((error) => {
-                    this.props.errorBadge('Erreur lors de la création du badge');
+                    this.props.errorBadge('Une erreur est survenue');
                     console.log(error);
                 });
             }
@@ -170,7 +138,7 @@ class BadgeCreateForm extends React.Component {
                 <div className="badge-create-form-container">
                     <div className="badge-create-form-background">
                         <div className="badge-create-form-content">
-                            <h1>Créer un badge</h1>
+                            <h1>Modifier un badge</h1>
                             <form className='create-badge' onSubmit={this.handleSubmit}>
                                 <TextField
                                     id="title"
@@ -230,8 +198,8 @@ class BadgeCreateForm extends React.Component {
                                                 type="url"
                                                 fullWidth
                                                 variant="standard"
-                                                inputProps={{ maxLength: 2048 }}
                                                 value={this.state.imageUrlField}
+                                                inputProps={{ maxLength: 2048 }}
                                                 onChange={e => {
                                                     this.setState({
                                                         imageUrlField: e.target.value,
@@ -320,10 +288,10 @@ class BadgeCreateForm extends React.Component {
                                         marginTop: '20px',
                                         marginRight: '20px'
                                     }}>Annuler</Button>
-                                    <Button type="submit" variant="contained" sx={{
+                                    <Button type="submit" variant="contained" disabled={this.state.badge === this.props.selectedBadge} sx={{
                                         width: '100%',
                                         marginTop: '20px'
-                                    }}>Créer</Button>
+                                    }}>Modifier</Button>
                                 </div>
                             </form>
                         </div>
@@ -351,4 +319,4 @@ const colors = [
     '0080ff',
 ];
 
-export default BadgeCreateForm;
+export default BadgeUpdateForm;

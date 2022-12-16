@@ -5,7 +5,7 @@ import Api from '../../utils/Api';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { FormControl, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import { Dialog, DialogContent, DialogTitle, DialogContentText } from '@mui/material';
 
 class BadgeDeleteAction extends React.Component {
@@ -15,12 +15,15 @@ class BadgeDeleteAction extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-
+    handleSubmit() {
         Api.delete('/badge/' + this.props.selectedBadge.id)
             .then(res => {
                 this.props.onClose();
+                this.props.deleteBadge(this.props.selectedBadge);
+            })
+            .catch(err => {
+                this.props.errorBadge('Une erreur est survenue');
+                console.log(err);
             });
     }
 
@@ -46,22 +49,13 @@ class BadgeDeleteAction extends React.Component {
                     ) : null}
                 </DialogTitle>
                 <DialogContent className={"delete-badge-popup"}>
-                    <DialogContentText>
-                        <form>
-                            <FormControl fullWidth>
-                                <p>
-                                    <b>Veuillez confirmer la suppression du badge : <span>{this.props.selectedBadge ? this.props.selectedBadge.title : "Inconnue"}</span></b>
-                                </p>
-                                <p>
-                                    Détails :
-                                    Tous les utilisateurs ayant ce badge seront dégradés.
-                                </p>
-                                <br />
-                            </FormControl>
-                            <FormControl fullWidth>
-                                <Button variant="outlined" color="error" className={"mt-2"} onClick={this.handleSubmit} >Supprimer le badge</Button>
-                            </FormControl>
-                        </form>
+                    <DialogContentText align="center">
+                        <b>Veuillez confirmer la suppression du badge : {this.props.selectedBadge ? this.props.selectedBadge.title : "Inconnue"}</b><br/>
+                        <br/>
+                        Détails :<br/>
+                        Tous les utilisateurs ayant ce badge seront dégradés.<br/>
+                        <br />
+                        <Button variant="outlined" color="error" className={"mt-2"} onClick={this.handleSubmit} >Supprimer le badge</Button>
                     </DialogContentText>
                 </DialogContent>
             </Dialog >
