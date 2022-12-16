@@ -20,20 +20,25 @@ class AddDefaultProgramAndOrg extends Migration
             DB::statement('SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";');
         });
 
-        $org = new Organisation();
-        $org->id = 0;
-        $org->name = "Organisation par défaut";
-        $org->save();
+        if(Organisation::where('id', 0)->first() == null)
+        {
+            $org = new Organisation();
+            $org->id = 0;
+            $org->name = "Organisation par défaut";
+            $org->save();
+        }
 
 
         Schema::table('program', function (Blueprint $table) {
             DB::statement('SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";');
         });
+        if(Program::where('id', 0)->first() == null){
 
-        $program = new Program();
-        $program->id = 0;
-        $program->name = "Programme par défaut";
-        $program->save();
+            $program = new Program();
+            $program->id = 0;
+            $program->name = "Programme par défaut";
+            $program->save();
+        }
     }
 
     public function down()

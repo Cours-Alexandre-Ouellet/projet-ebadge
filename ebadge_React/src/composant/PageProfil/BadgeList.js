@@ -13,12 +13,14 @@ export default class BadgeList extends React.Component {
     }
 
     componentDidMount() {
-        Api.get('/user/' + this.state.user.id + '/badges')
+        Api.get('/user/my-badges')
             .then((response) => {
+                console.log(response.data);
                 this.setState({
                     badges: response.data.badges,
                     loading: false
                 })
+                console.log(this.state.badges);
             })
             .catch((error) => {
                 console.log(error);

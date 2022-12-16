@@ -4,10 +4,13 @@ namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Objet représentant une requête de connexion
+ */
 class LoginRequest extends FormRequest
 {
     /**
-     * Get the validation rules that apply to the request.
+     * les règles de validation
      *
      * @return array
      */
