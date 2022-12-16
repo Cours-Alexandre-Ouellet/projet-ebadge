@@ -19,11 +19,11 @@ class SignupRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|string|unique:user,username',
-            'email' => 'required|string|email|unique:user,email',
-            'password' => 'required|string',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            'username' => 'required|string|unique:user,username|max:50',
+            'email' => 'required|string|email|unique:user,email|max:125',
+            'password' => 'required|string|max:60',
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
             'teacher_code' => [
                 'string',
                 Rule::exists('teacher_code', 'code')->where(function ($query) {

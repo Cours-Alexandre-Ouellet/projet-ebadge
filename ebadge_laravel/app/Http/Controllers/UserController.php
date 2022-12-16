@@ -123,7 +123,7 @@ class UserController extends Controller
     {
         $request->validate([
             'background' => 'image',
-            'backgroundUrl' => 'url'
+            'backgroundUrl' => 'url|max:2048'
         ]);
 
         if($request->hasFile('background')) {
@@ -147,7 +147,7 @@ class UserController extends Controller
     {
         $request->validate([
             'avatar' => 'image',
-            'avatarUrl' => 'url'
+            'avatarUrl' => 'url|max:2048'
         ]);
 
         if($request->hasFile('avatar')) {
