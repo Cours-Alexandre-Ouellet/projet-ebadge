@@ -36,24 +36,11 @@ class BadgeTest extends TestCase
         $this->badge = factory(\App\Models\Badge::class)->create();
         $this->badge->save();
 
-
-        $token = $this->user->createToken('Personal Access Token');
-        $token->token->expires_at = Carbon::now()->addWeeks(1);
-        $token->token->save();
-        $token->expires_at = now()->addMinutes(30);
-        $this->userToken = $token->accessToken;
-
         $token = $this->teacher->createToken('Personal Access Token');
         $token->token->expires_at = Carbon::now()->addWeeks(1);
         $token->token->save();
         $token->expires_at = now()->addMinutes(30);
         $this->teacherToken = $token->accessToken;
-
-        $token = $this->admin->createToken('Personal Access Token');
-        $token->token->expires_at = Carbon::now()->addWeeks(1);
-        $token->token->save();
-        $token->expires_at = now()->addMinutes(30);
-        $this->adminToken = $token->accessToken;
     }
 
     /**
@@ -61,7 +48,7 @@ class BadgeTest extends TestCase
      */
     public function testCreateBadgeWithoutRequiredFields(): void
     {
-        $response = $this->post('/api/badge/create', ['Authorization' => 'Bearer ' . $this->teacherToken], [
+        $response = $this->post('/api/badge', ['Authorization' => 'Bearer ' . $this->teacherToken], [
             'title' => $this->badge->title,
             'description' => $this->badge->description,
         ]);
@@ -74,7 +61,7 @@ class BadgeTest extends TestCase
      */
     public function testCreateBadgeWithRequiredFields(): void
     {
-        $response = $this->post('/api/badge/create', [
+        $response = $this->post('/api/badge', [
             'title' => $this->badge->title,
             'description' => $this->badge->description,
             'image' => $this->badge->image,
@@ -88,7 +75,7 @@ class BadgeTest extends TestCase
      */
     public function testDeleteBadge(): void
     {
-        $response = $this->delete('/api/badge/' . $this->badge->id, ['Authorization' => 'Bearer ' . $this->adminToken]);
+        $response = $this->delete('/api/badge/' . $this->badge->id, ['Authorization' => 'Bearer ' . $this->teacherToken]);
 
         $response->assertStatus(200);
 
