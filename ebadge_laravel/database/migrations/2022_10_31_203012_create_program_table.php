@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 class CreateProgramTable extends Migration
 {
     /**
@@ -18,6 +18,7 @@ class CreateProgramTable extends Migration
             $table->string('name', 60);
             $table->timestamps();
         });
+
     }
 
     /**
