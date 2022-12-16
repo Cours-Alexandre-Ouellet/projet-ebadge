@@ -8,4 +8,4 @@ projet-ebadge created by GitHub Classroom
  3. ```php artisan passport:install```
  4. ```php artisan passport:keys```
  5. ```php artisan storage:link```
- 
+ 6. Création d'un utilisateur admin (changer le role dans la base de données)
