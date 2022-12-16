@@ -5,31 +5,39 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextF
 import { Search } from "@mui/icons-material";
 import Api from "../utils/Api";
 
-class Classement extends React.Component {
+class Classement extends React.Component { 
     constructor(props) {
         super(props);
-        
         this.state = {
             closeBadgeForm: false,
+            /** 
+             * initialisation du classement vide, on va le remplir avec les données de la base de données
+             */
             classement: [],
+            /**
+             * sessions disponibles dans l'applications, on peut en rajouter dans le code seulement pour l'instant
+             * ajouter une table dans la base de données pour les sessions
+             * et les récupérer depuis la base de données pourrait être une bonne idée
+             */
             sessions: [
                 {
                     "id": 1,
-                    "name": "Session 1",
+                    "name": "Session automne 2021",
+                    "dateDebut": "2021-08-23",
+                    "dateFin": "2021-12-30"
+
+                },
+                {
+                    "id": 2,
+                    "name": "Session hiver 2022",
                     "dateDebut": "2022-01-25",
                     "dateFin": "2022-05-30"
                 },
                 {
-                    "id": 2,
-                    "name": "Session 2",
+                    "id": 3,
+                    "name": "Session automne 2022",
                     "dateDebut": "2022-08-25",
                     "dateFin": "2022-12-30"
-                },
-                {
-                    "id": 3,
-                    "name": "Session 3",
-                    "dateDebut": "2021-08-23",
-                    "dateFin": "2021-12-30"
                 }
             ],
             session: 1,
@@ -38,7 +46,9 @@ class Classement extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.filterClassement = this.filterClassement.bind(this);
     }
-
+    /**
+     * fonction qui permet d'aller chercher les données du classement à la session n°1 par défaut quand on ouvre la page
+     */
     componentDidMount() {
         Api.get('/stats/leaderboard/' + this.state.sessions[0].dateDebut + '/' + this.state.sessions[0].dateFin) 
             .then(response => { 
@@ -50,9 +60,13 @@ class Classement extends React.Component {
                 this.setState({ classement: leaderboard });
             }).catch((error) => {
                 console.log(error);
-            });
+        });
     }
 
+    /**
+     * fonction qui permet de mettre à jour le classement quand on change de session
+     * @param {*} event 
+     */
     handleChangeSession = (event) => {
         this.setState({ session: event.target.value });
         console.log('/stats/leaderboard/' + this.state.sessions[event.target.value - 1].dateDebut + '/' + this.state.sessions[event.target.value - 1].dateFin);
@@ -69,6 +83,11 @@ class Classement extends React.Component {
             }
         );
     };
+
+    /**
+     * fonction qui permet de mettre à jour le state quand on change la valeur d'un champ
+     * @param {*} event 
+     */
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
@@ -76,6 +95,10 @@ class Classement extends React.Component {
         });
     }
 
+    /**
+     *  fonction qui permet de filtrer le classement par le nom de l'utilisateur
+     * @returns le classement filtré par le nom de l'utilisateur
+     */
     filterClassement() {
         return this.state.classement.filter((item) => {
             return item.username.toLowerCase().includes(this.state.search.toLowerCase());
@@ -159,5 +182,6 @@ class Classement extends React.Component {
         )
     }
 }
+
 
 export default (Classement);

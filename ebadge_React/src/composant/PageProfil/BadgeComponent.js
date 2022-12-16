@@ -1,5 +1,13 @@
 import React from "react";
-
+/**
+ * @param {Object} props
+ * @param {Object} props.badge - Objet badge
+ * @param {string} props.badge.title - titre du badge
+ * @param {string} props.badge.description - description du badge
+ * @param {string} props.badge.imagePath - le chemin de l'image du badge
+ * @param {string} props.badge.color - la couleur du badge
+ * @param {number} props.badge.possession - La possession du badge
+ */
 class BadgeComponent extends React.Component {
   render() {
     return (<div className='Badge'>
