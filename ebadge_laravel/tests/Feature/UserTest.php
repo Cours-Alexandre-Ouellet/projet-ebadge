@@ -17,35 +17,11 @@ class UserTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * SETUP
-     */
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $pdo = new PDO(
-            "mysql:host=localhost",
-            config('database.connections.mysql.username'),
-            config('database.connections.mysql.password')
-        );
-        $pdo->query('CREATE DATABASE test_database');
-
-        // set up the new database as the default
-        config()->set('database.connections.mysql.database', 'test_database');
-
-        Artisan::call('migrate');
-        $this->seed();
-
-        $this->user = factory(\App\Models\User::class)->create();
-        $this->badge = factory(\App\Models\Badge::class)->create();
-    }
-
-    /**
      * Get users return 200
      */
     public function testGetUsers()
     {
-        $response = $this->get('/user');
+        $response = $this->get('/api/user');
 
         $response->assertStatus(200);
     }
@@ -58,7 +34,7 @@ class UserTest extends TestCase
      */
     public function testAssignBadgeToTeacher()
     {
-        $response = $this->post('/user/assign-badge', [
+        $response = $this->post('/api/user/assign-badge', [
             'badge_id' => $this->badge->id,
             'user_id' => $this->user->id
         ]);
@@ -74,7 +50,7 @@ class UserTest extends TestCase
      */
     public function testAssignBadgeToStudent()
     {
-        $response = $this->post('/user/assign-badge', [
+        $response = $this->post('/api/user/assign-badge', [
             'badge_id' => 1,
             'user_id' => 2
         ]);
@@ -87,7 +63,7 @@ class UserTest extends TestCase
      */
     public function testAssignNonExistingBadgeToStudent()
     {
-        $response = $this->post('/user/assign-badge', [
+        $response = $this->post('/api/user/assign-badge', [
             'badge_id' => 999,
             'user_id' => 2
         ]);
@@ -100,7 +76,7 @@ class UserTest extends TestCase
      */
     public function testRemoveBadgeFromStudent()
     {
-        $response = $this->post('/user/remove-badge', [
+        $response = $this->post('/api/user/remove-badge', [
             'badge_id' => 1,
             'user_id' => 2
         ]);
@@ -113,7 +89,7 @@ class UserTest extends TestCase
      */
     public function testRemoveNonExistingBadgeFromStudent()
     {
-        $response = $this->post('/user/remove-badge', [
+        $response = $this->post('/api/user/remove-badge', [
             'badge_id' => 999,
             'user_id' => 2
         ]);
