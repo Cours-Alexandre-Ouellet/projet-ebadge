@@ -10,7 +10,7 @@ $factory->define(\App\Models\Badge::class, function (Faker $faker) {
         'title' => $faker->name(),
         'description' => $faker->text(),
         'imagePath' => $faker->imageUrl(),
-        'color' => "43433",
+        'color' => substr($faker->hexcolor(), 1),
         'created_at' => $faker->dateTimeBetween('-1 years', 'now'),
         'updated_at' => $faker->dateTimeBetween('-1 years', 'now'),
     ];

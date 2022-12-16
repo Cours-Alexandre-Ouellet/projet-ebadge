@@ -48,12 +48,16 @@ class BadgeTest extends TestCase
      */
     public function testCreateBadgeWithoutRequiredFields(): void
     {
-        $response = $this->post('/api/badge', ['Authorization' => 'Bearer ' . $this->teacherToken], [
-            'title' => $this->badge->title,
-            'description' => $this->badge->description,
-        ]);
+        $response = $this->post(
+            '/api/badge',
+            [
+                'title' => $this->badge->title,
+                'description' => $this->badge->description,
+            ],
+            ['Authorization' => 'Bearer ' . $this->teacherToken],
+        );
 
-        $response->assertStatus(405);
+        $response->assertStatus(422);
     }
 
     /**
@@ -64,7 +68,8 @@ class BadgeTest extends TestCase
         $response = $this->post('/api/badge', [
             'title' => $this->badge->title,
             'description' => $this->badge->description,
-            'image' => $this->badge->image,
+            'imagePath' => $this->badge->imagePath,
+            'color' => $this->badge->color,
         ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
 
         $response->assertStatus(200);
@@ -75,11 +80,15 @@ class BadgeTest extends TestCase
      */
     public function testDeleteBadge(): void
     {
-        $response = $this->delete('/api/badge/' . $this->badge->id, ['Authorization' => 'Bearer ' . $this->teacherToken]);
+        $response = $this->delete(
+            '/api/badge/' . $this->badge->id,
+            [],
+            ['Authorization' => 'Bearer ' . $this->teacherToken]
+        );
 
         $response->assertStatus(200);
 
-        $this->assertDatabaseMissing('badges', [
+        $this->assertDatabaseMissing('badge', [
             'id' => $this->badge->id,
         ]);
     }
@@ -95,11 +104,11 @@ class BadgeTest extends TestCase
             "title" => $this->badge->title . "Test",
         ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
 
-        $response->assertStatus(405);
+        $response->assertStatus(422);
 
 
         //check if the badge has not been updated
-        $this->assertDatabaseHas('badges', [
+        $this->assertDatabaseHas('badge', [
             'id' => $this->badge->id,
             'title' => $this->badge->title,
         ]);
@@ -116,35 +125,22 @@ class BadgeTest extends TestCase
     }
 
     /**
-     * Il est impossible de récuperer tous les bagdes sans être connecté
-     */
-    public function testGetAllBadgesWithoutToken()
-    {
-        $response = $this->get('/api/badge');
-
-        $response->assertStatus(401);
-
-        $response->assertJson([
-            'message' => 'Unauthenticated.',
-        ]);
-    }
-
-    /**
      * Modfiier un badge avec tous les champs obligatoires
      */
     public function testUpdateBadgeWithRequiredFields(): void
     {
-        $response = $this->post('/api/badge', [
+        $response = $this->put('/api/badge', [
             "id" => $this->badge->id,
             "title" => $this->badge->title . "test",
             "description" => $this->badge->description,
-            "image" => $this->badge->image,
+            "imagePath" => $this->badge->imagePath,
+            "color" => $this->badge->color,
         ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
 
         $response->assertStatus(200);
 
         //check if the badge has been updated
-        $this->assertDatabaseHas('badges', [
+        $this->assertDatabaseHas('badge', [
             'id' => $this->badge->id,
             'title' => $this->badge->title . "test",
         ]);
