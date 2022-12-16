@@ -23,7 +23,6 @@ class CreateUsersTable extends Migration
             $table->string('username', 50)->unique();
             $table->string('email', 125)->unique();
             $table->string('password', 60);
-            $table->string('salt', 60);
             $table->foreignId('role_id')->constrained('role');
             $table->boolean('privacy')->default(0);
             $table->string('avatarImagePath', 2048)->nullable();
