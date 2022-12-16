@@ -112,6 +112,7 @@ class BadgeCreateForm extends React.Component {
                     this.props.addBadge(response.data);
                 })
                 .catch((error) => {
+                    this.props.errorBadge('Erreur lors de la création du badge');
                     console.log(error);
                 });
 
@@ -121,6 +122,7 @@ class BadgeCreateForm extends React.Component {
                     this.props.addBadge(response.data);
                 })
                 .catch((error) => {
+                    this.props.errorBadge('Erreur lors de la création du badge');
                     console.log(error);
                 });
             }
@@ -146,6 +148,7 @@ class BadgeCreateForm extends React.Component {
                                     onBlur={this.validateTitle}
                                     error={this.state.titleError.length > 0}
                                     helperText={this.state.titleError}
+                                    inputProps={{ maxLength: 45 }}
                                     required
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
@@ -154,6 +157,9 @@ class BadgeCreateForm extends React.Component {
                                     name="description"
                                     label="Description"
                                     variant="outlined"
+                                    multiline
+                                    rows={4}
+                                    inputProps={{ maxLength: 255 }}
                                     value={this.state.badge.description}
                                     onChange={this.handleBadgeChange}
                                     onBlur={this.validateDescription}
@@ -190,6 +196,7 @@ class BadgeCreateForm extends React.Component {
                                                 type="url"
                                                 fullWidth
                                                 variant="standard"
+                                                inputProps={{ maxLength: 2048 }}
                                                 value={this.state.imageUrlField}
                                                 onChange={e => {
                                                     this.setState({

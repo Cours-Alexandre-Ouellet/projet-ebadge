@@ -3,11 +3,11 @@ import '@mui/material';
 import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert } from '@mui/material';
 import { PhotoCamera, Check } from '@mui/icons-material';
 import Api from '../utils/Api';
-import BadgeComponent from './BadgeComponent';
 import './BadgeCreateForm.css';
+import BadgeComponent from './PageProfil/BadgeComponent';
 
 function isImage(url) {
-    return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
+    return /(http(s?):)*\.(?:jpg|gif|png)/.test(url);
 }
 
 class BadgeUpdateForm extends React.Component {
@@ -41,10 +41,7 @@ class BadgeUpdateForm extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ badge: this.props.badge });
-        if (this.props.badge.id === 0) {
-            this.props.handleClose();
-        }
+        this.setState({ badge: this.props.selectedBadge });
     }
 
     handleBadgeChange(event) {
@@ -106,25 +103,28 @@ class BadgeUpdateForm extends React.Component {
             if (this.state.imageFile != null) {
                 let formData = new FormData();
 
+                formData.append('id', this.state.badge.id);
                 formData.append('title', this.state.badge.title);
                 formData.append('description', this.state.badge.description);
                 formData.append('image', this.state.imageFile);  
                 formData.append('color', this.state.badge.color);
 
-                Api.put('/badge/' + this.state.badge.id, formData)
+                Api.put('/badge', formData)
                 .then((response) => {
                     this.props.editBadge(response.data);
                 })
                 .catch((error) => {
+                    this.props.errorBadge('Une erreur est survenue');
                     console.log(error);
                 });
 
             } else if (isImage(this.state.badge.imagePath)) {
-                Api.put('/badge/' + this.state.badge.id, this.state.badge)
+                Api.put('/badge', this.state.badge)
                 .then((response) => {
                     this.props.editBadge(response.data);
                 })
                 .catch((error) => {
+                    this.props.errorBadge('Une erreur est survenue');
                     console.log(error);
                 });
             }
@@ -150,6 +150,7 @@ class BadgeUpdateForm extends React.Component {
                                     onBlur={this.validateTitle}
                                     error={this.state.titleError.length > 0}
                                     helperText={this.state.titleError}
+                                    inputProps={{ maxLength: 45 }}
                                     required
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
@@ -158,6 +159,9 @@ class BadgeUpdateForm extends React.Component {
                                     name="description"
                                     label="Description"
                                     variant="outlined"
+                                    multiline
+                                    rows={4}
+                                    inputProps={{ maxLength: 255 }}
                                     value={this.state.badge.description}
                                     onChange={this.handleBadgeChange}
                                     onBlur={this.validateDescription}
@@ -195,6 +199,7 @@ class BadgeUpdateForm extends React.Component {
                                                 fullWidth
                                                 variant="standard"
                                                 value={this.state.imageUrlField}
+                                                inputProps={{ maxLength: 2048 }}
                                                 onChange={e => {
                                                     this.setState({
                                                         imageUrlField: e.target.value,
@@ -283,10 +288,10 @@ class BadgeUpdateForm extends React.Component {
                                         marginTop: '20px',
                                         marginRight: '20px'
                                     }}>Annuler</Button>
-                                    <Button type="submit" variant="contained" sx={{
+                                    <Button type="submit" variant="contained" disabled={this.state.badge === this.props.selectedBadge} sx={{
                                         width: '100%',
                                         marginTop: '20px'
-                                    }}>Créer</Button>
+                                    }}>Modifier</Button>
                                 </div>
                             </form>
                         </div>

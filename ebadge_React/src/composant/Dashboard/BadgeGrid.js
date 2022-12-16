@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Avatar } from '@mui/material';
+import { Button, Avatar, Slide, Dialog } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import BadgeDeleteAction from './BadgeDeletePopup';
+import BadgeUpdateForm from '../BadgeUpdateForm';
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 class BadgeGrid extends React.Component {
     constructor(props) {
@@ -11,6 +15,7 @@ class BadgeGrid extends React.Component {
         this.state = {
             pageSize: 5,
             openDeleteDialog: false,
+            openEditDialog: false,
             selectedBadge: null,
             columns: [
                 { field: 'id', headerName: 'ID', flex: 1, align: 'center', headerAlign: 'center' },
@@ -31,6 +36,10 @@ class BadgeGrid extends React.Component {
                         const onClick = (e) => {
                             e.stopPropagation();
 
+                            this.setState({
+                                openEditDialog: true,
+                                selectedBadge: params.row
+                            })
                         };
                         return <Button variant="outlined" onClick={onClick} startIcon={<Edit></Edit>} >Modifier</Button>;
                     }
@@ -50,11 +59,17 @@ class BadgeGrid extends React.Component {
                 }
             ]
         };
+
+        this.handleCloseDeleteDialog = this.handleCloseDeleteDialog.bind(this);
+        this.handleCloseEditDialog = this.handleCloseEditDialog.bind(this);
     }
 
     handleCloseDeleteDialog = () => {
         this.setState({ openDeleteDialog: false });
-        this.props.refresh();
+    };
+
+    handleCloseEditDialog = () => {
+        this.setState({ openEditDialog: false });
     };
 
     
@@ -76,7 +91,12 @@ class BadgeGrid extends React.Component {
                     isOpen={this.state.openDeleteDialog}
                     onClose={this.handleCloseDeleteDialog}
                     selectedBadge={this.state.selectedBadge}
+                    deleteBadge={this.props.deleteBadge}
+                    errorBadge={this.props.errorBadge}
                 />
+                <Dialog fullScreen open={this.state.openEditDialog} onClose={this.handleCloseEditDialog} TransitionComponent={Transition}>
+                    <BadgeUpdateForm handleClose={this.handleCloseEditDialog} editBadge={this.props.editBadge} selectedBadge={this.state.selectedBadge} errorBadge={this.props.errorBadge} />
+                </Dialog>
             </div>
         );
     }

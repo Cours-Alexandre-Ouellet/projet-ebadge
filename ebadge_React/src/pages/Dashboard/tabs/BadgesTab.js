@@ -18,6 +18,8 @@ class BadgesTab extends React.Component {
             closeBadgeForm: false,
             showSuccessMessage: false,
             successMessage: '',
+            showErrorMessage: false,
+            errorMessage: '',
             badges: []
         }
 
@@ -26,7 +28,9 @@ class BadgesTab extends React.Component {
         this.addBadge = this.addBadge.bind(this);
         this.editBadge = this.editBadge.bind(this);
         this.deleteBadge = this.deleteBadge.bind(this);
+        this.errorBadge = this.errorBadge.bind(this);
         this.handleCloseSuccessMessage = this.handleCloseSuccessMessage.bind(this);
+        this.handleCloseErrorMessage = this.handleCloseErrorMessage.bind(this);
     }
 
     componentDidMount() {
@@ -53,21 +57,35 @@ class BadgesTab extends React.Component {
     }
 
     editBadge(badge) {
-        const badges = this.state.badges;
-        const index = badges.findIndex(b => b.id === badge.id);
-        badges[index] = badge;
-        this.setState({ badges: badges, successMessage: 'Le badge a été modifié avec succès !', showSuccessMessage: true });
+        const badges = this.state.badges.map(b => {
+            if (b.id === badge.id) {
+                return badge;
+            }
+            return b;
+        });
+        this.setState({ badges, successMessage: 'Le badge a été modifié avec succès !', showSuccessMessage: true });
     }
 
     deleteBadge(badge) {
-        const badges = this.state.badges;
-        const index = badges.findIndex(b => b.id === badge.id);
-        badges.splice(index, 1);
-        this.setState({ badges: badges, successMessage: 'Le badge a été supprimé avec succès !', showSuccessMessage: true });
+        console.log(badge);
+        console.log(this.state.badges);
+        const badges = this.state.badges.filter(b => b.id !== badge.id);
+        console.log(badges);
+        this.setState({ badges, successMessage: 'Le badge a été supprimé avec succès !', showSuccessMessage: true });
+        console.log(this.state.badges);
     }
+
 
     handleCloseSuccessMessage() {
         this.setState({ showSuccessMessage: false, successMessage: '' });
+    }
+
+    errorBadge(message) {
+        this.setState({ errorMessage: message, showErrorMessage: true });
+    }
+
+    handleCloseErrorMessage() {
+        this.setState({ showErrorMessage: false, errorMessage: '' });
     }
 
     render() {
@@ -77,13 +95,18 @@ class BadgesTab extends React.Component {
                     <h4>Liste des badges</h4>
                     <Button variant="contained" onClick={this.handleBadgeForm} startIcon={<Add></Add>}>Créer un badge</Button>
                     <Dialog fullScreen open={this.state.closeBadgeForm} onClose={this.handleBadgeForm} TransitionComponent={Transition}>
-                        <BadgeCreateForm handleClose={this.handleBadgeForm} addBadge={this.addBadge} editBadge={this.editBadge} deleteBadge={this.deleteBadge} />
+                        <BadgeCreateForm handleClose={this.handleBadgeForm} addBadge={this.addBadge} errorBadge={this.errorBadge} />
                     </Dialog>
                 </div>
-                <BadgeGrid rows={this.state.badges} refresh={this.getBadges} />
+                <BadgeGrid rows={this.state.badges} refresh={this.getBadges} deleteBadge={this.deleteBadge} editBadge={this.editBadge} errorBadge={this.errorBadge} />
                 <Snackbar onClose={this.handleCloseSuccessMessage} open={this.state.showSuccessMessage} autoHideDuration={3000}>
                     <Alert onClose={this.handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }} md={{ minWidth: '300px' }}>
                         {this.state.successMessage}
+                    </Alert>
+                </Snackbar>
+                <Snackbar onClose={this.handleCloseErrorMessage} open={this.state.showErrorMessage} autoHideDuration={3000}>
+                    <Alert onClose={this.handleCloseErrorMessage} severity="error" sx={{ width: '100%' }} md={{ minWidth: '300px' }}>
+                        {this.state.errorMessage}
                     </Alert>
                 </Snackbar>
             </Item>
