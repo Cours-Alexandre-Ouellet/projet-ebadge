@@ -36,7 +36,8 @@ Créer un lien symbolique depuis le répertoire public/storage vers le répertoi
 ```bash
  php artisan storage:link
 ```
- 6. Création d'un utilisateur admin (changer le role dans la base de données)
+
+Création d'un utilisateur admin avec l'api ou le site web. (changer le role dans la base de données)
 
 ## Éxécuter les tests unitaires
 
