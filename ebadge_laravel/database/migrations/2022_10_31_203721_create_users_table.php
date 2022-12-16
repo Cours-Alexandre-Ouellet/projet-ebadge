@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migration pour la création de la table user
+ */
 class CreateUsersTable extends Migration
 {
     /**
@@ -23,10 +26,13 @@ class CreateUsersTable extends Migration
             $table->string('salt', 60);
             $table->foreignId('role_id')->constrained('role');
             $table->boolean('privacy')->default(0);
+            $table->string('avatarImagePath', 2048)->nullable();
+            $table->string('backgroundImagePath', 2048)->nullable();
             $table->foreignId('organisation_id')->constrained('organisation');
             $table->foreignId('program_id')->constrained('program');
             $table->timestamps();
         });
+
     }
 
     /**

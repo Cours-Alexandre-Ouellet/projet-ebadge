@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Badge;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -178,5 +179,10 @@ class UserController extends Controller
             'message' => 'Privacy changed',
             'privacy' => $user->privacy
         ]);
+    }
+
+    public function getMyBadges(Request $request)
+    {
+        return $this->getUserBadges($request->user()->id);
     }
 }

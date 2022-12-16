@@ -6,13 +6,27 @@ use App\Models\Program;
 use Illuminate\Http\Request;
 use App\Models\User;
 
+/**
+ * Contrôleur des programmes
+ */
 class ProgramController extends Controller
 {
+    /**
+     * liste les programmes
+     *
+     * @return JsonResponse la liste des programmes
+     */
     public function index()
     {
         return Program::all();
     }
 
+    /**
+     * création d'un programme
+     *
+     * @param Request $request
+     * @return JsonResponse le programme créé
+     */
     public function create(Request $request)
     {
         $request->validate([
@@ -26,6 +40,12 @@ class ProgramController extends Controller
         return response()->json($program, 201);
     }
 
+    /**
+     * suppression d'un programme
+     *
+     * @param Request $request
+     * @return JsonResponse le id du programme supprimé
+     */
     public function delete(Request $request)
     {
         $request->validate([

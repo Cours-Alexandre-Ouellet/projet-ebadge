@@ -14,6 +14,11 @@ import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
 import BadgeList from './PageProfil/BadgeList';
 
+/**
+ * fonction qui vérifie si l'url est une image
+ * @param {*} url 
+ * @returns boolean 
+ */
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
 }
@@ -34,6 +39,9 @@ export default class PageProfile extends React.Component {
         };
     }
 
+    /**
+     * fonction qui récupère les données de l'utilisateur connecté
+     */
     componentDidMount() {
         Api.get("/auth/current_user").then((response) => {
             if (response.data.avatarImagePath == null) {
@@ -51,15 +59,23 @@ export default class PageProfile extends React.Component {
         });
     }
 
+    /**
+     * fonction qui gère l'ouverture de la fenêtre de modification de l'avatar
+     */
     handleClickOpen = () => {
         this.setState({ openBackground: true });
     };
 
+    /**
+     * fonction qui gère la fermeture de la fenêtre de modification de l'avatar
+     */
     handleClose = () => {
-
         this.setState({ openBackground: false });
     };
 
+    /**
+     * fonction qui gère la modification de l'avatar
+     */
     handleModify = () => {
         if (this.state.backgroundImageFile != null) {
             let formData = new FormData();
@@ -85,6 +101,10 @@ export default class PageProfile extends React.Component {
             });
         }
     };
+
+    /**
+     * fonction qui gère la suppression de l'avatar
+     */
     handleDelete = () => {
         let user = this.state.user;
         user.backgroundImagePath = "./background.png";
@@ -95,14 +115,23 @@ export default class PageProfile extends React.Component {
         });
     };
 
+    /**
+     * fonction qui gère la modification de l'url de l'avatar
+     */
     handleClickOpenAvatar = () => {
         this.setState({ openAvatar: true });
     };
 
+    /**
+     * fonction qui gère la fermeture de la fenêtre de modification de l'avatar
+     */
     handleCloseAvatar = () => {
         this.setState({ openAvatar: false });
     };
 
+    /**
+     * fonction qui gère la modification de l'avatar
+     */
     handleModifyAvatar = () => {
         if (this.state.avatarImageFile != null) {
             let formData = new FormData();
@@ -131,11 +160,16 @@ export default class PageProfile extends React.Component {
         }
     };
 
+    /**
+     * fonction qui gère la suppression de l'avatar
+     */
     handleDeleteAvatar = () => {
         let user = this.state.user;
         user.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
         this.setState({ user: user, openAvatar: false  });
     };
+
+    //fonction qui gère la modification de la privacité
     setPrivacy = (e) => {
         let user = this.state.user;
         user.privacy = !user.privacy;
@@ -148,7 +182,10 @@ export default class PageProfile extends React.Component {
             console.log(error);
         });
     }
-
+    
+    /**
+     * fonction qui gère la modification du nom
+     */
     badgePercentage = () => {
         Api.get("/badge")
             .then((response) => {
@@ -288,13 +325,6 @@ export default class PageProfile extends React.Component {
                             </DialogActions>
                         </Dialog>
                     </div>
-                    {/* TODO: AFFICHE LE LEVEL UN FOIS CALCULER */}
-                    {/* <div className="infosLevel">
-                        <p className='progressLevel'>Level : {Math.floor(this.state.levelAvatar)}</p>
-                        <div className="progressBar">
-                            <div className="progressBarFill" style={{ width: (this.state.levelAvatar % 1) * 100 + "%" }}></div>
-                        </div>
-                    </div> */}
                 </div>
                 <BadgeList user={this.state.user}/>
             </div>

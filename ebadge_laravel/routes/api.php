@@ -35,6 +35,7 @@ Route::group([
     });
 });
 
+
 Route::group([
     'prefix' => 'user',
     'middleware' => [
@@ -44,13 +45,13 @@ Route::group([
     Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
+    Route::get("/my-badges", [App\Http\Controllers\UserController::class, "getMyBadges"]);
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
     Route::post('/edit-background', [App\Http\Controllers\UserController::class, 'editBackground']);
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);
     Route::post('/edit-privacy', [App\Http\Controllers\UserController::class, 'editPrivacy']);
     Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
     Route::get("/{id}/badges-left", [App\Http\Controllers\UserController::class, "getUserBadgeLeft"])->middleware('roles:' . Role::ADMIN . ',' .Role::ENSEIGNANT);
-
 });
 
 

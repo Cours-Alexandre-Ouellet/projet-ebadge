@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Organisation;
 use Illuminate\Http\Request;
 use App\Models\User;
+
+/**
+ * Contrôleur pour les organisations
+ */
 class OrganisationController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * liste les organisations
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -18,10 +23,10 @@ class OrganisationController extends Controller
     }
 
     /**
-     * Supprime un organisation en fonction de son id
+     * suppression d'une organisation
      *
      * @param Request $request
-     * @return reponse json où deleted est le id de l'organisation supprimé
+     * @return JsonResponse le id de l'organisation supprimée
      */
     public function delete(Request $request)
     {
@@ -40,6 +45,12 @@ class OrganisationController extends Controller
 
     }
 
+    /**
+     * création d'une organisation
+     *
+     * @param Request $request
+     * @return JsonResponse l'organisation modifiée
+     */
     public function create(Request $request)
     {
         $request->validate([

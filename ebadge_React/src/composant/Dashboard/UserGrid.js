@@ -40,6 +40,10 @@ class UserGrid extends React.Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
+  /**
+   * Ferme la popup de gestion des badges
+   * @param {*} event
+   */
   handleClose = () => {
     this.setState({ open: false });
   };

@@ -19,6 +19,9 @@ import Role from '../../policies/Role';
 import PoliciesHelper from '../../policies/PoliciesHelper';
 import { Link } from 'react-router-dom';
 
+/**
+ * Composant Navbar
+ */
 class Navbar extends React.Component {
 
   constructor(props) {
@@ -51,22 +54,43 @@ class Navbar extends React.Component {
     this.setState({ initials: this.getInitials(localStorage.getItem('username') ?? "na") });
   }
 
+  /**
+   * Fonction pour ouvrir le menu
+   * @param {*} event 
+   */
   handleOpenNavMenu = (event) => {
     this.setState({ anchorElNav: true });
   };
 
+/**
+ * Fonction pour ouvrir le menu utilisateur
+ * @param {*} event
+ */
   handleOpenUserMenu = (event) => {
     this.setState({ anchorElUser: true });
   };
 
+  /**
+   * Fonction pour fermer le menu
+   * @param {*} event
+   */
   handleCloseNavMenu = () => {
     this.setState({ anchorElNav: false });
   };
 
+  /**
+   * Fonction pour fermer le menu utilisateur
+   * @param {*} event
+   */
   handleCloseUserMenu = () => {
     this.setState({ anchorElUser: false });
   };
 
+  /**
+   * Fonction pour récupérer les initiales
+   * @param {*} name 
+   * @returns 
+   */
   getInitials = (name) => {
     let initials = name.match(/\b\w/g) || [];
     initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();

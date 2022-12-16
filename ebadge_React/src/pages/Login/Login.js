@@ -5,6 +5,8 @@ import { Button, TextField } from '@mui/material';
 import Api from '../../utils/Api';
 import { Navigate } from 'react-router-dom';
 import Loading from '../../composant/Loading/LoadingComponent';
+import PoliciesHelper from '../../policies/PoliciesHelper';
+import Role from '../../policies/Role';
 
 class Login extends React.Component {
     constructor(props) {
@@ -14,16 +16,20 @@ class Login extends React.Component {
             password: '',
             identifierError: '',
             passwordError: '',
-            redirect: false,
-            isLoading: false
+            isLoading: false,
+            redirectPath: '/'
         }
-
         this.handleChange = this.handleChange.bind(this);
         this.validateIdentifier = this.validateIdentifier.bind(this);
         this.validatePassword = this.validatePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.redirectUser = this.redirectUser.bind(this);
     }
 
+    /**
+     * fonction qui change la valeur du champ quand on tape dedans
+     * @param {*} event 
+     */
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
@@ -31,6 +37,10 @@ class Login extends React.Component {
         });
     }
 
+    /**
+     * fonction qui valide l'identifiant
+     * @returns boolean 
+     */
     validateIdentifier() {
         if (this.state.identifier.length === 0) {
             this.setState({ identifierError: 'Veuillez renseigner votre identifiant' });
@@ -45,6 +55,10 @@ class Login extends React.Component {
         }
     }
 
+    /**
+     * fonction qui valide le mot de passe
+     * @returns 
+     */
     validatePassword() {
         if (this.state.password.length === 0) {
             this.setState({ passwordError: 'Veuillez renseigner votre mot de passe' });
@@ -53,6 +67,18 @@ class Login extends React.Component {
             this.setState({ passwordError: '' });
             return true;
         }
+    }
+
+    /**
+     * fonction qui gère la soumission du formulaire
+     * @param {*} event 
+     */
+    redirectUser() {
+        this.setState({ isLoading: false });
+
+        var policiesHelper = new PoliciesHelper();
+
+        window.location = policiesHelper.getDefaultRoute();
     }
 
     handleSubmit = (event) => {
@@ -66,8 +92,8 @@ class Login extends React.Component {
                 localStorage.setItem('token', response.data.access_token);
                 localStorage.setItem('username', response.data.username);
                 localStorage.setItem('role', response.data.role);
-                this.setState({ redirect: true, isLoading: false });
 
+                this.redirectUser();
             }).catch((error) => {
                 this.setState({isLoading: false})
                 if (error.response) {
@@ -92,10 +118,15 @@ class Login extends React.Component {
         }
     }
 
+    /**
+     * Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
+     */
     componentDidMount() {
         if (localStorage.getItem('token')) {
             Api.get('/auth/current_user').then((response) => {
-                this.setState({ redirect: true });
+
+                this.redirectUser();
+
             }).catch((error) => {
                 console.error(error);
             });
@@ -103,11 +134,6 @@ class Login extends React.Component {
     }
 
     render() {
-        if (this.state.redirect) {
-            return (
-                <Navigate to="/" />
-            );
-        }
         return (
             <div className="login">
                 {this.state.isLoading ? <Loading></Loading> : null}

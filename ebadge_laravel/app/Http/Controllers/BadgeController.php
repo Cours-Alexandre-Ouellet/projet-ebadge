@@ -9,10 +9,13 @@ use App\Models\UserBadge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Controller pour les badges
+ */
 class BadgeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * la liste de tous les badges avec le pourcentage de possession
      *
      * @return \Illuminate\Http\Response
      */
@@ -26,9 +29,9 @@ class BadgeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Création d'un nouveau badge
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse le badge créé
      */
     public function create(CreateBadgeRequest $request)
     {
@@ -48,7 +51,7 @@ class BadgeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Affiche le badge avec l'id donné
      *
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
@@ -63,7 +66,7 @@ class BadgeController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Met à jour le badge avec l'id donné
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Badge  $badge
@@ -85,10 +88,10 @@ class BadgeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprime le badge avec l'id donné
      *
      * @param  \App\Badge  $badge
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse le id du badge supprimé
      */
     public function destroy($id)
     {

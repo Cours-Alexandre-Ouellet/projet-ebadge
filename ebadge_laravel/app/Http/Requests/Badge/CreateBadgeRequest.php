@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class CreateBadgeRequest extends FormRequest
 {
     /**
-     * Get the validation rules that apply to the request.
+     * Définit les règles de validation pour la requête
      *
      * @return array
      */

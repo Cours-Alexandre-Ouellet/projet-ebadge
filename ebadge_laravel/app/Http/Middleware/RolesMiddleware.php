@@ -6,10 +6,15 @@ use App\Models\Role;
 use Closure;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Middleware pour vérifier les rôles
+ */
 class RolesMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Vérifie si l'utilisateur a le rôle requis
+     * Si l'utilisateur n'est pas connecté, on renvoie une erreur 500
+     * Si l'utilisateur n'a pas le rôle requis, on renvoie une erreur 401
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
