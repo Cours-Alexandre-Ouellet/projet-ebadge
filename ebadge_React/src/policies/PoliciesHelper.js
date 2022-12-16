@@ -76,4 +76,13 @@ export default class PoliciesHelper {
         }
         return visibleRoutes;
     }
+
+    getDefaultRoute() {
+        if (this.hasRole(Role.Teacher)) {
+            return '/admin';
+        }
+        else {
+            return '/';
+        }
+    }
 }
