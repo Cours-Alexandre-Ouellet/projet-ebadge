@@ -20,6 +20,9 @@ import { Button } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Role from '../../policies/Role';
 import PoliciesHelper from '../../policies/PoliciesHelper';
+import PeopleIcon from '@mui/icons-material/People';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+
 
 const drawerWidth = 240;
 
@@ -40,15 +43,15 @@ class AdminLayout extends React.Component {
                 {
                     sectionName: "Gestion des utilisateurs",
                     tabs: this.policiesHelper.getvisibleRoutes([
-                        { id: 1, label: 'Mes utilisateurs', icon: <InboxIcon />, path: '/admin/users', minimumRole: Role.Teacher },
-                        { id: 2, label: 'Mes groupes', icon: <InboxIcon />, path: "/admin/groups", minimumRole: Role.Teacher },
-                        {id: 4, label: 'Mes programmes', icon: <InboxIcon />, path: '/admin/programs', minimumRole: Role.Admin},
+                        { id: 1, label: 'Mes utilisateurs', icon: <PeopleIcon />, path: '/admin/users', minimumRole: Role.Teacher },
+                        {id: 4, label: 'Mes programmes', icon: <AssignmentIcon />, path: '/admin/programs', minimumRole: Role.Admin},
+                        {id: 5, label: 'Mes organisations', icon: <InboxIcon />, path: '/admin/organisations', minimumRole: Role.Admin},
                     ])
                 },
                 {
                     sectionName: "Gestion des badges",
                     tabs: this.policiesHelper.getvisibleRoutes([
-                        { id: 3, label: 'Liste des badges', icon: <InboxIcon />, path: "/admin/badges", minimumRole: Role.Teacher },
+                        { id: 3, label: 'Liste des badges', icon: <AssignmentIcon />, path: "/admin/badges", minimumRole: Role.Teacher },
                     ])
                 }
             ],

@@ -8,11 +8,18 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import BadgeComponent from './BadgeComponent';
+import BadgeComponent from './PageProfil/BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
+import BadgeList from './PageProfil/BadgeList';
+import { PhotoCamera, Check } from '@mui/icons-material';
 
+/**
+ * fonction qui vérifie si l'url est une image
+ * @param {*} url 
+ * @returns boolean 
+ */
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
 }
@@ -33,12 +40,11 @@ export default class PageProfile extends React.Component {
         };
     }
 
+    /**
+     * fonction qui récupère les données de l'utilisateur connecté
+     */
     componentDidMount() {
-        Api.get("/auth/current_user", {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then((response) => {
+        Api.get("/auth/current_user").then((response) => {
             if (response.data.avatarImagePath == null) {
                 console.log("avatar null");
                 response.data.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
@@ -54,15 +60,23 @@ export default class PageProfile extends React.Component {
         });
     }
 
+    /**
+     * fonction qui gère l'ouverture de la fenêtre de modification du fond d'écran
+     */
     handleClickOpen = () => {
         this.setState({ openBackground: true });
     };
 
+    /**
+     * fonction qui gère la fermeture de la fenêtre de modification du fond d'écran
+     */
     handleClose = () => {
-
         this.setState({ openBackground: false });
     };
 
+    /**
+     * fonction qui gère la modification du fond d'écran
+     */
     handleModify = () => {
         if (this.state.backgroundImageFile != null) {
             let formData = new FormData();
@@ -70,7 +84,6 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-background', formData, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
@@ -84,15 +97,16 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-background', {
                 backgroundUrl: this.state.user.backgroundImagePath
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
             }).catch((error) => {
                 console.log(error);
             });
         }
+        this.setState({ backgroundImageFile: null });
     };
+
+    /**
+     * fonction qui gère la suppression du fond d'écran 
+     */
     handleDelete = () => {
         let user = this.state.user;
         user.backgroundImagePath = "./background.png";
@@ -103,27 +117,35 @@ export default class PageProfile extends React.Component {
         });
     };
 
+    /**
+     * fonction qui gère la modification de l'url de l'avatar
+     */
     handleClickOpenAvatar = () => {
         this.setState({ openAvatar: true });
     };
 
+    /**
+     * fonction qui gère la fermeture de la fenêtre de modification de l'avatar
+     */
     handleCloseAvatar = () => {
         this.setState({ openAvatar: false });
     };
 
+    /**
+     * fonction qui gère la modification de l'avatar
+     */
     handleModifyAvatar = () => {
         if (this.state.avatarImageFile != null) {
             let formData = new FormData();
             formData.append('avatar', this.state.avatarImageFile);
-
+            
             Api.post('/user/edit-avatar', formData, {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
                 this.state.user.avatarImagePath = response.data.url;
-                this.setState({ openBackground: false });
+                this.setState({ openAvatar: false });
             }).catch((error) => {
                 console.log(error);
             });
@@ -134,21 +156,23 @@ export default class PageProfile extends React.Component {
 
             Api.post('/user/edit-avatar', {
                 avatarUrl: this.state.user.avatarImagePath
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
             }).catch((error) => {
                 console.log(error);
             });
         }
+        this.setState({ avatarImageFile: null });
     };
 
+    /**
+     * fonction qui gère la suppression de l'avatar
+     */
     handleDeleteAvatar = () => {
         let user = this.state.user;
         user.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
         this.setState({ user: user, openAvatar: false  });
     };
+
+    //fonction qui gère la modification de la privacité
     setPrivacy = (e) => {
         let user = this.state.user;
         user.privacy = !user.privacy;
@@ -157,15 +181,14 @@ export default class PageProfile extends React.Component {
         console.log("PRIVACY : " + this.state.user.privacy);
         Api.post('/user/edit-privacy', {
             privacy: this.state.user.privacy
-        }, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
         }).catch((error) => {
             console.log(error);
         });
     }
-
+    
+    /**
+     * fonction qui gère la modification du nom
+     */
     badgePercentage = () => {
         Api.get("/badge")
             .then((response) => {
@@ -238,9 +261,13 @@ export default class PageProfile extends React.Component {
                                             this.setState({
                                                 backgroundImageFile: e.target.files[0]
                                             });
+
                                         }}
                                     />
                                 </Button>
+                                <div hidden={this.state.backgroundImageFile === null}>
+                                    <Check></Check> Image importée
+                                </div>
                                 <div className="hiddenAlert">
                                     <Alert variant="filled" severity="error" >
                                         L'url de l'image n'est pas valide.
@@ -292,6 +319,9 @@ export default class PageProfile extends React.Component {
                                         }}
                                     />
                                 </Button>
+                                <div hidden={this.state.avatarImageFile === null}>
+                                    <Check></Check> Image importée
+                                </div>
                                 <div className="hiddenAlert">
                                     <Alert variant="filled" severity="error" >
                                         L'url de l'image n'est pas valide.
@@ -305,19 +335,8 @@ export default class PageProfile extends React.Component {
                             </DialogActions>
                         </Dialog>
                     </div>
-                    {/* TODO: AFFICHE LE LEVEL UN FOIS CALCULER */}
-                    {/* <div className="infosLevel">
-                        <p className='progressLevel'>Level : {Math.floor(this.state.levelAvatar)}</p>
-                        <div className="progressBar">
-                            <div className="progressBarFill" style={{ width: (this.state.levelAvatar % 1) * 100 + "%" }}></div>
-                        </div>
-                    </div> */}
                 </div>
-                <div className='BadgeArray' onMouseEnter={this.badgePercentage}>
-                    {this.state.user.badges.length ? this.state.user.badges.map((badge, index) => {
-                        return <BadgeComponent badge={badge} />
-                    }) : <h1>Vous n'avez pas encore de badge.</h1>}
-                </div>
+                <BadgeList user={this.state.user}/>
             </div>
         );
     }

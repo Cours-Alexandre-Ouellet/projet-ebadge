@@ -5,10 +5,14 @@ namespace App\Http\Requests\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+
+/**
+ * Objet représentant une requête d'inscription
+ */
 class SignupRequest extends FormRequest
 {
     /**
-     * Get the validation rules that apply to the request.
+     * Définit les règles de validation pour la requête
      *
      * @return array
      */

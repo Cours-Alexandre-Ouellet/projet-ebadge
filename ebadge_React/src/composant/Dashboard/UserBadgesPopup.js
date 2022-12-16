@@ -57,6 +57,7 @@ class UserBadgesPopup extends React.Component {
         this.clearForm = this.clearForm.bind(this);
     }
 
+    //fonction qui change la valeur du champ quand on tape dedans
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
@@ -64,6 +65,7 @@ class UserBadgesPopup extends React.Component {
         });
     }
 
+    //fonction qui envoie les données du formulaire pour l'assignation d'un badge
     handleSubmit(event) {
         event.preventDefault();
 
@@ -87,11 +89,13 @@ class UserBadgesPopup extends React.Component {
                 this.removeStep();
             });
     }
-
+ 
+    //fonction qui permet de vider le formulaire
     clearForm() {
         this.setState({ badgeIdToAssign: null, badgeIdToAssignErrorMessage: '' });
     }
 
+    //fonction qui permet de fermer la popup
     async refreshBadgesAssignation(delay = false) {
         this.addStep();
         setTimeout(() => {
@@ -120,7 +124,7 @@ class UserBadgesPopup extends React.Component {
     }
 
     /**
-     * Remove a badge from the user
+     * Enlever un badge à un utilisateur
      * @param {int} badgeId
      * @returns
      * */
@@ -140,7 +144,7 @@ class UserBadgesPopup extends React.Component {
     }
 
     /**
-     * Refresh the list of badges that are already assigned to the user
+     * Rafraichir la liste des badges de l'utilisateur
      * @returns
      * 
      **/
@@ -157,12 +161,13 @@ class UserBadgesPopup extends React.Component {
             });
     }
 
+    //fonction qui permet de fermer le message de succès
     handleCloseSuccessMessage() {
         this.setState({ showSuccessMessage: false });
     }
 
     /**
-     * Add a step to the loading count
+     * Ajout d'une étape à la barre de chargement
      */
     addStep() {
         this.loadingCount++;
@@ -173,7 +178,7 @@ class UserBadgesPopup extends React.Component {
     }
 
     /**
-     * Remove a step to the loading count
+     * Enlever une étape à la barre de chargement
      **/
     removeStep() {
         this.loadingCount--;

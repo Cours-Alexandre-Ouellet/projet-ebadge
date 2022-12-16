@@ -37,6 +37,9 @@ class Signup extends React.Component {
         this.getPrograms = this.getPrograms.bind(this);
     }
 
+    /**
+     * fonction qui permet d'aller chercher les données des organisations
+     */
     getOrganisations() {
         if (this.state.organisations) {
             return;
@@ -50,6 +53,9 @@ class Signup extends React.Component {
             });
     }
 
+    /**
+     * fonction qui permet d'aller chercher les données des programmes
+     */
     getPrograms() {
         if (this.state.programs) {
             return;
@@ -63,6 +69,10 @@ class Signup extends React.Component {
             });
     }
 
+    /**
+     * fonction qui envoie les données au serveur pour créer un nouvel utilisateur
+     * 
+     */
     handleSubmit() {
         this.setState({ isLoading: true });
         console.log("Submit");
@@ -75,11 +85,17 @@ class Signup extends React.Component {
         data.append('last_name', this.state.last_name);
         data.append('organisation_id', this.state.organisation_id);
         data.append('program_id', this.state.program_id);
-
+        
+        /**
+         * Si le code de professeur est affiché, on l'ajoute aux données
+         */
         if (this.state.show_teacher_code) {
             data.append('teacher_code', this.state.teacher_code);
         }
 
+        /**
+         * On envoie les données au serveur pour créer un nouvel utilisateur
+         */
         Api.post('/auth/signup', data)
             .then(res => {
                 console.log(res.data.user);
@@ -115,9 +131,10 @@ class Signup extends React.Component {
                         this.getPrograms();
                     }}>
                         <div className="signup-right-content">
-                            <h1>Créer un compte</h1>
+                        <h2 className="titre-creer-compte">Créer un compte</h2>
                             <form
                                 id="signup-form"
+                                className="signup-form"
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     this.handleSubmit();
@@ -134,6 +151,7 @@ class Signup extends React.Component {
                                     onChange={(e) => this.setState({ email: e.target.value })}
                                     required
                                     sx={{ width: '100%' }}
+                                    size="small"
                                 />
                                 <TextField
                                     id="first_name"
@@ -146,6 +164,7 @@ class Signup extends React.Component {
                                     onChange={(e) => this.setState({ first_name: e.target.value })}
                                     required
                                     sx={{ width: '100%' }}
+                                    size="small"
                                 />
                                 <TextField
                                     id="last_name"
@@ -158,6 +177,7 @@ class Signup extends React.Component {
                                     onChange={(e) => this.setState({ last_name: e.target.value })}
                                     required
                                     sx={{ width: '100%' }}
+                                    size="small"
                                 />
                                 <TextField
                                     id="username"
@@ -170,6 +190,7 @@ class Signup extends React.Component {
                                     onChange={(e) => this.setState({ username: e.target.value })}
                                     required
                                     sx={{ width: '100%' }}
+                                    size='small'
                                 />
 
                                 <TextField
@@ -184,6 +205,7 @@ class Signup extends React.Component {
                                     onChange={(e) => this.setState({ password: e.target.value })}
                                     required
                                     sx={{ width: '100%' }}
+                                    size='small'
                                 />
                                 <TextField
                                     id="password2"
@@ -197,8 +219,9 @@ class Signup extends React.Component {
                                     onChange={(e) => this.setState({ password2: e.target.value })}
                                     required
                                     sx={{ width: '100%' }}
+                                    size='small'
                                 />
-                                <FormControl fullWidth sx={{
+                                <FormControl fullWidth size="small" sx={{
                                     marginTop: '1rem',
                                 }}
                                 >
@@ -217,7 +240,7 @@ class Signup extends React.Component {
                                     </Select>
                                 </FormControl>
 
-                                <FormControl fullWidth sx={{
+                                <FormControl fullWidth size="small" sx={{
                                     marginTop: '1rem',
                                 }}
                                 >
@@ -228,6 +251,7 @@ class Signup extends React.Component {
                                         onChange={(e) => this.setState({ program_id: e.target.value })}
                                         value={this.state.program_id}
                                         required
+                                        size="small"
                                     >
                                         {this.state.programs && this.state.programs.map((program) => (
                                             <MenuItem key={program.id} value={program.id}>{program.name}</MenuItem>
@@ -243,7 +267,7 @@ class Signup extends React.Component {
                                         onChange={(e) => this.setState({ show_teacher_code: e.target.checked })}
                                     />
                                 } label="Compte enseignant" />
-                                <div hidden={!this.state.show_teacher_code}>
+                                <div hidden={!this.state.show_teacher_code} className="hidden-div">
 
                                     <TextField
                                         id="teacher_code"
@@ -255,6 +279,7 @@ class Signup extends React.Component {
                                         error={this.state.errors.teacher_code ? true : false}
                                         onChange={(e) => this.setState({ teacher_code: e.target.value })}
                                         sx={{ width: '100%' }}
+                                        size='small'
                                     />
                                 </div>
 

@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migration pour la création de la table badge
+ */
 class CreateBadgesTable extends Migration
 {
     /**
@@ -17,7 +20,7 @@ class CreateBadgesTable extends Migration
             $table->id();
             $table->string('title', 45);
             $table->string('description', 255);
-            $table->string('imagePath', 125);
+            $table->string('imagePath', 2048);
             $table->char('color', 6);
             $table->timestamps();
         });
