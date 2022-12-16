@@ -18,7 +18,7 @@ class BadgeUdpateRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:badge,id',
-            'title' => 'required|string|unique:badge,title',
+            'title' => 'required|string',
             'description' => 'required|string',
             'imagePath' => 'required|string',
             'color' => 'required|string|min:6|max:6',
