@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 $factory->define(\App\Models\Role::class, function (Faker $faker) {
     return [
-        'name' => "Admin",
+        'name' => "Administrateur",
         'created_at' => $faker->dateTimeBetween('-1 years', 'now'),
         'updated_at' => $faker->dateTimeBetween('-1 years', 'now'),
     ];
