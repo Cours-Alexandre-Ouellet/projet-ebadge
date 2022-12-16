@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use PDO;
 
 class UserTest extends TestCase
@@ -17,102 +18,42 @@ class UserTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * Get users return 200
+     * SETUP
      */
-    public function testGetUsers()
+    public function setUp(): void
     {
-        $response = $this->get('/api/user');
+        parent::setUp();
+        $this->user = factory(\App\Models\User::class)->create();
+        $this->badge = factory(\App\Models\Badge::class)->create();
 
+        $this->token = $this->user->createToken('Personal Access Token')->accessToken;
+    }
+
+
+    public function testUserCreate()
+    {
+        $user = User::where('id', $this->user->id)->get();
+        $this->assertNotNull($user);
+    }
+
+    public function testUserCanAttachBadge()
+    {
+        $this->user->badges()->attach($this->badge->id);
+        $this->assertTrue($this->user->badges->contains($this->badge));
+    }
+
+    public function testUserCanDetachBadge()
+    {
+        $this->user->badges()->attach($this->badge->id);
+        $this->user->badges()->detach($this->badge->id);
+        $this->assertFalse($this->user->badges->contains($this->badge));
+    }
+
+    public function testUserCanGetMyBadges()
+    {
+        $this->user->badges()->attach($this->badge->id);
+        $response = $this->get('/api/user/my-badges', ['Authorization' => 'Bearer ' . $this->token]);
         $response->assertStatus(200);
-    }
-
-
-
-    /**
-     * Doit retourner une erreur lorsqu'on essais d'assigner un badge
-     * à un enseignant
-     */
-    public function testAssignBadgeToTeacher()
-    {
-        $response = $this->post('/api/user/assign-badge', [
-            'badge_id' => $this->badge->id,
-            'user_id' => $this->user->id
-        ]);
-
-        //print response data
-        $response->dump();
-
-        $response->assertStatus(400);
-    }
-
-    /**
-     * Ajouter un badge à un étudiant doit retourner un code 200
-     */
-    public function testAssignBadgeToStudent()
-    {
-        $response = $this->post('/api/user/assign-badge', [
-            'badge_id' => 1,
-            'user_id' => 2
-        ]);
-
-        $response->assertStatus(200);
-    }
-
-    /**
-     * Ajouter un badge inexistant à un étudiant doit retourner un code 400
-     */
-    public function testAssignNonExistingBadgeToStudent()
-    {
-        $response = $this->post('/api/user/assign-badge', [
-            'badge_id' => 999,
-            'user_id' => 2
-        ]);
-
-        $response->assertStatus(400);
-    }
-
-    /**
-     * Retirer un badge à un étudiant doit retourner un code 200
-     */
-    public function testRemoveBadgeFromStudent()
-    {
-        $response = $this->post('/api/user/remove-badge', [
-            'badge_id' => 1,
-            'user_id' => 2
-        ]);
-
-        $response->assertStatus(200);
-    }
-
-    /**
-     *  Retirer un badge à un étudiant qui ne l’a pas doit retourner un code 400
-     */
-    public function testRemoveNonExistingBadgeFromStudent()
-    {
-        $response = $this->post('/api/user/remove-badge', [
-            'badge_id' => 999,
-            'user_id' => 2
-        ]);
-
-        $response->assertStatus(400);
-    }
-
-    /**
-     * Récupéré un usager retourne bien tous les champs visibles de l’usager
-     *
-     */
-    public function testGetUser()
-    {
-        $response = $this->get('/api/users/2');
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'id',
-            'name',
-            'email',
-            'role_id',
-            'privacy',
-            'badges'
-        ]);
+        $response->assertJsonFragment($this->badge->toArray());
     }
 }
