@@ -25,4 +25,14 @@ class Program extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->unique()->word,
+            'created_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
+        ];
+
+    }
 }
