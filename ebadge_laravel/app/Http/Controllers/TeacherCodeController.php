@@ -8,20 +8,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class TeacherCodeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
-     * Show the form for creating a new resource.
+     * Créer un code d'enseignant
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse le code créé
      */
     public function create()
     {
@@ -33,10 +24,9 @@ class TeacherCodeController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Supprime un code d'enseignant
      *
-     * @param  \App\TeacherCode  $teacherCode
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse un message de confirmation
      */
     public function destroy(Request $request)
     {

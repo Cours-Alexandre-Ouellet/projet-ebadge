@@ -7,7 +7,7 @@ use Closure;
 class CorsMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Ajoute les headers nécessaires pour permettre les requêtes cross-origin
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

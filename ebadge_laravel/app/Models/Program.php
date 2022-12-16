@@ -4,6 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Classe représentant un programme
+ * Par exemple : un programme de techniques en informatique
+ */
 class Program extends Model
 {
     /**

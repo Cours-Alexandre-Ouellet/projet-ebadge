@@ -16,8 +16,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\PersonalAccessTokenResult;
 
+/**
+ * Controller pour l'authentification
+ */
 class AuthController extends Controller
 {
+    /**
+     * Enregistre un nouvel utilisateur
+     * Si le code d'enseignant est fourni, l'utilisateur est créé comme enseignant
+     * Sinon, l'utilisateur est créé comme élève
+     *
+     * @param SignupRequest $request
+     * @return JsonResponse le nouvel utilisateur et le token d'authentification
+     */
     public function signup(SignupRequest $request)
     {
         $user = $this->createUser($request);
@@ -32,7 +43,7 @@ class AuthController extends Controller
             $code->user_id = $user->id;
             $code->save();
 
-            $user->role_id = Role::where('name', Role::ENSEIGNANT)->first()->id;
+            $user->role_id = Role::Teacher()->id;
             $user->save();
         }
 
@@ -41,6 +52,12 @@ class AuthController extends Controller
         return response()->json(['user' => $user, 'access_token' => $acessToken->accessToken], 201);
     }
 
+    /**
+     * Connecte un utilisateur et créé un token d'authentification
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse le token d'authentification
+     */
     public function login(LoginRequest $request)
     {
         $credentials = request(['email', 'password']);
@@ -61,6 +78,12 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Obtiens les informations de l'utilisateur connecté
+     *
+     * @param Request $request
+     * @return JsonResponse les informations de l'utilisateur connecté
+     */
     public function current_user(Request $request)
     {
         $user = $request->user();
@@ -71,6 +94,12 @@ class AuthController extends Controller
         return response()->json($request->user());
     }
 
+    /**
+     * Déconnecte l'utilisateur connecté
+     *
+     * @param Request $request
+     * @return JsonResponse un message de succès
+     */
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
@@ -79,6 +108,11 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Créer un nouvel utilisateur
+     * @param SignupRequest $request
+     * @return User|null
+     */
     private function createUser(SignupRequest $request): User
     {
         $user = new User();
@@ -93,6 +127,12 @@ class AuthController extends Controller
         return $user->save() ? $user : null;
     }
 
+    /**
+     * Créer un token d'authentification pour l'utilisateur donné
+     *
+     * @param User $user
+     * @return PersonalAccessTokenResult
+     */
     private function createToken(User $user): PersonalAccessTokenResult
     {
         $token = $user->createToken('Personal Access Token');

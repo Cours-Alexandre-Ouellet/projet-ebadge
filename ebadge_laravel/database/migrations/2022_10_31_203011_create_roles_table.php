@@ -1,9 +1,13 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
+/**
+ * Migration pour la création de la table role
+ */
 class CreateRolesTable extends Migration
 {
     /**
@@ -18,6 +22,13 @@ class CreateRolesTable extends Migration
             $table->string('name', 45);
             $table->timestamps();
         });
+
+        // Insertion des rôles
+        DB::table('role')->insert([
+            ['name' => Role::ADMIN],
+            ['name' => Role::ENSEIGNANT],
+            ['name' => Role::ETUDIANT],
+        ]);
     }
 
     /**
