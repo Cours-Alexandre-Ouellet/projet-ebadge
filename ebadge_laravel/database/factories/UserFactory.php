@@ -14,7 +14,6 @@ $factory->define(\App\Models\User::class, function (Faker $faker) {
     return [
         'first_name' => $faker->firstName(),
         'username' => $faker->userName(),
-        'salt' => $faker->randomNumber(8),
         'last_name' => $faker->lastName(),
         'email' => $faker->email(),
         'password' => $passwordEncrypt,

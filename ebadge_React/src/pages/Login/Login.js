@@ -143,7 +143,7 @@ class Login extends React.Component {
                     <div className="login-right">
                         <div className="login-right-content">
                             <h1>E-Badge</h1>
-                            <form>
+                            <form className='form-login'>
                                 <TextField
                                     id="identifier"
                                     name="identifier"

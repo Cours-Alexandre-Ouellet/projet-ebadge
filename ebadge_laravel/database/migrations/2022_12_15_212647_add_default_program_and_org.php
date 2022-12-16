@@ -16,11 +16,10 @@ class AddDefaultProgramAndOrg extends Migration
      */
     public function up()
     {
-        /*
         Schema::table('organisation', function (Blueprint $table) {
             DB::statement('SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";');
         });
-*/
+
         if(Organisation::where('id', 0)->first() == null)
         {
             $org = new Organisation();
@@ -29,11 +28,9 @@ class AddDefaultProgramAndOrg extends Migration
             $org->save();
         }
 
-/*
         Schema::table('program', function (Blueprint $table) {
             DB::statement('SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";');
         });
-        */
         if(Program::where('id', 0)->first() == null){
 
             $program = new Program();
