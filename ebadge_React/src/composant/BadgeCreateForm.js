@@ -6,6 +6,7 @@ import Api from '../utils/Api';
 import BadgeComponent from './BadgeComponent';
 import './BadgeCreateForm.css';
 
+//fonction qui vérifie si l'url est une image
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
 }
@@ -39,20 +40,24 @@ class BadgeCreateForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    //fonction qui change la valeur du champ quand on tape dedans
     handleBadgeChange(event) {
         this.setState({ badge: { ...this.state.badge, [event.target.name]: event.target.value } });
     }
 
+    //fonction qui ouvre la fenêtre de dialogue pour modifier l'image
     handleImageDialog() {
         this.setState({ openImageDialog: !this.state.openImageDialog });
     }
 
+    //fonction qui supprime l'image
     handleImageDelete() {
         this.setState({ badge: { ...this.state.badge, imagePath: '' } });
         this.setState({ imageFile: null, imageUrlField: '' });
         this.handleImageDialog();
     }
 
+    //fonction qui modifie l'image
     handleImageModify() {
         if (this.state.imageFile !== null) {
             this.setState({ badge: { ...this.state.badge, imagePath: URL.createObjectURL(this.state.imageFile) }});
@@ -65,6 +70,7 @@ class BadgeCreateForm extends React.Component {
         }
     }
 
+    //fonction qui vérifie si le titre est valide
     validateTitle() {
         if (this.state.badge.title.length === 0) {
             this.setState({ titleError: 'Veuillez renseigner le titre' });
@@ -75,6 +81,7 @@ class BadgeCreateForm extends React.Component {
         }
     }
 
+    //fonction qui vérifie si la description est valide
     validateDescription() {
         if (this.state.badge.description.length === 0) {
             this.setState({ descriptionError: 'Veuillez renseigner la description' });
@@ -85,6 +92,7 @@ class BadgeCreateForm extends React.Component {
         }
     }
 
+    //fonction qui vérifie si la couleur est valide
     validateColor() {
         if (this.state.badge.color.length < 6 || this.state.badge.color.length > 8) {
             this.setState({ badge: { ...this.state.badge, color: 'ffffff' } });
@@ -92,6 +100,7 @@ class BadgeCreateForm extends React.Component {
         return true;
     }
 
+    //fonction qui envoie les données au serveur
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.validateTitle() && this.validateDescription() && this.validateColor()) {

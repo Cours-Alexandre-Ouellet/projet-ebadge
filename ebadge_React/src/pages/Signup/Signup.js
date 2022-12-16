@@ -37,6 +37,7 @@ class Signup extends React.Component {
         this.getPrograms = this.getPrograms.bind(this);
     }
 
+    // fonction qui permet d'aller chercher les données des organisations
     getOrganisations() {
         if (this.state.organisations) {
             return;
@@ -50,6 +51,7 @@ class Signup extends React.Component {
             });
     }
 
+    // fonction qui permet d'aller chercher les données des programmes
     getPrograms() {
         if (this.state.programs) {
             return;
@@ -63,6 +65,8 @@ class Signup extends React.Component {
             });
     }
 
+    // fonction qui permet de valider les données du formulaire
+    //et créer un nouvel utilisateur
     handleSubmit() {
         this.setState({ isLoading: true });
         console.log("Submit");

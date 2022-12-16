@@ -52,22 +52,27 @@ class Navbar extends React.Component {
     this.setState({ initials: this.getInitials(localStorage.getItem('username') ?? "na") });
   }
 
+  // fonction pour ouvrir le menu
   handleOpenNavMenu = (event) => {
     this.setState({ anchorElNav: true });
   };
 
+  // fonction pour ouvrir le menu utilisateur
   handleOpenUserMenu = (event) => {
     this.setState({ anchorElUser: true });
   };
 
+  // fonction pour fermer le menu
   handleCloseNavMenu = () => {
     this.setState({ anchorElNav: false });
   };
 
+  // fonction pour fermer le menu utilisateur
   handleCloseUserMenu = () => {
     this.setState({ anchorElUser: false });
   };
 
+  // fonction pour récupérer les initiales
   getInitials = (name) => {
     let initials = name.match(/\b\w/g) || [];
     initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();

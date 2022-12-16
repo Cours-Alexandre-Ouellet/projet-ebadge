@@ -24,6 +24,7 @@ class Login extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    //fonction qui change la valeur du champ quand on tape dedans
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
@@ -31,6 +32,7 @@ class Login extends React.Component {
         });
     }
 
+    //fonction qui valide l'identifiant
     validateIdentifier() {
         if (this.state.identifier.length === 0) {
             this.setState({ identifierError: 'Veuillez renseigner votre identifiant' });
@@ -45,6 +47,7 @@ class Login extends React.Component {
         }
     }
 
+    //fonction qui valide le mot de passe
     validatePassword() {
         if (this.state.password.length === 0) {
             this.setState({ passwordError: 'Veuillez renseigner votre mot de passe' });
@@ -55,6 +58,7 @@ class Login extends React.Component {
         }
     }
 
+    //fonction qui valide le formulaire
     handleSubmit = (event) => {
         event.preventDefault();
         if (this.validateIdentifier() && this.validatePassword()) {
@@ -92,6 +96,7 @@ class Login extends React.Component {
         }
     }
 
+    //fonction qui vérifie si l'utilisateur est déjà connecté
     componentDidMount() {
         if (localStorage.getItem('token')) {
             Api.get('/auth/current_user').then((response) => {

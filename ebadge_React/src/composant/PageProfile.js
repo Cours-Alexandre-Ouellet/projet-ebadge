@@ -13,6 +13,7 @@ import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
 
+//fonction qui vérifie si l'url est une image
 function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
 }
@@ -54,15 +55,17 @@ export default class PageProfile extends React.Component {
         });
     }
 
+    //fonction qui gère l'ouverture de la fenêtre de modification du fond d'écran
     handleClickOpen = () => {
         this.setState({ openBackground: true });
     };
 
+    //fonction qui gère la fermeture de la fenêtre de modification du fond d'écran
     handleClose = () => {
-
         this.setState({ openBackground: false });
     };
 
+    //fonction qui gère la modification du fond d'écran
     handleModify = () => {
         if (this.state.backgroundImageFile != null) {
             let formData = new FormData();
@@ -93,6 +96,8 @@ export default class PageProfile extends React.Component {
             });
         }
     };
+
+    //fonction qui gère la suppression du fond d'écran
     handleDelete = () => {
         let user = this.state.user;
         user.backgroundImagePath = "./background.png";
@@ -103,14 +108,17 @@ export default class PageProfile extends React.Component {
         });
     };
 
+    //fonction qui gère l'ouverture de la fenêtre de modification de l'avatar
     handleClickOpenAvatar = () => {
         this.setState({ openAvatar: true });
     };
 
+    //fonction qui gère la fermeture de la fenêtre de modification de l'avatar
     handleCloseAvatar = () => {
         this.setState({ openAvatar: false });
     };
 
+    //fonction qui gère la modification de l'avatar
     handleModifyAvatar = () => {
         if (this.state.avatarImageFile != null) {
             let formData = new FormData();
@@ -144,11 +152,14 @@ export default class PageProfile extends React.Component {
         }
     };
 
+    //fonction qui gère la suppression de l'avatar
     handleDeleteAvatar = () => {
         let user = this.state.user;
         user.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
         this.setState({ user: user, openAvatar: false  });
     };
+
+    //fonction qui gère la modification de la privacité
     setPrivacy = (e) => {
         let user = this.state.user;
         user.privacy = !user.privacy;
@@ -165,7 +176,8 @@ export default class PageProfile extends React.Component {
             console.log(error);
         });
     }
-
+    
+    //fonction qui va chercher les badges de l'utilisateur
     badgePercentage = () => {
         Api.get("/badge")
             .then((response) => {

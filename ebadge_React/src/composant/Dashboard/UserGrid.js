@@ -40,6 +40,7 @@ class UserGrid extends React.Component {
     this.handleClose = this.handleClose.bind(this);
   }
 
+  // Fonction qui ferme la popup
   handleClose = () => {
     this.setState({ open: false });
   };
