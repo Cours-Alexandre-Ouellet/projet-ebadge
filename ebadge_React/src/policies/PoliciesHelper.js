@@ -77,7 +77,14 @@ export default class PoliciesHelper {
         return visibleRoutes;
     }
 
+    /**
+     * Retourne la route par défaut en fonction du role de l'utilisateur
+     * Si l'utilisateur n'a pas de role équivalent à enseignant ou administreur, retourne la route par défaut '/'
+     * 
+     * @returns {String} la route par défaut en fonction du role de l'utilisateur
+     */
     getDefaultRoute() {
+        // Vérifie si l'utilisateur à un role Enseignant ou Admin
         if (this.hasRole(Role.Teacher)) {
             return '/admin';
         }
