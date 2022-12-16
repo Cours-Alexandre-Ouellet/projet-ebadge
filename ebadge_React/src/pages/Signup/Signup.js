@@ -37,7 +37,9 @@ class Signup extends React.Component {
         this.getPrograms = this.getPrograms.bind(this);
     }
 
-    // fonction qui permet d'aller chercher les données des organisations
+    /**
+     * fonction qui permet d'aller chercher les données des organisations
+     */
     getOrganisations() {
         if (this.state.organisations) {
             return;
@@ -51,7 +53,9 @@ class Signup extends React.Component {
             });
     }
 
-    // fonction qui permet d'aller chercher les données des programmes
+    /**
+     * fonction qui permet d'aller chercher les données des programmes
+     */
     getPrograms() {
         if (this.state.programs) {
             return;
@@ -65,8 +69,10 @@ class Signup extends React.Component {
             });
     }
 
-    // fonction qui permet de valider les données du formulaire
-    //et créer un nouvel utilisateur
+    /**
+     * fonction qui envoie les données au serveur pour créer un nouvel utilisateur
+     * 
+     */
     handleSubmit() {
         this.setState({ isLoading: true });
         console.log("Submit");
@@ -79,11 +85,17 @@ class Signup extends React.Component {
         data.append('last_name', this.state.last_name);
         data.append('organisation_id', this.state.organisation_id);
         data.append('program_id', this.state.program_id);
-
+        
+        /**
+         * Si le code de professeur est affiché, on l'ajoute aux données
+         */
         if (this.state.show_teacher_code) {
             data.append('teacher_code', this.state.teacher_code);
         }
 
+        /**
+         * On envoie les données au serveur pour créer un nouvel utilisateur
+         */
         Api.post('/auth/signup', data)
             .then(res => {
                 console.log(res.data.user);
