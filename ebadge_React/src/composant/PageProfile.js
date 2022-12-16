@@ -13,6 +13,7 @@ import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
 import BadgeList from './PageProfil/BadgeList';
+import { PhotoCamera, Check } from '@mui/icons-material';
 
 /**
  * fonction qui vérifie si l'url est une image
@@ -60,21 +61,21 @@ export default class PageProfile extends React.Component {
     }
 
     /**
-     * fonction qui gère l'ouverture de la fenêtre de modification de l'avatar
+     * fonction qui gère l'ouverture de la fenêtre de modification du fond d'écran
      */
     handleClickOpen = () => {
         this.setState({ openBackground: true });
     };
 
     /**
-     * fonction qui gère la fermeture de la fenêtre de modification de l'avatar
+     * fonction qui gère la fermeture de la fenêtre de modification du fond d'écran
      */
     handleClose = () => {
         this.setState({ openBackground: false });
     };
 
     /**
-     * fonction qui gère la modification de l'avatar
+     * fonction qui gère la modification du fond d'écran
      */
     handleModify = () => {
         if (this.state.backgroundImageFile != null) {
@@ -100,10 +101,11 @@ export default class PageProfile extends React.Component {
                 console.log(error);
             });
         }
+        this.setState({ backgroundImageFile: null });
     };
 
     /**
-     * fonction qui gère la suppression de l'avatar
+     * fonction qui gère la suppression du fond d'écran 
      */
     handleDelete = () => {
         let user = this.state.user;
@@ -136,14 +138,14 @@ export default class PageProfile extends React.Component {
         if (this.state.avatarImageFile != null) {
             let formData = new FormData();
             formData.append('avatar', this.state.avatarImageFile);
-
+            
             Api.post('/user/edit-avatar', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
                 this.state.user.avatarImagePath = response.data.url;
-                this.setState({ openBackground: false });
+                this.setState({ openAvatar: false });
             }).catch((error) => {
                 console.log(error);
             });
@@ -158,6 +160,7 @@ export default class PageProfile extends React.Component {
                 console.log(error);
             });
         }
+        this.setState({ avatarImageFile: null });
     };
 
     /**
@@ -258,9 +261,13 @@ export default class PageProfile extends React.Component {
                                             this.setState({
                                                 backgroundImageFile: e.target.files[0]
                                             });
+
                                         }}
                                     />
                                 </Button>
+                                <div hidden={this.state.backgroundImageFile === null}>
+                                    <Check></Check> Image importée
+                                </div>
                                 <div className="hiddenAlert">
                                     <Alert variant="filled" severity="error" >
                                         L'url de l'image n'est pas valide.
@@ -312,6 +319,9 @@ export default class PageProfile extends React.Component {
                                         }}
                                     />
                                 </Button>
+                                <div hidden={this.state.avatarImageFile === null}>
+                                    <Check></Check> Image importée
+                                </div>
                                 <div className="hiddenAlert">
                                     <Alert variant="filled" severity="error" >
                                         L'url de l'image n'est pas valide.
