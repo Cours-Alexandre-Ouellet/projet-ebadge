@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migration pour la création de la table teacher_code
+ */
 class CreateTeacherCodesTable extends Migration
 {
     /**

@@ -42,6 +42,8 @@ class AdminLayout extends React.Component {
                     tabs: this.policiesHelper.getvisibleRoutes([
                         { id: 1, label: 'Mes utilisateurs', icon: <InboxIcon />, path: '/admin/users', minimumRole: Role.Teacher },
                         { id: 2, label: 'Mes groupes', icon: <InboxIcon />, path: "/admin/groups", minimumRole: Role.Teacher },
+                        {id: 4, label: 'Mes programmes', icon: <InboxIcon />, path: '/admin/programs', minimumRole: Role.Admin},
+                        {id: 5, label: 'Mes organisations', icon: <InboxIcon />, path: '/admin/organisations', minimumRole: Role.Admin},
                     ])
                 },
                 {
@@ -178,12 +180,6 @@ class AdminLayout extends React.Component {
                     >
                         <Toolbar />
                         <div className='dashboard'>
-                            <h3>{
-                            this.state.tabs.map((tab, index) => (
-                                tab.tabs.map((tab, index) => (
-                                    tab.path === window.location.pathname ? tab.label : null
-                                ))
-                            ))}</h3>
                             <Outlet />
                         </div>
                     </Box>
