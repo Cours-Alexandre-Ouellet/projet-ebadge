@@ -14,7 +14,7 @@ class CreateBadgeRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|unique:badge,title|max:45',
+            'title' => 'required|string|max:45',
             'description' => 'required|string|max:255',
             'imagePath' => 'string|max:2048',
             'image' => 'image',
