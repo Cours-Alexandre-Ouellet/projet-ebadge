@@ -48,4 +48,6 @@ class Role extends Model
     {
         return Role::where('name', self::ETUDIANT)->first();
     }
+
+
 }

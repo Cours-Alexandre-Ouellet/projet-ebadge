@@ -28,7 +28,6 @@ class AddDefaultProgramAndOrg extends Migration
             $org->save();
         }
 
-
         Schema::table('program', function (Blueprint $table) {
             DB::statement('SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";');
         });

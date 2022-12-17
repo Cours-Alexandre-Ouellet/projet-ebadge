@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Role;
+
 /**
  * Classe représentant un utilisateur
  */
 class User extends Authenticatable
 {
     use HasApiTokens; //Pour l'authentification par token
+
 
     /**
      * The table associated with the model.
@@ -30,8 +32,7 @@ class User extends Authenticatable
     {
         $role = Role::where('id', $this->role_id)->first();
 
-        if($role != null)
-        {
+        if ($role != null) {
             return $role->name;
         }
         return "";
