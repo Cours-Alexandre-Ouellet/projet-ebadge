@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Laravel\Passport\Bridge\AccessToken;
 use Tests\TestCase;
 class AuthTest extends TestCase
 {
@@ -30,6 +29,7 @@ class AuthTest extends TestCase
             'password' => 'password'
         ]);
 
+
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'token_type',
@@ -38,6 +38,13 @@ class AuthTest extends TestCase
             'username',
             'role',
         ]);
+
+        $response2 = $this->post('/api/auth/login', [
+            'email' => $this->user->email,
+            'password' => 'wrongpassword'
+        ]);
+
+        $response2->assertStatus(401);
     }
 
     public function testUserCanRegister()
@@ -59,6 +66,17 @@ class AuthTest extends TestCase
             'user',
             'access_token',
         ]);
+
+        $response2 = $this->post('/api/auth/signup', [
+            "email" => $user->email,
+            "password" =>  $user->password,
+            "first_name" => $user->first_name,
+            "last_name" =>  $user->last_name,
+            "organisation_id" => $this->organisation->id,
+            "program_id" => $this->program->id,
+        ]);
+
+        $response2->assertStatus(422);
     }
 
     public function testCurrentUser()
