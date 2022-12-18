@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+html * {
+  font-family: 'Barlow', sans-serif;
+}
+
+.main {
+  padding-top: 69px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -15,7 +23,7 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;

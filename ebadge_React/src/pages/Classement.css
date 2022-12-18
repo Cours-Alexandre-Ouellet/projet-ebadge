@@ -1,0 +1,74 @@
+.classement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f1f6fd;
+    background-image: url(../background.png);
+    background-size: cover;
+}
+
+.classement-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+    background-color: white;
+}
+
+.classement-background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.classement-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.classement-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 80%;
+    height: 100%;
+}
+
+.classement-table-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: white;
+    padding: 5px;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 700;
+    color: #151d53;
+    font-family: 'Barlow', sans-serif;
+}
+
+@media screen and (max-width: 900px) {
+    .classement-container {
+        width: 100%;
+    }
+
+    .classement-table-header {
+        flex-direction: column;
+    }
+}
