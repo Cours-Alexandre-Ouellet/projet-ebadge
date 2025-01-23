@@ -44,5 +44,5 @@ Création d'un utilisateur admin avec l'api ou le site web. (changer le role dan
 - Éxécuter la commande suivants dans le répertoire du projet Laravel
 
 ```bash
-php artisan test --parallel --recreate-databases
+php artisan test
 ```
