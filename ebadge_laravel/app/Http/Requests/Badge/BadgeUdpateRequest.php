@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * Objet représentant une requête de mise à jour d'un badge
  */
-class BadgeUdpateRequest extends FormRequest
+class BadgeUpdateRequest extends FormRequest
 {
     /**
      * Définit les règles de validation pour la requête
