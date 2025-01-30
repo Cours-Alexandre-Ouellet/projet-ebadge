@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-// use App\Http\Requests\Badge\BadgeUdpateRequest;
+use App\Http\Requests\Badge\CategorieUdpateRequest;
 use App\Http\Requests\Badge\CreateCategorieRequest;
 use App\Models\Categorie;
 use App\Models\CategorieBadge;
@@ -35,71 +35,59 @@ class BadgeController extends Controller
      */
     public function create(CreateCategorieRequest $request)
     {
-        $badge = new Badge();
-        $badge->title = $request->title;
-        $badge->description = $request->description;
-        $badge->color = $request->color;
-        //insertion de l'image dans le dossier public avec un nom original
-        if($request->hasFile('image')) {
-            $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());
-            $badge->imagePath = asset(Storage::url($path));
-        } else {
-            $badge->imagePath = $request->imagePath;
-        }
-        $badge->save();
-        return response()->json($badge);
+        $categorie = new Categorie();
+        $categorie->nom = $request->nom;
+        $categorie->save();
+        return response()->json($categorie);
     }
 
     /**
-     * Affiche le badge avec l'id donné
+     * Affiche la catégorie avec l'id donné
      *
-     * @param  \App\Badge  $badge
+     * @param  \App\Categorie  $categorie
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
     {
         $request->validate([
-            'id' => 'required|exists:badges,id'
+            'id' => 'required|exists:categories,id'
         ]);
-        $badge = Badge::find($request->id);
-        return response()->json($badge);
+        $categorie = Categorie::find($request->id);
+        return response()->json($categorie);
     }
 
     /**
-     * Met à jour le badge avec l'id donné
+     * Met à jour la catégorie avec l'id donné
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function update(BadgeUdpateRequest $request)
+    public function update(CategorieUdpateRequest $request)
     {
-        $badge = Badge::updateOrCreate(
+        $categorie = Categorie::updateOrCreate(
             ['id' => $request->id],
             [
-                'title' => $request->title,
-                'description' => $request->description,
-                'color' => $request->color,
-                'imagePath' => $request->imagePath
+                'nom' => $request->nom,
             ]
         );
 
-        return response()->json($badge);
+        return response()->json($categorie);
     }
 
     /**
-     * Supprime le badge avec l'id donné
+     * Supprime la catégorie avec l'id donné
      *
-     * @param  \App\Badge  $badge
-     * @return \Illuminate\Http\JsonResponse le id du badge supprimé
+     * @param  \App\Categorie  $categorie
+     * @return \Illuminate\Http\JsonResponse le id de la catégorie supprimée
      */
     public function destroy($id)
     {
-        $badge = Badge::find($id);
+        $categorie = Categorie::find($id);
 
-        UserBadge::where('badge_id', $badge->id)->delete();
+        CategorieBadge::where('idCategorie', $categorie->id)->delete();
 
-        $badge->delete();
-        return response()->json($badge);
+        $categorie->delete();
+        return response()->json($categorie);
     }
 }

@@ -39,6 +39,19 @@ Route::group([
     });
 });
 
+Route::group([
+    'prefix' => 'categorie',
+    'middleware' => [
+        'auth:api',
+        'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT,
+    ],
+], function () {
+    Route::get('/', [App\Http\Controllers\CategorieController::class, 'index']);
+    Route::post('/', [App\Http\Controllers\CategorieController::class, 'create']);
+    Route::put('/', [App\Http\Controllers\CategorieController::class, 'update']);
+    Route::delete('/{id}', [App\Http\Controllers\CategorieController::class, 'destroy']);
+});
+
 
 Route::group([
     'prefix' => 'user',
