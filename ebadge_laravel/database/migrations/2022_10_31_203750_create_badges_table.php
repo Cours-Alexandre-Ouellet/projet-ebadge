@@ -22,6 +22,7 @@ class CreateBadgesTable extends Migration
             $table->string('description', 255);
             $table->string('imagePath', 2048);
             $table->char('color', 6);
+            $table->foreignId('teacherId')->constrained('user');
             $table->timestamps();
         });
     }
