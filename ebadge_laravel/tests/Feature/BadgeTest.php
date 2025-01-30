@@ -2,14 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Role;
 use Carbon\Carbon;
-use App\Models\User;
-
 
 class BadgeTest extends TestCase
 {
