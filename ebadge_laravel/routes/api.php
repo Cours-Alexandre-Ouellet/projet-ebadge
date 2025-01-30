@@ -73,6 +73,10 @@ Route::group([
 //add route stats
 Route::group([
     'prefix' => 'stats',
+    'middleware' => [
+        'auth:api',
+        'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT . ',' . Role::ETUDIANT,
+    ],
 ], function () {
     Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'Leaderboard']);
     Route::get('/leaderboard/{startDate}/{endDate}', [App\Http\Controllers\StatsController::class, 'LeaderboardBySession']);

@@ -38,7 +38,13 @@ class Classement extends React.Component {
                     "name": "Session automne 2022",
                     "dateDebut": "2022-08-25",
                     "dateFin": "2022-12-30"
-                }
+                },
+                {
+                    "id": 4,
+                    "name": "Session hiver 2025",
+                    "dateDebut": "2025-01-16",
+                    "dateFin": "2025-05-30"
+                },
             ],
             session: 1,
             search: ""
