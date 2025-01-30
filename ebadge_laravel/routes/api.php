@@ -84,6 +84,7 @@ Route::group([
 ], function () {
     Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'Leaderboard']);
     Route::get('/leaderboard/{startDate}/{endDate}', [App\Http\Controllers\StatsController::class, 'LeaderboardBySession']);
+    Route::get('/leaderboard/{categorie}', [App\Http\Controllers\StatsController::class, 'LeaderboardByCategorie']);
 });
 
 Route::group([

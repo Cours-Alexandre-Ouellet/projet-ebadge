@@ -56,7 +56,8 @@ class Classement extends React.Component {
      * fonction qui permet d'aller chercher les données du classement à la session n°1 par défaut quand on ouvre la page
      */
     componentDidMount() {
-        Api.get('/stats/leaderboard/' + this.state.sessions[0].dateDebut + '/' + this.state.sessions[0].dateFin) 
+        // Api.get('/stats/leaderboard/' + this.state.sessions[3].dateDebut + '/' + this.state.sessions[3].dateFin) 
+        Api.get('/stats/leaderboard')
             .then(response => { 
                 const leaderboard = response.data;
 
