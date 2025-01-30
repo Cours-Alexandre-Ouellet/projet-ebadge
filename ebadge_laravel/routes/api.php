@@ -20,6 +20,10 @@ Route::group([
 
 Route::group([
     'prefix' => 'badge',
+    'middleware' => [
+        'auth:api',
+        'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT . ',' . Role::ETUDIANT,
+    ],
 ], function () {
     Route::get('/', [App\Http\Controllers\BadgeController::class, 'index']);
 
