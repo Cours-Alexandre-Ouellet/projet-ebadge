@@ -14,29 +14,16 @@ class CategorieUpdateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            titleError: '',
-            descriptionError: '',
-            colorError: '',
-            openImageDialog: false,
-            imageUrlField: "",
-            imageFile: null,
+            nameError: '',
             categorie: {
                 id: 0,
-                title: '',
-                description: '',
-                imagePath: '',
-                color: 'ffffff',
+                name: '',
                 possession: 0
             }
         }
 
         this.handleCategorieChange = this.handleCategorieChange.bind(this);
-        this.handleImageDialog = this.handleImageDialog.bind(this);
-        this.handleImageDelete = this.handleImageDelete.bind(this);
-        this.handleImageModify = this.handleImageModify.bind(this);
-        this.validateTitle = this.validateTitle.bind(this);
-        this.validateDescription = this.validateDescription.bind(this);
-        this.validateColor = this.validateColor.bind(this);
+        this.validateName = this.validateName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -48,75 +35,20 @@ class CategorieUpdateForm extends React.Component {
         this.setState({ Categorie: { ...this.state.categorie, [event.target.name]: event.target.value } });
     }
 
-    handleImageDialog() {
-        this.setState({ openImageDialog: !this.state.openImageDialog });
-    }
-
-    handleImageDelete() {
-        this.setState({ Categorie: { ...this.state.categorie, imagePath: '' } });
-        this.setState({ imageFile: null, imageUrlField: '' });
-        this.handleImageDialog();
-    }
-
-    handleImageModify() {
-        if (this.state.imageFile !== null) {
-            this.setState({ Categorie: { ...this.state.categorie, imagePath: URL.createObjectURL(this.state.imageFile) }});
-            this.handleImageDialog();
-        } else if (isImage(this.state.imageUrlField)) {
-            this.setState({ Categorie: { ...this.state.categorie, imagePath: this.state.imageUrlField }});
-            this.handleImageDialog();
-        } else {
-            alert('Image invalide');
-        }
-    }
-
-    validateTitle() {
-        if (this.state.categorie.title.length === 0) {
-            this.setState({ titleError: 'Veuillez renseigner le titre' });
+    validateName() {
+        if (this.state.categorie.name.length === 0) {
+            this.setState({ nameError: 'Veuillez donner un nom à la catégorie.' });
             return false;
         } else {
-            this.setState({ titleError: '' });
+            this.setState({ nameError: '' });
             return true;
         }
-    }
-
-    validateDescription() {
-        if (this.state.categorie.description.length === 0) {
-            this.setState({ descriptionError: 'Veuillez renseigner la description' });
-            return false;
-        } else {
-            this.setState({ descriptionError: '' });
-            return true;
-        }
-    }
-
-    validateColor() {
-        if (this.state.categorie.color.length < 6 || this.state.categorie.color.length > 8) {
-            this.setState({ Categorie: { ...this.state.categorie, color: 'ffffff' } });
-        }
-        return true;
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        if (this.validateTitle() && this.validateDescription() && this.validateColor()) {
-            if (this.state.imageFile != null) {
-                let formData = new FormData();
-
-                formData.append('id', this.state.categorie.id);
-                formData.append('nom', this.state.categorie.nom);
-
-                Api.put('/categorie', formData)
-                .then((response) => {
-                    this.props.editCategorie(response.data);
-                })
-                .catch((error) => {
-                    this.props.errorCategorie('Une erreur est survenue');
-                    console.log(error);
-                });
-
-            } else if (isImage(this.state.Categorie.imagePath)) {
-                Api.put('/categorie', this.state.Categorie)
+        if (this.validateName()) {
+            Api.put('/categorie', this.state.Categorie)
                 .then((response) => {
                     this.props.editCategorie(response.data);
                 })
@@ -125,9 +57,9 @@ class CategorieUpdateForm extends React.Component {
                     console.log(error);
                 });
             }
-            this.props.handleClose();
+        this.props.handleClose();
         }
-    }
+
 
     render() {
         return (
@@ -142,127 +74,15 @@ class CategorieUpdateForm extends React.Component {
                                     name="nom"
                                     label="Nom"
                                     variant="outlined"
-                                    value={this.state.Categorie.title}
+                                    value={this.state.Categorie.name}
                                     onChange={this.handleCategorieChange}
-                                    onBlur={this.validateTitle}
-                                    error={this.state.titleError.length > 0}
-                                    helperText={this.state.titleError}
+                                    onBlur={this.validateName}
+                                    error={this.state.nameError.length > 0}
+                                    helperText={this.state.nameError}
                                     inputProps={{ maxLength: 45 }}
                                     required
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
-                                <div className="categorie-create-form-button-field">
-                                    <Button
-                                        variant="contained"
-                                        color='secondary'
-                                        onClick={this.handleImageDialog}
-                                        sx={{
-                                            width: '100%',
-                                            marginTop: '20px',
-                                            marginRight: '20px'
-                                        }}
-                                        startIcon={<PhotoCamera />}
-                                    >
-                                        {this.state.Categorie.imagePath.length === 0 ? 'Ajouter une image' : 'Modifier l\'image'}
-                                    </Button>
-                                    <Dialog open={this.state.openImageDialog} onClose={this.handleClose}>
-                                        <DialogTitle>Modifier l'image du Categorie</DialogTitle>
-                                        <DialogContent>
-                                            <DialogContentText>
-                                                Pour changer l'image du Categorie, veuillez entrer l'URL de l'image.
-                                            </DialogContentText>
-                                            <TextField
-                                                autoFocus
-                                                margin="dense"
-                                                name='imagePath'
-                                                label="URL"
-                                                type="url"
-                                                fullWidth
-                                                variant="standard"
-                                                value={this.state.imageUrlField}
-                                                inputProps={{ maxLength: 2048 }}
-                                                onChange={e => {
-                                                    this.setState({
-                                                        imageUrlField: e.target.value,
-                                                        imageFile: null
-                                                    });
-                                                }}
-                                            />
-                                            <br />
-                                            <br />
-                                            <br />
-                                            <DialogContentText>
-                                                Vous pouvez également importé une image.
-                                            </DialogContentText>
-                                            <br />
-                                            <Button
-                                                variant="contained"
-                                                component="label"
-                                            >
-                                                Importer une image
-                                                <input
-                                                    type="file"
-                                                    accept="image/png, image/jpeg"
-                                                    hidden
-                                                    onChange={e => {
-                                                        this.setState({
-                                                            imageFile: e.target.files[0],
-                                                            imageUrlField: ''
-                                                        });
-                                                    }}
-                                                />
-                                            </Button>
-                                            <div hidden={this.state.imageFile === null}>
-                                                <Check></Check> Image importée
-                                            </div>
-                                            <div className="hiddenAlert">
-                                                <Alert variant="filled" severity="error" >
-                                                    L'url de l'image n'est pas valide.
-                                                </Alert>
-                                            </div>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={this.handleImageDialog}>Annuler</Button>
-                                            <Button onClick={this.handleImageDelete}>Supprimer</Button>
-                                            <Button onClick={this.handleImageModify}>Modifier</Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                    <Autocomplete
-                                        id="color"
-                                        name="color"
-                                        options={colors}
-                                        inputValue={this.state.Categorie.color}
-                                        onInputChange={(event, newInputValue) => {
-                                            this.setState({ Categorie: { ...this.state.Categorie, color: newInputValue } });
-                                        }}
-                                        getOptionLabel={(option) => option}
-                                        selectOnFocus
-                                        handleHomeEndKeys
-                                        freeSolo
-                                        sx={{ width: '100%', marginTop: '20px' }}
-                                        renderOption={(props, option) => (
-                                            <li {...props}>
-                                                <div
-                                                    className="Categorie-create-form-color"
-                                                    style={{ backgroundColor: "#" + option, width: '20px', height: '20px' }}
-                                                />
-                                                #{option}
-                                            </li>
-                                        )}
-                                        renderInput={(params) => <TextField {...params} label="Hex couleur arrière-plan" variant='standard' InputProps={{
-                                            ...params.InputProps,
-                                            startAdornment: (
-                                                <InputAdornment position="start">
-                                                    <div
-                                                        className="Categorie-create-form-color"
-                                                        style={{ backgroundColor: "#" + this.state.Categorie.color, width: '20px', height: '20px' }}
-                                                    />
-                                                    #
-                                                </InputAdornment>
-                                            ),
-                                        }} />}
-                                    />
-                                </div>
                                 <div className="Categorie-create-form-button-submit">
                                     <Button variant="outlined" onClick={this.props.handleClose} sx={{
                                         width: '100%',
@@ -286,18 +106,7 @@ class CategorieUpdateForm extends React.Component {
                 </div>
             </div>
         );
-    }
+    };
 }
-
-const colors = [
-    'ff0000',
-    'ff8000',
-    'ffff00',
-    '80ff00',
-    '00ff00',
-    '00ff80',
-    '00ffff',
-    '0080ff',
-];
 
 export default CategorieUpdateForm;
