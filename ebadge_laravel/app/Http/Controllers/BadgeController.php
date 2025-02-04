@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Badge\BadgeUdpateRequest;
+use App\Http\Requests\Badge\BadgeUpdateRequest;
 use App\Http\Requests\Badge\CreateBadgeRequest;
 use App\Models\Badge;
 use App\Models\UserBadge;
@@ -39,6 +39,7 @@ class BadgeController extends Controller
         $badge->title = $request->title;
         $badge->description = $request->description;
         $badge->color = $request->color;
+        echo "colour";
         //insertion de l'image dans le dossier public avec un nom original
         if($request->hasFile('image')) {
             $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());
@@ -72,7 +73,7 @@ class BadgeController extends Controller
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function update(BadgeUdpateRequest $request)
+    public function update(BadgeUpdateRequest $request)
     {
         $badge = Badge::updateOrCreate(
             ['id' => $request->id],
