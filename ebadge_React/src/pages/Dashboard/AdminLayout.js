@@ -22,6 +22,7 @@ import Role from '../../policies/Role';
 import PoliciesHelper from '../../policies/PoliciesHelper';
 import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import { School } from "@mui/icons-material";
 
 
 const drawerWidth = 240;
@@ -44,8 +45,7 @@ class AdminLayout extends React.Component {
                     sectionName: "Gestion des utilisateurs",
                     tabs: this.policiesHelper.getvisibleRoutes([
                         { id: 1, label: 'Mes utilisateurs', icon: <PeopleIcon />, path: '/admin/users', minimumRole: Role.Teacher },
-                        {id: 4, label: 'Mes programmes', icon: <AssignmentIcon />, path: '/admin/programs', minimumRole: Role.Admin},
-                        {id: 5, label: 'Mes organisations', icon: <InboxIcon />, path: '/admin/organisations', minimumRole: Role.Admin},
+                        { id: 6, label: 'Codes enseignants', icon: <School />, path: '/admin/teacher_codes', minimumRole: Role.Admin },
                     ])
                 },
                 {
@@ -85,8 +85,8 @@ class AdminLayout extends React.Component {
                             >
                                 <MenuIcon />
                             </IconButton>
-                            <Button variant="outlined" color="secondary" component={Link} to="/" sx={ { mr: 3 } } startIcon={<ArrowBackIcon/>}>                             
-                                 Retour au site
+                            <Button variant="outlined" color="secondary" component={Link} to="/" sx={{ mr: 3 }} startIcon={<ArrowBackIcon />}>
+                                Retour au site
                             </Button>
 
                             <Typography variant="h6" noWrap component="div">
@@ -99,7 +99,6 @@ class AdminLayout extends React.Component {
                         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
                         aria-label="mailbox folders"
                     >
-                        {}
                         <Drawer
                             container={this.container}
                             variant="temporary"

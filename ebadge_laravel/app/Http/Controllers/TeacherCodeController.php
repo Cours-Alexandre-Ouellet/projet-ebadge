@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TeacherCode\TeacherCodeAssignRequest;
 use App\Models\TeacherCode;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class TeacherCodeController extends Controller
 {
+    /**
+     * Retourne la liste de tous les codes enseignants
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return response()->json(['teacher_codes' => TeacherCode::all()]);
+    }
 
     /**
      * Créer un code d'enseignant
@@ -21,6 +30,23 @@ class TeacherCodeController extends Controller
         return response()->json([
             'code' => $code->code
         ]);
+    }
+
+    /**
+     * Assign un utilisateur à un code d'enseignant
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function assign(TeacherCodeAssignRequest $request)
+    {
+        $userId = $request->get('user_id');
+        $teacherCodeId = $request->get('teacher_code_id');
+
+        $code = TeacherCode::where('id', $teacherCodeId)->first();
+        $code->user_id = $userId;
+        $code->save();
+
+        return response()->json(['message' => 'Code assigned']);
     }
 
     /**

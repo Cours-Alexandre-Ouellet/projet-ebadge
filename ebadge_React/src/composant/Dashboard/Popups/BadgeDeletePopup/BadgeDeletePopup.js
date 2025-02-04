@@ -1,6 +1,6 @@
 import React from "react";
 import './BadgeDeletePopup.css';
-import Api from '../../utils/Api';
+import Api from '../../../../utils/Api';
 
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
