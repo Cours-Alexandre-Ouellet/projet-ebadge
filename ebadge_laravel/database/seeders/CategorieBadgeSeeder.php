@@ -6,12 +6,12 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CategoriesBadgeSeeder extends Seeder
+class CategorieBadgeSeeder extends Seeder
 {
 
     public function run(): void
     {
-        DB::table('categories_badge')->insert([
+        DB::table('categorie_badge')->insert([
             [
                 'idBadge' => 1,
                 'idCategorie' => 1,
