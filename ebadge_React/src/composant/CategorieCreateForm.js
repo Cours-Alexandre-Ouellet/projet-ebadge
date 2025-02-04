@@ -53,7 +53,7 @@ class CategorieCreateForm extends React.Component {
 
                 let formData = new FormData();
 
-                formData.append('name', this.state.categorie.name);
+                formData.append('nom', this.state.categorie.name);
 
                 Api.post('/categorie', formData, {
                     headers: {

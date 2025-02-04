@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Badge\CategorieUdpateRequest;
-use App\Http\Requests\Badge\CreateCategorieRequest;
+use App\Http\Requests\Categorie\CategorieUpdateRequest;
+use App\Http\Requests\Categorie\CreateCategorieRequest;
 use App\Models\Categorie;
 use App\Models\CategorieBadge;
 use Illuminate\Http\Request;
@@ -63,7 +63,7 @@ class CategorieController extends Controller
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function update(CategorieUdpateRequest $request)
+    public function update(CategorieUpdateRequest $request)
     {
         $categorie = Categorie::updateOrCreate(
             ['id' => $request->id],

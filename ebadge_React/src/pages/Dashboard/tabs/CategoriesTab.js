@@ -95,7 +95,7 @@ class CategoriesTab extends React.Component {
                     <h4>Liste des catégories</h4>
                     <Button variant="contained" onClick={this.handleCategorieForm} startIcon={<Add></Add>}>Créer une catégorie</Button>
                     <Dialog fullScreen open={this.state.closeCategorieForm} onClose={this.handleCategorieForm} TransitionComponent={Transition}>
-                        <CategorieCreateForm handleClose={this.handleCategorieForm} addBadge={this.addCategorie} errorBadge={this.errorCategorie} />
+                        <CategorieCreateForm handleClose={this.handleCategorieForm} addCategorie={this.addCategorie} errorCategorie={this.errorCategorie} />
                     </Dialog>
                 </div>
                 <CategorieGrid rows={this.state.categories} refresh={this.getCategories} deleteCategorie={this.deleteCategorie} editCategorie={this.editCategorie} errorCategorie={this.errorCategorie} />
