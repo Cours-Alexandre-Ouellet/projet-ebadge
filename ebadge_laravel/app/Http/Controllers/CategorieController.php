@@ -10,12 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Controller pour les badges
+ * Controller pour les catégories
  */
-class BadgeController extends Controller
+class CategorieController extends Controller
 {
     /**
-     * la liste de tous les badges avec le pourcentage de possession
+     * La liste de toutes les catégories
      *
      * @return \Illuminate\Http\Response
      */

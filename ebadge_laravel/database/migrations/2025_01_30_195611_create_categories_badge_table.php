@@ -11,7 +11,7 @@ class CreateCategoriesBadgeTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories_badge', function (Blueprint $table) {
+        Schema::create('categorie_badge', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idBadge')->constrained('badge');
             $table->foreignId('idCategorie')->constrained('categorie');
@@ -24,6 +24,6 @@ class CreateCategoriesBadgeTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories_badge');
+        Schema::dropIfExists('categorie_badge');
     }
 };

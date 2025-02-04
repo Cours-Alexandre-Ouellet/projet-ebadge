@@ -41,6 +41,6 @@ class Badge extends Model
      */
     public function categories()
     {
-        return $this->belongsToMany('App\Models\Categorie', 'CategorieBadge', 'idBadge', 'idCategorie');
+        return $this->belongsToMany('App\Models\Categorie', 'categorie_badge', 'idBadge', 'idCategorie');
     }
 }
