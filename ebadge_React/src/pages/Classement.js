@@ -38,7 +38,13 @@ class Classement extends React.Component {
                     "name": "Session automne 2022",
                     "dateDebut": "2022-08-25",
                     "dateFin": "2022-12-30"
-                }
+                },
+                {
+                    "id": 4,
+                    "name": "Session hiver 2025",
+                    "dateDebut": "2025-01-16",
+                    "dateFin": "2025-05-30"
+                },
             ],
             session: 1,
             search: ""
@@ -50,7 +56,8 @@ class Classement extends React.Component {
      * fonction qui permet d'aller chercher les données du classement à la session n°1 par défaut quand on ouvre la page
      */
     componentDidMount() {
-        Api.get('/stats/leaderboard/' + this.state.sessions[0].dateDebut + '/' + this.state.sessions[0].dateFin) 
+        // Api.get('/stats/leaderboard/' + this.state.sessions[3].dateDebut + '/' + this.state.sessions[3].dateFin) 
+        Api.get('/stats/leaderboard')
             .then(response => { 
                 const leaderboard = response.data;
 
