@@ -1,0 +1,80 @@
+/*inspirer de Classement.css pour garder un theme constant*/
+.listeBadge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f1f6fd;
+    background-image: url(../background.png);
+    background-size: cover;
+}
+
+.listeBadge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 100%;
+    background-color: white;
+}
+
+.listeBadge-background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.listeBadge-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.listeBadge-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 80%;
+    height: 100%;
+}
+
+.listeBadge-table-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: white;
+    padding: 5px;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 700;
+    color: #151d53;
+    font-family: 'Barlow', sans-serif;
+}
+
+.listeBadge-listes{
+    display: flex;
+    width:100%;
+}
+
+@media screen and (max-width: 900px) {
+    .listeBadge-container {
+        width: 100%;
+    }
+
+    .listeBadge-table-header {
+        flex-direction: column;
+    }
+}
