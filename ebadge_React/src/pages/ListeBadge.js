@@ -2,21 +2,18 @@ import React from "react";
 import "./ListeBadge.css";
 import "@mui/material";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
-  Select,
   InputAdornment,
 } from "@mui/material";
-import { Button, Avatar, Slide, Dialog } from "@mui/material";
+import { Avatar } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import Api from "../utils/Api";
-
+/**
+ * Page affichant deux listes de badges une de badges obtenus et une de badges non obtenus. 
+ * 
+ * le code à été en partie inspirer de Classement.js pour garder un theme constant dans le site.
+ */
 class ListeBadge extends React.Component {
   constructor(props) {
     super(props);
