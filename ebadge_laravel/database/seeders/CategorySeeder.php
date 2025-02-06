@@ -13,36 +13,36 @@ use Illuminate\Support\Facades\DB;
  * Les données de ce fichier ont été générées automatiquement avec ChatGPT.
  * Source : https://chat.openai.com/
  */
-class CategorieSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('categorie')->insert([
+        DB::table('category')->insert([
             [
-                'nom' => 'Apprentissage',
+                'name' => 'Apprentissage',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nom' => 'Participation',
+                'name' => 'Participation',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nom' => 'Excellence',
+                'name' => 'Excellence',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nom' => 'Engagement',
+                'name' => 'Engagement',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'nom' => 'Créativité',
+                'name' => 'Créativité',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

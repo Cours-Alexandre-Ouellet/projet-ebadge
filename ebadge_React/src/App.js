@@ -34,8 +34,24 @@ const theme = createTheme({
   },
 });
 
+
+
 function App() {
   console.log(process.env);
+
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     setIsAuthenticated(true);
+  //     navigate('/'); 
+  //   } else {
+  //     setIsAuthenticated(false);
+  //     navigate('/auth/login'); 
+  //   }
+  // }, [navigate]);
 
   return (
     <BrowserRouter>
