@@ -109,7 +109,10 @@ export default function ListeBadge() {
     },
   ];
 
-  //
+  /**
+   * Ouvre le popup en changeant sa visibilité
+   * @param {*} params 
+   */
   function handleRowClick(params){
     setBadgeSelectionne(params.row);
     setOpen(true);
