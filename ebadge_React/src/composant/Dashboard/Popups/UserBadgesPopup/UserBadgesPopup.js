@@ -1,6 +1,6 @@
 import React from "react";
 import './UserBadgesPopup.css';
-import Api from '../../utils/Api';
+import Api from '../../../../utils/Api';
 
 import { FormControl, InputLabel, Select, MenuItem, Button, Avatar } from "@mui/material";
 import { Dialog, DialogContent, DialogTitle, DialogContentText  } from '@mui/material';

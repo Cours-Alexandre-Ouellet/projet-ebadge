@@ -2,8 +2,8 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Avatar, Slide, Dialog } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import BadgeDeleteAction from './BadgeDeletePopup';
-import BadgeUpdateForm from '../BadgeUpdateForm';
+import BadgeDeleteAction from './Popups/BadgeDeletePopup/BadgeDeletePopup';
+import BadgeUpdateForm from '../Forms/Badge/BadgeUpdateForm';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -32,7 +32,7 @@ class BadgeGrid extends React.Component {
                     }
                 },
                 {
-                    field: 'BadgeEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
+                    field: 'BadgeEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, hideable: false, renderCell: (params) => {
                         const onClick = (e) => {
                             e.stopPropagation();
 
@@ -45,7 +45,7 @@ class BadgeGrid extends React.Component {
                     }
                 },
                 {
-                    field: 'BadgeDeleteAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
+                    field: 'BadgeDeleteAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, hideable: false, renderCell: (params) => {
                         const onClick = (e) => {
                             e.stopPropagation();
 
@@ -72,7 +72,7 @@ class BadgeGrid extends React.Component {
         this.setState({ openEditDialog: false });
     };
 
-    
+
     render() {
         return (
             <div style={{ height: 600, width: '100%' }}>
