@@ -1,0 +1,32 @@
+.badge-popup {
+    min-width: 500px;
+    min-height: 400px;
+    margin: 25px;
+}
+
+.badge-popup hr {
+    margin: 35px;
+    border: 1px solid #e0e0e0;
+}
+
+.mt-2 {
+    margin-top: 10px;
+}
+
+.badge-selector {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.badge-row {
+   display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.badge-row .badge {
+    margin: 10px;
+}

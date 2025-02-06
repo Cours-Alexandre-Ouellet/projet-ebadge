@@ -1,6 +1,6 @@
 import React from 'react';
 import PoliciesHelper from './PoliciesHelper';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import NotAuthorized from '../pages/Errors/NotAuthorized';
 
 const ProtectedRoute = (minimumRole) => {
