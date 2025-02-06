@@ -1,4 +1,5 @@
 import React from "react";
+import { getResource } from "../../utils/Api";
 /**
  * @param {Object} props
  * @param {Object} props.badge - Objet badge
@@ -11,7 +12,7 @@ import React from "react";
 class BadgeComponent extends React.Component {
   render() {
     return (<div className='Badge'>
-      <img src={this.props.badge.imagePath} alt={this.props.badge.title} className='badgeIcon' style={{ "backgroundColor": `#${this.props.badge.color}`  }} />
+      <img src={this.props.badge.imagePath || getResource("badge.png")} alt={this.props.badge.title} className='badgeIcon' style={{ "backgroundColor": `#${this.props.badge.color}`  }} />
       <div className="hideDisplay">
         <h3 className='textBadge'>{this.props.badge.title}</h3>
         <p>{this.props.badge.description}</p>

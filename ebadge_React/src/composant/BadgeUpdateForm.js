@@ -50,7 +50,7 @@ class BadgeUpdateForm extends React.Component {
     }
 
     handleImageDialog() {
-        this.setState({ openImageDialog: !this.state.openImageDialog }, () => !this.state.openImageDialog ? this.validateImage() : null)
+        this.setState({ openImageDialog: !this.state.openImageDialog })
 
     }
 
@@ -99,29 +99,9 @@ class BadgeUpdateForm extends React.Component {
         return true;
     }
 
-    /**
-     * Fonction qui vérifie si le badge contient une image.
-     * 
-     * @author Vincent Houle
-     * @returns boolean
-     */
-    validateImage() {
-        console.log(this.state.badge.imagePath)
-        if (this.state.badge.imagePath == '') {
-            this.setState({ imageError: 'Veuillez ajouter une image.' });
-            return false;
-        }
-        else {
-            this.setState({ imageError: '' });
-
-            return true;
-        }
-    }
-
-
     handleSubmit = (event) => {
         event.preventDefault();
-        if (this.validateTitle() && this.validateDescription() && this.validateColor() && this.validateImage()) {
+        if (this.validateTitle() && this.validateDescription() && this.validateColor()) {
             if (this.state.imageFile != null) {
                 let formData = new FormData();
 
@@ -193,7 +173,6 @@ class BadgeUpdateForm extends React.Component {
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
                                 <div className="badge-create-form-button-field">
-                                    <div>
                                         <Button
                                             variant="contained"
                                             color='secondary'
@@ -208,9 +187,6 @@ class BadgeUpdateForm extends React.Component {
                                         >
                                             {this.state.badge.imagePath.length === 0 ? 'Ajouter une image' : 'Modifier l\'image'}
                                         </Button>
-                                        <Divider orientation="vertical" variant="middle" flexItem />
-                                        <span class="message-error-form">{this.state.imageError}</span>
-                                    </div>
                                     <Dialog open={this.state.openImageDialog} onClose={this.handleClose}>
                                         <DialogTitle>Modifier l'image du badge</DialogTitle>
                                         <DialogContent>

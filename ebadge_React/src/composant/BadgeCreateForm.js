@@ -23,7 +23,7 @@ class BadgeCreateForm extends React.Component {
             descriptionError: '',
             colorError: '',
             openImageDialog: false,
-            imageUrlField: "",
+            imageUrlField: '',
             imageFile: null,
             imageError: '',
             badge: {
@@ -57,7 +57,7 @@ class BadgeCreateForm extends React.Component {
      * fonction qui ouvre ou ferme la fenêtre de dialogue
      */
     handleImageDialog() {
-        this.setState({ openImageDialog: !this.state.openImageDialog }, () => !this.state.openImageDialog? this.validateImage() : null)
+        this.setState({ openImageDialog: !this.state.openImageDialog })
 
     }
 
@@ -65,7 +65,7 @@ class BadgeCreateForm extends React.Component {
      * fonction qui supprime l'image
      */
     handleImageDelete() {
-        this.setState({ badge: { ...this.state.badge, imagePath: '' } });
+        this.setState({ badge: { ...this.state.badge, imagePath: ''} });
         this.setState({ imageFile: null, imageUrlField: '' });
         this.handleImageDialog();
     }
@@ -130,31 +130,12 @@ class BadgeCreateForm extends React.Component {
 
 
     /**
-     * fonction qui vérifie si le badge contient une image.
-     * 
-     * @author Vincent Houle
-     * @returns boolean
-     */
-    validateImage() {
-        console.log(this.state.badge.imagePath)
-        if (this.state.badge.imagePath == '') {
-            this.setState({ imageError: 'Veuillez ajouter une image.' });
-            return false;
-        }
-        else {
-            this.setState({ imageError: '' });
-
-            return true;
-        }
-    }
-
-    /**
      * fonction qui envoie les données au serveur
      * @param {*} event 
      */
     handleSubmit = (event) => {
         event.preventDefault();
-        if (this.validateTitle() && this.validateDescription() && this.validateColor() && this.validateImage()) {
+        if (this.validateTitle() && this.validateDescription() && this.validateColor()) {
             if (this.state.imageFile != null) {
                 let formData = new FormData();
 
@@ -229,7 +210,6 @@ class BadgeCreateForm extends React.Component {
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
                                 <div className="badge-create-form-button-field">
-                                    <div>
                                         <Button
                                             variant="contained"
                                             color='secondary'
@@ -244,9 +224,6 @@ class BadgeCreateForm extends React.Component {
                                         >
                                             {this.state.badge.imagePath.length === 0 ? 'Ajouter une image' : 'Modifier l\'image'}
                                         </Button>
-                                        <Divider orientation="vertical" variant="middle" flexItem />
-                                        <span class="message-error-form">{this.state.imageError}</span>
-                                    </div>
 
                                     <Dialog open={this.state.openImageDialog} onClose={this.handleClose}>
                                         <DialogTitle>Modifier l'image du badge</DialogTitle>
