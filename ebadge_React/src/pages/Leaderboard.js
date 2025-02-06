@@ -1,11 +1,11 @@
 import React from "react";
-import './Classement.css';
+import './Leaderboard.css';
 import '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Select, InputAdornment } from '@mui/material';
 import { Search } from "@mui/icons-material";
 import Api from "../utils/Api";
 
-class Classement extends React.Component { 
+class Leaderboard extends React.Component { 
     constructor(props) {
         super(props);
         this.state = {
@@ -13,7 +13,7 @@ class Classement extends React.Component {
             /** 
              * initialisation du classement vide, on va le remplir avec les données de la base de données
              */
-            classement: [],
+            leaderboard: [],
             /**
              * sessions disponibles dans l'applications, on peut en rajouter dans le code seulement pour l'instant
              * ajouter une table dans la base de données pour les sessions
@@ -50,7 +50,7 @@ class Classement extends React.Component {
             search: ""
         }
         this.handleChange = this.handleChange.bind(this);
-        this.filterClassement = this.filterClassement.bind(this);
+        this.filterLeaderboard = this.filterLeaderboard.bind(this);
     }
     /**
      * fonction qui permet d'aller chercher les données du classement à la session n°1 par défaut quand on ouvre la page
@@ -64,7 +64,7 @@ class Classement extends React.Component {
                 for (let i = 0; i < leaderboard.length; i++) {
                     leaderboard[i].position = i + 1;
                 }
-                this.setState({ classement: leaderboard });
+                this.setState({ leaderboard: leaderboard });
             }).catch((error) => {
                 console.log(error);
         });
@@ -84,7 +84,7 @@ class Classement extends React.Component {
                 for (let i = 0; i < leaderboard.length; i++) {
                     leaderboard[i].position = i + 1;
                 }
-                this.setState({ classement: leaderboard });
+                this.setState({ leaderboard: leaderboard });
             }).catch((error) => {
                 console.log(error);
             }
@@ -106,22 +106,22 @@ class Classement extends React.Component {
      *  fonction qui permet de filtrer le classement par le nom de l'utilisateur
      * @returns le classement filtré par le nom de l'utilisateur
      */
-    filterClassement() {
-        return this.state.classement.filter((item) => {
+    filterLeaderboard() {
+        return this.state.leaderboard.filter((item) => {
             return item.username.toLowerCase().includes(this.state.search.toLowerCase());
         });
     }
 
     render() {
         return (
-            <div className="classement">
-                <div className="classement-container">
-                    <div className="classement-background">
-                        <div className="classement-title">
+            <div className="leaderboard">
+                <div className="leaderboard-container">
+                    <div className="leaderboard-background">
+                        <div className="leaderboard-title">
                             <h1>Classement</h1>
                         </div>
-                        <div className="classement-table">
-                            <div className="classement-table-header">
+                        <div className="leaderboard-table">
+                            <div className="leaderboard-table-header">
                                 <Select
                                     native
                                     value={this.state.session}
@@ -172,7 +172,7 @@ class Classement extends React.Component {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {this.filterClassement().map((item, index) => (
+                                        {this.filterLeaderboard().map((item, index) => (
                                             <TableRow key={item.id}>
                                                 <TableCell>{item.position}</TableCell>
                                                 <TableCell>{item.username}</TableCell>
@@ -191,4 +191,4 @@ class Classement extends React.Component {
 }
 
 
-export default (Classement);
+export default (Leaderboard);

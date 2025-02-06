@@ -8,7 +8,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UsersTab from "./pages/Dashboard/tabs/UsersTab";
 import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
-import Classement from "./pages/Classement";
+import Leaderboard from "./pages/Leaderboard";
 import BadgesTab from "./pages/Dashboard/tabs/BadgesTab";
 import CategoriesTab from "./pages/Dashboard/tabs/CategoriesTab";
 import Logout from "./pages/Logout";
@@ -46,7 +46,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index path="/" element={<PageProfile />} />
-            <Route path="classement" element={<Classement />} />
+            <Route path="leaderboard" element={<Leaderboard />} />
 
             <Route path="*" element={<h1>404: Page non trouvée</h1>} />
           </Route>
