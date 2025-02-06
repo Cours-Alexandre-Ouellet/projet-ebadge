@@ -40,16 +40,16 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'categorie',
+    'prefix' => 'category',
     'middleware' => [
         'auth:api',
         'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT,
     ],
 ], function () {
-    Route::get('/', [App\Http\Controllers\CategorieController::class, 'index']);
-    Route::post('/', [App\Http\Controllers\CategorieController::class, 'create']);
-    Route::put('/', [App\Http\Controllers\CategorieController::class, 'update']);
-    Route::delete('/{id}', [App\Http\Controllers\CategorieController::class, 'destroy']);
+    Route::get('/', [App\Http\Controllers\CategoryController::class, 'index']);
+    Route::post('/', [App\Http\Controllers\CategoryController::class, 'create']);
+    Route::put('/', [App\Http\Controllers\CategoryController::class, 'update']);
+    Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy']);
 });
 
 
@@ -99,7 +99,7 @@ Route::group([
 ], function () {
     Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'Leaderboard']);
     Route::get('/leaderboard/{startDate}/{endDate}', [App\Http\Controllers\StatsController::class, 'LeaderboardBySession']);
-    Route::get('/leaderboard/{categorie}', [App\Http\Controllers\StatsController::class, 'LeaderboardByCategory']);
+    Route::get('/leaderboard/{category}', [App\Http\Controllers\StatsController::class, 'LeaderboardByCategory']);
 });
 
 Route::group([

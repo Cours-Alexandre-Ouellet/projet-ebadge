@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Categorie\CategorieUpdateRequest;
-use App\Http\Requests\Categorie\CreateCategorieRequest;
-use App\Models\Categorie;
-use App\Models\CategorieBadge;
+use App\Http\Requests\Category\CategoryUpdateRequest;
+use App\Http\Requests\Category\CreateCategoryRequest;
+use App\Models\Category;
+use App\Models\CategoryBadge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 /**
  * Controller pour les catégories
  */
-class CategorieController extends Controller
+class CategoryController extends Controller
 {
     /**
      * La liste de toutes les catégories
@@ -21,9 +21,9 @@ class CategorieController extends Controller
      */
     public function index()
     {
-        $categories = Categorie::all();
-        // foreach ($categories as $categorie) {
-        //     $categorie->setPossessionPercentage();
+        $categories = Category::all();
+        // foreach ($categories as $category) {
+        //     $category->setPossessionPercentage();
         // }
         return response()->json(['categories' => $categories]);
     }
@@ -33,18 +33,18 @@ class CategorieController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse la catégorie créée
      */
-    public function create(CreateCategorieRequest $request)
+    public function create(CreateCategoryRequest $request)
     {
-        $categorie = new Categorie();
-        $categorie->nom = $request->nom;
-        $categorie->save();
-        return response()->json($categorie);
+        $category = new Category();
+        $category->name = $request->name;
+        $category->save();
+        return response()->json($category);
     }
 
     /**
      * Affiche la catégorie avec l'id donné
      *
-     * @param  \App\Categorie  $categorie
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request)
@@ -52,8 +52,8 @@ class CategorieController extends Controller
         $request->validate([
             'id' => 'required|exists:categories,id'
         ]);
-        $categorie = Categorie::find($request->id);
-        return response()->json($categorie);
+        $category = Category::find($request->id);
+        return response()->json($category);
     }
 
     /**
@@ -63,31 +63,31 @@ class CategorieController extends Controller
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function update(CategorieUpdateRequest $request)
+    public function update(CategoryUpdateRequest $request)
     {
-        $categorie = Categorie::updateOrCreate(
+        $category = Category::updateOrCreate(
             ['id' => $request->id],
             [
-                'nom' => $request->nom,
+                'name' => $request->name,
             ]
         );
 
-        return response()->json($categorie);
+        return response()->json($category);
     }
 
     /**
      * Supprime la catégorie avec l'id donné
      *
-     * @param  \App\Categorie  $categorie
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\JsonResponse le id de la catégorie supprimée
      */
     public function destroy($id)
     {
-        $categorie = Categorie::find($id);
+        $category = Category::find($id);
 
-        CategorieBadge::where('idCategorie', $categorie->id)->delete();
+        CategoryBadge::where('idCategory', $category->id)->delete();
 
-        $categorie->delete();
-        return response()->json($categorie);
+        $category->delete();
+        return response()->json($category);
     }
 }

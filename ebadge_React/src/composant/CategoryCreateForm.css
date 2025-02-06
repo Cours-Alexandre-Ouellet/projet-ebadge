@@ -1,12 +1,12 @@
 
-.categorie-create-form {
+.category-create-form {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
-.categorie-create-form-container {
+.category-create-form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,7 +14,7 @@
     height: 100%;
 }  
 
-.categorie-create-form-content {
+.category-create-form-content {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -23,7 +23,7 @@
     padding-top: 100px;
 }
 
-.categorie-create-form-preview {
+.category-create-form-preview {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -33,7 +33,7 @@
     padding-top: 120px;
 }
 
-.categorie-create-form-background {
+.category-create-form-background {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -41,7 +41,7 @@
     height: 100%;
 }
 
-form.create-categorie {
+form.create-category {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -50,14 +50,14 @@ form.create-categorie {
     height: 100%;
 }
 
-.categorie-create-form-button-field {
+.category-create-form-button-field {
     display: flex;
     width: 80%;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
-.categorie-create-form-button-submit {
+.category-create-form-button-submit {
     display: flex;
     width: 80%;
     justify-content: space-between;

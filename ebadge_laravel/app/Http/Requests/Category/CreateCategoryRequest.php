@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Categorie;
+namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCategorieRequest extends FormRequest
+class CreateCategoryRequest extends FormRequest
 {
     /**
      * Définit les règles de validation pour la requête
@@ -14,7 +14,7 @@ class CreateCategorieRequest extends FormRequest
     public function rules()
     {
         return [
-            'nom' => 'required|string|max:45',
+            'name' => 'required|string|max:45',
         ];
     }
 }
