@@ -52,6 +52,7 @@ class AdminLayout extends React.Component {
                     sectionName: "Gestion des badges",
                     tabs: this.policiesHelper.getvisibleRoutes([
                         { id: 3, label: 'Liste des badges', icon: <AssignmentIcon />, path: "/admin/badges", minimumRole: Role.Teacher },
+                        { id: 7, label: 'Liste des catégories', icon: <AssignmentIcon />, path: "/admin/categories", minimumRole: Role.Teacher },
                     ])
                 }
             ],

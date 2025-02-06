@@ -10,6 +10,7 @@ import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
 import Classement from "./pages/Classement";
 import BadgesTab from "./pages/Dashboard/tabs/BadgesTab";
+import CategoriesTab from "./pages/Dashboard/tabs/CategoriesTab";
 import Logout from "./pages/Logout";
 import ProtectedRoute from "./policies/ProtectedRoute";
 import Role from './policies/Role';
@@ -54,6 +55,7 @@ function App() {
             <Route path="/admin" element={<AdminLayout />} >
               <Route path="/admin/users" element={<UsersTab />} />
               <Route path="/admin/badges" element={<BadgesTab />} />
+              <Route path="/admin/categories" element={<CategoriesTab />} />
               <Route path="/admin/teacher_codes" element={ProtectedRoute(Role.Admin)}>
                 <Route path="/admin/teacher_codes" element={<TeacherCodesTab />} />
               </Route>

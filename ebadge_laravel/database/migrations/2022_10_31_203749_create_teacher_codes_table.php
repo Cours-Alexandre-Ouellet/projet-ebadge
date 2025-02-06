@@ -19,7 +19,7 @@ class CreateTeacherCodesTable extends Migration
         Schema::create('teacher_code', function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->foreignId('user_id')->constrained('user')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('user');
         });
     }
 
