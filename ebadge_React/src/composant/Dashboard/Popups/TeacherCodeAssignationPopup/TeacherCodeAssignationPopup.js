@@ -32,6 +32,9 @@ export default function TeacherCodeAssignationPopup({ isOpen, handleClose, teach
         refreshUsers();
     }, [isOpen]);
 
+    /**
+     * Rafraîchissement de la liste des utilisateurs
+     */
     const refreshUsers = () => {
         addStep();
         Api.get(`/user/role/${RoleIds.Student}`)
@@ -46,6 +49,10 @@ export default function TeacherCodeAssignationPopup({ isOpen, handleClose, teach
             });
     };
 
+    /**
+     * Soumission du formulaire
+     * @param {*} event 
+     */
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -66,6 +73,9 @@ export default function TeacherCodeAssignationPopup({ isOpen, handleClose, teach
             });
     };
 
+    /**
+     * Fermeture du message de succès
+     */
     const handleCloseSuccessMessage = () => {
         setShowSuccessMessage(false);
     };

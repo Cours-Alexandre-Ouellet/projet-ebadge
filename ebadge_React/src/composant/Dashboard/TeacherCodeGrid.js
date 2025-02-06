@@ -48,6 +48,9 @@ const TeacherCodeGrid = ({ rows = [], deleteTeacherCode, refresh }) => {
     },
   ]);
 
+  /**
+   * Fermeture de la popup d'assignation
+   */
   const handleClose = () => {
     setOpenAssignDialog(false);
     refresh();
