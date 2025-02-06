@@ -2,56 +2,45 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Avatar, Slide, Dialog } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import BadgeDeleteAction from './Popups/BadgeDeletePopup/BadgeDeletePopup';
-import BadgeUpdateForm from '../Forms/Badge/BadgeUpdateForm';
+import CategorieDeleteAction from './CategorieDeletePopup';
+import CategorieUpdateForm from '../CategorieUpdateForm';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-class BadgeGrid extends React.Component {
+class CategorieGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             pageSize: 5,
             openDeleteDialog: false,
             openEditDialog: false,
-            selectedBadge: null,
+            selectedCategorie: null,
             columns: [
                 { field: 'id', headerName: 'ID', flex: 1, align: 'center', headerAlign: 'center' },
+                { field: 'nom', headerName: 'Nom', flex: 2, headerAlign: 'center' },
                 {
-                    field: 'imagePath', headerName: 'Image', sortable: false, flex: 2, align: 'center', headerAlign: 'center', renderCell: (params) => {
-                        return <Avatar alt={params.row.title} src={params.value} sx={{ width: 70, height: 70, bgcolor: `#${params.row.color}` }} />;
-                    },
-                },
-                { field: 'title', headerName: 'Titre', flex: 2, headerAlign: 'center' },
-                { field: 'description', headerName: 'Description', flex: 4, headerAlign: 'center' },
-                {
-                    field: 'color', headerName: 'Couleur', flex: 1, align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
-                        return <div style={{ backgroundColor: `#${params.value}`, width: '100%', height: '100%' }}></div>;
-                    }
-                },
-                {
-                    field: 'BadgeEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, hideable: false, renderCell: (params) => {
+                    field: 'CategorieEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
                         const onClick = (e) => {
                             e.stopPropagation();
 
                             this.setState({
                                 openEditDialog: true,
-                                selectedBadge: params.row
+                                selectedCategorie: params.row
                             })
                         };
                         return <Button variant="outlined" onClick={onClick} startIcon={<Edit></Edit>} >Modifier</Button>;
                     }
                 },
                 {
-                    field: 'BadgeDeleteAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, hideable: false, renderCell: (params) => {
+                    field: 'CategorieDeleteAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
                         const onClick = (e) => {
                             e.stopPropagation();
 
                             this.setState({
                                 openDeleteDialog: true,
-                                selectedBadge: params.row
+                                selectedCategorie: params.row
                             })
                         };
                         return <Button variant="outlined" color='error' onClick={onClick} startIcon={<Delete></Delete>} >Supprimer</Button>;
@@ -72,7 +61,7 @@ class BadgeGrid extends React.Component {
         this.setState({ openEditDialog: false });
     };
 
-
+    
     render() {
         return (
             <div style={{ height: 600, width: '100%' }}>
@@ -87,20 +76,20 @@ class BadgeGrid extends React.Component {
                     }}
                 />
 
-                <BadgeDeleteAction
+                <CategorieDeleteAction
                     isOpen={this.state.openDeleteDialog}
                     onClose={this.handleCloseDeleteDialog}
-                    selectedBadge={this.state.selectedBadge}
-                    deleteBadge={this.props.deleteBadge}
-                    errorBadge={this.props.errorBadge}
+                    selectedCategorie={this.state.selectedCategorie}
+                    deleteCategorie={this.props.deleteCategorie}
+                    errorCategorie={this.props.errorCategorie}
                 />
                 <Dialog fullScreen open={this.state.openEditDialog} onClose={this.handleCloseEditDialog} TransitionComponent={Transition}>
-                    <BadgeUpdateForm handleClose={this.handleCloseEditDialog} editBadge={this.props.editBadge} selectedBadge={this.state.selectedBadge} errorBadge={this.props.errorBadge} />
+                    <CategorieUpdateForm handleClose={this.handleCloseEditDialog} editCategorie={this.props.editCategorie} selectedCategorie={this.state.selectedCategorie} errorCategorie={this.props.errorCategorie} />
                 </Dialog>
             </div>
         );
     }
 }
 
-export default BadgeGrid;
+export default CategorieGrid;
 

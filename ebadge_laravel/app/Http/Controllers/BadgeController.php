@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Badge\BadgeUdpateRequest;
+use App\Http\Requests\Badge\BadgeUpdateRequest;
 use App\Http\Requests\Badge\CreateBadgeRequest;
 use App\Models\Badge;
 use App\Models\UserBadge;
@@ -72,7 +72,7 @@ class BadgeController extends Controller
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
-    public function update(BadgeUdpateRequest $request)
+    public function update(BadgeUpdateRequest $request)
     {
         $badge = Badge::updateOrCreate(
             ['id' => $request->id],

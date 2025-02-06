@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Badge;
-use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -126,7 +125,7 @@ class UserController extends Controller
             'backgroundUrl' => 'url|max:2048'
         ]);
 
-        if($request->hasFile('background')) {
+        if ($request->hasFile('background')) {
             $path = $request->file('background')->storeAs('public/backgrounds', $request->file('background')->getClientOriginalName());
             $backgroundUrl = asset(Storage::url($path));
         } else {
@@ -150,7 +149,7 @@ class UserController extends Controller
             'avatarUrl' => 'url|max:2048'
         ]);
 
-        if($request->hasFile('avatar')) {
+        if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->storeAs('public/avatars', $request->file('avatar')->getClientOriginalName());
             $avatarUrl = asset(Storage::url($path));
         } else {
@@ -184,5 +183,17 @@ class UserController extends Controller
     public function getMyBadges(Request $request)
     {
         return $this->getUserBadges($request->user()->id);
+    }
+
+    /**
+     * Retourne les utilisateurs ayant un role.
+     * 
+     * @param int $id Id du role
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllByRole(int $id)
+    {
+        $users = User::where('role_id', $id)->get();
+        return response()->json(['users' => $users]);
     }
 }

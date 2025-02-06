@@ -1,5 +1,5 @@
 import React from "react";
-import './BadgeDeletePopup.css';
+import './CategorieDeletePopup.css';
 import Api from '../../utils/Api';
 
 import IconButton from '@mui/material/IconButton';
@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Button } from "@mui/material";
 import { Dialog, DialogContent, DialogTitle, DialogContentText } from '@mui/material';
 
-class BadgeDeleteAction extends React.Component {
+class CategorieDeleteAction extends React.Component {
 
     constructor(props) {
         super(props);
@@ -16,13 +16,13 @@ class BadgeDeleteAction extends React.Component {
     }
 
     handleSubmit() {
-        Api.delete('/badge/' + this.props.selectedBadge.id)
+        Api.delete('/categorie/' + this.props.selectedCategorie.id)
             .then(res => {
                 this.props.onClose();
-                this.props.deleteBadge(this.props.selectedBadge);
+                this.props.deleteCategorie(this.props.selectedCategorie);
             })
             .catch(err => {
-                this.props.errorBadge('Une erreur est survenue');
+                this.props.errorCategorie('Une erreur est survenue');
                 console.log(err);
             });
     }
@@ -48,14 +48,14 @@ class BadgeDeleteAction extends React.Component {
                         </IconButton>
                     ) : null}
                 </DialogTitle>
-                <DialogContent className={"delete-badge-popup"}>
+                <DialogContent className={"delete-categorie-popup"}>
                     <DialogContentText align="center">
-                        <b>Veuillez confirmer la suppression du badge : {this.props.selectedBadge ? this.props.selectedBadge.title : "Inconnue"}</b><br/>
+                        <b>Veuillez confirmer la suppression de la catégorie : {this.props.selectedCategorie ? this.props.selectedCategorie.title : "Inconnue"}</b><br/>
                         <br/>
                         Détails :<br/>
-                        Tous les utilisateurs ayant ce badge seront dégradés.<br/>
+                        Tous les badges ayant cette catégorie seront dégradés.<br/>
                         <br />
-                        <Button variant="outlined" color="error" className={"mt-2"} onClick={this.handleSubmit} >Supprimer le badge</Button>
+                        <Button variant="outlined" color="error" className={"mt-2"} onClick={this.handleSubmit} >Supprimer la catégorie</Button>
                     </DialogContentText>
                 </DialogContent>
             </Dialog >
@@ -63,4 +63,4 @@ class BadgeDeleteAction extends React.Component {
     }
 }
 
-export default (BadgeDeleteAction);
+export default (CategorieDeleteAction);
