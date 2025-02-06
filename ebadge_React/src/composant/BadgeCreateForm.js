@@ -65,7 +65,7 @@ class BadgeCreateForm extends React.Component {
      * fonction qui supprime l'image
      */
     handleImageDelete() {
-        this.setState({ badge: { ...this.state.badge, imagePath: '' } }, () => this.validateImage());
+        this.setState({ badge: { ...this.state.badge, imagePath: '' } });
         this.setState({ imageFile: null, imageUrlField: '' });
         this.handleImageDialog();
     }
