@@ -34,6 +34,9 @@ const theme = createTheme({
   },
 });
 
+const estConnecter = localStorage.getItem('token');
+
+
 function App() {
   console.log(process.env);
 
@@ -41,7 +44,7 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
             <Route index path="/" element={<PageProfile />} />
             <Route path="classement" element={<Classement />} />
 
