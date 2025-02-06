@@ -11,10 +11,10 @@ class CreateCategoriesBadgeTable extends Migration
      */
     public function up(): void
     {
-        Schema::create('categorie_badge', function (Blueprint $table) {
+        Schema::create('category_badge', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idBadge')->constrained('badge');
-            $table->foreignId('idCategorie')->constrained('categorie');
+            $table->foreignId('idCategory')->constrained('category');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ class CreateCategoriesBadgeTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categorie_badge');
+        Schema::dropIfExists('category_badge');
     }
 };

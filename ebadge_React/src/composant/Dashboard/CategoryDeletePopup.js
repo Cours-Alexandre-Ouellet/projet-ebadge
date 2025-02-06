@@ -1,5 +1,5 @@
 import React from "react";
-import './CategorieDeletePopup.css';
+import './CategoryDeletePopup.css';
 import Api from '../../utils/Api';
 
 import IconButton from '@mui/material/IconButton';
@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Button } from "@mui/material";
 import { Dialog, DialogContent, DialogTitle, DialogContentText } from '@mui/material';
 
-class CategorieDeleteAction extends React.Component {
+class CategoryDeleteAction extends React.Component {
 
     constructor(props) {
         super(props);
@@ -16,13 +16,13 @@ class CategorieDeleteAction extends React.Component {
     }
 
     handleSubmit() {
-        Api.delete('/categorie/' + this.props.selectedCategorie.id)
+        Api.delete('/category/' + this.props.selectedCategory.id)
             .then(res => {
                 this.props.onClose();
-                this.props.deleteCategorie(this.props.selectedCategorie);
+                this.props.deleteCategory(this.props.selectedCategory);
             })
             .catch(err => {
-                this.props.errorCategorie('Une erreur est survenue');
+                this.props.errorCategory('Une erreur est survenue');
                 console.log(err);
             });
     }
@@ -48,9 +48,9 @@ class CategorieDeleteAction extends React.Component {
                         </IconButton>
                     ) : null}
                 </DialogTitle>
-                <DialogContent className={"delete-categorie-popup"}>
+                <DialogContent className={"delete-category-popup"}>
                     <DialogContentText align="center">
-                        <b>Veuillez confirmer la suppression de la catégorie : {this.props.selectedCategorie ? this.props.selectedCategorie.title : "Inconnue"}</b><br/>
+                        <b>Veuillez confirmer la suppression de la catégorie : {this.props.selectedCategory ? this.props.selectedCategory.title : "Inconnue"}</b><br/>
                         <br/>
                         Détails :<br/>
                         Tous les badges ayant cette catégorie seront dégradés.<br/>
@@ -63,4 +63,4 @@ class CategorieDeleteAction extends React.Component {
     }
 }
 
-export default (CategorieDeleteAction);
+export default (CategoryDeleteAction);
