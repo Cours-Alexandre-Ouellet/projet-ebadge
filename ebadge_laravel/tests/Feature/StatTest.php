@@ -2,22 +2,30 @@
 
 namespace Tests\Feature;
 
+use App\Models\Badge;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Role;
+use App\Models\User;
 use Carbon\Carbon;
 
 
 class StatTest extends TestCase
 {
+
+    private $admin;
+    private $students;
+    private $badges;
+    private $adminToken;
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->admin = factory(\App\Models\User::class)->create();
-        $this->students = factory(\App\Models\User::class, 5)->create();
+        $this->admin = User::factory()->create();
+        $this->students = User::factory()->count(5)->create();
 
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
@@ -29,7 +37,7 @@ class StatTest extends TestCase
         $this->adminToken = $token->accessToken;
 
 
-        $this->badges = factory(\App\Models\Badge::class, 5)->create();
+        $this->badges = Badge::factory()->count(5)->create();
         $this->badges->each(function ($badge) {
             $badge->save();
 

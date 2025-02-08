@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Badge;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -15,6 +16,12 @@ class BadgeTest extends TestCase
 {
     use DatabaseTransactions;
 
+    private $user;
+    private $teacher;
+    private $admin;
+    private $badge;
+    private $teacherToken;
+
     /**
      * SETUP
      */
@@ -22,18 +29,18 @@ class BadgeTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(\App\Models\User::class)->create();
+        $this->user = User::factory()->create();
 
-        $this->admin = factory(\App\Models\User::class)->create();
+        $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
 
-        $this->teacher = factory(\App\Models\User::class)->create();
+        $this->teacher = User::factory()->create();
         $this->teacher->role_id = Role::Teacher()->id;
         $this->teacher->save();
 
-        $this->badge = factory(\App\Models\Badge::class)->create();
+        $this->badge = Badge::factory()->create();
         $this->badge->save();
 
         $token = $this->teacher->createToken('Personal Access Token');

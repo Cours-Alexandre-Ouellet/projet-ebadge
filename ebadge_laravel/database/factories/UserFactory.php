@@ -2,26 +2,47 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+namespace Database\Factories;
+
 use App\Models\Organisation;
-use Faker\Generator as Faker;
 use App\Models\Role;
 use App\Models\Program;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
-$factory->define(\App\Models\User::class, function (Faker $faker) {
+class UserFactory extends Factory
+{
+    /**
+     * The current password being used by the factory.
+     */
+    protected ?string $passwordEncrypt;
+ 
 
-    $passwordEncrypt = Hash::make('password');
-    return [
-        'first_name' => $faker->firstName(),
-        'username' => $faker->userName(),
-        'last_name' => $faker->lastName(),
-        'email' => $faker->email(),
-        'password' => $passwordEncrypt,
-        'role_id' => Factory(\App\Models\Role::class)->create()->id,
-        'program_id' => Factory(\App\Models\Program::class)->create()->id,
-        'organisation_id' => Factory(\App\Models\Organisation::class)->create()->id,
-        'privacy' => 1,
-        'created_at' => $faker->dateTimeBetween('-1 years', 'now'),
-        'updated_at' => $faker->dateTimeBetween('-1 years', 'now'),
-    ];
-});
+    protected $model = User::class;
+
+    /**
+     * fonction qui génère des données aléatoire pour un user
+     * 
+     * @author Vincent Houle
+     * @return User avec des données aléatoire
+     */
+    public function definition(): array
+    {
+        return [
+            'first_name' => fake()->firstName(),
+            'username' => fake()->userName(),
+            'last_name' => fake()->lastName(),
+            'email' => fake()->email(),
+            'password' => Hash::make(fake()->password()),
+            'role_id' => Role::factory(),
+            'program_id' => Program::factory(),
+            'organisation_id' => Organisation::factory(),
+            'privacy' => 1,
+            'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
+            'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
+        ];
+    }
+}
+
+

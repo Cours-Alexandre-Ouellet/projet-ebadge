@@ -4,11 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Role;
+use Database\Factories\BadgeFactory as FactoriesBadgeFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+
 /**
  * Classe représentant un badge
  */
 class Badge extends Model
 {
+    use HasFactory, Notifiable;
     /**
      * The table associated with the model.
      * @var string
@@ -42,5 +47,13 @@ class Badge extends Model
     public function categories()
     {
         return $this->belongsToMany('App\Models\Categorie', 'categorie_badge', 'idBadge', 'idCategorie');
+    }
+
+    /**
+     * Créer une nouvelle instance à la factory
+     */
+    protected static function newFactory()
+    {
+        return FactoriesBadgeFactory::new();
     }
 }
