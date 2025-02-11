@@ -33,4 +33,14 @@ class Badge extends Model
         $totalUsers = User::all()->where('role_id', '=', Role::Student()->id)->count();
         $this->possession = $totalUsers == 0 ? 0 : $users->count() / $totalUsers * 100;
     }
+
+    /**
+     * Relation entre le badge et ses catégories
+     * 
+     * @return BelongsToMany les catégories du badge
+     */
+    public function categories()
+    {
+        return $this->belongsToMany('App\Models\Category', 'category_badge', 'idBadge', 'idCategory');
+    }
 }

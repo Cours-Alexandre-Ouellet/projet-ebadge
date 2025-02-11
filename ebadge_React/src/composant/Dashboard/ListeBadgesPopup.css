@@ -1,0 +1,32 @@
+/*inspirer de UserBadgePopup.css pour garder un theme constant*/
+
+.dialog-popup {
+    display:flex !important;
+    justify-content:center !important;
+    min-width: 500px;
+    min-height: 400px;
+    margin: 25px;
+}
+
+.dialog-popup hr {
+    margin: 35px;
+    border: 1px solid #e0e0e0;
+}
+
+.dialog-principale{
+    text-align:center;
+    align-content:center; 
+    justify-content:center;
+    align-items:center;
+}
+
+.avatar {
+    min-height: 150px !important;
+    min-width: 150px !important;
+    margin-top: 16px !important;
+    
+}
+
+.description{
+    margin-top:70px !important;
+}

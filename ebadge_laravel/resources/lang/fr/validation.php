@@ -189,7 +189,7 @@ return [
         "buying_price_ht" => "prix d'achat HT",
         "buying_price_ttc" => "prix d'achat TTC",
         "business_name" => "nom de votre entreprise",
-        "category" => "categorie",
+        "category" => "category",
         "categories" => "catégories",
         "categories.*" => "d'une des catégories",
         "cb_code" => "code de la CB",

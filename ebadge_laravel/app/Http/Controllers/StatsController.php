@@ -38,4 +38,12 @@ class StatsController extends Controller
         }])->orderBy('badges_count', 'desc')->get();
         return response()->json($users);
     }
+
+    public function leaderboardByCategory(string $category)
+    {
+        $users =  User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount(['badges' => function ($query) use ($category) {
+            $query->where('category', '=', $category);
+        }])->orderBy('badges_count', 'desc')->get();
+        return response()->json($users);
+    }
 }

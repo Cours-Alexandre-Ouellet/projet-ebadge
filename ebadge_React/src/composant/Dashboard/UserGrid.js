@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button } from '@mui/material';
-import UserBadgesPopup from './UserBadgesPopup';
+import UserBadgesPopup from './Popups/UserBadgesPopup/UserBadgesPopup';
 
 
 class UserGrid extends React.Component {
