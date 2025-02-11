@@ -20,7 +20,7 @@ class BadgeUpdateRequest extends FormRequest
             'id' => 'required|exists:badge,id',
             'title' => 'required|string|max:45',
             'description' => 'required|string|max:255',
-            'imagePath' => 'required|string|max:2048',
+            'imagePath' => 'nullable|max:2048',
             'color' => 'required|string|min:6|max:6',
         ];
     }
