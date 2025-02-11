@@ -23,15 +23,12 @@ export default function ListeBadge() {
    * fonction allant chercher tout les badges obtenues et non obtenues
    */
   useEffect(() => {
-    console.log(1);
     let id = null;
     Api.get("/auth/current_user")
       .then((response) => {
-        console.log(2);
         id = response.data.id;
         Api.get("/user/" + id + "/badges")
           .then((response) => {
-            console.log(3);
             const badges = response.data;
             setBadgesObtenus(Object.values(badges).flat());
           })
@@ -40,7 +37,6 @@ export default function ListeBadge() {
           });
         Api.get("/user/" + id + "/badges-left")
           .then((response) => {
-            console.log(4);
             const badges = response.data;
             setBadgesNonObtenus( Object.values(badges).flat() );
           })
