@@ -2,7 +2,7 @@ import React from 'react';
 import Api from '../../../utils/Api';
 import BadgeGrid from '../../../composant/Dashboard/BadgeGrid';
 import Item from '@mui/material/Grid';
-import BadgeCreateForm from '../../../composant/BadgeCreateForm';
+import BadgeCreateForm from '../../../composant/Forms/Badge/BadgeCreateForm';
 import { Button, Dialog, Slide, Snackbar, Alert } from '@mui/material';
 import './../Dashboard.css';
 import { Add } from '@mui/icons-material';

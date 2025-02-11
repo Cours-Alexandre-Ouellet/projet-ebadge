@@ -2,9 +2,9 @@ import React from 'react';
 import '@mui/material';
 import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert, Divider } from '@mui/material';
 import { PhotoCamera, Check } from '@mui/icons-material';
-import Api from '../utils/Api';
+import Api from '../../../utils/Api';
 import './BadgeCreateForm.css';
-import BadgeComponent from './PageProfil/BadgeComponent';
+import BadgeComponent from '../../PageProfil/BadgeComponent';
 
 function isImage(url) {
     return /(http(s?):)*\.(?:jpg|gif|png)/.test(url);

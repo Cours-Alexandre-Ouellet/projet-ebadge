@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Categorie;
+namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Objet représentant une requête de mise à jour d'une catégorie
  */
-class CategorieUpdateRequest extends FormRequest
+class CategoryUpdateRequest extends FormRequest
 {
     /**
      * Définit les règles de validation pour la requête
@@ -18,7 +18,7 @@ class CategorieUpdateRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:badge,id',
-            'nom' => 'required|string|max:45',
+            'name' => 'required|string|max:45',
         ];
     }
 }
