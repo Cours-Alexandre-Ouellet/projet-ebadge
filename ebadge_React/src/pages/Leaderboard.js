@@ -5,6 +5,9 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextF
 import { Search } from "@mui/icons-material";
 import Api from "../utils/Api";
 
+/**
+ * Classe Leaderboard qui permet d'afficher le classement des utilisateurs
+ */
 class Leaderboard extends React.Component { 
     constructor(props) {
         super(props);
