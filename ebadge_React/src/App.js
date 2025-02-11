@@ -17,8 +17,8 @@ import Role from './policies/Role';
 import Signup from "./pages/Signup/Signup";
 
 import ListeBadge from './pages/ListeBadge';
-import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
-import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
+// import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
+// import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
 import TeacherCodesTab from './pages/Dashboard/tabs/TeacherCodesTab';
 
 
@@ -40,6 +40,7 @@ const theme = createTheme({
 });
 
 
+const estConnecter = localStorage.getItem('token');
 
 function App() {
 
@@ -49,7 +50,7 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
             <Route index path="/" element={<PageProfile />} />
             <Route path="classement" element={<Classement />} />
             <Route path="badges" element={<ListeBadge />} />
