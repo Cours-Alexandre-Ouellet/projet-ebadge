@@ -17,8 +17,8 @@ import Role from './policies/Role';
 import Signup from "./pages/Signup/Signup";
 
 import ListeBadge from './pages/ListeBadge';
-import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
-import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
+//import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
+//import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
 import TeacherCodesTab from './pages/Dashboard/tabs/TeacherCodesTab';
 
 

@@ -65,7 +65,7 @@ class BadgeCreateForm extends React.Component {
      * fonction qui supprime l'image
      */
     handleImageDelete() {
-        this.setState({ badge: { ...this.state.badge, imagePath: ''} });
+        this.setState({ badge: { ...this.state.badge, imagePath: null} });
         this.setState({ imageFile: null, imageUrlField: '' });
         this.handleImageDialog();
     }
@@ -167,6 +167,17 @@ class BadgeCreateForm extends React.Component {
                         console.log(error);
                     });
             }
+            else{
+                this.state.imagePath = '';
+                Api.post('/badge', this.state.badge)
+                    .then((response) => {
+                        this.props.addBadge(response.data);
+                    })
+                    .catch((error) => {
+                        this.props.errorBadge('Erreur lors de la création du badge');
+                        console.log(error);
+                    });
+            }
             this.props.handleClose();
         }
     }
@@ -222,7 +233,7 @@ class BadgeCreateForm extends React.Component {
                                             error={this.state.imageError.length > 0}
                                             startIcon={<PhotoCamera />}
                                         >
-                                            {this.state.badge.imagePath.length === 0 ? 'Ajouter une image' : 'Modifier l\'image'}
+                                            {this.state.badge.imagePath ? 'Ajouter une image' : 'Modifier l\'image'}
                                         </Button>
 
                                     <Dialog open={this.state.openImageDialog} onClose={this.handleClose}>
