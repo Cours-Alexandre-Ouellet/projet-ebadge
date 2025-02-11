@@ -47,7 +47,7 @@ export default function ListeBadge() {
       .catch((error) => {
         console.log(error);
       });
-  });
+  },[]);
 
   /**
    * fonction qui permet de mettre à jour le state quand on change la valeur d'un champ
