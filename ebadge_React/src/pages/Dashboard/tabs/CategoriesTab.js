@@ -1,117 +1,83 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Api from '../../../utils/Api';
-import CategorieGrid from '../../../composant/Dashboard/CategorieGrid';
-import Item from '@mui/material/Grid';
-import CategorieCreateForm from '../../../composant/CategorieCreateForm';
-import { Button, Dialog, Slide, Snackbar, Alert } from '@mui/material';
-import './../Dashboard.css';
+import CategoryGrid from '../../../composant/Dashboard/CategoryGrid';
+import CategoryCreateForm from '../../../composant/CategoryCreateForm';
+import { Button, Dialog, Slide, Snackbar, Alert, Grid } from '@mui/material';
 import { Add } from '@mui/icons-material';
+import './../Dashboard.css';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+const Transition = React.forwardRef((props, ref) => (
+    <Slide direction="up" ref={ref} {...props} />
+));
 
-class CategoriesTab extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            closeCategorieForm: false,
-            showSuccessMessage: false,
-            successMessage: '',
-            showErrorMessage: false,
-            errorMessage: '',
-            badges: []
-        }
+// Tableau des catégories
+const CategoriesTab = () => {
+    const [categoryFormOpen, setCategoryFormOpen] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [categories, setCategories] = useState([]);
 
-        this.handleCategorieForm = this.handleCategorieForm.bind(this);
-        this.getCategories = this.getCategories.bind(this);
-        this.addCategorie = this.addCategorie.bind(this);
-        this.editCategorie = this.editCategorie.bind(this);
-        this.deleteCategorie = this.deleteCategorie.bind(this);
-        this.errorCategorie = this.errorCategorie.bind(this);
-        this.handleCloseSuccessMessage = this.handleCloseSuccessMessage.bind(this);
-        this.handleCloseErrorMessage = this.handleCloseErrorMessage.bind(this);
-    }
+    const getCategories = useCallback(() => {
+        Api.get('/category')
+            .then(res => setCategories(res.data.categories))
+            .catch(err => setErrorMessage("Erreur lors de la récupération des catégories."));
+    }, []);
 
-    componentDidMount() {
-        this.getCategories();
-    }
+    useEffect(() => {
+        getCategories();
+    }, [getCategories]);
 
-    /**
-     * Recupere la liste des catégories depuis l'API
-     */
-    getCategories() {
-        Api.get('/categorie').then(res => {
-            const categories = res.data;
-            this.setState({ categories: categories.categories });
-        }
-        )
-    }
+    const handleCategoryFormToggle = () => {
+        setCategoryFormOpen(prev => !prev);
+    };
 
-    handleCategorieForm() {
-        this.setState({ closeCategorieForm: !this.state.closeCategorieForm });
-    }
+    const addCategory = (category) => {
+        setCategories(prev => [category, ...prev]);
+        setSuccessMessage('La catégorie a été ajoutée avec succès !');
+    };
 
-    addCategorie(categorie) {
-        this.setState({ categories: [categorie, ...this.state.categories], successMessage: 'La catégorie a été ajouté avec succès !', showSuccessMessage: true });
-    }
+    const editCategory = (category) => {
+        setCategories(prev => prev.map(c => c.id === category.id ? category : c));
+        setSuccessMessage('La catégorie a été modifiée avec succès !');
+    };
 
-    editCategorie(categorie) {
-        const categories = this.state.categories.map(c => {
-            if (c.id === categorie.id) {
-                return categorie;
-            }
-            return c;
-        });
-        this.setState({ categories, successMessage: 'La catégorie a été modifiée avec succès !', showSuccessMessage: true });
-    }
+    const deleteCategory = (category) => {
+        setCategories(prev => prev.filter(c => c.id !== category.id));
+        setSuccessMessage('La catégorie a été supprimée avec succès !');
+    };
 
-    deleteCategorie(categorie) {
-        console.log(categorie);
-        console.log(this.state.categories);
-        const categories = this.state.categories.filter(c => c.id !== categorie.id);
-        console.log(categories);
-        this.setState({ categories, successMessage: 'La catégorie a été supprimée avec succès !', showSuccessMessage: true });
-        console.log(this.state.categories);
-    }
-
-
-    handleCloseSuccessMessage() {
-        this.setState({ showSuccessMessage: false, successMessage: '' });
-    }
-
-    errorCategorie(message) {
-        this.setState({ errorMessage: message, showErrorMessage: true });
-    }
-
-    handleCloseErrorMessage() {
-        this.setState({ showErrorMessage: false, errorMessage: '' });
-    }
-
-    render() {
-        return (
-            <Item className='bordered'>
-                <div className="title">
-                    <h4>Liste des catégories</h4>
-                    <Button variant="contained" onClick={this.handleCategorieForm} startIcon={<Add></Add>}>Créer une catégorie</Button>
-                    <Dialog fullScreen open={this.state.closeCategorieForm} onClose={this.handleCategorieForm} TransitionComponent={Transition}>
-                        <CategorieCreateForm handleClose={this.handleCategorieForm} addCategorie={this.addCategorie} errorCategorie={this.errorCategorie} />
-                    </Dialog>
-                </div>
-                <CategorieGrid rows={this.state.categories} refresh={this.getCategories} deleteCategorie={this.deleteCategorie} editCategorie={this.editCategorie} errorCategorie={this.errorCategorie} />
-                <Snackbar onClose={this.handleCloseSuccessMessage} open={this.state.showSuccessMessage} autoHideDuration={3000}>
-                    <Alert onClose={this.handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }} md={{ minWidth: '300px' }}>
-                        {this.state.successMessage}
-                    </Alert>
-                </Snackbar>
-                <Snackbar onClose={this.handleCloseErrorMessage} open={this.state.showErrorMessage} autoHideDuration={3000}>
-                    <Alert onClose={this.handleCloseErrorMessage} severity="error" sx={{ width: '100%' }} md={{ minWidth: '300px' }}>
-                        {this.state.errorMessage}
-                    </Alert>
-                </Snackbar>
-            </Item>
-        );
-    }
-}
+    return (
+        <Grid item className='bordered'>
+            <div className="title">
+                <h4>Liste des catégories</h4>
+                <Button variant="contained" onClick={handleCategoryFormToggle} startIcon={<Add />}>Créer une catégorie</Button>
+                <Dialog fullScreen open={categoryFormOpen} onClose={handleCategoryFormToggle} TransitionComponent={Transition}>
+                    <CategoryCreateForm 
+                        handleClose={handleCategoryFormToggle} 
+                        addCategory={addCategory} 
+                        errorCategory={setErrorMessage} 
+                    />
+                </Dialog>
+            </div>
+            <CategoryGrid 
+                rows={categories} 
+                refresh={getCategories} 
+                deleteCategory={deleteCategory} 
+                editCategory={editCategory} 
+                errorCategory={setErrorMessage} 
+            />
+            <Snackbar open={Boolean(successMessage)} autoHideDuration={3000} onClose={() => setSuccessMessage('')}>
+                <Alert severity="success" sx={{ width: '100%' }}>
+                    {successMessage}
+                </Alert>
+            </Snackbar>
+            <Snackbar open={Boolean(errorMessage)} autoHideDuration={3000} onClose={() => setErrorMessage('')}>
+                <Alert severity="error" sx={{ width: '100%' }}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+        </Grid>
+    );
+};
 
 export default CategoriesTab;
