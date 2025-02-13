@@ -92,6 +92,7 @@ class UserController extends Controller
 
         foreach ($user->badges as $badge) {
             $badge->setPossessionPercentage();
+            
         }
 
         return response()->json([
