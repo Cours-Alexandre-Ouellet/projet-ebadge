@@ -32,7 +32,6 @@ export default function ListeBadge() {
         Api.get("/user/" + id + "/badges")
           .then((response) => {
             const badges = response.data;
-            console.log(badges);
             setBadgesObtenus(Object.values(badges).flat());
           })
           .catch((error) => {
