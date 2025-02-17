@@ -44,6 +44,12 @@ class UserController extends Controller
         return response()->json(['error' => 'Unauthorized'], 401);
     }
 
+    /**
+     * Revoie tout les badges d'un utilisateur
+     * 
+     * @param $id l'id de l'utilisateur 
+     * @return JsonResponse tout les badges de l'utilisateur
+     */
     public function show(int $id)
     {
         $user = User::find($id);
@@ -51,6 +57,12 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    /**
+     * Assigne un badge à un utilisateur
+     * 
+     * @param $request 
+     * @return JsonResponse un message de confirmation
+     */
     public function assignBadge(Request $request)
     {
         $request->validate([
@@ -64,6 +76,12 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Enleve un badge à un utilisateur
+     * 
+     * @param $request 
+     * @return JsonResponse un message de confirmation
+     */
     public function removeBadge(Request $request)
     {
         $request->validate([
@@ -118,6 +136,11 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Change le fond d'écran d'un utilisateur
+     * 
+     * @return JsonResponse un message de confirmation
+     */
     public function editBackground(Request $request)
     {
         $request->validate([
@@ -142,6 +165,11 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Change l'avatar d'un utilisateur
+     * 
+     * @return JsonResponse un message de confirmation
+     */
     public function editAvatar(Request $request)
     {
         $request->validate([
@@ -165,6 +193,11 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Change la variable privé d'un uilisateur
+     * 
+     * @return JsonResponse un message de confirmation
+     */
     public function editPrivacy(Request $request)
     {
         $request->validate([
@@ -180,6 +213,12 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Retourne tous les badges d'un utilisateur
+     * 
+     * @param $request 
+     * @return JsonResponse tout les badges de l'utilisateur actif
+     */
     public function getMyBadges(Request $request)
     {
         return $this->getUserBadges($request->user()->id);
