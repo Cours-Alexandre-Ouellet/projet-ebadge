@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Lien entre un utilisateur et un badge
  */
-class CategorieBadge extends Model
+class CategoryBadge extends Model
 {
     /**
      * The table associated with the model.

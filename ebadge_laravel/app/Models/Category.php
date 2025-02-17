@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * Classe représentant une catégorie
  */
-class Categorie extends Model
+class Category extends Model
 {
     use HasFactory, Notifiable;
 
@@ -43,6 +43,6 @@ class Categorie extends Model
      */
     protected static function newFactory()
     {
-        return CategorieBadge::new();
+        return CategoryBadge::new();
     }
 }
