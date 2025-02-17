@@ -2,45 +2,45 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Avatar, Slide, Dialog } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-import CategorieDeleteAction from './CategorieDeletePopup';
-import CategorieUpdateForm from '../CategorieUpdateForm';
+import CategoryDeleteAction from './CategoryDeletePopup';
+import CategoryUpdateForm from '../CategoryUpdateForm';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-class CategorieGrid extends React.Component {
+class CategoryGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             pageSize: 5,
             openDeleteDialog: false,
             openEditDialog: false,
-            selectedCategorie: null,
+            selectedCategory: null,
             columns: [
                 { field: 'id', headerName: 'ID', flex: 1, align: 'center', headerAlign: 'center' },
-                { field: 'nom', headerName: 'Nom', flex: 2, headerAlign: 'center' },
+                { field: 'name', headerName: 'Nom', flex: 2, headerAlign: 'center' },
                 {
-                    field: 'CategorieEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
+                    field: 'CategoryEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
                         const onClick = (e) => {
                             e.stopPropagation();
 
                             this.setState({
                                 openEditDialog: true,
-                                selectedCategorie: params.row
+                                selectedCategory: params.row
                             })
                         };
                         return <Button variant="outlined" onClick={onClick} startIcon={<Edit></Edit>} >Modifier</Button>;
                     }
                 },
                 {
-                    field: 'CategorieDeleteAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
+                    field: 'CategoryDeleteAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
                         const onClick = (e) => {
                             e.stopPropagation();
 
                             this.setState({
                                 openDeleteDialog: true,
-                                selectedCategorie: params.row
+                                selectedCategory: params.row
                             })
                         };
                         return <Button variant="outlined" color='error' onClick={onClick} startIcon={<Delete></Delete>} >Supprimer</Button>;
@@ -76,20 +76,20 @@ class CategorieGrid extends React.Component {
                     }}
                 />
 
-                <CategorieDeleteAction
+                <CategoryDeleteAction
                     isOpen={this.state.openDeleteDialog}
                     onClose={this.handleCloseDeleteDialog}
-                    selectedCategorie={this.state.selectedCategorie}
-                    deleteCategorie={this.props.deleteCategorie}
-                    errorCategorie={this.props.errorCategorie}
+                    selectedCategory={this.state.selectedCategory}
+                    deleteCategory={this.props.deleteCategory}
+                    errorCategory={this.props.errorCategory}
                 />
                 <Dialog fullScreen open={this.state.openEditDialog} onClose={this.handleCloseEditDialog} TransitionComponent={Transition}>
-                    <CategorieUpdateForm handleClose={this.handleCloseEditDialog} editCategorie={this.props.editCategorie} selectedCategorie={this.state.selectedCategorie} errorCategorie={this.props.errorCategorie} />
+                    <CategoryUpdateForm handleClose={this.handleCloseEditDialog} editCategory={this.props.editCategory} selectedCategory={this.state.selectedCategory} errorCategory={this.props.errorCategory} />
                 </Dialog>
             </div>
         );
     }
 }
 
-export default CategorieGrid;
+export default CategoryGrid;
 

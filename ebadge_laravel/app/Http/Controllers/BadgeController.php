@@ -39,6 +39,7 @@ class BadgeController extends Controller
         $badge->title = $request->title;
         $badge->description = $request->description;
         $badge->color = $request->color;
+
         //insertion de l'image dans le dossier public avec un nom original
         if($request->hasFile('image')) {
             $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());

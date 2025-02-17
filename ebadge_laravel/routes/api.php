@@ -40,16 +40,16 @@ Route::group([
 });
 
 Route::group([
-    'prefix' => 'categorie',
+    'prefix' => 'category',
     'middleware' => [
         'auth:api',
         'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT,
     ],
 ], function () {
-    Route::get('/', [App\Http\Controllers\CategorieController::class, 'index']);
-    Route::post('/', [App\Http\Controllers\CategorieController::class, 'create']);
-    Route::put('/', [App\Http\Controllers\CategorieController::class, 'update']);
-    Route::delete('/{id}', [App\Http\Controllers\CategorieController::class, 'destroy']);
+    Route::get('/', [App\Http\Controllers\CategoryController::class, 'index']);
+    Route::post('/', [App\Http\Controllers\CategoryController::class, 'create']);
+    Route::put('/', [App\Http\Controllers\CategoryController::class, 'update']);
+    Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy']);
 });
 
 
@@ -67,9 +67,11 @@ Route::group([
     Route::post('/edit-background', [App\Http\Controllers\UserController::class, 'editBackground']);
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);
     Route::post('/edit-privacy', [App\Http\Controllers\UserController::class, 'editPrivacy']);
-    Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
-    Route::get("/{id}/badges-left", [App\Http\Controllers\UserController::class, "getUserBadgeLeft"])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
+
+    Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"]);
+    Route::get("/{id}/badges-left", [App\Http\Controllers\UserController::class, "getUserBadgeLeft"]);
     Route::get("/role/{id}", [App\Http\Controllers\UserController::class, 'getAllByRole'])->middleware('roles:' . Role::ADMIN);
+
 });
 
 
@@ -99,7 +101,7 @@ Route::group([
 ], function () {
     Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'Leaderboard']);
     Route::get('/leaderboard/{startDate}/{endDate}', [App\Http\Controllers\StatsController::class, 'LeaderboardBySession']);
-    Route::get('/leaderboard/{categorie}', [App\Http\Controllers\StatsController::class, 'LeaderboardByCategory']);
+    Route::get('/leaderboard/{category}', [App\Http\Controllers\StatsController::class, 'LeaderboardByCategory']);
 });
 
 Route::group([

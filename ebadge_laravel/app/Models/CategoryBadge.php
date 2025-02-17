@@ -14,13 +14,16 @@ class CategoryBadge extends Model
      *
      * @var string
      */
-    protected $table = 'categorie_badge';
+
+    protected $table = 'category_badge';
+
 
     public function definition(): array
     {
         return [
             'idBadge' => $this->faker->numberBetween(1, 100),
-            'idCategorie' => $this->faker->numberBetween(1, 100),
+
+            'idCategory' => $this->faker->numberBetween(1, 100),
         ];
     }
 }

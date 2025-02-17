@@ -2,21 +2,21 @@ import React from 'react';
 import '@mui/material';
 import { Button, TextField } from '@mui/material';
 import Api from '../utils/Api';
-import CategorieComponent from './PageProfil/CategorieComponent';
-import './CategorieCreateForm.css';
+import CategoryComponent from './PageProfil/CategoryComponent';
+import './CategoryCreateForm.css';
 
-class CategorieCreateForm extends React.Component {
+class CategoryCreateForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             nameError: '',
-            categorie: {
+            category: {
                 name: '',
                 possession: 0
             }
         }
 
-        this.handleCategorieChange = this.handleCategorieChange.bind(this);
+        this.handleCategoryChange = this.handleCategoryChange.bind(this);
         this.validateName = this.validateName.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -25,8 +25,8 @@ class CategorieCreateForm extends React.Component {
      * fonction qui change la valeur du champ quand on tape dedans
      * @param {*} event 
      */
-    handleCategorieChange(event) {
-        this.setState({ categorie: { ...this.state.categorie, [event.target.name]: event.target.value } });
+    handleCategoryChange(event) {
+        this.setState({ category: { ...this.state.category, [event.target.name]: event.target.value } });
     }
 
     /**
@@ -34,7 +34,7 @@ class CategorieCreateForm extends React.Component {
      * @returns boolean 
      */
     validateName() {
-        if (this.state.categorie.name.length === 0) {
+        if (this.state.category.name.length === 0) {
             this.setState({ nameError: 'Veuillez donner un nom à la catégorie' });
             return false;
         } else {
@@ -53,18 +53,18 @@ class CategorieCreateForm extends React.Component {
 
                 let formData = new FormData();
 
-                formData.append('nom', this.state.categorie.name);
+                formData.append('name', this.state.category.name);
 
-                Api.post('/categorie', formData, {
+                Api.post('/category', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
                 .then((response) => {
-                    this.props.addCategorie(response.data);
+                    this.props.addCategory(response.data);
                 })
                 .catch((error) => {
-                    this.props.errorCategorie('Erreur lors de la création de la catégorie');
+                    this.props.errorCategory('Erreur lors de la création de la catégorie');
                     console.log(error);
                 });
             this.props.handleClose();
@@ -73,19 +73,19 @@ class CategorieCreateForm extends React.Component {
 
     render() {
         return (
-            <div className="categorie-create-form">
-                <div className="categorie-create-form-container">
-                    <div className="categorie-create-form-background">
-                        <div className="categorie-create-form-content">
+            <div className="category-create-form">
+                <div className="category-create-form-container">
+                    <div className="category-create-form-background">
+                        <div className="category-create-form-content">
                             <h1>Créer une catégorie</h1>
-                            <form className='create-categorie' onSubmit={this.handleSubmit}>
+                            <form className='create-category' onSubmit={this.handleSubmit}>
                                 <TextField
                                     id="name"
                                     name="name"
                                     label="Nom"
                                     variant="outlined"
-                                    value={this.state.categorie.name}
-                                    onChange={this.handleCategorieChange}
+                                    value={this.state.category.name}
+                                    onChange={this.handleCategoryChange}
                                     onBlur={this.validateName}
                                     error={this.state.nameError.length > 0}
                                     helperText={this.state.nameError}
@@ -94,7 +94,7 @@ class CategorieCreateForm extends React.Component {
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
                                 
-                                <div className="categorie-create-form-button-submit">
+                                <div className="category-create-form-button-submit">
                                     <Button variant="outlined" onClick={this.props.handleClose} sx={{
                                         width: '100%',
                                         marginTop: '20px',
@@ -107,10 +107,10 @@ class CategorieCreateForm extends React.Component {
                                 </div>
                             </form>
                         </div>
-                        <div className="categorie-create-form-preview">
+                        <div className="category-create-form-preview">
                             <h2>Prévisualisation</h2>
-                            <div className="categorie-create-form-preview-content">
-                                <CategorieComponent categorie={this.state.categorie}></CategorieComponent>
+                            <div className="category-create-form-preview-content">
+                                <CategoryComponent category={this.state.category}></CategoryComponent>
                             </div>
                         </div>
                     </div>
@@ -120,4 +120,4 @@ class CategorieCreateForm extends React.Component {
     }
 }
 
-export default CategorieCreateForm;
+export default CategoryCreateForm;

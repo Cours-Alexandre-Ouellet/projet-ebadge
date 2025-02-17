@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class CategorieSeeder
+ * Class CategorySeeder
  *
  * Seeder pour insérer des catégories de badges par défaut dans la base de données.
  *

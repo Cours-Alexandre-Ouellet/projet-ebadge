@@ -1,6 +1,6 @@
 import React from 'react';
 import '@mui/material';
-import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert } from '@mui/material';
+import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert, Divider } from '@mui/material';
 import { PhotoCamera, Check } from '@mui/icons-material';
 import Api from '../../../utils/Api';
 import BadgeComponent from '../../PageProfil/BadgeComponent';
@@ -23,8 +23,9 @@ class BadgeCreateForm extends React.Component {
             descriptionError: '',
             colorError: '',
             openImageDialog: false,
-            imageUrlField: "",
+            imageUrlField: '',
             imageFile: null,
+            imageError: '',
             badge: {
                 title: '',
                 description: '',
@@ -56,15 +57,20 @@ class BadgeCreateForm extends React.Component {
      * fonction qui ouvre ou ferme la fenêtre de dialogue
      */
     handleImageDialog() {
-        this.setState({ openImageDialog: !this.state.openImageDialog });
+        this.setState({ openImageDialog: !this.state.openImageDialog })
+
     }
 
     /**
      * fonction qui supprime l'image
      */
     handleImageDelete() {
-        this.setState({ badge: { ...this.state.badge, imagePath: '' } });
+        this.setState({ badge: { ...this.state.badge, imagePath: null} });
         this.setState({ imageFile: null, imageUrlField: '' });
+        this.handleImageDialog();
+    }
+
+    handleImageCancel(){
         this.handleImageDialog();
     }
 
@@ -73,10 +79,10 @@ class BadgeCreateForm extends React.Component {
      */
     handleImageModify() {
         if (this.state.imageFile !== null) {
-            this.setState({ badge: { ...this.state.badge, imagePath: URL.createObjectURL(this.state.imageFile) }});
+            this.setState({ badge: { ...this.state.badge, imagePath: URL.createObjectURL(this.state.imageFile) } });
             this.handleImageDialog();
         } else if (isImage(this.state.imageUrlField)) {
-            this.setState({ badge: { ...this.state.badge, imagePath: this.state.imageUrlField }});
+            this.setState({ badge: { ...this.state.badge, imagePath: this.state.imageUrlField } });
             this.handleImageDialog();
         } else {
             alert('Image invalide');
@@ -122,6 +128,7 @@ class BadgeCreateForm extends React.Component {
         return true;
     }
 
+
     /**
      * fonction qui envoie les données au serveur
      * @param {*} event 
@@ -134,7 +141,7 @@ class BadgeCreateForm extends React.Component {
 
                 formData.append('title', this.state.badge.title);
                 formData.append('description', this.state.badge.description);
-                formData.append('image', this.state.imageFile);  
+                formData.append('image', this.state.imageFile);
                 formData.append('color', this.state.badge.color);
 
                 Api.post('/badge', formData, {
@@ -142,23 +149,34 @@ class BadgeCreateForm extends React.Component {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
-                .then((response) => {
-                    this.props.addBadge(response.data);
-                })
-                .catch((error) => {
-                    this.props.errorBadge('Erreur lors de la création du badge');
-                    console.log(error);
-                });
+                    .then((response) => {
+                        this.props.addBadge(response.data);
+                    })
+                    .catch((error) => {
+                        this.props.errorBadge('Erreur lors de la création du badge');
+                        console.log(error);
+                    });
 
             } else if (isImage(this.state.badge.imagePath)) {
                 Api.post('/badge', this.state.badge)
-                .then((response) => {
-                    this.props.addBadge(response.data);
-                })
-                .catch((error) => {
-                    this.props.errorBadge('Erreur lors de la création du badge');
-                    console.log(error);
-                });
+                    .then((response) => {
+                        this.props.addBadge(response.data);
+                    })
+                    .catch((error) => {
+                        this.props.errorBadge('Erreur lors de la création du badge');
+                        console.log(error);
+                    });
+            }
+            else{
+                this.state.imagePath = '';
+                Api.post('/badge', this.state.badge)
+                    .then((response) => {
+                        this.props.addBadge(response.data);
+                    })
+                    .catch((error) => {
+                        this.props.errorBadge('Erreur lors de la création du badge');
+                        console.log(error);
+                    });
             }
             this.props.handleClose();
         }
@@ -171,7 +189,7 @@ class BadgeCreateForm extends React.Component {
                     <div className="badge-create-form-background">
                         <div className="badge-create-form-content">
                             <h1>Créer un badge</h1>
-                            <form className='create-badge' onSubmit={this.handleSubmit}>
+                            <form className='create-badge'>
                                 <TextField
                                     id="title"
                                     name="title"
@@ -203,19 +221,21 @@ class BadgeCreateForm extends React.Component {
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
                                 <div className="badge-create-form-button-field">
-                                    <Button
-                                        variant="contained"
-                                        color='secondary'
-                                        onClick={this.handleImageDialog}
-                                        sx={{
-                                            width: '100%',
-                                            marginTop: '20px',
-                                            marginRight: '20px'
-                                        }}
-                                        startIcon={<PhotoCamera />}
-                                    >
-                                        {this.state.badge.imagePath.length === 0 ? 'Ajouter une image' : 'Modifier l\'image'}
-                                    </Button>
+                                        <Button
+                                            variant="contained"
+                                            color='secondary'
+                                            onClick={this.handleImageDialog}
+                                            sx={{
+                                                width: '100%',
+                                                marginTop: '20px',
+                                                marginRight: '20px'
+                                            }}
+                                            error={this.state.imageError.length > 0}
+                                            startIcon={<PhotoCamera />}
+                                        >
+                                            {this.state.badge.imagePath ? 'Ajouter une image' : 'Modifier l\'image'}
+                                        </Button>
+
                                     <Dialog open={this.state.openImageDialog} onClose={this.handleClose}>
                                         <DialogTitle>Modifier l'image du badge</DialogTitle>
                                         <DialogContent>
@@ -320,7 +340,7 @@ class BadgeCreateForm extends React.Component {
                                         marginTop: '20px',
                                         marginRight: '20px'
                                     }}>Annuler</Button>
-                                    <Button type="submit" variant="contained" sx={{
+                                    <Button onClick={this.handleSubmit} variant="contained" sx={{
                                         width: '100%',
                                         marginTop: '20px'
                                     }}>Créer</Button>

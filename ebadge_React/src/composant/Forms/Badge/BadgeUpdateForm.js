@@ -1,6 +1,6 @@
 import React from 'react';
 import '@mui/material';
-import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert } from '@mui/material';
+import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert, Divider } from '@mui/material';
 import { PhotoCamera, Check } from '@mui/icons-material';
 import Api from '../../../utils/Api';
 import './BadgeCreateForm.css';
@@ -20,6 +20,7 @@ class BadgeUpdateForm extends React.Component {
             openImageDialog: false,
             imageUrlField: "",
             imageFile: null,
+            imageError: "",
             badge: {
                 id: 0,
                 title: '',
@@ -49,21 +50,22 @@ class BadgeUpdateForm extends React.Component {
     }
 
     handleImageDialog() {
-        this.setState({ openImageDialog: !this.state.openImageDialog });
+        this.setState({ openImageDialog: !this.state.openImageDialog })
+
     }
 
     handleImageDelete() {
-        this.setState({ badge: { ...this.state.badge, imagePath: '' } });
+        this.setState({ badge: { ...this.state.badge, imagePath: null } });
         this.setState({ imageFile: null, imageUrlField: '' });
         this.handleImageDialog();
     }
 
     handleImageModify() {
         if (this.state.imageFile !== null) {
-            this.setState({ badge: { ...this.state.badge, imagePath: URL.createObjectURL(this.state.imageFile) }});
+            this.setState({ badge: { ...this.state.badge, imagePath: URL.createObjectURL(this.state.imageFile) } });
             this.handleImageDialog();
         } else if (isImage(this.state.imageUrlField)) {
-            this.setState({ badge: { ...this.state.badge, imagePath: this.state.imageUrlField }});
+            this.setState({ badge: { ...this.state.badge, imagePath: this.state.imageUrlField } });
             this.handleImageDialog();
         } else {
             alert('Image invalide');
@@ -106,27 +108,37 @@ class BadgeUpdateForm extends React.Component {
                 formData.append('id', this.state.badge.id);
                 formData.append('title', this.state.badge.title);
                 formData.append('description', this.state.badge.description);
-                formData.append('image', this.state.imageFile);  
+                formData.append('image', this.state.imageFile);
                 formData.append('color', this.state.badge.color);
 
                 Api.put('/badge', formData)
-                .then((response) => {
-                    this.props.editBadge(response.data);
-                })
-                .catch((error) => {
-                    this.props.errorBadge('Une erreur est survenue');
-                    console.log(error);
-                });
+                    .then((response) => {
+                        this.props.editBadge(response.data);
+                    })
+                    .catch((error) => {
+                        this.props.errorBadge('Une erreur est survenue');
+                        console.log(error);
+                    });
 
             } else if (isImage(this.state.badge.imagePath)) {
                 Api.put('/badge', this.state.badge)
-                .then((response) => {
-                    this.props.editBadge(response.data);
-                })
-                .catch((error) => {
-                    this.props.errorBadge('Une erreur est survenue');
-                    console.log(error);
-                });
+                    .then((response) => {
+                        this.props.editBadge(response.data);
+                    })
+                    .catch((error) => {
+                        this.props.errorBadge('Une erreur est survenue');
+                        console.log(error);
+                    });
+            } else{
+                this.state.imagePath = null;
+                Api.put('/badge', this.state.badge)
+                    .then((response) => {
+                        this.props.editBadge(response.data);
+                    })
+                    .catch((error) => {
+                        this.props.errorBadge('Erreur lors de la création du badge');
+                        console.log(error);
+                    });
             }
             this.props.handleClose();
         }
@@ -171,19 +183,20 @@ class BadgeUpdateForm extends React.Component {
                                     sx={{ width: '80%', marginTop: '20px' }}
                                 />
                                 <div className="badge-create-form-button-field">
-                                    <Button
-                                        variant="contained"
-                                        color='secondary'
-                                        onClick={this.handleImageDialog}
-                                        sx={{
-                                            width: '100%',
-                                            marginTop: '20px',
-                                            marginRight: '20px'
-                                        }}
-                                        startIcon={<PhotoCamera />}
-                                    >
-                                        {this.state.badge.imagePath.length === 0 ? 'Ajouter une image' : 'Modifier l\'image'}
-                                    </Button>
+                                        <Button
+                                            variant="contained"
+                                            color='secondary'
+                                            onClick={this.handleImageDialog}
+                                            sx={{
+                                                width: '100%',
+                                                marginTop: '20px',
+                                                marginRight: '20px'
+                                            }}
+                                            error={this.state.imageError.length > 0}
+                                            startIcon={<PhotoCamera />}
+                                        >
+                                            {this.state.badge.imagePath ? 'Ajouter une image' : 'Modifier l\'image'}
+                                        </Button>
                                     <Dialog open={this.state.openImageDialog} onClose={this.handleClose}>
                                         <DialogTitle>Modifier l'image du badge</DialogTitle>
                                         <DialogContent>

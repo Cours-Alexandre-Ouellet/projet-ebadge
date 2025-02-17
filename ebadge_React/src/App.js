@@ -8,14 +8,19 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UsersTab from "./pages/Dashboard/tabs/UsersTab";
 import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
-import Classement from "./pages/Classement";
+import Leaderboard from "./pages/Leaderboard";
 import BadgesTab from "./pages/Dashboard/tabs/BadgesTab";
 import CategoriesTab from "./pages/Dashboard/tabs/CategoriesTab";
 import Logout from "./pages/Logout";
 import ProtectedRoute from "./policies/ProtectedRoute";
 import Role from './policies/Role';
 import Signup from "./pages/Signup/Signup";
+
+import ListeBadge from './pages/ListeBadge';
+//import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
+//import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
 import TeacherCodesTab from './pages/Dashboard/tabs/TeacherCodesTab';
+
 
 const theme = createTheme({
   palette: {
@@ -35,6 +40,7 @@ const theme = createTheme({
 });
 
 
+const estConnecter = localStorage.getItem('token');
 
 function App() {
 
@@ -44,9 +50,12 @@ function App() {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
             <Route index path="/" element={<PageProfile />} />
-            <Route path="classement" element={<Classement />} />
+
+            <Route path="leaderboard" element={<Leaderboard />} />
+            <Route path="badges" element={<ListeBadge />} />
+
 
             <Route path="*" element={<h1>404: Page non trouvée</h1>} />
           </Route>
