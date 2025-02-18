@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use Database\Factories\RoleFactory as FactoriesRoleFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use RoleFactory;
 
 /**
  * Classe représentant un role
@@ -10,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Role extends Model
 {
+    use HasFactory, Notifiable;
+
     /**
      * The table associated with the model.
      *
@@ -49,5 +55,12 @@ class Role extends Model
         return Role::where('name', self::ETUDIANT)->first();
     }
 
+    /**
+     * Créer une nouvelle instance à la factory
+     */
+    protected static function newFactory()
+    {
+        return FactoriesRoleFactory::new();
+    }
 
 }

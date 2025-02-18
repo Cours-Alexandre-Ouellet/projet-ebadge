@@ -19,7 +19,8 @@
     },
     "require-dev": {
         "mockery/mockery": "1.6.12",
-        "phpunit/phpunit": "11.5"
+        "phpunit/phpunit": "11.5",
+        "fakerphp/faker": "^1.23"
     },
     "config": {
         "optimize-autoloader": true,

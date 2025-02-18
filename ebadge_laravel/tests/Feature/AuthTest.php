@@ -2,32 +2,41 @@
 
 namespace Tests\Feature;
 
+use App\Models\Organisation;
+use App\Models\Program;
+use App\Models\User;
 use Carbon\Carbon;
 use Laravel\Passport\Bridge\AccessToken;
 use Tests\TestCase;
 class AuthTest extends TestCase
 {
 
+    private $user;
+    private $userToken;
+    private $program;
+    private $organisation;
+
     public function setUp() : void
     {
         parent::setUp();
 
-        $this->user = factory(\App\Models\User::class)->create();
+        $this->user = User::factory()->create();
 
         $token = $this->user->createToken('Personal Access Token');
         $token->token->expires_at = Carbon::now()->addMinutes(30);
         $token->token->save();
         $this->userToken = $token->accessToken;
 
-        $this->program = factory(\App\Models\Program::class)->create();
-        $this->organisation = factory(\App\Models\Organisation::class)->create();
+        $this->program = Program::factory()->create();
+        $this->organisation = Organisation::factory()->create();
     }
 
     public function testUserCanLogin()
     {
+        print_r($this->user);
         $response = $this->post('/api/auth/login', [
             'email' => $this->user->email,
-            'password' => 'password'
+            'password' => $this->user->password
         ]);
 
         $response->assertStatus(200);
@@ -42,7 +51,7 @@ class AuthTest extends TestCase
 
     public function testUserCanRegister()
     {
-        $user = factory(\App\Models\User::class)->make();
+        $user = User::factory()->make();
 
         $response = $this->post('/api/auth/signup', [
             "username" => $user->username,
