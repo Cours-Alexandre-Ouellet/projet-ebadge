@@ -7,6 +7,7 @@ import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import Api from "../utils/Api";
 import BadgePopup from "../composant/Dashboard/BadgePopup";
+import Loading from '../composant/Loading/LoadingComponent';
 /**
  * Page affichant deux listes de badges une de badges obtenus et une de badges non obtenus.
  *
@@ -18,6 +19,7 @@ export default function ListeBadge() {
   const [search, _] = useState("");
   const [open, setOpen] = useState(false);
   const [badgeSelectionne, setBadgeSelectionne] = useState(null);
+  const [charge, setCharge] = useState(false);
 
   /**
    * fonction allant chercher tout les badges obtenues et non obtenues
@@ -39,6 +41,7 @@ export default function ListeBadge() {
           .then((response) => {
             const badges = response.data;
             setBadgesNonObtenus( Object.values(badges).flat() );
+            setCharge(true);
           })
           .catch((error) => {
             console.log(error);
@@ -117,7 +120,7 @@ export default function ListeBadge() {
     setBadgeSelectionne(params.row);
     setOpen(true);
   };
-
+  if(charge){
   return (
     <div className="listeBadge">
       <div className="listeBadge-container">
@@ -175,5 +178,8 @@ export default function ListeBadge() {
         </div>
       </div>
     </div>
-  );
+  );}
+  else{
+    return <Loading></Loading>
+  }
 }
