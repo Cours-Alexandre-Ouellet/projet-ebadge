@@ -16,7 +16,7 @@ import Loading from '../composant/Loading/LoadingComponent';
 export default function ListeBadge() {
   const [badgesObtenus, setBadgesObtenus] = useState([]);
   const [badgesNonObtenus, setBadgesNonObtenus] = useState([]);
-  const [search, _] = useState("");
+  const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [badgeSelectionne, setBadgeSelectionne] = useState(null);
   const [charge, setCharge] = useState(false);
@@ -57,10 +57,8 @@ export default function ListeBadge() {
    * @param {*} event
    */
   function handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
+    const value  = event.target.value;
+    setSearch(value);
   }
 
   /**
