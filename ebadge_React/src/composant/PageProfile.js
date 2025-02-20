@@ -15,6 +15,7 @@ import Loading from './Loading/LoadingComponent';
 import BadgeList from './PageProfil/BadgeList';
 import { PhotoCamera, Check } from '@mui/icons-material';
 
+
 /**
  * fonction qui vérifie si l'url est une image
  * @param {*} url 
