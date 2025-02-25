@@ -95,7 +95,7 @@ class Login extends React.Component {
 
                 this.redirectUser();
             }).catch((error) => {
-                this.setState({isLoading: false})
+                this.setState({ isLoading: false })
                 if (error.response) {
                     switch (error.response.status) {
                         case 401:
@@ -143,7 +143,7 @@ class Login extends React.Component {
                     <div className="login-right">
                         <div className="login-right-content">
                             <h1>E-Badge</h1>
-                            <form className='form-login'>
+                            <form onSubmit={this.handleSubmit.bind(this)} className='form-login'>
                                 <TextField
                                     id="identifier"
                                     name="identifier"
@@ -175,6 +175,7 @@ class Login extends React.Component {
                                     sx={{ width: '100%' }}
                                 />
                                 <Button
+                                    type='submit'
                                     variant="contained"
                                     size="Large"
                                     disabled={this.state.identifier === '' || this.state.password === ''}
