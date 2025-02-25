@@ -5,6 +5,7 @@ import CategoryCreateForm from '../../../composant/CategoryCreateForm';
 import { Button, Dialog, Slide, Snackbar, Alert, Grid } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import './../Dashboard.css';
+import Loading from '../../../composant/Loading/LoadingComponent';
 
 const Transition = React.forwardRef((props, ref) => (
     <Slide direction="up" ref={ref} {...props} />
@@ -16,10 +17,11 @@ const CategoriesTab = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [categories, setCategories] = useState([]);
+    const [charge, setCharge] = useState(false);
 
     const getCategories = useCallback(() => {
         Api.get('/category')
-            .then(res => setCategories(res.data.categories))
+            .then(res => {setCategories(res.data.categories);setCharge(true);})
             .catch(err => setErrorMessage("Erreur lors de la récupération des catégories."));
     }, []);
 
@@ -76,7 +78,9 @@ const CategoriesTab = () => {
                     {errorMessage}
                 </Alert>
             </Snackbar>
+            {charge?<hr></hr>:<Loading/>}
         </Grid>
+        
     );
 };
 
