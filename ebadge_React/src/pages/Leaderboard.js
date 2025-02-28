@@ -15,17 +15,19 @@ import {
 import { Search } from "@mui/icons-material";
 import Api from "../utils/Api";
 import { useNavigate } from "react-router-dom";
+import Loading from "../composant/Loading/LoadingComponent";
 
 /**
  * Classe Leaderboard qui permet d'afficher le classement des utilisateurs
  */
 export default function Leaderboard() {
-  const [closeBadgeForm, setCloseBadgeForm] = useState(false);
   const [leaderboard, setLeaderboard] = useState([]);
-  const [sessions, setSessions] = useState([]);
+  const [sessions, _] = useState([]);
   const [session, setSession] = useState(1);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const [charge, setCharge] = useState(false);
+  
 
   /**
    * fonction qui permet d'aller chercher les données du classement à la session n°1 par défaut quand on ouvre la page
@@ -39,6 +41,7 @@ export default function Leaderboard() {
         for (let i = 0; i < valeursLeaderboard.length; i++) {
           valeursLeaderboard[i].position = i + 1;
         }
+        setCharge(true);
         setLeaderboard(valeursLeaderboard);
       })
       .catch((error) => {
@@ -107,6 +110,7 @@ export default function Leaderboard() {
 
   return (
     <div className="leaderboard">
+      {!charge?<Loading></Loading>:<hr></hr>}
       <div className="leaderboard-container">
         <div className="leaderboard-background">
           <div className="leaderboard-title">

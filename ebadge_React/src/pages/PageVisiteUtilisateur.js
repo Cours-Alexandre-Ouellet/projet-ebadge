@@ -15,6 +15,7 @@ export default function PageVisiteUtilisateur() {
   const [utilisateur, setUtilisateur] = useState(null);
   const location = useLocation();
   const params = useParams();
+  const [charge, setCharge] = useState(false);
 
 
   /**
@@ -33,6 +34,7 @@ export default function PageVisiteUtilisateur() {
             console.log("background null");
             response.data.utilisateur.backgroundImagePath = "../background.png";
           }
+          setCharge(true);
           setUtilisateur(response.data);
           console.log(response.data);
         })
@@ -51,6 +53,7 @@ export default function PageVisiteUtilisateur() {
             backgroundImage: `url(${utilisateur.utilisateur.backgroundImagePath})`,
           }}
         >
+          {!charge?<Loading></Loading>:<br></br>}
           <div className="profil">
             <div>
               <img className="avatar" src={utilisateur.utilisateur.avatarImagePath} />
@@ -67,7 +70,9 @@ export default function PageVisiteUtilisateur() {
             </div>
           </div>
           <BadgeList user={utilisateur.utilisateur} />
+          
         </div>
+        
       );
     } else {
       return <Typography>Cet utilisateur est privé</Typography>;
