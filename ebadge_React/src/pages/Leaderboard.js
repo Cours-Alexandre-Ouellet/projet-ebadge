@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from "react";
+
 import "./Leaderboard.css";
 import "@mui/material";
 import {
@@ -74,6 +76,7 @@ export default function Leaderboard() {
           valeursLeaderboard[i].position = i + 1;
         }
         setLeaderboard(valeursLeaderboard);
+
       })
       .catch((error) => {
         console.log(error);
@@ -87,6 +90,7 @@ export default function Leaderboard() {
   function handleChange(event) {
     const valeur = event.target.value;
     setSearch(valeur);
+
   }
 
   /**
@@ -191,3 +195,4 @@ export default function Leaderboard() {
     </div>
   );
 }
+
