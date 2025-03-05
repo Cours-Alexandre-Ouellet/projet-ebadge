@@ -15,22 +15,22 @@ function isImage(url) {
 
 /**
  * Formulaire de modification de badge
- * @author Vincent Houle /partiellement
  * @param {Object} errorBadge - Popup d'erreur dans la modificaiton du Badge
  * @param {Object} editBadge - Popup odification de badge
  * @param {Object} handleClose - Ferme une fenêtre
  * @param {Object} selectedBadge - Badge a modifié
  * @returns Le react de la page du formulaire de modification
+ * @author Vincent Houle /partiellement
  */
 export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge, errorBadge }) {
-    var badgeDummy = selectedBadge;
+    var badgeDummy = structuredClone(selectedBadge);
     const [titleError, setTitleError] = useState('');
     const [descriptionError, setDescriptionError] = useState('');
     const [openImageDialog, setOpenImageDialog] = useState(false);
     const [imageUrlField, setImageUrlField] = useState("");
-    const [imageFile, setImageFile] = useState("");
+    const [imageFile, setImageFile] = useState(null);
     const [badge, setBadge] = useState(badgeDummy);
-    const [badgeModify, setBadgeModify] = useState(true);
+    //const [badgeModify, setBadgeModify] = useState(true);
 
     // Gère l'ouverture et la fermeture de l'image
     const handleImageDialog = () => {
@@ -50,12 +50,12 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
         if (imageFile !== null) {
             badgeDummy.imagePath = URL.createObjectURL(imageFile);
             setBadge(badgeDummy);
-            console.log(badge);
 
             handleImageDialog();
 
         } else if (isImage(imageUrlField)) {
             badgeDummy.imagePath = imageUrlField;
+            setImageFile(null);
             setBadge(badgeDummy);
             handleImageDialog()
         } else {
@@ -65,36 +65,51 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
 
     // Valide le titre du badge
     const validateTitle = () => {
+        setTitleError("");
         if (badge.title.length === 0) {
             setTitleError('Veuillez renseigner le titre');
             return false;
         } else {
-            setTitleError("");
             return true;
         }
     }
 
     // Valide la description du badge
     const validateDescription = () => {
+        setDescriptionError('');
         if (badge.description.length === 0) {
             setDescriptionError('Veuillez renseigner la description');
             return false;
         } else {
-            setDescriptionError('');
             return true;
         }
     }
 
     // Gère l'envoie vers l'api
     const handleSubmit = (event) => {
+        let formData = new FormData();
+        formData.append('id', badge.id)
+        formData.append('title', badge.title);
+        formData.append('description', badge.description);
+        // Si l'image est un lien ou bien un fichier
+        imageFile === null || formData.append('image', imageFile);
+        badge.imagePath === null || formData.append('imagePath', badge.imagePath);
+
+        formData.append('color', badge.color); // à retirer
+
         event.preventDefault();
         if (validateTitle() && validateDescription()) {
-            Api.put('/badge', badge)
+
+            Api.post('/badge/image', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then((response) => {
                     editBadge(response.data);
                 })
                 .catch((error) => {
-                    errorBadge('Erreur lors de la création du badge');
+                    errorBadge('Erreur lors de la modification du badge');
                 });
             handleClose();
         }
@@ -159,7 +174,7 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                     }}
                                     startIcon={<PhotoCamera />}
                                 >
-                                    {badge.imagePath ? 'Ajouter une image' : 'Modifier l\'image'}
+                                    {badge.imagePath ? 'Modifier l\'image' : 'Ajouter une image'}
                                 </Button>
                                 <Dialog open={openImageDialog} onClose={handleClose}>
                                     <DialogTitle>Modifier l'image du badge</DialogTitle>

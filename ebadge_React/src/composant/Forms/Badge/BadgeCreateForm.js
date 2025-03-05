@@ -18,18 +18,17 @@ function isImage(url) {
 var badgeDummy = {
     title: "",
     description: "",
-    imagePath: "",
-    color: 'ffffff',
-    possession: 0
+    imagePath: null,
+    color: 'ffffff'
 };
 
 /**
  * Fonciton qui affiche et gère la création de badge
- * @author Vincent Houle /partiellement
  * @param {Object} handleClose - Ferme une fenêtre
  * @param {Object} addBadge - Popup d'ajout de badge
  * @param {Object} errorBadge - Popup de modification de badge
- * @returns 
+ * @returns Le formulaire d'ajout de badge
+ * @author Vincent Houle /partiellement
  */
 export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
 
@@ -59,11 +58,13 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
     const handleImageModify = () => {
         if (imageFile !== null) {
             badgeDummy.imagePath = URL.createObjectURL(imageFile);
+            setImageUrlField("");
             setBadge(badgeDummy);
             handleImageDialog();
 
         } else if (isImage(imageUrlField)) {
             badgeDummy.imagePath = imageUrlField;
+            setImageFile(null);
             setBadge(badgeDummy);
             handleImageDialog()
         } else {
@@ -73,22 +74,22 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
 
     // Valide le titre du badge
     const validateTitle = () => {
+        setTitleError("");
         if (badge.title.length === 0) {
             setTitleError('Veuillez renseigner le titre');
             return false;
         } else {
-            setTitleError("");
             return true;
         }
     }
 
     // Valide la description du badge
     const validateDescription = () => {
+        setDescriptionError('');
         if (badge.description.length === 0) {
             setDescriptionError('Veuillez renseigner la description');
             return false;
         } else {
-            setDescriptionError('');
             return true;
         }
     }
@@ -96,16 +97,27 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
     // Gère l'envois vers l'api
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(badge)
+
         if (validateTitle() && validateDescription()) {
-            Api.post('/badge', badge)
+            let formData = new FormData();
+            formData.append('title', badge.title);
+            formData.append('description', badge.description);
+            // Si l'image est un lien ou bien un fichier
+            imageFile === null || formData.append('image', imageFile);
+            badge.imagePath === null || formData.append('imagePath', badge.imagePath);
+            formData.append('color', badge.color); // à retirer
+            Api.post('/badge', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then((response) => {
                     addBadge(response.data);
                 })
                 .catch((error) => {
                     errorBadge('Erreur lors de la création du badge');
                 });
-        handleClose();
+            handleClose();
 
         }
     }
@@ -169,7 +181,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                     }}
                                     startIcon={<PhotoCamera />}
                                 >
-                                    {badge.imagePath ? 'Ajouter une image' : 'Modifier l\'image'}
+                                    {badge.imagePath ? 'Modifier l\'image' : 'Ajouter une image'}
                                 </Button>
                                 <Dialog open={openImageDialog} onClose={handleClose}>
                                     <DialogTitle>Modifier l'image du badge</DialogTitle>
