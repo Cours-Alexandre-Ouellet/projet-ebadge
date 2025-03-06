@@ -4,7 +4,11 @@ namespace App\Http\Requests\Badge;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateBadgeRequest extends FormRequest
+/**
+ * Objet représentant une requête de mise à jour d'un badge avec une image
+ * En php un put ne peut pas envoyer un fichier donc c'est un post.
+ */
+class BadgeUpdateImageRequest extends FormRequest
 {
     /**
      * Définit les règles de validation pour la requête
@@ -14,11 +18,12 @@ class CreateBadgeRequest extends FormRequest
     public function rules()
     {
         return [
+            'id' => 'required|exists:badge,id',
             'title' => 'required|string|max:45',
             'description' => 'required|string|max:255',
             'imagePath' => 'nullable|max:2048',
             'image' => 'nullable|image:png,jpg',
-            'color' => 'required|string|min:6|max:8',
+            'color' => 'required|string|min:6|max:6',
         ];
     }
 }
