@@ -14,7 +14,9 @@ class CategoryBadge extends Model
      *
      * @var string
      */
+
     protected $table = 'category_badge';
+
 
     public function definition(): array
     {

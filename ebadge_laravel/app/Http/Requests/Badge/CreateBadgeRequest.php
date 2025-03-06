@@ -16,7 +16,7 @@ class CreateBadgeRequest extends FormRequest
         return [
             'title' => 'required|string|max:45',
             'description' => 'required|string|max:255',
-            'imagePath' => 'string|max:2048',
+            'imagePath' => 'nullable|max:2048',
             'image' => 'image',
             'color' => 'required|string|min:6|max:8',
         ];

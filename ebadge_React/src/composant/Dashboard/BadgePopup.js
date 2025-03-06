@@ -4,6 +4,7 @@ import "./ListeBadgesPopup.css";
 import { Avatar, Typography } from "@mui/material";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import Divider from '@mui/material/Divider';
+import { getResource } from "../../utils/Api";
 
 /**
  * Popup affichant le badge sélectionné par l'utilisateur
@@ -27,7 +28,7 @@ export default function BadgePopup({ isOpen, handleClose, selectedBadge }){
         {titre}
       </DialogTitle>
       <DialogContent className="dialog-popup">
-        <Avatar alt={titre} src={image} className="avatar" />
+        <Avatar alt={titre} src={image || getResource("badge.png")} className="avatar" />
         <Divider/>
         <Typography className="description">{description}</Typography>
       </DialogContent>

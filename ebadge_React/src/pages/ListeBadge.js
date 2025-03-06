@@ -7,6 +7,7 @@ import { Search } from "@mui/icons-material";
 import { DataGrid } from "@mui/x-data-grid";
 import Api from "../utils/Api";
 import BadgePopup from "../composant/Dashboard/BadgePopup";
+import Loading from '../composant/Loading/LoadingComponent';
 /**
  * Page affichant deux listes de badges une de badges obtenus et une de badges non obtenus.
  *
@@ -15,9 +16,10 @@ import BadgePopup from "../composant/Dashboard/BadgePopup";
 export default function ListeBadge() {
   const [badgesObtenus, setBadgesObtenus] = useState([]);
   const [badgesNonObtenus, setBadgesNonObtenus] = useState([]);
-  const [search, _] = useState("");
+  const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [badgeSelectionne, setBadgeSelectionne] = useState(null);
+  const [charge, setCharge] = useState(false);
 
   /**
    * fonction allant chercher tout les badges obtenues et non obtenues
@@ -39,6 +41,7 @@ export default function ListeBadge() {
           .then((response) => {
             const badges = response.data;
             setBadgesNonObtenus( Object.values(badges).flat() );
+            setCharge(true);
           })
           .catch((error) => {
             console.log(error);
@@ -47,17 +50,15 @@ export default function ListeBadge() {
       .catch((error) => {
         console.log(error);
       });
-  });
+  },[]);
 
   /**
    * fonction qui permet de mettre à jour le state quand on change la valeur d'un champ
    * @param {*} event
    */
   function handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
+    const value  = event.target.value;
+    setSearch(value);
   }
 
   /**
@@ -117,7 +118,7 @@ export default function ListeBadge() {
     setBadgeSelectionne(params.row);
     setOpen(true);
   };
-
+  if(charge){
   return (
     <div className="listeBadge">
       <div className="listeBadge-container">
@@ -175,5 +176,8 @@ export default function ListeBadge() {
         </div>
       </div>
     </div>
-  );
+  );}
+  else{
+    return <Loading></Loading>
+  }
 }

@@ -62,3 +62,16 @@ form.create-badge {
     width: 80%;
     justify-content: space-between;
 }
+
+.message-error-form {
+    font-family: Barlow, sans-serif;
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.66;
+    text-align: left;
+    margin-top: 3px;
+    margin-right: 14px;
+    margin-bottom: 0;
+    margin-left: 14px;
+    color: #d32f2f;
+}

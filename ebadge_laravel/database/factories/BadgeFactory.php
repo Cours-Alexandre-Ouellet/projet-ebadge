@@ -2,16 +2,32 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Model;
-use Faker\Generator as Faker;
+namespace Database\Factories;
 
-$factory->define(\App\Models\Badge::class, function (Faker $faker) {
-    return [
-        'title' => $faker->name(),
-        'description' => $faker->text(),
-        'imagePath' => $faker->imageUrl(),
-        'color' => substr($faker->hexcolor(), 1),
-        'created_at' => $faker->dateTimeBetween('-1 years', 'now'),
-        'updated_at' => $faker->dateTimeBetween('-1 years', 'now'),
-    ];
-});
+use App\Models\Badge;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class BadgeFactory extends Factory{
+    
+
+    protected $model = Badge::class;
+
+    /**
+     * fonction qui génère des données aléatoire pour un Badge
+     * 
+     * @author Vincent Houle
+     * @return Badge avec des données aléatoire
+     */    
+    public function definition(): array
+    {
+        return [
+            'title' => fake()->name(),
+            'description' => fake()->text(),
+            'imagePath' => fake()->imageUrl(),
+            'color' => substr(fake()->hexcolor(), 1),
+            'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
+            'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
+        ];
+    }
+}
+
