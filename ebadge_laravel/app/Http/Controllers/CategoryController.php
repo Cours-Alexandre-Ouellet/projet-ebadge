@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Category\CategoryAssignRequest;
 use App\Http\Requests\Category\CategoryUpdateRequest;
 use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Models\Category;
 use App\Models\CategoryBadge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Badge;
 
 /**
  * Controller pour les catégories
@@ -42,6 +44,43 @@ class CategoryController extends Controller
     }
 
     /**
+     * Assigne un badge à une catégorie
+     */
+    public function assignBadge(CategoryAssignRequest $request)
+    {
+        $badgeId = $request->get('badge_id');
+        $categoryId = $request->get('category_id');
+
+        $badge = CategoryBadge::where('badge_id', $badgeId)->where('category_id', $categoryId)->first();
+        
+        if ($badge == null) {
+            $badge = new CategoryBadge();
+            $badge->badge_id = $badgeId;
+            $badge->category_id = $categoryId;
+            $badge->save();
+        }
+
+        return response()->json(['message' => 'Badge assigned']);
+    }
+    
+    /**
+     * Enlève un badge d'une catégorie
+     */
+    public function removeBadge(Request $request)
+    {
+        $request->validate([
+            'category_id' => 'required|exists:category,id',
+            'badge_id' => 'required|exists:badge,id'
+        ]);
+
+        $category = Category::find($request->category_id);
+        $category->badges()->detach($request->badge_id);
+        return response()->json([
+            'message' => 'Badge removed'
+        ]);
+    }
+    
+    /**
      * Affiche la catégorie avec l'id donné
      *
      * @param  \App\Category  $category
@@ -54,6 +93,39 @@ class CategoryController extends Controller
         ]);
         $category = Category::find($request->id);
         return response()->json($category);
+    }
+
+    /**
+     * Récupère les badges assignés à la catégorie avec l'id donné
+     */
+    public function getCategoryBadges($id)
+    {
+        $category = Category::find($id);
+        if ($category == null) {
+            return response()->json(['error' => 'Category not found'], 404);
+        }
+        $badges = $category->badges;
+        return response()->json([
+            'badges' => $badges
+        ]);
+    }
+
+    /**
+     * Récupère les badges non assignés à la catégorie avec l'id donné
+     */
+    public function getCategoryBadgeLeft(int $id)
+    {
+        $category = Category::find($id);
+
+        if ($category == null) {
+            return response()->json(['error' => 'Category not found'], 404);
+        }
+        $badges = $category->badges;
+        $missingBadges = Badge::whereNotIn('id', $badges->pluck('id'))->get();
+        return response()->json([
+            'badges' => $missingBadges
+        ]);
+
     }
 
     /**
@@ -85,7 +157,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
 
-        CategoryBadge::where('idCategory', $category->id)->delete();
+        CategoryBadge::where('category_id', $category->id)->delete();
 
         $category->delete();
         return response()->json($category);

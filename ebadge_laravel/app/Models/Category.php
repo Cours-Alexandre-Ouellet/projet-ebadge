@@ -34,7 +34,7 @@ class Category extends Model
      */
     public function badges()
     {
-        return $this->belongsToMany('App\Models\Badge', 'badge_category', 'category_id', 'badge_id');
+        return $this->belongsToMany('App\Models\Badge', 'category_badge', 'category_id', 'badge_id');
     }
 
     /**

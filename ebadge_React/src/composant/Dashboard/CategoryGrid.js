@@ -1,95 +1,133 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Avatar, Slide, Dialog } from '@mui/material';
+import { Button, Dialog, Slide } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import CategoryDeleteAction from './CategoryDeletePopup';
 import CategoryUpdateForm from '../CategoryUpdateForm';
+import CategoryBadgesPopup from './Popups/CategoryBadgesPopup/CategoryBadgesPopup';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
-class CategoryGrid extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            pageSize: 5,
-            openDeleteDialog: false,
-            openEditDialog: false,
-            selectedCategory: null,
-            columns: [
-                { field: 'id', headerName: 'ID', flex: 1, align: 'center', headerAlign: 'center' },
-                { field: 'name', headerName: 'Nom', flex: 2, headerAlign: 'center' },
-                {
-                    field: 'CategoryEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
-                        const onClick = (e) => {
-                            e.stopPropagation();
+const Transition = React.forwardRef((props, ref) => (
+    <Slide direction="up" ref={ref} {...props} />
+));
 
-                            this.setState({
-                                openEditDialog: true,
-                                selectedCategory: params.row
-                            })
-                        };
-                        return <Button variant="outlined" onClick={onClick} startIcon={<Edit></Edit>} >Modifier</Button>;
-                    }
-                },
-                {
-                    field: 'CategoryDeleteAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
-                        const onClick = (e) => {
-                            e.stopPropagation();
 
-                            this.setState({
-                                openDeleteDialog: true,
-                                selectedCategory: params.row
-                            })
-                        };
-                        return <Button variant="outlined" color='error' onClick={onClick} startIcon={<Delete></Delete>} >Supprimer</Button>;
-                    }
-                }
-            ]
-        };
+/**
+ * Composant qui affiche les catégories sous forme de tableau
+ */
+const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }) => {
+    const [pageSize, setPageSize] = useState(5);
+    const [openAssignDialog, setOpenAssignDialog] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
-        this.handleCloseDeleteDialog = this.handleCloseDeleteDialog.bind(this);
-        this.handleCloseEditDialog = this.handleCloseEditDialog.bind(this);
-    }
+    const columns = [
+        { field: 'id', headerName: 'ID', flex: 0.5, align: 'center', headerAlign: 'center' },
+        { field: 'name', headerName: 'Nom', flex: 2, headerAlign: 'center' },
+        {
+            field: 'assignAction',
+            minWidth: 150,
+            headerName: '',
+            sortable: false,
+            align: 'center',
+            renderCell: (params) => {
+                const onClick = (e) => {
+                    e.stopPropagation();
+                    setSelectedCategory(params.row);
+                    setOpenAssignDialog(true);
+                };
 
-    handleCloseDeleteDialog = () => {
-        this.setState({ openDeleteDialog: false });
-    };
-
-    handleCloseEditDialog = () => {
-        this.setState({ openEditDialog: false });
-    };
-
-    
-    render() {
-        return (
-            <div style={{ height: 600, width: '100%' }}>
-                <DataGrid
-                    rows={this.props.rows ?? []}
-                    columns={this.state.columns}
-                    rowHeight={100}
-                    pageSize={this.state.pageSize}
-                    rowsPerPageOptions={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
-                    onPageSizeChange={(newPageSize) => {
-                        this.setState({ pageSize: newPageSize });
+                return <Button variant="outlined" onClick={onClick}>Assigner badge</Button>;
+            },
+        },
+        {
+            field: 'editAction',
+            minWidth: 150,
+            headerName: '',
+            align: 'center',
+            headerAlign: 'center',
+            sortable: false,
+            renderCell: (params) => (
+                <Button
+                    variant="outlined"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedCategory(params.row);
+                        setOpenEditDialog(true);
                     }}
-                />
+                    startIcon={<Edit />}
+                >
+                    Modifier
+                </Button>
+            )
+        },
+        {
+            field: 'deleteAction',
+            minWidth: 150,
+            headerName: '',
+            align: 'center',
+            headerAlign: 'center',
+            sortable: false,
+            renderCell: (params) => (
+                <Button
+                    variant="outlined"
+                    color='error'
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedCategory(params.row);
+                        setOpenDeleteDialog(true);
+                    }}
+                    startIcon={<Delete />}
+                >
+                    Supprimer
+                </Button>
+            )
+        }
+    ];
 
-                <CategoryDeleteAction
-                    isOpen={this.state.openDeleteDialog}
-                    onClose={this.handleCloseDeleteDialog}
-                    selectedCategory={this.state.selectedCategory}
-                    deleteCategory={this.props.deleteCategory}
-                    errorCategory={this.props.errorCategory}
+    return (
+        <div style={{ height: 600, width: '100%' }}>
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                rowHeight={100}
+                pageSize={pageSize}
+                rowsPerPageOptions={[5, 10, 15, 20, 25, 30, 35, 40, 45, 50]}
+                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            />
+
+            <CategoryDeleteAction
+                isOpen={openDeleteDialog}
+                onClose={() => setOpenDeleteDialog(false)}
+                selectedCategory={selectedCategory}
+                deleteCategory={deleteCategory}
+                errorCategory={errorCategory}
+            />
+
+            <Dialog
+                fullScreen
+                open={openEditDialog}
+                onClose={() => setOpenEditDialog(false)}
+                TransitionComponent={Transition}
+            >
+                <CategoryUpdateForm
+                    handleClose={() => setOpenEditDialog(false)}
+                    editCategory={editCategory}
+                    selectedCategory={selectedCategory}
+                    errorCategory={errorCategory}
                 />
-                <Dialog fullScreen open={this.state.openEditDialog} onClose={this.handleCloseEditDialog} TransitionComponent={Transition}>
-                    <CategoryUpdateForm handleClose={this.handleCloseEditDialog} editCategory={this.props.editCategory} selectedCategory={this.state.selectedCategory} errorCategory={this.props.errorCategory} />
-                </Dialog>
-            </div>
-        );
-    }
-}
+            </Dialog>
+
+            {selectedCategory && (
+                <CategoryBadgesPopup
+                    isOpen={openAssignDialog}
+                    handleClose={() => setOpenAssignDialog(false)} 
+                    selectedCategory={selectedCategory}
+                    
+                />)}
+        </div>
+    );
+};
 
 export default CategoryGrid;
-

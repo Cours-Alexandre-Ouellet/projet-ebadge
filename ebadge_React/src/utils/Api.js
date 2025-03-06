@@ -24,16 +24,15 @@ axiosInstance.interceptors.request.use(function (config) {
 // Après avoir reçu une réponse, on vérifie si le token est invalide
 // sinon on redirige vers la page de login
 axiosInstance.interceptors.response.use(function (request) {
-  return request;
-}, function (error) {
-  console.log(error);
-  if (error.response.status === 401 && error.response.data.message === "Unauthenticated.") {
-    localStorage.removeItem('token');
-    window.location.href = "/auth/login";
-  }
-  return Promise.reject(error);
-});
-
+    return request;
+  }, function (error) {
+    // console.log(error);
+    if (error.response.status === 401 && error.response.data.message === "Unauthenticated.") {
+        localStorage.removeItem('token');
+        window.location.href = "/auth/login";
+    }
+    return Promise.reject(error);
+  });
 
 /**
  * fonction qui retourne le lien de l'image dans le serveur php
