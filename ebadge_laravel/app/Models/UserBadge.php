@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Lien entre un utilisateur et un badge
+ * Classe du lien entre un utilisateur et un badge
  */
 class UserBadge extends Model
 {
     /**
-     * The table associated with the model.
+     * La table associée avec le modèle.
      *
      * @var string
      */

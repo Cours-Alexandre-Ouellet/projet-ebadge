@@ -4,12 +4,17 @@ import { Button, Dialog, Slide } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import CategoryDeleteAction from './CategoryDeletePopup';
 import CategoryUpdateForm from '../CategoryUpdateForm';
-import CategoryAssignationPopup from './CategoryAssignationPopup';
+import CategoryBadgesPopup from './Popups/CategoryBadgesPopup/CategoryBadgesPopup';
+
 
 const Transition = React.forwardRef((props, ref) => (
     <Slide direction="up" ref={ref} {...props} />
 ));
 
+
+/**
+ * Composant qui affiche les catégories sous forme de tableau
+ */
 const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }) => {
     const [pageSize, setPageSize] = useState(5);
     const [openAssignDialog, setOpenAssignDialog] = useState(false);
@@ -18,12 +23,14 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const columns = [
-        { field: 'id', headerName: 'ID', flex: 1, align: 'center', headerAlign: 'center' },
+        { field: 'id', headerName: 'ID', flex: 0.5, align: 'center', headerAlign: 'center' },
         { field: 'name', headerName: 'Nom', flex: 2, headerAlign: 'center' },
         {
             field: 'assignAction',
+            minWidth: 150,
             headerName: '',
             sortable: false,
+            align: 'center',
             renderCell: (params) => {
                 const onClick = (e) => {
                     e.stopPropagation();
@@ -31,7 +38,7 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
                     setOpenAssignDialog(true);
                 };
 
-                return <Button variant="outlined" onClick={onClick}>Assigner</Button>;
+                return <Button variant="outlined" onClick={onClick}>Assigner badge</Button>;
             },
         },
         {
@@ -111,6 +118,14 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
                     errorCategory={errorCategory}
                 />
             </Dialog>
+
+            {selectedCategory && (
+                <CategoryBadgesPopup
+                    isOpen={openAssignDialog}
+                    handleClose={() => setOpenAssignDialog(false)} 
+                    selectedCategory={selectedCategory}
+                    
+                />)}
         </div>
     );
 };
