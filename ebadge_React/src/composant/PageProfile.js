@@ -8,7 +8,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import BadgeComponent from './PageProfil/BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
@@ -33,7 +32,7 @@ export default class PageProfile extends React.Component {
             openAvatar: false,
             avatarUrlField: "",
             avatarImageFile: null,
-            user: null,
+            utilisateur: {},
             backgroundUrlField: "",
             backgroundImageFile: null,
             levelAvatar: 23.90,
@@ -53,8 +52,10 @@ export default class PageProfile extends React.Component {
                 console.log("background null");
                 response.data.backgroundImagePath = "./background.png";
             }
-            this.setState({ user: response.data });
+            this.setState({ utilisateur: response.data });
             console.log(response.data);
+            console.log("$$$$$$$$$$$$$$$$$$$");
+            console.log(this.state.utilisateur);
         }).catch((error) => {
             console.log(error);
         });
@@ -87,16 +88,16 @@ export default class PageProfile extends React.Component {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
-                this.setState({ openBackground: false, user: { ...this.state.user, backgroundImagePath: response.data.url} });
+                this.setState({ openBackground: false, utilisateur: { ...this.state.utilisateur, backgroundImagePath: response.data.url} });
             }).catch((error) => {
                 console.log(error);
             });
             this.setState({ backgroundImageFile: null });
         } else if (isImage(this.state.backgroundUrlField)) {
-            this.setState({ openBackground: false, user: {...this.user, backgroundImagePath: this.state.backgroundUrlField} });
+            this.setState({ openBackground: false, utilisateur: {...this.utilisateur, backgroundImagePath: this.state.backgroundUrlField} });
 
             Api.post('/user/edit-background', {
-                backgroundUrl: this.state.user.backgroundImagePath
+                backgroundUrl: this.state.utilisateur.backgroundImagePath
             }).catch((error) => {
                 console.log(error);
             });
@@ -108,11 +109,11 @@ export default class PageProfile extends React.Component {
      * fonction qui gère la suppression du fond d'écran 
      */
     handleDelete = () => {
-        let user = this.state.user;
-        user.backgroundImagePath = "./background.png";
+        let utilisateur = this.state.utilisateur;
+        utilisateur.backgroundImagePath = "./background.png";
 
         this.setState({
-            user: user,
+            utilisateur: utilisateur,
             openBackground: false
         });
     };
@@ -144,18 +145,18 @@ export default class PageProfile extends React.Component {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
-                this.state.user.avatarImagePath = response.data.url;
+                this.state.utilisateur.avatarImagePath = response.data.url;
                 this.setState({ openAvatar: false });
             }).catch((error) => {
                 console.log(error);
             });
 
         } else if (isImage(this.state.avatarUrlField)) {
-            this.state.user.avatarImagePath = this.state.avatarUrlField;
+            this.state.utilisateur.avatarImagePath = this.state.avatarUrlField;
             this.setState({ openAvatar: false });
 
             Api.post('/user/edit-avatar', {
-                avatarUrl: this.state.user.avatarImagePath
+                avatarUrl: this.state.utilisateur.avatarImagePath
             }).catch((error) => {
                 console.log(error);
             });
@@ -167,20 +168,20 @@ export default class PageProfile extends React.Component {
      * fonction qui gère la suppression de l'avatar
      */
     handleDeleteAvatar = () => {
-        let user = this.state.user;
-        user.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
-        this.setState({ user: user, openAvatar: false  });
+        let utilisateur = this.state.utilisateur;
+        utilisateur.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
+        this.setState({ utilisateur: utilisateur, openAvatar: false  });
     };
 
     //fonction qui gère la modification de la privacité
     setPrivacy = (e) => {
-        let user = this.state.user;
-        user.privacy = !user.privacy;
-        this.setState({ user: user });
+        let utilisateur = this.state.utilisateur;
+        utilisateur.privacy = !utilisateur.privacy;
+        this.setState({ utilisateur: utilisateur });
 
-        console.log("PRIVACY : " + this.state.user.privacy);
+        console.log("PRIVACY : " + this.state.utilisateur.privacy);
         Api.post('/user/edit-privacy', {
-            privacy: this.state.user.privacy
+            privacy: this.state.utilisateur.privacy
         }).catch((error) => {
             console.log(error);
         });
@@ -200,14 +201,14 @@ export default class PageProfile extends React.Component {
 
 
     render() {
-        if (this.state.user == null) {
+        if (this.state.utilisateur == null || !this.state.utilisateur.id) {
             return <Loading></Loading>
-        }
+        } 
         return (
-            <div className='background' style={{ backgroundImage: `url(${this.state.user.backgroundImagePath})` }} >
+            <div className='background' style={{ backgroundImage: `url(${this.state.utilisateur.backgroundImagePath})` }} >
                 <div className='profil'>
                     <div>
-                        <img className='avatar' src={this.state.user.avatarImagePath} />
+                        <img className='avatar' src={this.state.utilisateur.avatarImagePath} />
                         <div className='imageProfile'>
                             <label htmlFor="avatar">
                                 <img className='editImage' onClick={this.handleClickOpenAvatar} src='http://cdn.onlinewebfonts.com/svg/img_520583.png' alt="profil" title='image de profil' />
@@ -215,10 +216,10 @@ export default class PageProfile extends React.Component {
                         </div>
                     </div>
                     <div className='infosUser'>
-                        <p><strong>{this.state.user.first_name} {this.state.user.last_name}</strong></p>
-                        <p>{this.state.user.program_name}</p>
+                        <p><strong>{this.state.utilisateur.first_name} {this.state.utilisateur.last_name}</strong></p>
+                        <p>{this.state.utilisateur.program_name}</p>
                         <div style={{ width: "188px" }}>
-                            <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.user.privacy} onChange={this.setPrivacy} /></label>
+                            <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.utilisateur.privacy} onChange={this.setPrivacy} /></label>
                         </div>
                         <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
                         <Dialog open={this.state.openBackground} onClose={this.handleClose}>
@@ -336,7 +337,7 @@ export default class PageProfile extends React.Component {
                         </Dialog>
                     </div>
                 </div>
-                <BadgeList user={this.state.user}/>
+                <BadgeList user={this.state.utilisateur}/>
             </div>
         );
     }
