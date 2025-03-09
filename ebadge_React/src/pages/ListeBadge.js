@@ -14,12 +14,12 @@ import Loading from '../composant/Loading/LoadingComponent';
  * le code à été en partie inspirer de Classement.js pour garder un theme constant dans le site.
  */
 export default function ListeBadge() {
-  const [badgesObtenus, setBadgesObtenus] = useState([]);
-  const [badgesNonObtenus, setBadgesNonObtenus] = useState([]);
+  const [obtainedBadges, setObtainedBadges] = useState([]);
+  const [missingBadges, setMissingBadges] = useState([]);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
-  const [badgeSelectionne, setBadgeSelectionne] = useState(null);
-  const [charge, setCharge] = useState(false);
+  const [selectedBadge, setSelectedBadge] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   /**
    * fonction allant chercher tout les badges obtenues et non obtenues
@@ -32,7 +32,7 @@ export default function ListeBadge() {
         Api.get("/user/" + id + "/badges")
           .then((response) => {
             const badges = response.data;
-            setBadgesObtenus(Object.values(badges).flat());
+            setObtainedBadges(Object.values(badges).flat());
           })
           .catch((error) => {
             console.log(error);
@@ -40,8 +40,8 @@ export default function ListeBadge() {
         Api.get("/user/" + id + "/badges-left")
           .then((response) => {
             const badges = response.data;
-            setBadgesNonObtenus( Object.values(badges).flat() );
-            setCharge(true);
+            setMissingBadges( Object.values(badges).flat() );
+            setLoaded(true);
           })
           .catch((error) => {
             console.log(error);
@@ -65,8 +65,8 @@ export default function ListeBadge() {
    *  fonction qui permet de filtrer les badges obtenus par par leur nom
    * @returns les badges possedant le nom recherché
    */
-  function filtrerBadgesObtenus() {
-    return badgesObtenus.filter((item) => {
+  function filterObtainedBadges() {
+    return obtainedBadges.filter((item) => {
       return item.title.toLowerCase().includes(search.toLowerCase());
     });
   }
@@ -75,8 +75,8 @@ export default function ListeBadge() {
    *  fonction qui permet de filtrer les badges non obtenus par par leur nom
    * @returns les badges possedant le nom recherché
    */
-  function filtrerBadgesNonObtenus() {
-    return badgesNonObtenus.filter((item) => {
+  function filterMissingBadges() {
+    return missingBadges.filter((item) => {
       return item.title.toLowerCase().includes(search.toLowerCase());
     });
   }
@@ -115,10 +115,10 @@ export default function ListeBadge() {
    * @param {*} params 
    */
   function handleRowClick(params){
-    setBadgeSelectionne(params.row);
+    setSelectedBadge(params.row);
     setOpen(true);
   };
-  if(charge){
+  if(loaded){
   return (
     <div className="listeBadge">
       <div className="listeBadge-container">
@@ -152,7 +152,7 @@ export default function ListeBadge() {
                 </div>
                 <DataGrid
                   onRowClick={handleRowClick}
-                  rows={filtrerBadgesObtenus()}
+                  rows={filterObtainedBadges()}
                   columns={columns}
                 />
               </div>
@@ -162,14 +162,14 @@ export default function ListeBadge() {
                 </div>
                 <DataGrid
                   onRowClick={handleRowClick}
-                  rows={filtrerBadgesNonObtenus()}
+                  rows={filterMissingBadges()}
                   columns={columns}
                 />
               </div>
             </div>
             <BadgePopup
               isOpen={open}
-              selectedBadge={badgeSelectionne}
+              selectedBadge={selectedBadge}
               handleClose={handleClose}
             />
           </div>

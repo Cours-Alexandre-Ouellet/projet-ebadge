@@ -9,25 +9,25 @@ import Divider from '@mui/material/Divider';
  * Popup affichant le badge sélectionné par l'utilisateur
  */
 export default function BadgePopup({ isOpen, handleClose, selectedBadge }){
-  const [titre, setTitre] = useState("");
+  const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
-  const [description, setDescriiption] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
-    setTitre(selectedBadge ? selectedBadge.title : "");
+    setTitle(selectedBadge ? selectedBadge.title : "");
     setImage(selectedBadge ? selectedBadge.imagePath : "");
-    setDescriiption(selectedBadge ? selectedBadge.description : "");
+    setDescription(selectedBadge ? selectedBadge.description : "");
   }, [selectedBadge]);
 
   return (
-    <Dialog open={isOpen ?? false} onClose={handleClose} className="dialog-principale">
+    <Dialog open={isOpen ?? false} onClose={handleClose} className="dialog-principal">
       <DialogTitle
         sx={{ fontSize: 45}}
       >
-        {titre}
+        {title}
       </DialogTitle>
       <DialogContent className="dialog-popup">
-        <Avatar alt={titre} src={image} className="avatar" />
+        <Avatar alt={title} src={image} className="avatar" />
         <Divider/>
         <Typography className="description">{description}</Typography>
       </DialogContent>
