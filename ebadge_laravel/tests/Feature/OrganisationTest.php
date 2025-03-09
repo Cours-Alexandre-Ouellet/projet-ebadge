@@ -7,17 +7,23 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Role;
+use App\Models\User;
 use Carbon\Carbon;
 
 class OrganisationTest extends TestCase
 {
+
+    private $organisation;
+    private $admin;
+    private $adminToken;
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->organisation = factory(\App\Models\Organisation::class)->create();
+        $this->organisation = Organisation::factory()->create();
 
-        $this->admin = factory(\App\Models\User::class)->create();
+        $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
@@ -72,7 +78,7 @@ class OrganisationTest extends TestCase
 
     public function testDeleteOrganisation()
     {
-        $org = factory(\App\Models\Organisation::class)->create();
+        $org = Organisation::factory()->create();
 
         $response = $this->delete(
             '/api/organisation',

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Badge;
 use App\Models\Role;
 use Tests\TestCase;
 use App\Models\User;
@@ -12,23 +13,31 @@ class UserTest extends TestCase
 {
     use DatabaseTransactions;
 
+    private $user;
+    private $admin;
+    private $teacher;
+    private $badge;
+    private $userToken;
+    private $teacherToken;
+    private $adminToken;
+
     /**
      * SETUP
      */
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = factory(\App\Models\User::class)->create();
+        $this->user = User::factory()->create();
 
-        $this->admin = factory(\App\Models\User::class)->create();
+        $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
 
-        $this->teacher = factory(\App\Models\User::class)->create();
+        $this->teacher = User::factory()->create();
         $this->teacher->role_id = Role::Teacher()->id;
         $this->teacher->save();
-        $this->badge = factory(\App\Models\Badge::class)->create();
+        $this->badge = Badge::factory()->create();
 
 
         $token = $this->user->createToken('Personal Access Token');

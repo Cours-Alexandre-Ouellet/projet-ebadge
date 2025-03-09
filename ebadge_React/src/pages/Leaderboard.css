@@ -1,4 +1,4 @@
-.classement {
+.leaderboard {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,7 +9,7 @@
     background-size: cover;
 }
 
-.classement-container {
+.leaderboard-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,7 +19,7 @@
     background-color: white;
 }
 
-.classement-background {
+.leaderboard-background {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -29,7 +29,7 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
-.classement-title {
+.leaderboard-title {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -37,7 +37,7 @@
     width: 100%;
 }
 
-.classement-table {
+.leaderboard-table {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -46,7 +46,7 @@
     height: 100%;
 }
 
-.classement-table-header {
+.leaderboard-table-header {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -64,11 +64,11 @@ h1 {
 }
 
 @media screen and (max-width: 900px) {
-    .classement-container {
+    .leaderboard-container {
         width: 100%;
     }
 
-    .classement-table-header {
+    .leaderboard-table-header {
         flex-direction: column;
     }
 }

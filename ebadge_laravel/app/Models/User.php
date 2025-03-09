@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Role;
+use Database\Factories\UserFactory as FactoriesUserFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * Classe représentant un utilisateur
@@ -12,7 +15,7 @@ use App\Models\Role;
 class User extends Authenticatable
 {
     use HasApiTokens; //Pour l'authentification par token
-
+    use HasFactory, Notifiable;
 
     /**
      * The table associated with the model.
@@ -58,5 +61,13 @@ class User extends Authenticatable
     public function badges()
     {
         return $this->belongsToMany('App\Models\Badge', 'user_badge', 'user_id', 'badge_id')->withTimestamps();
+    }
+
+    /**
+     * Créer une nouvelle instance à la factory
+     */
+    protected static function newFactory()
+    {
+        return FactoriesUserFactory::new();
     }
 }

@@ -4,12 +4,14 @@ import Item from '@mui/material/Grid';
 import './../Dashboard.css';
 import Api from '../../../utils/Api';
 import UserGrid from '../../../composant/Dashboard/UserGrid';
+import Loading from '../../../composant/Loading/LoadingComponent';
 
 class UsersTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: []
+            users: [],
+            charge: false
         }
     }
 
@@ -24,6 +26,7 @@ class UsersTab extends React.Component {
         Api.get('/user').then(res => {
             const users = res.data;
             this.setState({ users: users.users });
+            this.setState({charge:true});
         }
         )
     }
@@ -33,6 +36,7 @@ class UsersTab extends React.Component {
             <Item className='bordered'>
                 <h4>Liste des utilisateurs</h4>
                 <UserGrid rows={this.state.users} />
+                {this.state.charge?<hr></hr>:<Loading/>}
             </Item>
         );
     }
