@@ -118,6 +118,22 @@ class UserController extends Controller
         ]);
     }
 
+     /**
+     * Récuperer une personne
+     */
+    public function getUser(int $id)
+    {
+        $user = User::find($id);
+
+        if ($user == null) {
+            return response()->json(['error' => 'Utilisateur non trouvé'], 404);
+        }
+
+        return response()->json([
+            'user' => $user
+        ]);
+    }
+
     /**
      * Get all missing badges of a user
      */

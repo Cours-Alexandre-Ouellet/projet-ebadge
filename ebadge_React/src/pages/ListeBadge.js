@@ -118,6 +118,8 @@ export default function ListeBadge() {
     setBadgeSelectionne(params.row);
     setOpen(true);
   };
+
+  
   if(charge){
   return (
     <div className="listeBadge">

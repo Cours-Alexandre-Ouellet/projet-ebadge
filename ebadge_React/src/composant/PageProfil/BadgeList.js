@@ -1,47 +1,48 @@
-import React from 'react';
-import BadgeComponent from './BadgeComponent';
-import Api from '../../utils/Api';
+import React, { useEffect,useState } from "react";
+import BadgeComponent from "./BadgeComponent";
+import Api from "../../utils/Api";
 
-export default class BadgeList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: this.props.user,
-            badges: [],
-            loading: true
-        }
+/**
+ * élément affichant la liste de tous les badges d'un utilisateur
+ * @returns la liste de badge
+ */
+export default function BadgeList(props) {
+  const [user, setUser] = useState(props.user);
+  const [badges, setBadges] = useState([]);
+  const [loaded, setLoaded] = useState(true);
+
+  useEffect(() => {
+    if (user.id) {
+      Api.get(`/user/${user.id}/badges`)
+        .then((response) => {
+          console.log(response.data);
+          setBadges(response.data.badges);
+          setLoaded(false);
+        })
+
+        .catch((error) => {
+          console.log(error);
+        });
     }
+  }, []);
 
-    componentDidMount() {
-        Api.get('/user/my-badges')
-            .then((response) => {
-                console.log(response.data);
-                this.setState({
-                    badges: response.data.badges,
-                    loading: false
-                })
-                console.log(this.state.badges);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
+  if (loaded) {
+    return (
+      <div className="BadgeArray">
+        <h1>Chargement des badges...</h1>
+      </div>
+    );
+  }
 
-    render() {
-        if (this.state.loading) {
-            return (
-                <div className='BadgeArray'>
-                    <h1>Chargement des badges...</h1>
-                </div>
-            )
-        }
-
-        return (
-            <div className='BadgeArray'>
-                {this.state.badges.length ? this.state.badges.map((badge, index) => {
-                    return <BadgeComponent badge={badge} key={index}/>
-                }) : <h1>Vous n'avez aucun badge</h1>}
-            </div>
-        )
-    }
+  return (
+    <div className="BadgeArray">
+      {badges.length ? (
+        badges.map((badge, index) => {
+          return <BadgeComponent badge={badge} key={index} />;
+        })
+      ) : (
+        <h1>Vous n'avez aucun badge</h1>
+      )}
+    </div>
+  );
 }
