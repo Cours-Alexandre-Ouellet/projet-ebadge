@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import './PageVisite.css'
+import './PageUser.css'
 import Api from "../utils/Api";
 import { Typography } from "@mui/material";
 import { useLocation, useParams } from "react-router-dom";
@@ -11,11 +11,11 @@ import BadgeList from "../composant/PageProfil/BadgeList";
  * l'id de l'utilisateur doit etre envoyé dans l'url de la page
  * @returns la page de l'étudiant
  */
-export default function PageVisiteUtilisateur() {
-  const [utilisateur, setUtilisateur] = useState(null);
+export default function PageUser() {
+  const [user, setUser] = useState(null);
   const location = useLocation();
   const params = useParams();
-  const [charge, setCharge] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
 
   /**
@@ -25,17 +25,18 @@ export default function PageVisiteUtilisateur() {
     if (params.id) {
       Api.get(`/user/${params.id}`)
         .then((response) => {
-          if (response.data.utilisateur.avatarImagePath == null) {
+          if (response.data.user.avatarImagePath == null) {
             console.log("avatar null");
-            response.data.utilisateur.avatarImagePath =
+            response.data.user.avatarImagePath =
               "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
           }
-          if (response.data.utilisateur.backgroundImagePath == null) {
+          if (response.data.user.backgroundImagePath == null) {
             console.log("background null");
-            response.data.utilisateur.backgroundImagePath = "../background.png";
+            response.data.user.backgroundImagePath = "../background.png";
           }
-          setCharge(true);
-          setUtilisateur(response.data);
+          setLoaded(true);
+          setUser(response.data);
+          console.log("/////////////////");
           console.log(response.data);
         })
         .catch((error) => {
@@ -44,32 +45,32 @@ export default function PageVisiteUtilisateur() {
     }
   }, []);
 
-  if (utilisateur) {
-    if (utilisateur.utilisateur.privacy == 0) {
+  if (user) {
+    if (user.user.privacy == 0) {
       return (
         <div
           className="background"
           style={{
-            backgroundImage: `url(${utilisateur.utilisateur.backgroundImagePath})`,
+            backgroundImage: `url(${user.user.backgroundImagePath})`,
           }}
         >
-          {!charge?<Loading></Loading>:<br></br>}
+          {!loaded?<Loading></Loading>:<br></br>}
           <div className="profil">
             <div>
-              <img className="avatar" src={utilisateur.utilisateur.avatarImagePath} />
+              <img className="avatar" src={user.user.avatarImagePath} />
               
             </div>
             <div className="infosUser">
               <p>
                 <strong>
-                  {utilisateur.utilisateur.first_name} {utilisateur.utilisateur.last_name}
+                  {user.user.first_name} {user.user.last_name}
                 </strong>
               </p>
               
               
             </div>
           </div>
-          <BadgeList user={utilisateur.utilisateur} />
+          <BadgeList user={user.user} />
           
         </div>
         

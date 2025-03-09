@@ -28,7 +28,7 @@ export default function Leaderboard() {
   const [session, setSession] = useState(1);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-  const [charge, setCharge] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   
 
   /**
@@ -43,7 +43,7 @@ export default function Leaderboard() {
         for (let i = 0; i < valeursLeaderboard.length; i++) {
           valeursLeaderboard[i].position = i + 1;
         }
-        setCharge(true);
+        setLoaded(true);
         setLeaderboard(valeursLeaderboard);
       })
       .catch((error) => {
@@ -114,7 +114,7 @@ export default function Leaderboard() {
 
   return (
     <div className="leaderboard">
-      {!charge?<Loading></Loading>:<hr></hr>}
+      {!loaded?<Loading></Loading>:<hr></hr>}
       <div className="leaderboard-container">
         <div className="leaderboard-background">
           <div className="leaderboard-title">

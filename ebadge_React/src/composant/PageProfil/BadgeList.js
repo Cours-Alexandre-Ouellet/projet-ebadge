@@ -9,7 +9,7 @@ import Api from "../../utils/Api";
 export default function BadgeList(props) {
   const [utilisateur, setUtilisateur] = useState(props.user);
   const [badges, setBadges] = useState([]);
-  const [chargement, setChargement] = useState(true);
+  const [loaded, setLoaded] = useState(true);
 
   useEffect(() => {
     if (utilisateur.id) {
@@ -17,7 +17,7 @@ export default function BadgeList(props) {
         .then((response) => {
           console.log(response.data);
           setBadges(response.data.badges);
-          setChargement(false);
+          setLoaded(false);
         })
 
         .catch((error) => {
@@ -26,7 +26,7 @@ export default function BadgeList(props) {
     }
   }, []);
 
-  if (chargement) {
+  if (loaded) {
     return (
       <div className="BadgeArray">
         <h1>Chargement des badges...</h1>

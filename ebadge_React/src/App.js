@@ -20,7 +20,7 @@ import ListeBadge from "./pages/ListeBadge";
 //import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
 //import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
 import TeacherCodesTab from "./pages/Dashboard/tabs/TeacherCodesTab";
-import PageVisiteUtilisateur from "./pages/PageVisiteUtilisateur";
+import PageUser from "./pages/PageUser";
 
 const theme = createTheme({
   palette: {
@@ -50,7 +50,7 @@ function App() {
 
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="badges" element={<ListeBadge />} />
-            <Route path="utilisateur/:id" element={<PageVisiteUtilisateur />} />
+            <Route path="utilisateur/:id" element={<PageUser />} />
             <Route path="*" element={<h1>404: Page non trouvée</h1>} />
           </Route>
           <Route path="/auth">

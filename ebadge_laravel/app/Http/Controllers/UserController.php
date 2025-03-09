@@ -123,14 +123,14 @@ class UserController extends Controller
      */
     public function getUser(int $id)
     {
-        $utilisateur = User::find($id);
+        $user = User::find($id);
 
-        if ($utilisateur == null) {
+        if ($user == null) {
             return response()->json(['error' => 'Utilisateur non trouvé'], 404);
         }
 
         return response()->json([
-            'utilisateur' => $utilisateur
+            'user' => $user
         ]);
     }
 
