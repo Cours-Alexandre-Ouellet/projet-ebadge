@@ -107,7 +107,7 @@ export default function Leaderboard() {
    * fonction dirigeant l'utilisateur vers la page de l'utilisateur qu'il veut visité
    * @param {*} id l'id de l'utilisateur à visité
    */
-  function visiteUtilisateur(id) {
+  function visitUser(id) {
     console.log(id);
     navigate(`/utilisateur/${id}`);
   }
@@ -178,7 +178,7 @@ export default function Leaderboard() {
                   {filterLeaderboard().map((item, index) => (
                     <TableRow
                       key={item.id}
-                      onClick={() => visiteUtilisateur(item.id)}
+                      onClick={() => visitUser(item.id)}
                       className="colone"
                     >
                       <TableCell>{item.position}</TableCell>

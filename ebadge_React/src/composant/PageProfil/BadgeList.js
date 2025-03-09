@@ -7,13 +7,13 @@ import Api from "../../utils/Api";
  * @returns la liste de badge
  */
 export default function BadgeList(props) {
-  const [utilisateur, setUtilisateur] = useState(props.user);
+  const [user, setUser] = useState(props.user);
   const [badges, setBadges] = useState([]);
   const [loaded, setLoaded] = useState(true);
 
   useEffect(() => {
-    if (utilisateur.id) {
-      Api.get(`/user/${utilisateur.id}/badges`)
+    if (user.id) {
+      Api.get(`/user/${user.id}/badges`)
         .then((response) => {
           console.log(response.data);
           setBadges(response.data.badges);
