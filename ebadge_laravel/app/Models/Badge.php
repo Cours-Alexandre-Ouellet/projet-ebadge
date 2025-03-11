@@ -25,6 +25,7 @@ class Badge extends Model
         'description',
         'imagePath',
         'color',
+        'teacher_id'
     ];
 
     public function users()
