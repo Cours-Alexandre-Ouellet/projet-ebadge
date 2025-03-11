@@ -118,6 +118,7 @@ export default function ListeBadge() {
     setSelectedBadge(params.row);
     setOpen(true);
   };
+
   if(loaded){
   return (
     <div className="listeBadge">
