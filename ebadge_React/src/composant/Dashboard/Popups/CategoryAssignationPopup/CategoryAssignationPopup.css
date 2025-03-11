@@ -1,0 +1,36 @@
+.category-popup {
+    min-width: 500px;
+    min-height: 100px;
+    margin: 25px;
+}
+
+.category-popup hr {
+    margin: 35px;
+    border: 1px solid #e0e0e0;
+}
+
+.mt-2 {
+    margin-top: 10px;
+}
+
+form  {
+    padding: 5px;
+}
+
+.category-selector {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.category-row {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.category-row .badge {
+    margin: 10px;
+}

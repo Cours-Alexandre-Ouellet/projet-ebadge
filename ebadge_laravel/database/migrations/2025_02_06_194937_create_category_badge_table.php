@@ -13,8 +13,8 @@ class CreateCategoryBadgeTable extends Migration
     {
         Schema::create('category_badge', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('idBadge')->constrained('badge');
-            $table->foreignId('idCategory')->constrained('category');
+            $table->foreignId('badge_id')->constrained('badge')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('category')->onDelete('cascade');
             $table->timestamps();
         });
     }

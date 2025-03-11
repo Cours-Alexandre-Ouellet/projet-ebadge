@@ -21,9 +21,8 @@ class CategoryBadge extends Model
     public function definition(): array
     {
         return [
-            'idBadge' => $this->faker->numberBetween(1, 100),
-
-            'idCategory' => $this->faker->numberBetween(1, 100),
+            'badge_id' => $this->faker->numberBetween(1, 100),
+            'category_id' => $this->faker->numberBetween(1, 100),
         ];
     }
 }

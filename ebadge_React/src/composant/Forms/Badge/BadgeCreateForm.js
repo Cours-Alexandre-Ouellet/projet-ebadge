@@ -23,7 +23,7 @@ var badgeDummy = {
 };
 
 /**
- * Fonciton qui affiche et gère la création de badge
+ * Fonction qui affiche et gère la création de badge
  * @param {Object} handleClose - Ferme une fenêtre
  * @param {Object} addBadge - Popup d'ajout de badge
  * @param {Object} errorBadge - Popup de modification de badge

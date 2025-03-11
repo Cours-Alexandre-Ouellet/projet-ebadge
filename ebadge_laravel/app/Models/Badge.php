@@ -15,7 +15,7 @@ class Badge extends Model
 {
     use HasFactory, Notifiable;
     /**
-     * The table associated with the model.
+     * La table associée au modèle.
      * @var string
      */
     protected $table = 'badge';
@@ -28,11 +28,19 @@ class Badge extends Model
         'teacher_id'
     ];
 
+    /**
+     * Relation entre le badge et les utilisateurs
+     * 
+     * @return BelongsToMany les utilisateurs possédant le badge
+     */
     public function users()
     {
         return $this->belongsToMany('App\Models\User', 'user_badge', 'badge_id', 'user_id');
     }
 
+    /**
+     * Définit le pourcentage de possession du badge
+     */
     public function setPossessionPercentage()
     {
         $users = $this->users;
@@ -47,7 +55,7 @@ class Badge extends Model
      */
     public function categories()
     {
-        return $this->belongsToMany('App\Models\Category', 'category_badge', 'idBadge', 'idCategory');
+        return $this->belongsToMany('App\Models\Category', 'category_badge', 'badge_id', 'category_id');
     }
 
     /**
