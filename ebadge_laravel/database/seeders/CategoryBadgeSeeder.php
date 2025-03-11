@@ -13,32 +13,32 @@ class CategoryBadgeSeeder extends Seeder
     {
         DB::table('category_badge')->insert([
             [
-                'idBadge' => 1,
-                'idCategory' => 1,
+                'badge_id' => 1,
+                'category_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'idBadge' => 2,
-                'idCategory' => 3,
+                'badge_id' => 2,
+                'category_id' => 3,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'idBadge' => 3,
-                'idCategory' => 2,
+                'badge_id' => 3,
+                'category_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'idBadge' => 4,
-                'idCategory' => 4,
+                'badge_id' => 4,
+                'category_id' => 4,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'idBadge' => 5,
-                'idCategory' => 5,
+                'badge_id' => 5,
+                'category_id' => 5,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
