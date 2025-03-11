@@ -93,10 +93,10 @@ class BadgeGrid extends React.Component {
                     onClose={this.handleCloseDeleteDialog}
                     selectedBadge={this.state.selectedBadge}
                     deleteBadge={this.props.deleteBadge}
-                    errorBadge={this.props.errorBadge}
+                    errorBadge={this.props.errorBadge ?? ''}
                 />
                 <Dialog fullScreen open={this.state.openEditDialog} onClose={this.handleCloseEditDialog} TransitionComponent={Transition}>
-                    <BadgeUpdateForm handleClose={this.handleCloseEditDialog} editBadge={this.props.editBadge} selectedBadge={this.state.selectedBadge} errorBadge={this.props.errorBadge} />
+                    <BadgeUpdateForm handleClose={this.handleCloseEditDialog} editBadge={this.props.editBadge} selectedBadge={this.state.selectedBadge} errorBadge={this.props.errorBadge ?? ''} />
                 </Dialog>
             </div>
         );

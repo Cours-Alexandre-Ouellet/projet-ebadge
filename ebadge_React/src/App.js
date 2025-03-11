@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import UsersTab from "./pages/Dashboard/tabs/UsersTab";
 import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
@@ -21,20 +20,7 @@ import ListeBadge from "./pages/ListeBadge";
 //import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
 import TeacherCodesTab from "./pages/Dashboard/tabs/TeacherCodesTab";
 import PageUser from "./pages/PageUser";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#3949B5",
-    },
-    secondary: {
-      main: "#FAC710",
-    },
-  },
-  typography: {
-    fontFamily: ["Barlow", "sans-serif"].join(","),
-  },
-});
+import DefaultTheme from "./theme";
 
 const estConnecter = localStorage.getItem("token");
 
@@ -43,7 +29,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
+      <DefaultTheme>
         <Routes>
           <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
             <Route index path="/" element={<PageProfile />} />
@@ -75,7 +61,7 @@ function App() {
             </Route>
           </Route>
         </Routes>
-      </ThemeProvider>
+      </DefaultTheme>
     </BrowserRouter>
   );
 }
