@@ -8,7 +8,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import BadgeComponent from './PageProfil/BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
@@ -33,7 +32,7 @@ export default class PageProfile extends React.Component {
             openAvatar: false,
             avatarUrlField: "",
             avatarImageFile: null,
-            user: null,
+            user: {},
             backgroundUrlField: "",
             backgroundImageFile: null,
             levelAvatar: 23.90,
@@ -55,6 +54,8 @@ export default class PageProfile extends React.Component {
             }
             this.setState({ user: response.data });
             console.log(response.data);
+            console.log("$$$$$$$$$$$$$$$$$$$");
+            console.log(this.state.user);
         }).catch((error) => {
             console.log(error);
         });
@@ -200,9 +201,9 @@ export default class PageProfile extends React.Component {
 
 
     render() {
-        if (this.state.user == null) {
+        if (this.state.user == null || !this.state.user.id) {
             return <Loading></Loading>
-        }
+        } 
         return (
             <div className='background' style={{ backgroundImage: `url(${this.state.user.backgroundImagePath})` }} >
                 <div className='profil'>
