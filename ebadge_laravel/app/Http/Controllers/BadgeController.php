@@ -166,9 +166,12 @@ class BadgeController extends Controller
         //Va supprimer l'ancienne image dans le serveur
         BadgeController::destroyOldImage($badge);
 
+        // Supprime les relations avec les catégories
+        $badge->categories()->detach();
+
         UserBadge::where('badge_id', $badge->id)->delete();
 
         $badge->delete();
-        return response()->json($badge);
+        return response()->json(['message' => 'Badge ' . $badge . ' supprimé']);
     }
 }

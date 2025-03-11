@@ -38,16 +38,6 @@ class Category extends Model
     }
 
     /**
-     * Relation entre la catégorie et ses badges
-     * 
-     * @return BelongsToMany les catégories du badge
-     */
-    public function categories()
-    {
-        return $this->belongsToMany('App\Models\Category', 'badge_categorie', 'badge_id', 'categorie_id');
-    }
-
-    /**
      * Créer une nouvelle instance à la factory
      */
     protected static function newFactory()
