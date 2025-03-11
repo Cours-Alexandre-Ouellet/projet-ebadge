@@ -3,7 +3,9 @@ import '@mui/material';
 import Item from '@mui/material/Grid';
 import './../Dashboard.css';
 import Api from '../../../utils/Api';
-import UserGrid from '../../../composant/Dashboard/UserGrid';
+// import UserGrid from '../../../composant/Dashboard/UserGrid';
+import UserAdminGrid from '../../../composant/Dashboard/UserAdminGrid';
+
 
 class UserAdminTab extends React.Component {
     constructor(props) {
@@ -12,6 +14,12 @@ class UserAdminTab extends React.Component {
             adminUsers: []
         };
     }
+
+    onAdminDeleted = (deletedId) => {
+        this.setState(prevState => ({
+            adminUsers: prevState.adminUsers.filter(admin => admin.id !== deletedId)
+        }));
+    };
 
     componentDidMount() {
         this.getAdminUsers();
@@ -28,11 +36,28 @@ class UserAdminTab extends React.Component {
         });
     }
 
+    /**
+     * Ajout d'un message d'alerte si le nombre d'admins est inférieur à 2
+     */
     render() {
         return (
             <Item className='bordered'>
                 <h4>Liste des administrateurs</h4>
-                <UserGrid rows={this.state.adminUsers} />
+                <UserAdminGrid rows={this.state.adminUsers} onAdminDeleted={this.onAdminDeleted}/>
+                {this.state.adminUsers.length < 5 && (
+                <p style={{ 
+                    color: 'red', 
+                    // fontWeight: 'bold', 
+                    backgroundColor: '#ffe5e5', 
+                    padding: '10px', 
+                    borderRadius: '5px', 
+                    border: '1px solid red'
+                }}>
+                    ⚠ Attention, vous avez seulement {this.state.adminUsers.length} administrateur. 
+                    Il est recommandé d'en avoir entre 2 et 3. <br />
+                    L'administrateur restant ne peut pas être supprimé.
+                </p>
+    )}
             </Item>
         );
     }
