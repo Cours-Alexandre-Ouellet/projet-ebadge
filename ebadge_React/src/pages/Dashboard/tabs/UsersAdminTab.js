@@ -44,7 +44,7 @@ class UserAdminTab extends React.Component {
             <Item className='bordered'>
                 <h4>Liste des administrateurs</h4>
                 <UserAdminGrid rows={this.state.adminUsers} onAdminDeleted={this.onAdminDeleted}/>
-                {this.state.adminUsers.length < 5 && (
+                {this.state.adminUsers.length < 2 && (
                 <p style={{ 
                     color: 'red', 
                     // fontWeight: 'bold', 
