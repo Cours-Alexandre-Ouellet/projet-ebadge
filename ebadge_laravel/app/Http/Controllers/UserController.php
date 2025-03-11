@@ -196,4 +196,31 @@ class UserController extends Controller
         $users = User::where('role_id', $id)->get();
         return response()->json(['users' => $users]);
     }
+    
+    /**
+     * Supprime un utilisateur
+     * 
+     * @param int $id Id de l'utilisateur
+     * @return \Illuminate\Http\Response
+     */
+    public function supprimerUser(int $id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return response()->json(['message' => 'Utilisateur supprimé']);
+    }
+
+    public function deleteAdmin($id)
+    {
+        $admin = User::find($id);
+    
+        if (!$admin) {
+            return response()->json(['message' => 'Administrateur non trouvé'], 404);
+        }
+    
+        $admin->delete();
+    
+        return response()->json(['message' => 'Administrateur supprimé avec succès']);
+    }
+
 }
