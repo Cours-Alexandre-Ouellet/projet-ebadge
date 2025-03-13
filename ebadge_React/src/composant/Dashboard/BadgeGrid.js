@@ -4,6 +4,7 @@ import { Button, Avatar, Slide, Dialog } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import BadgeDeleteAction from './Popups/BadgeDeletePopup/BadgeDeletePopup';
 import BadgeUpdateForm from '../Forms/Badge/BadgeUpdateForm';
+import { getResource } from '../../utils/Api';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -21,7 +22,7 @@ class BadgeGrid extends React.Component {
                 { field: 'id', headerName: 'ID', flex: 1, align: 'center', headerAlign: 'center' },
                 {
                     field: 'imagePath', headerName: 'Image', sortable: false, flex: 2, align: 'center', headerAlign: 'center', renderCell: (params) => {
-                        return <Avatar alt={params.row.title} src={params.value} sx={{ width: 70, height: 70, bgcolor: `#${params.row.color}` }} />;
+                        return <Avatar alt={params.row.title} src={params.value || getResource("badge.png")} sx={{ width: 70, height: 70, bgcolor: `#${params.row.color}` }} />;
                     },
                 },
                 { field: 'title', headerName: 'Titre', flex: 2, headerAlign: 'center' },
@@ -92,10 +93,10 @@ class BadgeGrid extends React.Component {
                     onClose={this.handleCloseDeleteDialog}
                     selectedBadge={this.state.selectedBadge}
                     deleteBadge={this.props.deleteBadge}
-                    errorBadge={this.props.errorBadge}
+                    errorBadge={this.props.errorBadge ?? ''}
                 />
                 <Dialog fullScreen open={this.state.openEditDialog} onClose={this.handleCloseEditDialog} TransitionComponent={Transition}>
-                    <BadgeUpdateForm handleClose={this.handleCloseEditDialog} editBadge={this.props.editBadge} selectedBadge={this.state.selectedBadge} errorBadge={this.props.errorBadge} />
+                    <BadgeUpdateForm handleClose={this.handleCloseEditDialog} editBadge={this.props.editBadge} selectedBadge={this.state.selectedBadge} errorBadge={this.props.errorBadge ?? ''} />
                 </Dialog>
             </div>
         );

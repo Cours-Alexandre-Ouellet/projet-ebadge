@@ -2,7 +2,11 @@
 
 namespace App\Models;
 
+use Database\Factories\ProgramFactory as FactoriesProgramFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use ProgramFactory;
 
 /**
  * Classe représentant un programme
@@ -10,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Program extends Model
 {
+    use HasFactory, Notifiable;
+
     /**
      * The table associated with the model.
      *
@@ -34,5 +40,12 @@ class Program extends Model
             'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
         ];
 
+    }
+    /**
+     * Créer une nouvelle instance à la factory
+     */
+    protected static function newFactory()
+    {
+        return FactoriesProgramFactory::new();
     }
 }

@@ -72,3 +72,8 @@ h1 {
         flex-direction: column;
     }
 }
+
+.colone:hover{
+    background-color:rgb(242, 243, 250);
+    cursor:pointer;
+}

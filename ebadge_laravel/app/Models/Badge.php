@@ -4,13 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Role;
+use Database\Factories\BadgeFactory as FactoriesBadgeFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+
 /**
  * Classe représentant un badge
  */
 class Badge extends Model
 {
+    use HasFactory, Notifiable;
     /**
-     * The table associated with the model.
+     * La table associée au modèle.
      * @var string
      */
     protected $table = 'badge';
@@ -20,13 +25,22 @@ class Badge extends Model
         'description',
         'imagePath',
         'color',
+        'teacher_id'
     ];
 
+    /**
+     * Relation entre le badge et les utilisateurs
+     * 
+     * @return BelongsToMany les utilisateurs possédant le badge
+     */
     public function users()
     {
         return $this->belongsToMany('App\Models\User', 'user_badge', 'badge_id', 'user_id');
     }
 
+    /**
+     * Définit le pourcentage de possession du badge
+     */
     public function setPossessionPercentage()
     {
         $users = $this->users;
@@ -41,6 +55,14 @@ class Badge extends Model
      */
     public function categories()
     {
-        return $this->belongsToMany('App\Models\Category', 'category_badge', 'idBadge', 'idCategory');
+        return $this->belongsToMany('App\Models\Category', 'category_badge', 'badge_id', 'category_id');
+    }
+
+    /**
+     * Créer une nouvelle instance à la factory
+     */
+    protected static function newFactory()
+    {
+        return FactoriesBadgeFactory::new();
     }
 }

@@ -6,6 +6,7 @@ import BadgeCreateForm from '../../../composant/Forms/Badge/BadgeCreateForm';
 import { Button, Dialog, Slide, Snackbar, Alert } from '@mui/material';
 import './../Dashboard.css';
 import { Add } from '@mui/icons-material';
+import Loading from '../../../composant/Loading/LoadingComponent';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -20,7 +21,8 @@ class BadgesTab extends React.Component {
             successMessage: '',
             showErrorMessage: false,
             errorMessage: '',
-            badges: []
+            badges: [],
+            charge: false
         }
 
         this.handleBadgeForm = this.handleBadgeForm.bind(this);
@@ -44,6 +46,7 @@ class BadgesTab extends React.Component {
         Api.get('/badge').then(res => {
             const badges = res.data;
             this.setState({ badges: badges.badges });
+            this.setState({charge : true});
         }
         )
     }
@@ -109,6 +112,7 @@ class BadgesTab extends React.Component {
                         {this.state.errorMessage}
                     </Alert>
                 </Snackbar>
+                {this.state.charge?<hr></hr>:<Loading/>}
             </Item>
         );
     }

@@ -8,12 +8,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import BadgeComponent from './PageProfil/BadgeComponent';
 import Alert from '@mui/material/Alert';
 import Api from '../utils/Api';
 import Loading from './Loading/LoadingComponent';
 import BadgeList from './PageProfil/BadgeList';
-import { PhotoCamera, Check } from '@mui/icons-material';
+import { Check } from '@mui/icons-material';
+import ConfirmationPopup from './Dashboard/Popups/ConfirmationPopup/ConfirmationPopup';
+import { TRANSITION_DURATION } from '../theme';
 
 
 /**
@@ -31,14 +32,17 @@ export default class PageProfile extends React.Component {
         super(props);
         this.state = {
             openBackground: false,
+            openConfirmationPopup: false,
+            confirmPrivacyMessage: "",
             openAvatar: false,
             avatarUrlField: "",
             avatarImageFile: null,
-            user: null,
+            user: {},
             backgroundUrlField: "",
             backgroundImageFile: null,
             levelAvatar: 23.90,
         };
+        this.updatePrivacyMessage = this.updatePrivacyMessage.bind(this);
     }
 
     /**
@@ -55,11 +59,58 @@ export default class PageProfile extends React.Component {
                 response.data.backgroundImagePath = "./background.png";
             }
             this.setState({ user: response.data });
+            this.updatePrivacyMessage();
             console.log(response.data);
+            console.log("$$$$$$$$$$$$$$$$$$$");
+            console.log(this.state.user);
         }).catch((error) => {
             console.log(error);
         });
     }
+
+    /**
+     * Fonction qui met à jour le message de confirmation de modification de l'anonymat
+     */
+    updatePrivacyMessage() {
+        this.setState({ confirmPrivacyMessage: `Voulez-vous vraiment rendre votre compte ${this.state.user.privacy ? 'public' : 'privé'} ?` });
+    }
+
+    /**
+     * Fonction qui gère l'ouverture de la fenêtre de modification de l'anonymat
+     */
+    handleOpenPrivacyConfirmationPopup = () => {
+        this.setState({ openConfirmationPopup: true });
+    };
+
+    /**
+     * Fonction qui gère la fermeture de la fenêtre de modification de l'anonymat
+     */
+    handleClosePrivacyConfirmationPopup = () => {
+        this.setState({ openConfirmationPopup: false });
+    };
+
+    /**
+     * Fonction qui valide et effectue le changement de l'anonymat
+     */
+    handleConfirmPrivacyChange = () => {
+        const isAnonymous = !this.state.user.privacy;
+        this.setState({ openConfirmationPopup: false, user: { ...this.state.user, privacy: isAnonymous } });
+
+        setTimeout(this.updatePrivacyMessage, TRANSITION_DURATION);
+
+        Api.post('/user/edit-privacy', {
+            privacy: isAnonymous
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    /**
+     * Fonction qui gère l'ouverture de la fenêtre de modification de l'anonymat
+     */
+    handleOpenPrivacyConfirmationPopup = () => {
+        this.setState({ openConfirmationPopup: true });
+    };
 
     /**
      * fonction qui gère l'ouverture de la fenêtre de modification du fond d'écran
@@ -88,13 +139,13 @@ export default class PageProfile extends React.Component {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then((response) => {
-                this.setState({ openBackground: false, user: { ...this.state.user, backgroundImagePath: response.data.url} });
+                this.setState({ openBackground: false, user: { ...this.state.user, backgroundImagePath: response.data.url } });
             }).catch((error) => {
                 console.log(error);
             });
             this.setState({ backgroundImageFile: null });
         } else if (isImage(this.state.backgroundUrlField)) {
-            this.setState({ openBackground: false, user: {...this.user, backgroundImagePath: this.state.backgroundUrlField} });
+            this.setState({ openBackground: false, user: { ...this.user, backgroundImagePath: this.state.backgroundUrlField } });
 
             Api.post('/user/edit-background', {
                 backgroundUrl: this.state.user.backgroundImagePath
@@ -139,7 +190,7 @@ export default class PageProfile extends React.Component {
         if (this.state.avatarImageFile != null) {
             let formData = new FormData();
             formData.append('avatar', this.state.avatarImageFile);
-            
+
             Api.post('/user/edit-avatar', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -170,23 +221,16 @@ export default class PageProfile extends React.Component {
     handleDeleteAvatar = () => {
         let user = this.state.user;
         user.avatarImagePath = "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
-        this.setState({ user: user, openAvatar: false  });
+        this.setState({ user: user, openAvatar: false });
     };
 
-    //fonction qui gère la modification de la privacité
-    setPrivacy = (e) => {
-        let user = this.state.user;
-        user.privacy = !user.privacy;
-        this.setState({ user: user });
-
-        console.log("PRIVACY : " + this.state.user.privacy);
-        Api.post('/user/edit-privacy', {
-            privacy: this.state.user.privacy
-        }).catch((error) => {
-            console.log(error);
-        });
+    /**
+     * Ouvre la fenêtre de confirmation de modification de l'anonymat
+     */
+    handleOpenPrivacy = (e) => {
+        this.setState({ openConfirmationPopup: true });
     }
-    
+
     /**
      * fonction qui gère la modification du nom
      */
@@ -201,7 +245,7 @@ export default class PageProfile extends React.Component {
 
 
     render() {
-        if (this.state.user == null) {
+        if (this.state.user == null || !this.state.user.id) {
             return <Loading></Loading>
         }
         return (
@@ -217,9 +261,8 @@ export default class PageProfile extends React.Component {
                     </div>
                     <div className='infosUser'>
                         <p><strong>{this.state.user.first_name} {this.state.user.last_name}</strong></p>
-                        <p>{this.state.user.program_name}</p>
                         <div style={{ width: "188px" }}>
-                            <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.user.privacy} onChange={this.setPrivacy} /></label>
+                            <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.user.privacy} onChange={this.handleOpenPrivacy} /></label>
                         </div>
                         <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
                         <Dialog open={this.state.openBackground} onClose={this.handleClose}>
@@ -337,7 +380,8 @@ export default class PageProfile extends React.Component {
                         </Dialog>
                     </div>
                 </div>
-                <BadgeList user={this.state.user}/>
+                <ConfirmationPopup isOpen={this.state.openConfirmationPopup} onCancel={this.handleClosePrivacyConfirmationPopup} onConfirm={this.handleConfirmPrivacyChange} message={this.state.confirmPrivacyMessage} />
+                <BadgeList user={this.state.user} />
             </div>
         );
     }

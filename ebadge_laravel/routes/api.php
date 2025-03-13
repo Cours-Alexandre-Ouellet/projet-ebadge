@@ -34,6 +34,7 @@ Route::group([
         ],
     ], function () {
         Route::post('/', [App\Http\Controllers\BadgeController::class, 'create']);
+        Route::post('/image', [App\Http\Controllers\BadgeController::class, 'updateImage']);
         Route::put('/', [App\Http\Controllers\BadgeController::class, 'update']);
         Route::delete('/{id}', [App\Http\Controllers\BadgeController::class, 'destroy']);
     });
@@ -49,7 +50,12 @@ Route::group([
     Route::get('/', [App\Http\Controllers\CategoryController::class, 'index']);
     Route::post('/', [App\Http\Controllers\CategoryController::class, 'create']);
     Route::put('/', [App\Http\Controllers\CategoryController::class, 'update']);
+    Route::post('/assign-badge', [App\Http\Controllers\CategoryController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
+    Route::post('/remove-badge', [App\Http\Controllers\CategoryController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
     Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy']);
+
+    Route::get("/{id}/badges", [App\Http\Controllers\CategoryController::class, "getCategoryBadges"]);
+    Route::get("/{id}/badges-left", [App\Http\Controllers\CategoryController::class, "getCategoryBadgeLeft"]);
 });
 
 
@@ -68,6 +74,7 @@ Route::group([
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);
     Route::post('/edit-privacy', [App\Http\Controllers\UserController::class, 'editPrivacy']);
 
+    Route::get("/{id}", [App\Http\Controllers\UserController::class, "getUser"]);
     Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\UserController::class, "getUserBadgeLeft"]);
     Route::get("/role/{id}", [App\Http\Controllers\UserController::class, 'getAllByRole'])->middleware('roles:' . Role::ADMIN);

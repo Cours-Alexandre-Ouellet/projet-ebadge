@@ -6,15 +6,22 @@ use Tests\TestCase;
 use Illuminate\Support\Carbon;
 use App\Models\Role;
 use App\Models\Program;
+use App\Models\User;
+
 class ProgramTest extends TestCase
 {
+
+    private $program;
+    private $admin;
+    private $adminToken;
+
     public function setUp() : void
     {
         parent::setUp();
 
-        $this->program = factory(\App\Models\Program::class)->create();
+        $this->program = Program::factory()->create();
 
-        $this->admin = factory(\App\Models\User::class)->create();
+        $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
@@ -80,7 +87,7 @@ class ProgramTest extends TestCase
 
     public function testDeleteProgram()
     {
-        $program = factory(\App\Models\Program::class)->create();
+        $program = Program::factory()->create();
 
         $response = $this->delete(
             '/api/program',
