@@ -6,6 +6,8 @@ use App\Http\Requests\Badge\BadgeUpdateImageRequest;
 use App\Http\Requests\Badge\BadgeUpdateRequest;
 use App\Http\Requests\Badge\CreateBadgeRequest;
 use App\Models\Badge;
+use App\Models\Category;
+use App\Models\CategoryBadge;
 use App\Models\UserBadge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -45,6 +47,7 @@ class BadgeController extends Controller
         $badge->description = $request->description;
         $badge->color = $request->color; // à retirer
         $badge->teacher_id = $request->user()->id;
+
         //insertion de l'image dans le dossier public avec un nom original
         if ($request->hasFile('image')) {
             $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());
@@ -52,7 +55,14 @@ class BadgeController extends Controller
         } else $badge->imagePath = $request->imagePath;
 
 
+
         $badge->save();
+        if($request->category->id != 0 )
+        {
+            $categoryBadge = new CategoryBadge();
+        }
+
+
         return response()->json($badge);
     }
 

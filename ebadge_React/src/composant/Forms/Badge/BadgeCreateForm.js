@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '@mui/material';
-import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert, Divider } from '@mui/material';
-import { PhotoCamera, Check } from '@mui/icons-material';
+import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert, Divider, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { PhotoCamera, Check, Category } from '@mui/icons-material';
 import Api from '../../../utils/Api';
 import BadgeComponent from '../../PageProfil/BadgeComponent';
 import './BadgeCreateForm.css';
+import Loading from '../../Loading/LoadingComponent';
+
 
 /**
  *  Fonction qui vérifie si l'url est une image
@@ -19,8 +21,16 @@ var badgeDummy = {
     title: "",
     description: "",
     imagePath: null,
-    color: 'ffffff'
+    color: 'ffffff', // à retirer
+    category: categoryDummy
 };
+
+var categoryDummy = {
+    id: 0,
+    name: "Aucune catégorie",
+    created_at: "",
+    updated_at: ""
+}
 
 /**
  * Fonction qui affiche et gère la création de badge
@@ -38,7 +48,21 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
     const [imageUrlField, setImageUrlField] = useState("");
     const [imageFile, setImageFile] = useState(null);
     const [badge, setBadge] = useState(badgeDummy);
+    
+    const [categories, setCategories] = useState([]);
+    const [loadingCategory, setLoadingCategory] = useState(true);
+    const [inputCategory, setInputCategory] = useState();
 
+
+    useEffect(() => {
+        Api.get('/category/').then((response) => {
+            setCategories(response.data.categories);
+            setLoadingCategory(false);
+        }).catch((error) => {
+            console.log(error)
+        });
+
+    }, []);
 
     // Gère l'ouverture et la fermeture de l'image
     const handleImageDialog = () => {
@@ -127,6 +151,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
         <div className="badge-create-form">
             <div className="badge-create-form-container">
                 <div className="badge-create-form-background">
+                    {!loadingCategory ?? <Loading></Loading>}
                     <div className="badge-create-form-content">
                         <h1>Créer un badge</h1>
                         <form className='create-badge' >
@@ -169,6 +194,24 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 required
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
+                            <div className='badge-create-form-category-selector'>
+                                <Autocomplete
+                                    onChange={(_, newValue) => {
+                                        badgeDummy.category = newValue;
+                                        setBadge(badgeDummy);
+                                        console.log(badge);
+                                    }}
+                                    inputValue={inputCategory}
+                                    onInputChange={(_, newInputValue) => {
+                                      setInputCategory(newInputValue);
+                                    }}
+                                    id="controllable-states-demo"
+                                    options={categories.map((category) => category)}
+                                    getOptionLabel={(categories) => categories.name}
+                                    sx={{ width: 300 }}
+                                    renderInput={(params) => <TextField {...params} label="Controllable" />}
+                                />
+                            </div>
                             <div className="badge-create-form-button-field">
                                 <Button
                                     variant="contained"
