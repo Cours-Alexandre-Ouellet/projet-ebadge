@@ -19,7 +19,6 @@ var badgeDummy = {
     title: "",
     description: "",
     imagePath: null,
-    color: 'ffffff'
 };
 
 /**
@@ -105,7 +104,6 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
             // Si l'image est un lien ou bien un fichier
             imageFile === null || formData.append('image', imageFile);
             badge.imagePath === null || formData.append('imagePath', badge.imagePath);
-            formData.append('color', badge.color); // à retirer
             Api.post('/badge', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
