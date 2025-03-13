@@ -48,11 +48,13 @@ const CategoriesTab = () => {
         setSuccessMessage('La catégorie a été supprimée avec succès !');
     };
 
+    const role = localStorage.getItem('role');
+
     return (
         <Grid item className='bordered'>
             <div className="title">
                 <h4>Liste des catégories</h4>
-                <Button variant="contained" onClick={handleCategoryFormToggle} startIcon={<Add />}>Créer une catégorie</Button>
+                {role === 'Administrateur' && <Button variant="contained" onClick={handleCategoryFormToggle} startIcon={<Add />}>Créer une catégorie</Button>}
                 <Dialog fullScreen open={categoryFormOpen} onClose={handleCategoryFormToggle} TransitionComponent={Transition}>
                     <CategoryCreateForm 
                         handleClose={handleCategoryFormToggle} 
