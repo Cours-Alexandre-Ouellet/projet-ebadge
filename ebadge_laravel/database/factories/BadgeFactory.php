@@ -24,7 +24,6 @@ class BadgeFactory extends Factory{
             'title' => fake()->name(),
             'description' => fake()->text(),
             'imagePath' => fake()->imageUrl(),
-            'color' => substr(fake()->hexcolor(), 1),
             'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
         ];
