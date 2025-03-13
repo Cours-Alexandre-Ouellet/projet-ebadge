@@ -15,6 +15,8 @@ import BadgeList from './PageProfil/BadgeList';
 import { Check } from '@mui/icons-material';
 import ConfirmationPopup from './Dashboard/Popups/ConfirmationPopup/ConfirmationPopup';
 import { TRANSITION_DURATION } from '../theme';
+import PoliciesHelper from '../policies/PoliciesHelper';
+import { RoleIds } from '../policies/Role';
 
 /**
  * fonction qui vérifie si l'url est une image
@@ -29,6 +31,9 @@ export default class PageProfile extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.policiesHelper = new PoliciesHelper();
+
         this.state = {
             openBackground: false,
             openConfirmationPopup: false,
@@ -59,11 +64,8 @@ export default class PageProfile extends React.Component {
             }
             this.setState({ user: response.data });
             this.updatePrivacyMessage();
-            console.log(response.data);
-            console.log("$$$$$$$$$$$$$$$$$$$");
-            console.log(this.state.user);
         }).catch((error) => {
-            console.log(error);
+            console.error(error);
         });
     }
 
@@ -100,7 +102,7 @@ export default class PageProfile extends React.Component {
         Api.post('/user/edit-privacy', {
             privacy: isAnonymous
         }).catch((error) => {
-            console.log(error);
+            console.error(error);
         });
     }
 
@@ -140,7 +142,7 @@ export default class PageProfile extends React.Component {
             }).then((response) => {
                 this.setState({ openBackground: false, user: { ...this.state.user, backgroundImagePath: response.data.url } });
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             });
             this.setState({ backgroundImageFile: null });
         } else if (isImage(this.state.backgroundUrlField)) {
@@ -149,7 +151,7 @@ export default class PageProfile extends React.Component {
             Api.post('/user/edit-background', {
                 backgroundUrl: this.state.user.backgroundImagePath
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             });
         }
         this.setState({ backgroundImageFile: null });
@@ -198,7 +200,7 @@ export default class PageProfile extends React.Component {
                 this.state.user.avatarImagePath = response.data.url;
                 this.setState({ openAvatar: false });
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             });
 
         } else if (isImage(this.state.avatarUrlField)) {
@@ -208,7 +210,7 @@ export default class PageProfile extends React.Component {
             Api.post('/user/edit-avatar', {
                 avatarUrl: this.state.user.avatarImagePath
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             });
         }
         this.setState({ avatarImageFile: null });
@@ -238,7 +240,7 @@ export default class PageProfile extends React.Component {
             .then((response) => {
                 this.setState({ badges: response.data });
             }).catch((error) => {
-                console.log(error);
+                console.error(error);
             });
     }
 
@@ -260,9 +262,11 @@ export default class PageProfile extends React.Component {
                     </div>
                     <div className='infosUser'>
                         <p><strong>{this.state.user.first_name} {this.state.user.last_name}</strong></p>
-                        <div style={{ width: "188px" }}>
-                            <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.user.privacy} onChange={this.handleOpenPrivacy} /></label>
-                        </div>
+                        {(this.state.user.role_id === RoleIds.Student) && (
+                            <div style={{ width: "188px" }}>
+                                <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.user.privacy} onChange={this.handleOpenPrivacy} /></label>
+                            </div>
+                        )}
                         <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
                         <Dialog open={this.state.openBackground} onClose={this.handleClose}>
                             <DialogTitle>Modifier l'arrière plan</DialogTitle>
