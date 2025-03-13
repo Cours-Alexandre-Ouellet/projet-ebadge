@@ -42,7 +42,7 @@ export default function CategoryAssignationPopup({ isOpen, handleClose, category
                 setBadges(response.data.badges ?? []);
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             })
             .finally(() => {
                 removeStep();
@@ -66,7 +66,7 @@ export default function CategoryAssignationPopup({ isOpen, handleClose, category
                 handleClose();
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             })
             .finally(() => {
                 setLoading(false);

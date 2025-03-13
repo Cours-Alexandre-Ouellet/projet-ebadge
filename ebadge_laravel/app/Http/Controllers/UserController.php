@@ -110,7 +110,7 @@ class UserController extends Controller
 
         foreach ($user->badges as $badge) {
             $badge->setPossessionPercentage();
-            
+
         }
 
         return response()->json([
@@ -118,7 +118,7 @@ class UserController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Récuperer une personne
      */
     public function getUser(int $id)
@@ -222,6 +222,15 @@ class UserController extends Controller
         ]);
 
         $user = $request->user();
+        $role_name = Role::where('id', $user->role_id)->first()->name;
+        
+        if ($role_name != Role::ETUDIANT) {
+            return response()->json([
+                'message' => 'You are not a student',
+                'role' => $user->role_name
+            ]);
+        }
+        
         $user->privacy = $request->privacy;
         $user->save();
         return response()->json([

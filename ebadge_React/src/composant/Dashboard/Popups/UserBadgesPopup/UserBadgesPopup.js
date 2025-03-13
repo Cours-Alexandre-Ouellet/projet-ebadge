@@ -84,7 +84,7 @@ class UserBadgesPopup extends React.Component {
             this.setState({ showSuccessMessage: true });
         })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.removeStep();
             });
@@ -116,7 +116,7 @@ class UserBadgesPopup extends React.Component {
                 this.setState({ leftBadges: response.data.badges });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.removeStep();
             });
@@ -137,7 +137,7 @@ class UserBadgesPopup extends React.Component {
             this.refreshBadgesAssignation();
         })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.removeStep();
             });
@@ -155,7 +155,7 @@ class UserBadgesPopup extends React.Component {
                 this.setState({ ownBadges: response.data.badges });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.removeStep();
             });

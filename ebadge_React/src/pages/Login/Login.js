@@ -110,7 +110,7 @@ class Login extends React.Component {
                             this.setState({ passwordError: 'Une erreur est survenue' });
                             break;
                     }
-                    console.log(error.response.data);
+                    console.error(error.response.data);
                 } else {
                     console.error(error);
                 }

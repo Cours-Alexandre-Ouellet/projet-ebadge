@@ -65,7 +65,7 @@ class CategoryCreateForm extends React.Component {
                 })
                 .catch((error) => {
                     this.props.errorCategory('Erreur lors de la création de la catégorie');
-                    console.log(error);
+                    console.error(error);
                 });
             this.props.handleClose();
         }

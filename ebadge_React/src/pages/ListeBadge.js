@@ -35,7 +35,7 @@ export default function ListeBadge() {
             setObtainedBadges(Object.values(badges).flat());
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
           });
         Api.get("/user/" + id + "/badges-left")
           .then((response) => {
@@ -44,11 +44,11 @@ export default function ListeBadge() {
             setLoaded(true);
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
           });
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   },[]);
 
