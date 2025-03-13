@@ -30,16 +30,6 @@ class SignupRequest extends FormRequest
                     $query->whereNull('user_id');
                 })
             ],
-            'organisation_id' => [
-                'required',
-                'integer',
-                Rule::exists('organisation', 'id')
-            ],
-            'program_id' => [
-                'required',
-                'integer',
-                Rule::exists('program', 'id')
-            ],
         ];
     }
 }
