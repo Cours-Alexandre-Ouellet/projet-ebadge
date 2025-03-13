@@ -1,7 +1,7 @@
 import React from "react";
 import './Signup.css';
 import '@mui/material';
-import { Button, TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
+import { Button, TextField, Checkbox, FormControlLabel } from '@mui/material';
 import Api from '../../utils/Api';
 import Loading from '../../composant/Loading/LoadingComponent';
 import { Navigate } from "react-router-dom";
@@ -16,8 +16,6 @@ class Signup extends React.Component {
             password2: '',
             first_name: '',
             last_name: '',
-            organisation_id: '',
-            program_id: '',
             teacher_code: '',
             isLoading: false,
             redirect: false,
@@ -27,46 +25,9 @@ class Signup extends React.Component {
                 password: '',
                 first_name: '',
                 last_name: '',
-                organisation_id: '',
-                program_id: '',
                 teacher_code: '',
             },
         }
-
-        this.getOrganisations = this.getOrganisations.bind(this);
-        this.getPrograms = this.getPrograms.bind(this);
-    }
-
-    /**
-     * fonction qui permet d'aller chercher les données des organisations
-     */
-    getOrganisations() {
-        if (this.state.organisations) {
-            return;
-        }
-        Api.get('/organisation')
-            .then(res => {
-                this.setState({ organisations: res.data });
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-    /**
-     * fonction qui permet d'aller chercher les données des programmes
-     */
-    getPrograms() {
-        if (this.state.programs) {
-            return;
-        }
-        Api.get('/program')
-            .then(res => {
-                this.setState({ programs: res.data });
-            })
-            .catch(err => {
-                console.log(err);
-            });
     }
 
     /**
@@ -83,8 +44,6 @@ class Signup extends React.Component {
         data.append('password', this.state.password);
         data.append('first_name', this.state.first_name);
         data.append('last_name', this.state.last_name);
-        data.append('organisation_id', this.state.organisation_id);
-        data.append('program_id', this.state.program_id);
         
         /**
          * Si le code de professeur est affiché, on l'ajoute aux données
@@ -126,10 +85,7 @@ class Signup extends React.Component {
                 <div className="signup-container">
                     <div className="signup-background">
                     </div>
-                    <div className="signup-right" onMouseEnter={(e) => {
-                        this.getOrganisations();
-                        this.getPrograms();
-                    }}>
+                    <div className="signup-right">
                         <div className="signup-right-content">
                         <h2 className="titre-creer-compte">Créer un compte</h2>
                             <form
@@ -221,43 +177,6 @@ class Signup extends React.Component {
                                     sx={{ width: '100%' }}
                                     size='small'
                                 />
-                                <FormControl fullWidth size="small" sx={{
-                                    marginTop: '1rem',
-                                }}
-                                >
-                                    <InputLabel id="organisation">Organisation</InputLabel>
-                                    <Select
-                                        id="organisation"
-                                        label="Organisation"
-                                        onChange={(e) => this.setState({ organisation_id: e.target.value })}
-                                        value={this.state.organisation_id}
-                                        required
-                                    >
-                                        {this.state.organisations && this.state.organisations.map((organisation) => (
-                                            <MenuItem key={organisation.id} value={organisation.id}>{organisation.name}</MenuItem>
-                                        ))}
-
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl fullWidth size="small" sx={{
-                                    marginTop: '1rem',
-                                }}
-                                >
-                                    <InputLabel id="program">Programme</InputLabel>
-                                    <Select
-                                        id="program"
-                                        label="Programme"
-                                        onChange={(e) => this.setState({ program_id: e.target.value })}
-                                        value={this.state.program_id}
-                                        required
-                                        size="small"
-                                    >
-                                        {this.state.programs && this.state.programs.map((program) => (
-                                            <MenuItem key={program.id} value={program.id}>{program.name}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
 
                                 <FormControlLabel control={
                                     <Checkbox
