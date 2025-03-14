@@ -48,11 +48,11 @@ Route::group([
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\CategoryController::class, 'index']);
-    Route::post('/', [App\Http\Controllers\CategoryController::class, 'create']);
-    Route::put('/', [App\Http\Controllers\CategoryController::class, 'update']);
+    Route::post('/', [App\Http\Controllers\CategoryController::class, 'create'])->middleware('roles:' . Role::ADMIN);
+    Route::put('/', [App\Http\Controllers\CategoryController::class, 'update'])->middleware('roles:' . Role::ADMIN);
     Route::post('/assign-badge', [App\Http\Controllers\CategoryController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\CategoryController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
-    Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy']);
+    Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy'])->middleware('roles:' . Role::ADMIN);
 
     Route::get("/{id}/badges", [App\Http\Controllers\CategoryController::class, "getCategoryBadges"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\CategoryController::class, "getCategoryBadgeLeft"]);

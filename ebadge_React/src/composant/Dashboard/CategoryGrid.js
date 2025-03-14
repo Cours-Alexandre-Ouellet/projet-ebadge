@@ -11,6 +11,8 @@ const Transition = React.forwardRef((props, ref) => (
     <Slide direction="up" ref={ref} {...props} />
 ));
 
+const role = localStorage.getItem('role');
+
 
 /**
  * Composant qui affiche les catégories sous forme de tableau
@@ -41,6 +43,7 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
                 return <Button variant="outlined" onClick={onClick}>Assigner badge</Button>;
             },
         },
+        ...(role === 'Administrateur' ? [
         {
             field: 'editAction',
             minWidth: 150,
@@ -84,6 +87,7 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
                 </Button>
             )
         }
+     ] : [])
     ];
 
     return (
