@@ -71,7 +71,17 @@ export default class PageProfile extends React.Component {
      * Fonction qui met à jour le message de confirmation de modification de l'anonymat
      */
     updatePrivacyMessage() {
-        this.setState({ confirmPrivacyMessage: `Voulez-vous vraiment rendre votre compte ${this.state.user.privacy ? 'public' : 'privé'} ?` });
+        this.setState({
+            confirmPrivacyMessage: (
+                <>
+                    <p id='privacyMessage'>
+                        Un compte privé ne sera pas visible dans les classements et ne sera pas accessible par les autres utilisateurs.
+                        <br /><br />
+                        Voulez-vous vraiment rendre votre compte {this.state.user.privacy ? 'public' : 'privé'} ?
+                    </p>
+                </>
+            )
+        });
     }
 
     /**
