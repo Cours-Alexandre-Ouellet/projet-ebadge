@@ -3,15 +3,17 @@ import '@mui/material';
 import Item from '@mui/material/Grid';
 import './../Dashboard.css';
 import Api from '../../../utils/Api';
-// import UserGrid from '../../../composant/Dashboard/UserGrid';
+import { Add } from '@mui/icons-material';
+import { Button } from '@mui/material';
 import UserAdminGrid from '../../../composant/Dashboard/UserAdminGrid';
-
+import AssignAdminPopup from '../../../composant/Dashboard/Popups/UserAdminPopup/AssignAdminPopup';
 
 class UserAdminTab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            adminUsers: []
+            adminUsers: [],
+            openAssignAdminPopup: false,
         };
     }
 
@@ -42,7 +44,12 @@ class UserAdminTab extends React.Component {
     render() {
         return (
             <Item className='bordered'>
+                <div className="title">
                 <h4>Liste des administrateurs</h4>
+                <Button variant="contained" onClick={() => this.setState({ openAssignAdminPopup: true })} startIcon={<Add />}>
+                    Ajouter un Admin
+                </Button>
+                </div>
                 <UserAdminGrid rows={this.state.adminUsers} onAdminDeleted={this.onAdminDeleted}/>
                 {this.state.adminUsers.length < 2 && (
                 <p style={{ 
@@ -58,6 +65,11 @@ class UserAdminTab extends React.Component {
                     L'administrateur restant ne peut pas être supprimé.
                 </p>
     )}
+        <AssignAdminPopup 
+            isOpen={this.state.openAssignAdminPopup} 
+            handleClose={() => this.setState({ openAssignAdminPopup: false })} 
+            refreshAdmins={this.getAdminUsers.bind(this)}  
+        />
             </Item>
         );
     }
