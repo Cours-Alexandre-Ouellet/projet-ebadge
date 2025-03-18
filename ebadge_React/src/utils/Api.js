@@ -26,7 +26,6 @@ axiosInstance.interceptors.request.use(function (config) {
 axiosInstance.interceptors.response.use(function (request) {
     return request;
   }, function (error) {
-    // console.log(error);
     if (error.response.status === 401 && error.response.data.message === "Unauthenticated.") {
         localStorage.removeItem('token');
         window.location.href = "/auth/login";
