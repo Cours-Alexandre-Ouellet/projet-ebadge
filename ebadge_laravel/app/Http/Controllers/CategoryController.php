@@ -13,6 +13,10 @@ use App\Models\Badge;
 
 /**
  * Controller pour les catégories
+ * 
+ * @author: Alexandre del Fabbro - [alexandre.delfabbro@gmail.com]
+ * D'après le code de projet-ebadge
+ * Inspiré de OpenAi - ChatGPT - [Modèle massif de langage] - chatgpt.com - [Consulté le 20 mars 2025]
  */
 class CategoryController extends Controller
 {
@@ -128,6 +132,9 @@ class CategoryController extends Controller
 
     // }
 
+    /**
+     * Récupère les badges non assignés à une catégorie
+     */
     public function getCategoryBadgeLeft()
     {
         $unassignedBadges = Badge::whereDoesntHave('categories')->get();
