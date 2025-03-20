@@ -95,7 +95,6 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
         imageFile === null || formData.append('image', imageFile);
         badge.imagePath === null || formData.append('imagePath', badge.imagePath);
 
-        formData.append('color', badge.color); // à retirer
 
         event.preventDefault();
         if (validateTitle() && validateDescription()) {

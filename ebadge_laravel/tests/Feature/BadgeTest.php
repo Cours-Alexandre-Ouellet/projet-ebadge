@@ -76,7 +76,6 @@ class BadgeTest extends TestCase
             'title' => $this->badge->title,
             'description' => $this->badge->description,
             'imagePath' => $this->badge->imagePath,
-            'color' => $this->badge->color,
         ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
 
         $response->assertStatus(200);
@@ -141,7 +140,6 @@ class BadgeTest extends TestCase
             "title" => $this->badge->title . "test",
             "description" => $this->badge->description,
             "imagePath" => $this->badge->imagePath,
-            "color" => $this->badge->color,
         ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
 
         $response->assertStatus(200);

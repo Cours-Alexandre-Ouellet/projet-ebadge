@@ -11,6 +11,15 @@ use App\Models\Badge;
 
 class UserController extends Controller
 {
+
+    /**
+     * Enleve les informations sensibles ou inutiles des données 
+     */
+    private function CleanUp(array $user): array
+    {
+        unset($user['email'], $user['password'], $user['avatarImagePath'], $user['backgroundImagePath'], $user['organisation_id'], $user['program_id'], $user['created_at'], $user['updated_at']);
+        return $user;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -28,11 +37,13 @@ class UserController extends Controller
                 case Role::ADMIN:
                     // retourne tous les élèves de tous les groupes
                     $users = User::all();
+                    $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
                     return response()->json(['users' => $users]);
                     break;
                 case Role::ENSEIGNANT:
                     // retourne tous les eleve du meme groupe que l'utilisateur
                     $users = User::where('program_id', $currentUser->program_id)->get();
+                    $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
                     return response()->json(['users' => $users]);
                     break;
                 default:
@@ -110,7 +121,7 @@ class UserController extends Controller
 
         foreach ($user->badges as $badge) {
             $badge->setPossessionPercentage();
-            
+
         }
 
         return response()->json([
@@ -118,7 +129,7 @@ class UserController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Récuperer une personne
      */
     public function getUser(int $id)
@@ -130,7 +141,15 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'user' => $user
+            'user' =>[
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'username' => $user->username,
+            'privacy' => $user->privacy,
+            'avatarImagePath' => $user->avatarImagePath,
+            'backgroundImagePath' => $user->backgroundImagePath,
+            ]
         ]);
     }
 
@@ -222,6 +241,15 @@ class UserController extends Controller
         ]);
 
         $user = $request->user();
+        $role_name = Role::where('id', $user->role_id)->first()->name;
+        
+        if ($role_name != Role::ETUDIANT) {
+            return response()->json([
+                'message' => 'You are not a student',
+                'role' => $user->role_name
+            ]);
+        }
+        
         $user->privacy = $request->privacy;
         $user->save();
         return response()->json([

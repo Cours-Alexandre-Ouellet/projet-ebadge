@@ -47,7 +47,7 @@ export default function Leaderboard() {
         setLeaderboard(valeursLeaderboard);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }, []);
 
@@ -79,7 +79,7 @@ export default function Leaderboard() {
 
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   }
 

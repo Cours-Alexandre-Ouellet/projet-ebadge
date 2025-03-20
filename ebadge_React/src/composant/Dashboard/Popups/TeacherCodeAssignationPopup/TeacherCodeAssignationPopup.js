@@ -42,7 +42,7 @@ export default function TeacherCodeAssignationPopup({ isOpen, handleClose, teach
                 setUsers(response.data.users ?? []);
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             })
             .finally(() => {
                 removeStep();
@@ -66,7 +66,7 @@ export default function TeacherCodeAssignationPopup({ isOpen, handleClose, teach
                 handleClose();
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             })
             .finally(() => {
                 setLoading(false);

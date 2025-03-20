@@ -28,11 +28,6 @@ class BadgeGrid extends React.Component {
                 { field: 'title', headerName: 'Titre', flex: 2, headerAlign: 'center' },
                 { field: 'description', headerName: 'Description', flex: 4, headerAlign: 'center' },
                 {
-                    field: 'color', headerName: 'Couleur', flex: 1, align: 'center', headerAlign: 'center', sortable: false, renderCell: (params) => {
-                        return <div style={{ backgroundColor: `#${params.value}`, width: '100%', height: '100%' }}></div>;
-                    }
-                },
-                {
                     field: 'BadgeEditAction', minWidth: 150, headerName: "", align: 'center', headerAlign: 'center', sortable: false, hideable: false, renderCell: (params) => {
                         const onClick = (e) => {
                             e.stopPropagation();

@@ -45,7 +45,7 @@ class Navbar extends React.Component {
         { name: 'Liste des badges', href: '/badges', minimumRole: Role.User },
 
         { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher }
-        
+
       ]),
       initials: 'ND',
       userSettings: [
@@ -67,10 +67,10 @@ class Navbar extends React.Component {
     this.setState({ anchorElNav: true });
   };
 
-/**
- * Fonction pour ouvrir le menu utilisateur
- * @param {*} event
- */
+  /**
+   * Fonction pour ouvrir le menu utilisateur
+   * @param {*} event
+   */
   handleOpenUserMenu = (event) => {
     this.setState({ anchorElUser: true });
   };

@@ -43,7 +43,6 @@ class BadgeController extends Controller
         $badge = new Badge();
         $badge->title = $request->title;
         $badge->description = $request->description;
-        $badge->color = $request->color; // à retirer
         $badge->teacher_id = $request->user()->id;
         //insertion de l'image dans le dossier public avec un nom original
         if ($request->hasFile('image')) {
@@ -85,7 +84,6 @@ class BadgeController extends Controller
             [
                 'title' => $request->title,
                 'description' => $request->description,
-                'color' => $request->color, // à supprimer
                 'imagePath' => $request->imagePath
             ]
         );
@@ -122,7 +120,6 @@ class BadgeController extends Controller
             [
                 'title' => $request->title,
                 'description' => $request->description,
-                'color' => $request->color, // à supprimer
                 'imagePath' => $imagePath
             ]
         );
