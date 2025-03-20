@@ -11,7 +11,7 @@
         "php": "^8.2.12",
         "ext-sodium": "*",
         "guzzlehttp/guzzle": "7.9.2",
-        "knuckleswtf/scribe": "^4.40",
+        "knuckleswtf/scribe": "^5.1",
         "laravel/framework": "^11.0",
         "laravel/passport": "12.0.0",
         "laravel/tinker": "2.10",

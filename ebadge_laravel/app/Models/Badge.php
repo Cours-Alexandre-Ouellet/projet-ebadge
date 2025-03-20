@@ -24,7 +24,8 @@ class Badge extends Model
         'title',
         'description',
         'imagePath',
-        'teacher_id'
+        'teacher_id',
+        'activated'
     ];
 
     /**
