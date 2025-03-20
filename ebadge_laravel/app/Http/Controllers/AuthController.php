@@ -90,7 +90,15 @@ class AuthController extends Controller
         $user->role_name = Role::where('id', $user->role_id)->first()->name;
         $user->organisation_name = Organisation::where('id', $user->organisation_id)->first()->name;
 
-        return response()->json($request->user());
+        return response()->json([
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'username' => $user->username,
+            'privacy' => $user->privacy,
+            'avatarImagePath' => $user->avatarImagePath,
+            'backgroundImagePath' => $user->backgroundImagePath,
+        ]);
     }
 
     /**
