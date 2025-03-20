@@ -280,4 +280,85 @@ class UserController extends Controller
         $users = User::where('role_id', $id)->get();
         return response()->json(['users' => $users]);
     }
+    
+    /**
+     * Supprime un utilisateur
+     * 
+     * @param int $id Id de l'utilisateur
+     * @return \Illuminate\Http\Response
+     */
+    public function supprimerUser(int $id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return response()->json(['message' => 'Utilisateur supprimé']);
+    }
+
+    public function deleteAdmin($id)
+    {
+        $admin = User::find($id);
+    
+        if (!$admin) {
+            return response()->json(['message' => 'Administrateur non trouvé'], 404);
+        }
+    
+        $admin->delete();
+    
+        return response()->json(['message' => 'Administrateur supprimé avec succès']);
+    }
+
+    /**
+ * Assigne le rôle d'admin à un utilisateur
+ *
+ * @param Request $request
+ * @return JsonResponse
+ */
+public function assignAdmin(Request $request)
+{
+    $request->validate([
+        'user_id' => 'required|exists:user,id',
+    ]);
+
+    $user = User::find($request->user_id);
+    $adminRole = Role::Admin(); // Récupère l'objet Role correspondant à "Administrateur"
+
+    if (!$adminRole) {
+        return response()->json(['message' => 'Le rôle Administrateur est introuvable.'], 500);
+    }
+
+    if ($user->role_id == $adminRole->id) {
+        return response()->json(['message' => 'Cet utilisateur est déjà administrateur.'], 400);
+    }
+
+    // Met à jour le rôle avec l'ID du rôle Administrateur
+    $user->role_id = $adminRole->id;
+    $user->save();
+
+    return response()->json(['message' => 'Utilisateur promu administrateur.']);
+}
+
+public function removeAdmin(Request $request)
+{
+    $request->validate([
+        'user_id' => 'required|exists:user,id',
+    ]);
+
+    $user = User::find($request->user_id);
+    $defaultRole = Role::where('name', 'Étudiant')->first(); // Par défaut, remet en étudiant
+
+    if (!$defaultRole) {
+        return response()->json(['message' => 'Le rôle Étudiant est introuvable.'], 500);
+    }
+
+    if ($user->role_id != Role::Admin()->id) {
+        return response()->json(['message' => 'Cet utilisateur n\'est pas administrateur.'], 400);
+    }
+
+    $user->role_id = $defaultRole->id;
+    $user->save();
+
+    return response()->json(['message' => 'Administrateur rétrogradé avec succès.']);
+}
+
+
 }

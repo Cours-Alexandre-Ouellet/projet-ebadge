@@ -18,6 +18,7 @@ import { TRANSITION_DURATION } from '../theme';
 import PoliciesHelper from '../policies/PoliciesHelper';
 import { RoleIds } from '../policies/Role';
 
+
 /**
  * fonction qui vérifie si l'url est une image
  * @param {*} url 

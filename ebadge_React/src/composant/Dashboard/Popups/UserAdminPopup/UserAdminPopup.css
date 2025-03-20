@@ -1,0 +1,46 @@
+.admin-popup {
+    min-width: 500px;
+    min-height: 200px;
+    margin: 25px;
+}
+
+.admin-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 20px;
+}
+
+.admin-info p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.admin-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px;
+}
+
+.admin-delete-btn {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.admin-delete-btn:hover {
+    background-color: #b71c1c;
+}
+
+.error-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.success-text {
+    color: green;
+    font-size: 14px;
+    margin-top: 5px;
+}

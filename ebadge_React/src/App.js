@@ -5,6 +5,7 @@ import "./App.css";
 import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
 import UsersTab from "./pages/Dashboard/tabs/UsersTab";
+import UsersAdminTab from "./pages/Dashboard/tabs/UsersAdminTab";
 import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
 import Leaderboard from "./pages/Leaderboard";
@@ -47,6 +48,7 @@ function App() {
           <Route path="/admin" element={ProtectedRoute(Role.Teacher)}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="/admin/users" element={<UsersTab />} />
+              <Route path="/admin/admin_users" element={<UsersAdminTab />} />
               <Route path="/admin/badges" element={<BadgesTab />} />
               <Route path="/admin/categories" element={<CategoriesTab />} />
               <Route
