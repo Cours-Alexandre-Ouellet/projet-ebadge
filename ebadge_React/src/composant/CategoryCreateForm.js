@@ -107,12 +107,6 @@ class CategoryCreateForm extends React.Component {
                                 </div>
                             </form>
                         </div>
-                        <div className="category-create-form-preview">
-                            <h2>Prévisualisation</h2>
-                            <div className="category-create-form-preview-content">
-                                <CategoryComponent category={this.state.category}></CategoryComponent>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
