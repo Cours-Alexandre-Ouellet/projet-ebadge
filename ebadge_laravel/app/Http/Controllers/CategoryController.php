@@ -89,7 +89,7 @@ class CategoryController extends Controller
     public function show(Request $request)
     {
         $request->validate([
-            'id' => 'required|exists:categories,id'
+            'id' => 'required|exists:category,id'
         ]);
         $category = Category::find($request->id);
         return response()->json($category);
