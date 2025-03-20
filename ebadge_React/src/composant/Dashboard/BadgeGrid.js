@@ -1,12 +1,10 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import Checkbox from "@mui/material/Checkbox";
-import { Button, Avatar, Slide, Dialog } from "@mui/material";
+import { Button, Avatar, Slide, Dialog, Switch } from "@mui/material";
 import { Edit, Delete } from "@mui/icons-material";
 import BadgeDeleteAction from "./Popups/BadgeDeletePopup/BadgeDeletePopup";
 import BadgeUpdateForm from "../Forms/Badge/BadgeUpdateForm";
 import Api, { getResource } from "../../utils/Api";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -63,14 +61,12 @@ class BadgeGrid extends React.Component {
           hideable: false,
           renderCell: (rows) => {
             return (
-              <Checkbox
+              <Switch
                 checked={rows.row.activated == 1}
                 onChange={() =>
                   this.handleChangeActivated(rows.row.id, rows.row.activated)
                 }
-              >
-              </Checkbox>
-              
+              ></Switch>
             );
           },
         },
@@ -140,13 +136,30 @@ class BadgeGrid extends React.Component {
     this.handleChangeActivated = this.handleChangeActivated.bind(this);
   }
 
+  /**
+   * donne une valeur a this.state.row lorsque props est chargé
+   */
   componentDidUpdate() {
     if (this.state.rows.length == 0) {
       this.setState({ rows: this.props.rows.map((row) => ({ ...row })) });
     }
   }
 
+  /**
+   * Fait un appelle à la base de données pour changer l'activation d'un badge
+   * Est appeler lorsqu'un "checkbox" est coché
+   * Code partiellement généré par : OpenAI. (2025). ChatGPT (version 20 mars 2025) [Modèle
+   * massif de langage]. https://chat.openai.com/chat
+   * @param {*} id l'id du badge
+   * @param {*} activated la valeur à lui donner
+   */
   handleChangeActivated = (id, activated) => {
+    const oldValues = [...this.state.rows];
+    this.setState((prevState) => ({
+      rows: prevState.rows.map((row) =>
+        row.id === id ? { ...row, activated: activated ? 0 : 1 } : row
+      ),
+    }));
     Api.put(
       "/badge/activation/",
       { id: id, activated: activated ? 0 : 1 },
@@ -156,15 +169,12 @@ class BadgeGrid extends React.Component {
         },
       }
     )
-      .then((res) => {
-        this.setState((prevState) => ({
-            rows: prevState.rows.map(row =>
-                row.id === id ? { ...row, activated: activated ? 0 : 1 } : row
-            )
-        }));
-      })
+      .then((_) => {})
       .catch((err) => {
-        console.log(err);
+        console.log(this.state.rows);
+        this.setState({rows: oldValues});
+        this.props.errorBadge("La modification de l'état a échouée")
+        console.error(err);
       });
   };
 
