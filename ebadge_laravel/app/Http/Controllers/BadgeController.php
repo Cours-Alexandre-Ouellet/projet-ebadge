@@ -101,13 +101,14 @@ class BadgeController extends Controller
     public function activation(BadgeActivationRequest $request)
     {
         $badge = new Badge();
+        Log::debug('erreur'.$request);
         $badge = Badge::updateOrCreate(
             ['id' => $request->id],
             [
                 'activated' =>$request->activated
             ]
         );
-
+        
         return response()->json($badge);
     }
 

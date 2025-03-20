@@ -36,7 +36,7 @@ Route::group([
         Route::post('/', [App\Http\Controllers\BadgeController::class, 'create']);
         Route::post('/image', [App\Http\Controllers\BadgeController::class, 'updateImage']);
         Route::put('/', [App\Http\Controllers\BadgeController::class, 'update']);
-        Route::post('/activation/{id}', [App\Http\Controllers\BadgeController::class, 'activation']);
+        Route::put('/activation', [App\Http\Controllers\BadgeController::class, 'activation']);
         Route::delete('/{id}', [App\Http\Controllers\BadgeController::class, 'destroy']);
     });
 });

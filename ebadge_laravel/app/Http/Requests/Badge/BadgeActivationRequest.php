@@ -18,7 +18,7 @@ class BadgeActivationRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:badge,id',
-            'actovated' => 'required|boolean',
+            'activated' => 'required|boolean',
         ];
     }
 }

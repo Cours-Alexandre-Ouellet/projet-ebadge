@@ -31,9 +31,9 @@
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
-    <script src="{{ asset("/vendor/scribe/js/tryitout-4.40.0.js") }}"></script>
+    <script src="{{ asset("/vendor/scribe/js/tryitout-5.1.0.js") }}"></script>
 
-    <script src="{{ asset("/vendor/scribe/js/theme-default-4.40.0.js") }}"></script>
+    <script src="{{ asset("/vendor/scribe/js/theme-default-5.1.0.js") }}"></script>
 
 </head>
 
@@ -91,8 +91,15 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-badge">
                                 <a href="#endpoints-POSTapi-badge">Création d'un nouveau badge</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-POSTapi-badge-image">
+                                <a href="#endpoints-POSTapi-badge-image">Met à jour le badge avec l'id donné du badge
+Version qui accepte les images et fichiers</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-PUTapi-badge">
-                                <a href="#endpoints-PUTapi-badge">Met à jour le badge avec l'id donné</a>
+                                <a href="#endpoints-PUTapi-badge">Met à jour le badge avec l'id donné du badge (Déprécié)</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-POSTapi-badge-activation--id-">
+                                <a href="#endpoints-POSTapi-badge-activation--id-">Met à jour l'activation d'un badge</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-badge--id-">
                                 <a href="#endpoints-DELETEapi-badge--id-">Supprime le badge avec l'id donné</a>
@@ -106,8 +113,20 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-PUTapi-category">
                                 <a href="#endpoints-PUTapi-category">Met à jour la catégorie avec l'id donné</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-POSTapi-category-assign-badge">
+                                <a href="#endpoints-POSTapi-category-assign-badge">Assigne un badge à une catégorie</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-POSTapi-category-remove-badge">
+                                <a href="#endpoints-POSTapi-category-remove-badge">Enlève un badge d'une catégorie</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-category--id-">
                                 <a href="#endpoints-DELETEapi-category--id-">Supprime la catégorie avec l'id donné</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-category--id--badges">
+                                <a href="#endpoints-GETapi-category--id--badges">Récupère les badges assignés à la catégorie avec l'id donné</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-category--id--badges-left">
+                                <a href="#endpoints-GETapi-category--id--badges-left">Récupère les badges non assignés à la catégorie avec l'id donné</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-user">
                                 <a href="#endpoints-GETapi-user">Display a listing of the resource.</a>
@@ -122,7 +141,7 @@
                                 <a href="#endpoints-GETapi-user-my-badges">Retourne tous les badges d'un utilisateur</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-user--id-">
-                                <a href="#endpoints-GETapi-user--id-">Revoie tout les badges d'un utilisateur</a>
+                                <a href="#endpoints-GETapi-user--id-">Récuperer une personne</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-POSTapi-user-edit-background">
                                 <a href="#endpoints-POSTapi-user-edit-background">Change le fond d'écran d'un utilisateur</a>
@@ -194,7 +213,7 @@ Sinon, l'utilisateur est créé comme élève</a>
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: February 17, 2025</li>
+        <li>Last updated: March 19, 2025</li>
     </ul>
 </div>
 
@@ -648,7 +667,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"code\": \"nihil\"
+    \"code\": \"iure\"
 }"
 </code></pre></div>
 
@@ -664,7 +683,7 @@ const headers = {
 };
 
 let body = {
-    "code": "nihil"
+    "code": "iure"
 };
 
 fetch(url, {
@@ -685,7 +704,7 @@ $response = $client-&gt;delete(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'code' =&gt; 'nihil',
+            'code' =&gt; 'iure',
         ],
     ]
 );
@@ -772,10 +791,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="code"                data-endpoint="DELETEapi-teacher-code"
-               value="nihil"
+               value="iure"
                data-component="body">
     <br>
-<p>The <code>code</code> of an existing record in the teacher_code table. Example: <code>nihil</code></p>
+<p>The <code>code</code> of an existing record in the teacher_code table. Example: <code>iure</code></p>
         </div>
         </form>
 
@@ -937,11 +956,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/badge" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "title=etibcpdrr"\
-    --form "description=In sapiente earum provident id dicta tempore."\
-    --form "imagePath=abxfvgtam"\
-    --form "color=m"\
-    --form "image=@C:\Users\User\AppData\Local\Temp\php126F.tmp" </code></pre></div>
+    --form "title=powakqkkasqujwhedqlenvy"\
+    --form "description=Sit accusantium dicta adipisci sint aut."\
+    --form "imagePath=exzmy"\
+    --form "image=@C:\Users\User\AppData\Local\Temp\php541D.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -955,10 +973,9 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('title', 'etibcpdrr');
-body.append('description', 'In sapiente earum provident id dicta tempore.');
-body.append('imagePath', 'abxfvgtam');
-body.append('color', 'm');
+body.append('title', 'powakqkkasqujwhedqlenvy');
+body.append('description', 'Sit accusantium dicta adipisci sint aut.');
+body.append('imagePath', 'exzmy');
 body.append('image', document.querySelector('input[name="image"]').files[0]);
 
 fetch(url, {
@@ -981,23 +998,19 @@ $response = $client-&gt;post(
         'multipart' =&gt; [
             [
                 'name' =&gt; 'title',
-                'contents' =&gt; 'etibcpdrr'
+                'contents' =&gt; 'powakqkkasqujwhedqlenvy'
             ],
             [
                 'name' =&gt; 'description',
-                'contents' =&gt; 'In sapiente earum provident id dicta tempore.'
+                'contents' =&gt; 'Sit accusantium dicta adipisci sint aut.'
             ],
             [
                 'name' =&gt; 'imagePath',
-                'contents' =&gt; 'abxfvgtam'
-            ],
-            [
-                'name' =&gt; 'color',
-                'contents' =&gt; 'm'
+                'contents' =&gt; 'exzmy'
             ],
             [
                 'name' =&gt; 'image',
-                'contents' =&gt; fopen('C:\Users\User\AppData\Local\Temp\php126F.tmp', 'r')
+                'contents' =&gt; fopen('C:\Users\User\AppData\Local\Temp\php541D.tmp', 'r')
             ],
         ],
     ]
@@ -1085,10 +1098,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="title"                data-endpoint="POSTapi-badge"
-               value="etibcpdrr"
+               value="powakqkkasqujwhedqlenvy"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>etibcpdrr</code></p>
+<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>powakqkkasqujwhedqlenvy</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
@@ -1096,10 +1109,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="description"                data-endpoint="POSTapi-badge"
-               value="In sapiente earum provident id dicta tempore."
+               value="Sit accusantium dicta adipisci sint aut."
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 255 caractères. Example: <code>In sapiente earum provident id dicta tempore.</code></p>
+<p>Le texte de value ne peut contenir plus de 255 caractères. Example: <code>Sit accusantium dicta adipisci sint aut.</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>imagePath</code></b>&nbsp;&nbsp;
@@ -1107,10 +1120,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="imagePath"                data-endpoint="POSTapi-badge"
-               value="abxfvgtam"
+               value="exzmy"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>abxfvgtam</code></p>
+<p>Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>exzmy</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>image</code></b>&nbsp;&nbsp;
@@ -1121,22 +1134,227 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Le champ value doit être une image. Example: <code>C:\Users\User\AppData\Local\Temp\php126F.tmp</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>color</code></b>&nbsp;&nbsp;
-<small>string</small>&nbsp;
- &nbsp;
-                <input type="text" style="display: none"
-                              name="color"                data-endpoint="POSTapi-badge"
-               value="m"
-               data-component="body">
-    <br>
-<p>Le texte du champ value doit contenir au moins 6 caractères. Le texte de value ne peut contenir plus de 8 caractères. Example: <code>m</code></p>
+<p>Le champ value doit être une image. Example: <code>C:\Users\User\AppData\Local\Temp\php541D.tmp</code></p>
         </div>
         </form>
 
-                    <h2 id="endpoints-PUTapi-badge">Met à jour le badge avec l&#039;id donné</h2>
+                    <h2 id="endpoints-POSTapi-badge-image">Met à jour le badge avec l&#039;id donné du badge
+Version qui accepte les images et fichiers</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-badge-image">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/badge/image" \
+    --header "Content-Type: multipart/form-data" \
+    --header "Accept: application/json" \
+    --form "id=illo"\
+    --form "title=ytwyqvotxmomdnaeeqyeiv"\
+    --form "description=Facilis pariatur laboriosam explicabo eius aut a nesciunt quo."\
+    --form "imagePath=q"\
+    --form "image=@C:\Users\User\AppData\Local\Temp\php542D.tmp" </code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/badge/image"
+);
+
+const headers = {
+    "Content-Type": "multipart/form-data",
+    "Accept": "application/json",
+};
+
+const body = new FormData();
+body.append('id', 'illo');
+body.append('title', 'ytwyqvotxmomdnaeeqyeiv');
+body.append('description', 'Facilis pariatur laboriosam explicabo eius aut a nesciunt quo.');
+body.append('imagePath', 'q');
+body.append('image', document.querySelector('input[name="image"]').files[0]);
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost/api/badge/image';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'multipart/form-data',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'id',
+                'contents' =&gt; 'illo'
+            ],
+            [
+                'name' =&gt; 'title',
+                'contents' =&gt; 'ytwyqvotxmomdnaeeqyeiv'
+            ],
+            [
+                'name' =&gt; 'description',
+                'contents' =&gt; 'Facilis pariatur laboriosam explicabo eius aut a nesciunt quo.'
+            ],
+            [
+                'name' =&gt; 'imagePath',
+                'contents' =&gt; 'q'
+            ],
+            [
+                'name' =&gt; 'image',
+                'contents' =&gt; fopen('C:\Users\User\AppData\Local\Temp\php542D.tmp', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-badge-image">
+</span>
+<span id="execution-results-POSTapi-badge-image" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-badge-image"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-badge-image"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-badge-image" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-badge-image">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-badge-image" data-method="POST"
+      data-path="api/badge/image"
+      data-authed="0"
+      data-hasfiles="1"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-badge-image', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-badge-image"
+                    onclick="tryItOut('POSTapi-badge-image');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-badge-image"
+                    onclick="cancelTryOut('POSTapi-badge-image');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-badge-image"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/badge/image</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-badge-image"
+               value="multipart/form-data"
+               data-component="header">
+    <br>
+<p>Example: <code>multipart/form-data</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-badge-image"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="POSTapi-badge-image"
+               value="illo"
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the badge table. Example: <code>illo</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>title</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="title"                data-endpoint="POSTapi-badge-image"
+               value="ytwyqvotxmomdnaeeqyeiv"
+               data-component="body">
+    <br>
+<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>ytwyqvotxmomdnaeeqyeiv</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="description"                data-endpoint="POSTapi-badge-image"
+               value="Facilis pariatur laboriosam explicabo eius aut a nesciunt quo."
+               data-component="body">
+    <br>
+<p>Le texte de value ne peut contenir plus de 255 caractères. Example: <code>Facilis pariatur laboriosam explicabo eius aut a nesciunt quo.</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>imagePath</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="imagePath"                data-endpoint="POSTapi-badge-image"
+               value="q"
+               data-component="body">
+    <br>
+<p>Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>q</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>image</code></b>&nbsp;&nbsp;
+<small>file</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="file" style="display: none"
+                              name="image"                data-endpoint="POSTapi-badge-image"
+               value=""
+               data-component="body">
+    <br>
+<p>Le champ value doit être une image. Example: <code>C:\Users\User\AppData\Local\Temp\php542D.tmp</code></p>
+        </div>
+        </form>
+
+                    <h2 id="endpoints-PUTapi-badge">Met à jour le badge avec l&#039;id donné du badge (Déprécié)</h2>
 
 <p>
 </p>
@@ -1153,11 +1371,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"id\": \"exercitationem\",
-    \"title\": \"uazeduebqntmducvohg\",
-    \"description\": \"Quos totam similique temporibus odio similique.\",
-    \"imagePath\": \"ok\",
-    \"color\": \"va\"
+    \"id\": \"voluptatum\",
+    \"title\": \"nkzpthtoxdfahtm\",
+    \"description\": \"Ipsum eaque veniam quis est aspernatur animi.\",
+    \"imagePath\": \"xrwgwdkliewj\"
 }"
 </code></pre></div>
 
@@ -1173,11 +1390,10 @@ const headers = {
 };
 
 let body = {
-    "id": "exercitationem",
-    "title": "uazeduebqntmducvohg",
-    "description": "Quos totam similique temporibus odio similique.",
-    "imagePath": "ok",
-    "color": "va"
+    "id": "voluptatum",
+    "title": "nkzpthtoxdfahtm",
+    "description": "Ipsum eaque veniam quis est aspernatur animi.",
+    "imagePath": "xrwgwdkliewj"
 };
 
 fetch(url, {
@@ -1198,11 +1414,10 @@ $response = $client-&gt;put(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'id' =&gt; 'exercitationem',
-            'title' =&gt; 'uazeduebqntmducvohg',
-            'description' =&gt; 'Quos totam similique temporibus odio similique.',
-            'imagePath' =&gt; 'ok',
-            'color' =&gt; 'va',
+            'id' =&gt; 'voluptatum',
+            'title' =&gt; 'nkzpthtoxdfahtm',
+            'description' =&gt; 'Ipsum eaque veniam quis est aspernatur animi.',
+            'imagePath' =&gt; 'xrwgwdkliewj',
         ],
     ]
 );
@@ -1289,10 +1504,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="PUTapi-badge"
-               value="exercitationem"
+               value="voluptatum"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the badge table. Example: <code>exercitationem</code></p>
+<p>The <code>id</code> of an existing record in the badge table. Example: <code>voluptatum</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>title</code></b>&nbsp;&nbsp;
@@ -1300,10 +1515,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="title"                data-endpoint="PUTapi-badge"
-               value="uazeduebqntmducvohg"
+               value="nkzpthtoxdfahtm"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>uazeduebqntmducvohg</code></p>
+<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>nkzpthtoxdfahtm</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
@@ -1311,10 +1526,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="description"                data-endpoint="PUTapi-badge"
-               value="Quos totam similique temporibus odio similique."
+               value="Ipsum eaque veniam quis est aspernatur animi."
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 255 caractères. Example: <code>Quos totam similique temporibus odio similique.</code></p>
+<p>Le texte de value ne peut contenir plus de 255 caractères. Example: <code>Ipsum eaque veniam quis est aspernatur animi.</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>imagePath</code></b>&nbsp;&nbsp;
@@ -1322,21 +1537,194 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="imagePath"                data-endpoint="PUTapi-badge"
-               value="ok"
+               value="xrwgwdkliewj"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>ok</code></p>
+<p>Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>xrwgwdkliewj</code></p>
         </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>color</code></b>&nbsp;&nbsp;
+        </form>
+
+                    <h2 id="endpoints-POSTapi-badge-activation--id-">Met à jour l&#039;activation d&#039;un badge</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-badge-activation--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/badge/activation/in" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"id\": \"facere\",
+    \"actovated\": false
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/badge/activation/in"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "id": "facere",
+    "actovated": false
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost/api/badge/activation/in';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'id' =&gt; 'facere',
+            'actovated' =&gt; false,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-badge-activation--id-">
+</span>
+<span id="execution-results-POSTapi-badge-activation--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-badge-activation--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-badge-activation--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-badge-activation--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-badge-activation--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-badge-activation--id-" data-method="POST"
+      data-path="api/badge/activation/{id}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-badge-activation--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-badge-activation--id-"
+                    onclick="tryItOut('POSTapi-badge-activation--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-badge-activation--id-"
+                    onclick="cancelTryOut('POSTapi-badge-activation--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-badge-activation--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/badge/activation/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-badge-activation--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-badge-activation--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
 <small>string</small>&nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="color"                data-endpoint="PUTapi-badge"
-               value="va"
+                              name="id"                data-endpoint="POSTapi-badge-activation--id-"
+               value="in"
+               data-component="url">
+    <br>
+<p>The ID of the activation. Example: <code>in</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="POSTapi-badge-activation--id-"
+               value="facere"
                data-component="body">
     <br>
-<p>Le texte du champ value doit contenir au moins 6 caractères. Le texte de value ne peut contenir plus de 6 caractères. Example: <code>va</code></p>
+<p>The <code>id</code> of an existing record in the badge table. Example: <code>facere</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>actovated</code></b>&nbsp;&nbsp;
+<small>boolean</small>&nbsp;
+ &nbsp;
+                <label data-endpoint="POSTapi-badge-activation--id-" style="display: none">
+            <input type="radio" name="actovated"
+                   value="true"
+                   data-endpoint="POSTapi-badge-activation--id-"
+                   data-component="body"             >
+            <code>true</code>
+        </label>
+        <label data-endpoint="POSTapi-badge-activation--id-" style="display: none">
+            <input type="radio" name="actovated"
+                   value="false"
+                   data-endpoint="POSTapi-badge-activation--id-"
+                   data-component="body"             >
+            <code>false</code>
+        </label>
+    <br>
+<p>Example: <code>false</code></p>
         </div>
         </form>
 
@@ -1353,14 +1741,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost/api/badge/laborum" \
+    "http://localhost/api/badge/reiciendis" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/badge/laborum"
+    "http://localhost/api/badge/reiciendis"
 );
 
 const headers = {
@@ -1376,7 +1764,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost/api/badge/laborum';
+$url = 'http://localhost/api/badge/reiciendis';
 $response = $client-&gt;delete(
     $url,
     [
@@ -1469,10 +1857,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="DELETEapi-badge--id-"
-               value="laborum"
+               value="reiciendis"
                data-component="url">
     <br>
-<p>The ID of the badge. Example: <code>laborum</code></p>
+<p>The ID of the badge. Example: <code>reiciendis</code></p>
             </div>
                     </form>
 
@@ -1635,7 +2023,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"gnspzghvlpma\"
+    \"name\": \"aluweqvbkkyuzt\"
 }"
 </code></pre></div>
 
@@ -1651,7 +2039,7 @@ const headers = {
 };
 
 let body = {
-    "name": "gnspzghvlpma"
+    "name": "aluweqvbkkyuzt"
 };
 
 fetch(url, {
@@ -1672,7 +2060,7 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'name' =&gt; 'gnspzghvlpma',
+            'name' =&gt; 'aluweqvbkkyuzt',
         ],
     ]
 );
@@ -1759,10 +2147,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="POSTapi-category"
-               value="gnspzghvlpma"
+               value="aluweqvbkkyuzt"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>gnspzghvlpma</code></p>
+<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>aluweqvbkkyuzt</code></p>
         </div>
         </form>
 
@@ -1783,8 +2171,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"id\": \"hic\",
-    \"name\": \"keollzxgkdxf\"
+    \"id\": \"eligendi\",
+    \"name\": \"ddxswjinbhjonuygofpuxv\"
 }"
 </code></pre></div>
 
@@ -1800,8 +2188,8 @@ const headers = {
 };
 
 let body = {
-    "id": "hic",
-    "name": "keollzxgkdxf"
+    "id": "eligendi",
+    "name": "ddxswjinbhjonuygofpuxv"
 };
 
 fetch(url, {
@@ -1822,8 +2210,8 @@ $response = $client-&gt;put(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'id' =&gt; 'hic',
-            'name' =&gt; 'keollzxgkdxf',
+            'id' =&gt; 'eligendi',
+            'name' =&gt; 'ddxswjinbhjonuygofpuxv',
         ],
     ]
 );
@@ -1910,10 +2298,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="PUTapi-category"
-               value="hic"
+               value="eligendi"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the badge table. Example: <code>hic</code></p>
+<p>The <code>id</code> of an existing record in the badge table. Example: <code>eligendi</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
@@ -1921,10 +2309,320 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="PUTapi-category"
-               value="keollzxgkdxf"
+               value="ddxswjinbhjonuygofpuxv"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>keollzxgkdxf</code></p>
+<p>Le texte de value ne peut contenir plus de 45 caractères. Example: <code>ddxswjinbhjonuygofpuxv</code></p>
+        </div>
+        </form>
+
+                    <h2 id="endpoints-POSTapi-category-assign-badge">Assigne un badge à une catégorie</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-category-assign-badge">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/category/assign-badge" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/category/assign-badge"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost/api/category/assign-badge';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-category-assign-badge">
+</span>
+<span id="execution-results-POSTapi-category-assign-badge" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-category-assign-badge"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-category-assign-badge"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-category-assign-badge" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-category-assign-badge">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-category-assign-badge" data-method="POST"
+      data-path="api/category/assign-badge"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-category-assign-badge', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-category-assign-badge"
+                    onclick="tryItOut('POSTapi-category-assign-badge');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-category-assign-badge"
+                    onclick="cancelTryOut('POSTapi-category-assign-badge');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-category-assign-badge"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/category/assign-badge</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-category-assign-badge"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-category-assign-badge"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>badge_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="badge_id"                data-endpoint="POSTapi-category-assign-badge"
+               value=""
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the badge table.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>category_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="category_id"                data-endpoint="POSTapi-category-assign-badge"
+               value=""
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the category table.</p>
+        </div>
+        </form>
+
+                    <h2 id="endpoints-POSTapi-category-remove-badge">Enlève un badge d&#039;une catégorie</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-POSTapi-category-remove-badge">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost/api/category/remove-badge" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"category_id\": \"quibusdam\",
+    \"badge_id\": \"quis\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/category/remove-badge"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "category_id": "quibusdam",
+    "badge_id": "quis"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost/api/category/remove-badge';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'category_id' =&gt; 'quibusdam',
+            'badge_id' =&gt; 'quis',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-category-remove-badge">
+</span>
+<span id="execution-results-POSTapi-category-remove-badge" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-category-remove-badge"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-category-remove-badge"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-category-remove-badge" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-category-remove-badge">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-category-remove-badge" data-method="POST"
+      data-path="api/category/remove-badge"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-category-remove-badge', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-category-remove-badge"
+                    onclick="tryItOut('POSTapi-category-remove-badge');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-category-remove-badge"
+                    onclick="cancelTryOut('POSTapi-category-remove-badge');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-category-remove-badge"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/category/remove-badge</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-category-remove-badge"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-category-remove-badge"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>category_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="category_id"                data-endpoint="POSTapi-category-remove-badge"
+               value="quibusdam"
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the category table. Example: <code>quibusdam</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>badge_id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="badge_id"                data-endpoint="POSTapi-category-remove-badge"
+               value="quis"
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the badge table. Example: <code>quis</code></p>
         </div>
         </form>
 
@@ -1941,14 +2639,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request DELETE \
-    "http://localhost/api/category/est" \
+    "http://localhost/api/category/exercitationem" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/category/est"
+    "http://localhost/api/category/exercitationem"
 );
 
 const headers = {
@@ -1964,7 +2662,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost/api/category/est';
+$url = 'http://localhost/api/category/exercitationem';
 $response = $client-&gt;delete(
     $url,
     [
@@ -2057,10 +2755,318 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="DELETEapi-category--id-"
-               value="est"
+               value="exercitationem"
                data-component="url">
     <br>
-<p>The ID of the category. Example: <code>est</code></p>
+<p>The ID of the category. Example: <code>exercitationem</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="endpoints-GETapi-category--id--badges">Récupère les badges assignés à la catégorie avec l&#039;id donné</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-category--id--badges">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/category/alias/badges" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/category/alias/badges"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost/api/category/alias/badges';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-category--id--badges">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+access-control-allow-methods: GET, POST, PUT, DELETE, OPTIONS
+access-control-allow-headers: Content-Type, Authorization, X-Requested-With
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-category--id--badges" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-category--id--badges"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-category--id--badges"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-category--id--badges" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-category--id--badges">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-category--id--badges" data-method="GET"
+      data-path="api/category/{id}/badges"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-category--id--badges', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-category--id--badges"
+                    onclick="tryItOut('GETapi-category--id--badges');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-category--id--badges"
+                    onclick="cancelTryOut('GETapi-category--id--badges');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-category--id--badges"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/category/{id}/badges</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-category--id--badges"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-category--id--badges"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-category--id--badges"
+               value="alias"
+               data-component="url">
+    <br>
+<p>The ID of the category. Example: <code>alias</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="endpoints-GETapi-category--id--badges-left">Récupère les badges non assignés à la catégorie avec l&#039;id donné</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-category--id--badges-left">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost/api/category/nemo/badges-left" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost/api/category/nemo/badges-left"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost/api/category/nemo/badges-left';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-category--id--badges-left">
+            <blockquote>
+            <p>Example response (401):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+access-control-allow-origin: *
+access-control-allow-methods: GET, POST, PUT, DELETE, OPTIONS
+access-control-allow-headers: Content-Type, Authorization, X-Requested-With
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-category--id--badges-left" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-category--id--badges-left"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-category--id--badges-left"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-category--id--badges-left" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-category--id--badges-left">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-category--id--badges-left" data-method="GET"
+      data-path="api/category/{id}/badges-left"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-category--id--badges-left', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-category--id--badges-left"
+                    onclick="tryItOut('GETapi-category--id--badges-left');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-category--id--badges-left"
+                    onclick="cancelTryOut('GETapi-category--id--badges-left');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-category--id--badges-left"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/category/{id}/badges-left</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-category--id--badges-left"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-category--id--badges-left"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="id"                data-endpoint="GETapi-category--id--badges-left"
+               value="nemo"
+               data-component="url">
+    <br>
+<p>The ID of the category. Example: <code>nemo</code></p>
             </div>
                     </form>
 
@@ -2223,8 +3229,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"user_id\": \"nostrum\",
-    \"badge_id\": \"soluta\"
+    \"user_id\": \"et\",
+    \"badge_id\": \"laborum\"
 }"
 </code></pre></div>
 
@@ -2240,8 +3246,8 @@ const headers = {
 };
 
 let body = {
-    "user_id": "nostrum",
-    "badge_id": "soluta"
+    "user_id": "et",
+    "badge_id": "laborum"
 };
 
 fetch(url, {
@@ -2262,8 +3268,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'user_id' =&gt; 'nostrum',
-            'badge_id' =&gt; 'soluta',
+            'user_id' =&gt; 'et',
+            'badge_id' =&gt; 'laborum',
         ],
     ]
 );
@@ -2350,10 +3356,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="user_id"                data-endpoint="POSTapi-user-assign-badge"
-               value="nostrum"
+               value="et"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the user table. Example: <code>nostrum</code></p>
+<p>The <code>id</code> of an existing record in the user table. Example: <code>et</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>badge_id</code></b>&nbsp;&nbsp;
@@ -2361,10 +3367,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="badge_id"                data-endpoint="POSTapi-user-assign-badge"
-               value="soluta"
+               value="laborum"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the badge table. Example: <code>soluta</code></p>
+<p>The <code>id</code> of an existing record in the badge table. Example: <code>laborum</code></p>
         </div>
         </form>
 
@@ -2385,8 +3391,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"user_id\": \"ducimus\",
-    \"badge_id\": \"saepe\"
+    \"user_id\": \"est\",
+    \"badge_id\": \"iste\"
 }"
 </code></pre></div>
 
@@ -2402,8 +3408,8 @@ const headers = {
 };
 
 let body = {
-    "user_id": "ducimus",
-    "badge_id": "saepe"
+    "user_id": "est",
+    "badge_id": "iste"
 };
 
 fetch(url, {
@@ -2424,8 +3430,8 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'user_id' =&gt; 'ducimus',
-            'badge_id' =&gt; 'saepe',
+            'user_id' =&gt; 'est',
+            'badge_id' =&gt; 'iste',
         ],
     ]
 );
@@ -2512,10 +3518,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="user_id"                data-endpoint="POSTapi-user-remove-badge"
-               value="ducimus"
+               value="est"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the user table. Example: <code>ducimus</code></p>
+<p>The <code>id</code> of an existing record in the user table. Example: <code>est</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>badge_id</code></b>&nbsp;&nbsp;
@@ -2523,10 +3529,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="badge_id"                data-endpoint="POSTapi-user-remove-badge"
-               value="saepe"
+               value="iste"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the badge table. Example: <code>saepe</code></p>
+<p>The <code>id</code> of an existing record in the badge table. Example: <code>iste</code></p>
         </div>
         </form>
 
@@ -2672,7 +3678,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                         </form>
 
-                    <h2 id="endpoints-GETapi-user--id-">Revoie tout les badges d&#039;un utilisateur</h2>
+                    <h2 id="endpoints-GETapi-user--id-">Récuperer une personne</h2>
 
 <p>
 </p>
@@ -2685,14 +3691,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/user/eveniet" \
+    --get "http://localhost/api/user/fugit" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/user/eveniet"
+    "http://localhost/api/user/fugit"
 );
 
 const headers = {
@@ -2708,7 +3714,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost/api/user/eveniet';
+$url = 'http://localhost/api/user/fugit';
 $response = $client-&gt;get(
     $url,
     [
@@ -2819,10 +3825,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="GETapi-user--id-"
-               value="eveniet"
+               value="fugit"
                data-component="url">
     <br>
-<p>The ID of the user. Example: <code>eveniet</code></p>
+<p>The ID of the user. Example: <code>fugit</code></p>
             </div>
                     </form>
 
@@ -2842,8 +3848,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/user/edit-background" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "backgroundUrl=http://heidenreich.com/magni-aut-quisquam-dolores-sint.html"\
-    --form "background=@C:\Users\User\AppData\Local\Temp\php129E.tmp" </code></pre></div>
+    --form "backgroundUrl=http://www.paucek.info/quidem-ipsa-suscipit-recusandae-sequi-maiores-explicabo-incidunt"\
+    --form "background=@C:\Users\User\AppData\Local\Temp\php545D.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -2857,7 +3863,7 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('backgroundUrl', 'http://heidenreich.com/magni-aut-quisquam-dolores-sint.html');
+body.append('backgroundUrl', 'http://www.paucek.info/quidem-ipsa-suscipit-recusandae-sequi-maiores-explicabo-incidunt');
 body.append('background', document.querySelector('input[name="background"]').files[0]);
 
 fetch(url, {
@@ -2880,11 +3886,11 @@ $response = $client-&gt;post(
         'multipart' =&gt; [
             [
                 'name' =&gt; 'backgroundUrl',
-                'contents' =&gt; 'http://heidenreich.com/magni-aut-quisquam-dolores-sint.html'
+                'contents' =&gt; 'http://www.paucek.info/quidem-ipsa-suscipit-recusandae-sequi-maiores-explicabo-incidunt'
             ],
             [
                 'name' =&gt; 'background',
-                'contents' =&gt; fopen('C:\Users\User\AppData\Local\Temp\php129E.tmp', 'r')
+                'contents' =&gt; fopen('C:\Users\User\AppData\Local\Temp\php545D.tmp', 'r')
             ],
         ],
     ]
@@ -2975,7 +3981,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Le champ value doit être une image. Example: <code>C:\Users\User\AppData\Local\Temp\php129E.tmp</code></p>
+<p>Le champ value doit être une image. Example: <code>C:\Users\User\AppData\Local\Temp\php545D.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>backgroundUrl</code></b>&nbsp;&nbsp;
@@ -2983,10 +3989,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="backgroundUrl"                data-endpoint="POSTapi-user-edit-background"
-               value="http://heidenreich.com/magni-aut-quisquam-dolores-sint.html"
+               value="http://www.paucek.info/quidem-ipsa-suscipit-recusandae-sequi-maiores-explicabo-incidunt"
                data-component="body">
     <br>
-<p>Must be a valid URL. Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>http://heidenreich.com/magni-aut-quisquam-dolores-sint.html</code></p>
+<p>Must be a valid URL. Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>http://www.paucek.info/quidem-ipsa-suscipit-recusandae-sequi-maiores-explicabo-incidunt</code></p>
         </div>
         </form>
 
@@ -3006,8 +4012,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
     "http://localhost/api/user/edit-avatar" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "avatarUrl=https://kub.com/quis-autem-aliquid-non-aut-eum-suscipit.html"\
-    --form "avatar=@C:\Users\User\AppData\Local\Temp\php129F.tmp" </code></pre></div>
+    --form "avatarUrl=http://jones.net/vel-voluptas-ipsam-non-minus-rerum-dolor.html"\
+    --form "avatar=@C:\Users\User\AppData\Local\Temp\php545E.tmp" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -3021,7 +4027,7 @@ const headers = {
 };
 
 const body = new FormData();
-body.append('avatarUrl', 'https://kub.com/quis-autem-aliquid-non-aut-eum-suscipit.html');
+body.append('avatarUrl', 'http://jones.net/vel-voluptas-ipsam-non-minus-rerum-dolor.html');
 body.append('avatar', document.querySelector('input[name="avatar"]').files[0]);
 
 fetch(url, {
@@ -3044,11 +4050,11 @@ $response = $client-&gt;post(
         'multipart' =&gt; [
             [
                 'name' =&gt; 'avatarUrl',
-                'contents' =&gt; 'https://kub.com/quis-autem-aliquid-non-aut-eum-suscipit.html'
+                'contents' =&gt; 'http://jones.net/vel-voluptas-ipsam-non-minus-rerum-dolor.html'
             ],
             [
                 'name' =&gt; 'avatar',
-                'contents' =&gt; fopen('C:\Users\User\AppData\Local\Temp\php129F.tmp', 'r')
+                'contents' =&gt; fopen('C:\Users\User\AppData\Local\Temp\php545E.tmp', 'r')
             ],
         ],
     ]
@@ -3139,7 +4145,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>Le champ value doit être une image. Example: <code>C:\Users\User\AppData\Local\Temp\php129F.tmp</code></p>
+<p>Le champ value doit être une image. Example: <code>C:\Users\User\AppData\Local\Temp\php545E.tmp</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>avatarUrl</code></b>&nbsp;&nbsp;
@@ -3147,10 +4153,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="avatarUrl"                data-endpoint="POSTapi-user-edit-avatar"
-               value="https://kub.com/quis-autem-aliquid-non-aut-eum-suscipit.html"
+               value="http://jones.net/vel-voluptas-ipsam-non-minus-rerum-dolor.html"
                data-component="body">
     <br>
-<p>Must be a valid URL. Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>https://kub.com/quis-autem-aliquid-non-aut-eum-suscipit.html</code></p>
+<p>Must be a valid URL. Le texte de value ne peut contenir plus de 2048 caractères. Example: <code>http://jones.net/vel-voluptas-ipsam-non-minus-rerum-dolor.html</code></p>
         </div>
         </form>
 
@@ -3325,14 +4331,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/user/minima/badges" \
+    --get "http://localhost/api/user/quia/badges" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/user/minima/badges"
+    "http://localhost/api/user/quia/badges"
 );
 
 const headers = {
@@ -3348,7 +4354,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost/api/user/minima/badges';
+$url = 'http://localhost/api/user/quia/badges';
 $response = $client-&gt;get(
     $url,
     [
@@ -3459,10 +4465,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="GETapi-user--id--badges"
-               value="minima"
+               value="quia"
                data-component="url">
     <br>
-<p>The ID of the user. Example: <code>minima</code></p>
+<p>The ID of the user. Example: <code>quia</code></p>
             </div>
                     </form>
 
@@ -3479,14 +4485,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/user/quia/badges-left" \
+    --get "http://localhost/api/user/modi/badges-left" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/user/quia/badges-left"
+    "http://localhost/api/user/modi/badges-left"
 );
 
 const headers = {
@@ -3502,7 +4508,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost/api/user/quia/badges-left';
+$url = 'http://localhost/api/user/modi/badges-left';
 $response = $client-&gt;get(
     $url,
     [
@@ -3613,10 +4619,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="GETapi-user--id--badges-left"
-               value="quia"
+               value="modi"
                data-component="url">
     <br>
-<p>The ID of the user. Example: <code>quia</code></p>
+<p>The ID of the user. Example: <code>modi</code></p>
             </div>
                     </form>
 
@@ -3791,9 +4797,9 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"rblock@example.net\",
-    \"password\": \".h&gt;&amp;EW^DT\\\"\",
-    \"remember_me\": false
+    \"email\": \"aylin83@example.com\",
+    \"password\": \"x)E\\\"b:KO(k[\",
+    \"remember_me\": true
 }"
 </code></pre></div>
 
@@ -3809,9 +4815,9 @@ const headers = {
 };
 
 let body = {
-    "email": "rblock@example.net",
-    "password": ".h&gt;&amp;EW^DT\"",
-    "remember_me": false
+    "email": "aylin83@example.com",
+    "password": "x)E\"b:KO(k[",
+    "remember_me": true
 };
 
 fetch(url, {
@@ -3832,9 +4838,9 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'email' =&gt; 'rblock@example.net',
-            'password' =&gt; '.h&gt;&amp;EW^DT"',
-            'remember_me' =&gt; false,
+            'email' =&gt; 'aylin83@example.com',
+            'password' =&gt; 'x)E"b:KO(k[',
+            'remember_me' =&gt; true,
         ],
     ]
 );
@@ -3921,10 +4927,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-auth-login"
-               value="rblock@example.net"
+               value="aylin83@example.com"
                data-component="body">
     <br>
-<p>Le champ value doit être une adresse email valide. Example: <code>rblock@example.net</code></p>
+<p>Le champ value doit être une adresse email valide. Example: <code>aylin83@example.com</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
@@ -3932,10 +4938,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-auth-login"
-               value=".h>&EW^DT""
+               value="x)E"b:KO(k["
                data-component="body">
     <br>
-<p>Example: <code>.h&gt;&amp;EW^DT"</code></p>
+<p>Example: <code>x)E"b:KO(k[</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>remember_me</code></b>&nbsp;&nbsp;
@@ -3956,7 +4962,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
             <code>false</code>
         </label>
     <br>
-<p>Example: <code>false</code></p>
+<p>Example: <code>true</code></p>
         </div>
         </form>
 
@@ -3979,14 +4985,12 @@ Sinon, l&#039;utilisateur est créé comme élève</h2>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"username\": \"dusf\",
-    \"email\": \"wilhelmine.hudson@example.com\",
-    \"password\": \"^[={uz\\/unybdI\",
-    \"first_name\": \"yeimejjbmevjqby\",
-    \"last_name\": \"gognn\",
-    \"teacher_code\": \"veniam\",
-    \"organisation_id\": 13,
-    \"program_id\": 10
+    \"username\": \"snxjcrrsosz\",
+    \"email\": \"alejandrin06@example.com\",
+    \"password\": \"Wo\']{&amp;vtP,Md\",
+    \"first_name\": \"aquskrnwlqdmweg\",
+    \"last_name\": \"lmryfpqqapxudfzvxaujht\",
+    \"teacher_code\": \"inventore\"
 }"
 </code></pre></div>
 
@@ -4002,14 +5006,12 @@ const headers = {
 };
 
 let body = {
-    "username": "dusf",
-    "email": "wilhelmine.hudson@example.com",
-    "password": "^[={uz\/unybdI",
-    "first_name": "yeimejjbmevjqby",
-    "last_name": "gognn",
-    "teacher_code": "veniam",
-    "organisation_id": 13,
-    "program_id": 10
+    "username": "snxjcrrsosz",
+    "email": "alejandrin06@example.com",
+    "password": "Wo']{&amp;vtP,Md",
+    "first_name": "aquskrnwlqdmweg",
+    "last_name": "lmryfpqqapxudfzvxaujht",
+    "teacher_code": "inventore"
 };
 
 fetch(url, {
@@ -4030,14 +5032,12 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'username' =&gt; 'dusf',
-            'email' =&gt; 'wilhelmine.hudson@example.com',
-            'password' =&gt; '^[={uz/unybdI',
-            'first_name' =&gt; 'yeimejjbmevjqby',
-            'last_name' =&gt; 'gognn',
-            'teacher_code' =&gt; 'veniam',
-            'organisation_id' =&gt; 13,
-            'program_id' =&gt; 10,
+            'username' =&gt; 'snxjcrrsosz',
+            'email' =&gt; 'alejandrin06@example.com',
+            'password' =&gt; 'Wo\']{&amp;vtP,Md',
+            'first_name' =&gt; 'aquskrnwlqdmweg',
+            'last_name' =&gt; 'lmryfpqqapxudfzvxaujht',
+            'teacher_code' =&gt; 'inventore',
         ],
     ]
 );
@@ -4124,10 +5124,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="username"                data-endpoint="POSTapi-auth-signup"
-               value="dusf"
+               value="snxjcrrsosz"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 50 caractères. Example: <code>dusf</code></p>
+<p>Le texte de value ne peut contenir plus de 50 caractères. Example: <code>snxjcrrsosz</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
@@ -4135,10 +5135,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="email"                data-endpoint="POSTapi-auth-signup"
-               value="wilhelmine.hudson@example.com"
+               value="alejandrin06@example.com"
                data-component="body">
     <br>
-<p>Le champ value doit être une adresse email valide. Le texte de value ne peut contenir plus de 125 caractères. Example: <code>wilhelmine.hudson@example.com</code></p>
+<p>Le champ value doit être une adresse email valide. Le texte de value ne peut contenir plus de 125 caractères. Example: <code>alejandrin06@example.com</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
@@ -4146,10 +5146,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-auth-signup"
-               value="^[={uz/unybdI"
+               value="Wo']{&vtP,Md"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 60 caractères. Example: <code>^[={uz/unybdI</code></p>
+<p>Le texte de value ne peut contenir plus de 60 caractères. Example: <code>Wo']{&amp;vtP,Md</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>first_name</code></b>&nbsp;&nbsp;
@@ -4157,10 +5157,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="first_name"                data-endpoint="POSTapi-auth-signup"
-               value="yeimejjbmevjqby"
+               value="aquskrnwlqdmweg"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 50 caractères. Example: <code>yeimejjbmevjqby</code></p>
+<p>Le texte de value ne peut contenir plus de 50 caractères. Example: <code>aquskrnwlqdmweg</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>last_name</code></b>&nbsp;&nbsp;
@@ -4168,10 +5168,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="last_name"                data-endpoint="POSTapi-auth-signup"
-               value="gognn"
+               value="lmryfpqqapxudfzvxaujht"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 50 caractères. Example: <code>gognn</code></p>
+<p>Le texte de value ne peut contenir plus de 50 caractères. Example: <code>lmryfpqqapxudfzvxaujht</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>teacher_code</code></b>&nbsp;&nbsp;
@@ -4179,32 +5179,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="teacher_code"                data-endpoint="POSTapi-auth-signup"
-               value="veniam"
+               value="inventore"
                data-component="body">
     <br>
-<p>Example: <code>veniam</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>organisation_id</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
- &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="organisation_id"                data-endpoint="POSTapi-auth-signup"
-               value="13"
-               data-component="body">
-    <br>
-<p>The <code>id</code> of an existing record in the organisation table. Example: <code>13</code></p>
-        </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-            <b style="line-height: 2;"><code>program_id</code></b>&nbsp;&nbsp;
-<small>integer</small>&nbsp;
- &nbsp;
-                <input type="number" style="display: none"
-               step="any"               name="program_id"                data-endpoint="POSTapi-auth-signup"
-               value="10"
-               data-component="body">
-    <br>
-<p>The <code>id</code> of an existing record in the program table. Example: <code>10</code></p>
+<p>Example: <code>inventore</code></p>
         </div>
         </form>
 
@@ -4647,14 +5625,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/stats/leaderboard/magnam/temporibus" \
+    --get "http://localhost/api/stats/leaderboard/est/quia" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/stats/leaderboard/magnam/temporibus"
+    "http://localhost/api/stats/leaderboard/est/quia"
 );
 
 const headers = {
@@ -4670,7 +5648,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost/api/stats/leaderboard/magnam/temporibus';
+$url = 'http://localhost/api/stats/leaderboard/est/quia';
 $response = $client-&gt;get(
     $url,
     [
@@ -4781,10 +5759,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="startDate"                data-endpoint="GETapi-stats-leaderboard--startDate---endDate-"
-               value="magnam"
+               value="est"
                data-component="url">
     <br>
-<p>Example: <code>magnam</code></p>
+<p>Example: <code>est</code></p>
             </div>
                     <div style="padding-left: 28px; clear: unset;">
                 <b style="line-height: 2;"><code>endDate</code></b>&nbsp;&nbsp;
@@ -4792,10 +5770,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="endDate"                data-endpoint="GETapi-stats-leaderboard--startDate---endDate-"
-               value="temporibus"
+               value="quia"
                data-component="url">
     <br>
-<p>Example: <code>temporibus</code></p>
+<p>Example: <code>quia</code></p>
             </div>
                     </form>
 
@@ -4812,14 +5790,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
 <div class="bash-example">
     <pre><code class="language-bash">curl --request GET \
-    --get "http://localhost/api/stats/leaderboard/ut" \
+    --get "http://localhost/api/stats/leaderboard/aperiam" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre></div>
 
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost/api/stats/leaderboard/ut"
+    "http://localhost/api/stats/leaderboard/aperiam"
 );
 
 const headers = {
@@ -4835,7 +5813,7 @@ fetch(url, {
 
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
-$url = 'http://localhost/api/stats/leaderboard/ut';
+$url = 'http://localhost/api/stats/leaderboard/aperiam';
 $response = $client-&gt;get(
     $url,
     [
@@ -4946,10 +5924,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="category"                data-endpoint="GETapi-stats-leaderboard--category-"
-               value="ut"
+               value="aperiam"
                data-component="url">
     <br>
-<p>Example: <code>ut</code></p>
+<p>Example: <code>aperiam</code></p>
             </div>
                     </form>
 
@@ -5025,8 +6003,8 @@ access-control-allow-headers: Content-Type, Authorization, X-Requested-With
     {
         &quot;id&quot;: 0,
         &quot;name&quot;: &quot;Organisation par d&eacute;faut&quot;,
-        &quot;created_at&quot;: &quot;2025-02-11T20:02:47.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-02-11T20:02:47.000000Z&quot;
+        &quot;created_at&quot;: &quot;2025-03-18T18:43:05.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-03-18T18:43:05.000000Z&quot;
     }
 ]</code>
  </pre>
@@ -5119,7 +6097,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"id\": \"sint\"
+    \"id\": \"eligendi\"
 }"
 </code></pre></div>
 
@@ -5135,7 +6113,7 @@ const headers = {
 };
 
 let body = {
-    "id": "sint"
+    "id": "eligendi"
 };
 
 fetch(url, {
@@ -5156,7 +6134,7 @@ $response = $client-&gt;delete(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'id' =&gt; 'sint',
+            'id' =&gt; 'eligendi',
         ],
     ]
 );
@@ -5243,10 +6221,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="id"                data-endpoint="DELETEapi-organisation"
-               value="sint"
+               value="eligendi"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the organisation table. Example: <code>sint</code></p>
+<p>The <code>id</code> of an existing record in the organisation table. Example: <code>eligendi</code></p>
         </div>
         </form>
 
@@ -5267,7 +6245,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"aglccqepasazhmixech\"
+    \"name\": \"yfxphznh\"
 }"
 </code></pre></div>
 
@@ -5283,7 +6261,7 @@ const headers = {
 };
 
 let body = {
-    "name": "aglccqepasazhmixech"
+    "name": "yfxphznh"
 };
 
 fetch(url, {
@@ -5304,7 +6282,7 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'name' =&gt; 'aglccqepasazhmixech',
+            'name' =&gt; 'yfxphznh',
         ],
     ]
 );
@@ -5391,10 +6369,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="POSTapi-organisation"
-               value="aglccqepasazhmixech"
+               value="yfxphznh"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 60 caractères. Example: <code>aglccqepasazhmixech</code></p>
+<p>Le texte de value ne peut contenir plus de 60 caractères. Example: <code>yfxphznh</code></p>
         </div>
         </form>
 
@@ -5470,8 +6448,8 @@ access-control-allow-headers: Content-Type, Authorization, X-Requested-With
     {
         &quot;id&quot;: 0,
         &quot;name&quot;: &quot;Programme par d&eacute;faut&quot;,
-        &quot;created_at&quot;: &quot;2025-02-11T20:02:47.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-02-11T20:02:47.000000Z&quot;
+        &quot;created_at&quot;: &quot;2025-03-18T18:43:05.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-03-18T18:43:05.000000Z&quot;
     }
 ]</code>
  </pre>
@@ -5564,7 +6542,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"id\": 2
+    \"id\": 15
 }"
 </code></pre></div>
 
@@ -5580,7 +6558,7 @@ const headers = {
 };
 
 let body = {
-    "id": 2
+    "id": 15
 };
 
 fetch(url, {
@@ -5601,7 +6579,7 @@ $response = $client-&gt;delete(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'id' =&gt; 2,
+            'id' =&gt; 15,
         ],
     ]
 );
@@ -5688,10 +6666,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="number" style="display: none"
                step="any"               name="id"                data-endpoint="DELETEapi-program"
-               value="2"
+               value="15"
                data-component="body">
     <br>
-<p>The <code>id</code> of an existing record in the program table. Must not be one of <code>0</code>. Example: <code>2</code></p>
+<p>The <code>id</code> of an existing record in the program table. Must not be one of <code>0</code>. Example: <code>15</code></p>
         </div>
         </form>
 
@@ -5712,7 +6690,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"name\": \"tst\"
+    \"name\": \"qezbdmuztuepjrlgdcad\"
 }"
 </code></pre></div>
 
@@ -5728,7 +6706,7 @@ const headers = {
 };
 
 let body = {
-    "name": "tst"
+    "name": "qezbdmuztuepjrlgdcad"
 };
 
 fetch(url, {
@@ -5749,7 +6727,7 @@ $response = $client-&gt;post(
             'Accept' =&gt; 'application/json',
         ],
         'json' =&gt; [
-            'name' =&gt; 'tst',
+            'name' =&gt; 'qezbdmuztuepjrlgdcad',
         ],
     ]
 );
@@ -5836,10 +6814,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="name"                data-endpoint="POSTapi-program"
-               value="tst"
+               value="qezbdmuztuepjrlgdcad"
                data-component="body">
     <br>
-<p>Le texte de value ne peut contenir plus de 60 caractères. Example: <code>tst</code></p>
+<p>Le texte de value ne peut contenir plus de 60 caractères. Example: <code>qezbdmuztuepjrlgdcad</code></p>
         </div>
         </form>
 
