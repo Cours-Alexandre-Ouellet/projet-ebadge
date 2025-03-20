@@ -104,7 +104,7 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
             >
               {users.length > 0 ? users.map((user) => (
                 <MenuItem key={user.id} value={user.id}>
-                  {user.first_name} {user.last_name} - {user.email}
+                  {user.first_name} {user.last_name}
                 </MenuItem>
               )) : <MenuItem disabled>Aucun utilisateur disponible</MenuItem>}
             </Select>

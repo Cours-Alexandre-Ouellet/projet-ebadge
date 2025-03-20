@@ -15,7 +15,7 @@ class UserAdminGrid extends React.Component {
       selectedAdmin: null,
       columns: [
         { field: 'id', headerName: 'ID', flex: 1 },
-        { field: 'email', headerName: 'Email', flex: 1 },
+        // { field: 'email', headerName: 'Email', flex: 1 },
         { field: 'first_name', headerName: 'Prénom', flex: 1 },
         { field: 'last_name', headerName: 'Nom', flex: 1 },
         {
