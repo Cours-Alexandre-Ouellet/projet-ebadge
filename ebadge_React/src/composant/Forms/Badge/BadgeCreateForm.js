@@ -17,20 +17,14 @@ function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
 }
 
-var badgeDummy = {
+const badgeDummy = {
     title: "",
     description: "",
     imagePath: null,
     color: 'ffffff', // à retirer
-    category: categoryDummy
+    category: null
 };
 
-var categoryDummy = {
-    id: 0,
-    name: "Aucune catégorie",
-    created_at: "",
-    updated_at: ""
-}
 
 /**
  * Fonction qui affiche et gère la création de badge
@@ -48,7 +42,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
     const [imageUrlField, setImageUrlField] = useState("");
     const [imageFile, setImageFile] = useState(null);
     const [badge, setBadge] = useState(badgeDummy);
-    
+
     const [categories, setCategories] = useState([]);
     const [loadingCategory, setLoadingCategory] = useState(true);
     const [inputCategory, setInputCategory] = useState();
@@ -61,7 +55,6 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
         }).catch((error) => {
             console.log(error)
         });
-
     }, []);
 
     // Gère l'ouverture et la fermeture de l'image
@@ -73,23 +66,35 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
     const handleImageDelete = () => {
         setImageFile(null);
         setImageUrlField("");
-        badgeDummy.imagePath = null
-        setBadge(badgeDummy);
+        setBadge((prevState) => (
+            {
+                ...prevState,
+                imagePath: null
+            }
+        ));
         handleImageDialog();
     }
 
     // Gère les modification de l'image du badge
     const handleImageModify = () => {
         if (imageFile !== null) {
-            badgeDummy.imagePath = URL.createObjectURL(imageFile);
             setImageUrlField("");
-            setBadge(badgeDummy);
+            setBadge((prevState) => (
+                {
+                    ...prevState,
+                    imagePath: URL.createObjectURL(imageFile)
+                }
+            ));
             handleImageDialog();
 
         } else if (isImage(imageUrlField)) {
-            badgeDummy.imagePath = imageUrlField;
             setImageFile(null);
-            setBadge(badgeDummy);
+            setBadge((prevState) => (
+                {
+                    ...prevState,
+                    imagePath: imageUrlField
+                }
+            ));
             handleImageDialog()
         } else {
             alert('Image invalide');
@@ -130,6 +135,9 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
             imageFile === null || formData.append('image', imageFile);
             badge.imagePath === null || formData.append('imagePath', badge.imagePath);
             formData.append('color', badge.color); // à retirer
+
+            // Si le badge a une catégory
+            badge.category === undefined ||formData.append('category_id', badge.category.id);
             Api.post('/badge', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -141,6 +149,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                 .catch((error) => {
                     errorBadge('Erreur lors de la création du badge');
                 });
+            setBadge(badgeDummy);
             handleClose();
 
         }
@@ -163,8 +172,12 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 variant="outlined"
                                 defaultValue={badge.title}
                                 onChange={(e) => {
-                                    badgeDummy.title = e.target.value;
-                                    setBadge(badgeDummy);
+                                    setBadge((prevState) => (
+                                        {
+                                            ...prevState,
+                                            title: e.target.value
+                                        }
+                                    ));
 
                                 }}
                                 onBlur={validateTitle}
@@ -184,8 +197,12 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 inputProps={{ maxLength: 255 }}
                                 defaultValue={badge.description}
                                 onChange={(e) => {
-                                    badgeDummy.description = e.target.value;
-                                    setBadge(badgeDummy);
+                                    setBadge((prevState) => (
+                                        {
+                                            ...prevState,
+                                            description: e.target.value
+                                        }
+                                    ));
 
                                 }}
                                 onBlur={validateDescription}
@@ -197,19 +214,22 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                             <div className='badge-create-form-category-selector'>
                                 <Autocomplete
                                     onChange={(_, newValue) => {
-                                        badgeDummy.category = newValue;
-                                        setBadge(badgeDummy);
-                                        console.log(badge);
+                                            setBadge((prevState) => (
+                                                {
+                                                    ...prevState,
+                                                    category: newValue
+                                                }
+                                            ));
                                     }}
                                     inputValue={inputCategory}
                                     onInputChange={(_, newInputValue) => {
-                                      setInputCategory(newInputValue);
+                                        setInputCategory(newInputValue);
                                     }}
                                     id="controllable-states-demo"
                                     options={categories.map((category) => category)}
                                     getOptionLabel={(categories) => categories.name}
                                     sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Controllable" />}
+                                    renderInput={(params) => <TextField {...params} label="Catégories" />}
                                 />
                             </div>
                             <div className="badge-create-form-button-field">
@@ -286,7 +306,10 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 </Dialog>
                             </div>
                             <div className="badge-create-form-button-submit">
-                                <Button variant="outlined" onClick={handleClose} sx={{
+                                <Button variant="outlined" onClick={() => {
+                                    setBadge(badgeDummy);
+                                    handleClose();
+                                }} sx={{
                                     width: '100%',
                                     marginTop: '20px',
                                     marginRight: '20px'

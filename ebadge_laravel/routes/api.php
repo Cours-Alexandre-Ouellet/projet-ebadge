@@ -33,6 +33,8 @@ Route::group([
             'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT,
         ],
     ], function () {
+        Route::get('/category/names', [App\Http\Controllers\BadgeController::class, 'getAllBadgesWithCategory']);
+        Route::get('/category/name/{id}', [App\Http\Controllers\BadgeController::class, 'getBadgeCategory']);
         Route::post('/', [App\Http\Controllers\BadgeController::class, 'create']);
         Route::post('/image', [App\Http\Controllers\BadgeController::class, 'updateImage']);
         Route::put('/', [App\Http\Controllers\BadgeController::class, 'update']);
