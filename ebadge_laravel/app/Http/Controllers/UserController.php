@@ -11,6 +11,15 @@ use App\Models\Badge;
 
 class UserController extends Controller
 {
+
+    /**
+     * Enleve les informations sensibles ou inutiles des données 
+     */
+    private function CleanUp(array $user): array
+    {
+        unset($user['email'], $user['password'], $user['avatarImagePath'], $user['backgroundImagePath'], $user['organisation_id'], $user['program_id'], $user['created_at'], $user['updated_at']);
+        return $user;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -28,11 +37,13 @@ class UserController extends Controller
                 case Role::ADMIN:
                     // retourne tous les élèves de tous les groupes
                     $users = User::all();
+                    $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
                     return response()->json(['users' => $users]);
                     break;
                 case Role::ENSEIGNANT:
                     // retourne tous les eleve du meme groupe que l'utilisateur
                     $users = User::where('program_id', $currentUser->program_id)->get();
+                    $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
                     return response()->json(['users' => $users]);
                     break;
                 default:
@@ -110,7 +121,7 @@ class UserController extends Controller
 
         foreach ($user->badges as $badge) {
             $badge->setPossessionPercentage();
-            
+
         }
 
         return response()->json([
@@ -118,7 +129,7 @@ class UserController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Récuperer une personne
      */
     public function getUser(int $id)
@@ -130,7 +141,15 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'user' => $user
+            'user' =>[
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'username' => $user->username,
+            'privacy' => $user->privacy,
+            'avatarImagePath' => $user->avatarImagePath,
+            'backgroundImagePath' => $user->backgroundImagePath,
+            ]
         ]);
     }
 
@@ -222,6 +241,15 @@ class UserController extends Controller
         ]);
 
         $user = $request->user();
+        $role_name = Role::where('id', $user->role_id)->first()->name;
+        
+        if ($role_name != Role::ETUDIANT) {
+            return response()->json([
+                'message' => 'You are not a student',
+                'role' => $user->role_name
+            ]);
+        }
+        
         $user->privacy = $request->privacy;
         $user->save();
         return response()->json([
@@ -252,4 +280,85 @@ class UserController extends Controller
         $users = User::where('role_id', $id)->get();
         return response()->json(['users' => $users]);
     }
+    
+    /**
+     * Supprime un utilisateur
+     * 
+     * @param int $id Id de l'utilisateur
+     * @return \Illuminate\Http\Response
+     */
+    public function supprimerUser(int $id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return response()->json(['message' => 'Utilisateur supprimé']);
+    }
+
+    public function deleteAdmin($id)
+    {
+        $admin = User::find($id);
+    
+        if (!$admin) {
+            return response()->json(['message' => 'Administrateur non trouvé'], 404);
+        }
+    
+        $admin->delete();
+    
+        return response()->json(['message' => 'Administrateur supprimé avec succès']);
+    }
+
+    /**
+ * Assigne le rôle d'admin à un utilisateur
+ *
+ * @param Request $request
+ * @return JsonResponse
+ */
+public function assignAdmin(Request $request)
+{
+    $request->validate([
+        'user_id' => 'required|exists:user,id',
+    ]);
+
+    $user = User::find($request->user_id);
+    $adminRole = Role::Admin(); // Récupère l'objet Role correspondant à "Administrateur"
+
+    if (!$adminRole) {
+        return response()->json(['message' => 'Le rôle Administrateur est introuvable.'], 500);
+    }
+
+    if ($user->role_id == $adminRole->id) {
+        return response()->json(['message' => 'Cet utilisateur est déjà administrateur.'], 400);
+    }
+
+    // Met à jour le rôle avec l'ID du rôle Administrateur
+    $user->role_id = $adminRole->id;
+    $user->save();
+
+    return response()->json(['message' => 'Utilisateur promu administrateur.']);
+}
+
+public function removeAdmin(Request $request)
+{
+    $request->validate([
+        'user_id' => 'required|exists:user,id',
+    ]);
+
+    $user = User::find($request->user_id);
+    $defaultRole = Role::where('name', 'Étudiant')->first(); // Par défaut, remet en étudiant
+
+    if (!$defaultRole) {
+        return response()->json(['message' => 'Le rôle Étudiant est introuvable.'], 500);
+    }
+
+    if ($user->role_id != Role::Admin()->id) {
+        return response()->json(['message' => 'Cet utilisateur n\'est pas administrateur.'], 400);
+    }
+
+    $user->role_id = $defaultRole->id;
+    $user->save();
+
+    return response()->json(['message' => 'Administrateur rétrogradé avec succès.']);
+}
+
+
 }

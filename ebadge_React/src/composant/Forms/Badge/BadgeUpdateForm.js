@@ -141,8 +141,7 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
         // Si l'image est un lien ou bien un fichier
         imageFile === null || formData.append('image', imageFile);
         badge.imagePath === null || formData.append('imagePath', badge.imagePath);
-        formData.append('color', badge.color); // à retirer
-        // Si le badge a une catégory
+
 
         if (badge.category) {
             badge.category.id === undefined || formData.append('category_id', badge.category.id);

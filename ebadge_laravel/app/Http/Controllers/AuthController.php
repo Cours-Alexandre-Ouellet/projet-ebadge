@@ -9,7 +9,6 @@ use App\Models\Program;
 use App\Models\Role;
 use App\Models\TeacherCode;
 use App\Models\User;
-use App\Models\UserBadge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -91,7 +90,15 @@ class AuthController extends Controller
         $user->role_name = Role::where('id', $user->role_id)->first()->name;
         $user->organisation_name = Organisation::where('id', $user->organisation_id)->first()->name;
 
-        return response()->json($request->user());
+        return response()->json([
+            'id' => $user->id,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'username' => $user->username,
+            'privacy' => $user->privacy,
+            'avatarImagePath' => $user->avatarImagePath,
+            'backgroundImagePath' => $user->backgroundImagePath,
+        ]);
     }
 
     /**
@@ -121,9 +128,9 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
-        $user->organisation_id = $request->organisation_id;
-        $user->program_id = $request->program_id;
         $user->role_id = Role::where('name', Role::ETUDIANT)->first()->id;
+        $user->organisation_id = 0; // TODO: Possiblement annihiler complètement
+        $user->program_id = 0; // TODO: Possiblement annihiler complètement
         return $user->save() ? $user : null;
     }
 

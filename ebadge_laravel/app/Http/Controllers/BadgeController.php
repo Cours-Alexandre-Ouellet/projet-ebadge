@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Badge\BadgeActivationRequest;
 use App\Http\Requests\Badge\BadgeUpdateImageRequest;
 use App\Http\Requests\Badge\BadgeUpdateRequest;
 use App\Http\Requests\Badge\CreateBadgeRequest;
@@ -48,7 +49,6 @@ class BadgeController extends Controller
         $badge = new Badge();
         $badge->title = $request->title;
         $badge->description = $request->description;
-        $badge->color = $request->color; // à retirer
         $badge->teacher_id = $request->user()->id;
 
         //insertion de l'image dans le dossier public avec un nom original
@@ -100,11 +100,30 @@ class BadgeController extends Controller
             [
                 'title' => $request->title,
                 'description' => $request->description,
-                'color' => $request->color, // à supprimer
-                'imagePath' => $request->imagePath
+                'imagePath' => $request->imagePath,
             ]
         );
 
+        return response()->json($badge);
+    }
+
+    /**
+     * Met à jour l'activation d'un badge
+     * 
+     * @param  \Illuminate\Http\Request  La requête de modification de badge
+     * @return \Illuminate\Http\Response Le badge modifié en JSON
+     */
+    public function activation(BadgeActivationRequest $request)
+    {
+        $badge = new Badge();
+        Log::debug('erreur'.$request);
+        $badge = Badge::updateOrCreate(
+            ['id' => $request->id],
+            [
+                'activated' =>$request->activated
+            ]
+        );
+        
         return response()->json($badge);
     }
 
@@ -139,7 +158,6 @@ class BadgeController extends Controller
             [
                 'title' => $request->title,
                 'description' => $request->description,
-                'color' => $request->color, // à supprimer
                 'imagePath' => $imagePath
             ]
         );

@@ -6,11 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use DateTime;
 
+
 /**
  * Contrôleur pour les statistiques
  */
 class StatsController extends Controller
 {
+    /**
+     * Enleve les informations sensibles ou inutiles des données 
+     */
+    private function CleanUp(array $user): array
+    {
+        unset($user['email'], $user['password'], $user['avatarImagePath'], $user['backgroundImagePath'], $user['organisation_id'], $user['program_id'], $user['created_at'], $user['updated_at']);
+        return $user;
+    }
     /**
      * Obtient le classement des utilisateurs ayant le profil public
      *
@@ -18,9 +27,11 @@ class StatsController extends Controller
      */
     public function leaderboard()
     {
-        $users =  User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount('badges')->orderBy('badges_count', 'desc')->get();
+        $users = User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount('badges')->orderBy('badges_count', 'desc')->get();
+        $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
         return response()->json($users);
     }
+
 
     /**
      * Obtient le classement des utilisateurs ayant le profil public pour une session
@@ -33,17 +44,23 @@ class StatsController extends Controller
     {
         $sessionStartDate = new DateTime($startDate);
         $sessionEndDate = new DateTime($endDate);
-        $users =  User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount(['badges' => function ($query) use ($sessionStartDate, $sessionEndDate) {
-            $query->whereBetween('user_badge.created_at', [$sessionStartDate, $sessionEndDate]);
-        }])->orderBy('badges_count', 'desc')->get();
+        $users = User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount([
+            'badges' => function ($query) use ($sessionStartDate, $sessionEndDate) {
+                $query->whereBetween('user_badge.created_at', [$sessionStartDate, $sessionEndDate]);
+            }
+        ])->orderBy('badges_count', 'desc')->get();
+        $users = array_map([$this, 'CleanUp'], $users->toArray());
         return response()->json($users);
     }
 
     public function leaderboardByCategory(string $category)
     {
-        $users =  User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount(['badges' => function ($query) use ($category) {
-            $query->where('category', '=', $category);
-        }])->orderBy('badges_count', 'desc')->get();
+        $users = User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount([
+            'badges' => function ($query) use ($category) {
+                $query->where('category', '=', $category);
+            }
+        ])->orderBy('badges_count', 'desc')->get();
+        $users = array_map([$this, 'CleanUp'], $users->toArray());
         return response()->json($users);
     }
 }

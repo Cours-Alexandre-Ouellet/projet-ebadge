@@ -49,7 +49,7 @@ class CategoryUpdateForm extends React.Component {
                 })
                 .catch((error) => {
                     this.props.errorCategory('Une erreur est survenue');
-                    console.log(error);
+                    console.error(error);
                 });
             }
         this.props.handleClose();

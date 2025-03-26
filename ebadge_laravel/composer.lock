@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59881ba2a0b99d29735e617dec86414e",
-
+    "content-hash": "0c3bfbc3c2f6b24e22eda713c737f2da",
     "packages": [
         {
             "name": "brick/math",
@@ -1371,16 +1370,16 @@
         },
         {
             "name": "knuckleswtf/scribe",
-            "version": "4.40.0",
+            "version": "5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/knuckleswtf/scribe.git",
-                "reference": "1ad707f229185bb2413ea9ed2fb01747abe78ff6"
+                "reference": "1e846244476a0312b8a7731a779a4fea85a5bfa0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/1ad707f229185bb2413ea9ed2fb01747abe78ff6",
-                "reference": "1ad707f229185bb2413ea9ed2fb01747abe78ff6",
+                "url": "https://api.github.com/repos/knuckleswtf/scribe/zipball/1e846244476a0312b8a7731a779a4fea85a5bfa0",
+                "reference": "1e846244476a0312b8a7731a779a4fea85a5bfa0",
                 "shasum": ""
             },
             "require": {
@@ -1388,38 +1387,35 @@
                 "ext-fileinfo": "*",
                 "ext-json": "*",
                 "ext-pdo": "*",
-                "fakerphp/faker": "^1.9.1",
-                "illuminate/console": "^8.0|^9.0|^10.0|^11.0",
-                "illuminate/routing": "^8.0|^9.0|^10.0|^11.0",
-                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
-                "league/flysystem": "^1.1.4|^2.1.1|^3.0",
+                "fakerphp/faker": "^1.23.1",
+                "laravel/framework": "^9.0|^10.0|^11.0|^12.0",
+                "league/flysystem": "^3.0",
                 "mpociot/reflection-docblock": "^1.0.1",
                 "nikic/php-parser": "^5.0",
-                "nunomaduro/collision": "^5.10|^6.0|^7.0|^8.0",
-                "php": ">=8.0",
+                "nunomaduro/collision": "^6.0|^7.0|^8.0",
+                "php": ">=8.1",
                 "ramsey/uuid": "^4.2.2",
                 "shalvah/clara": "^3.1.0",
                 "shalvah/upgrader": ">=0.6.0",
                 "spatie/data-transfer-object": "^2.6|^3.0",
-                "symfony/var-exporter": "^5.4|^6.0|^7.0",
-                "symfony/yaml": "^5.4|^6.0|^7.0"
+                "symfony/var-exporter": "^6.0|^7.0",
+                "symfony/yaml": "^6.0|^7.0"
             },
             "replace": {
                 "mpociot/laravel-apidoc-generator": "*"
             },
             "require-dev": {
-                "brianium/paratest": "^6.0",
-                "dms/phpunit-arraysubset-asserts": "^0.4",
+                "dms/phpunit-arraysubset-asserts": "^v0.5.0",
                 "laravel/legacy-factories": "^1.3.0",
-                "laravel/lumen-framework": "^8.0|^9.0|^10.0",
                 "league/fractal": "^0.20",
                 "nikic/fast-route": "^1.3",
-                "orchestra/testbench": "^6.0|^7.0|^8.0",
-                "pestphp/pest": "^1.21",
-                "phpstan/phpstan": "^1.0",
-                "phpunit/phpunit": "^9.0|^10.0",
-                "symfony/css-selector": "^5.4|^6.0",
-                "symfony/dom-crawler": "^5.4|^6.0"
+                "orchestra/testbench": "^7.0|^8.0|^v9.10.0|^10.0",
+                "pestphp/pest": "^1.21|^2.0|^3.0",
+                "phpstan/phpstan": "^2.1.5",
+                "phpunit/phpunit": "^9.0|^10.0|^11.0",
+                "spatie/ray": "^1.41",
+                "symfony/css-selector": "^6.0|^7.0",
+                "symfony/dom-crawler": "^6.0|^7.0"
             },
             "type": "library",
             "extra": {
@@ -1430,6 +1426,9 @@
                 }
             },
             "autoload": {
+                "files": [
+                    "src/Config/helpers.php"
+                ],
                 "psr-4": {
                     "Knuckles\\Camel\\": "camel/",
                     "Knuckles\\Scribe\\": "src/"
@@ -1448,13 +1447,12 @@
             "homepage": "http://github.com/knuckleswtf/scribe",
             "keywords": [
                 "api",
-                "dingo",
                 "documentation",
                 "laravel"
             ],
             "support": {
                 "issues": "https://github.com/knuckleswtf/scribe/issues",
-                "source": "https://github.com/knuckleswtf/scribe/tree/4.40.0"
+                "source": "https://github.com/knuckleswtf/scribe/tree/5.1.0"
             },
             "funding": [
                 {
@@ -1462,7 +1460,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-02-03T20:29:15+00:00"
+            "time": "2025-02-25T09:09:08+00:00"
         },
         {
             "name": "laravel/framework",
@@ -1678,7 +1676,6 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2025-02-12T20:58:18+00:00"
-
         },
         {
             "name": "laravel/passport",
@@ -7130,7 +7127,6 @@
             "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/yaml/tree/v7.2.3"
-
             },
             "funding": [
                 {
@@ -7147,7 +7143,6 @@
                 }
             ],
             "time": "2025-01-07T12:55:42+00:00"
-
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
@@ -7422,69 +7417,6 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "fakerphp/faker",
-            "version": "v1.24.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5",
-                "reference": "e0ee18eb1e6dc3cda3ce9fd97e5a0689a88a64b5",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.4 || ^8.0",
-                "psr/container": "^1.0 || ^2.0",
-                "symfony/deprecation-contracts": "^2.2 || ^3.0"
-            },
-            "conflict": {
-                "fzaninotto/faker": "*"
-            },
-            "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.4.1",
-                "doctrine/persistence": "^1.3 || ^2.0",
-                "ext-intl": "*",
-                "phpunit/phpunit": "^9.5.26",
-                "symfony/phpunit-bridge": "^5.4.16"
-            },
-            "suggest": {
-                "doctrine/orm": "Required to use Faker\\ORM\\Doctrine",
-                "ext-curl": "Required by Faker\\Provider\\Image to download images.",
-                "ext-dom": "Required by Faker\\Provider\\HtmlLorem for generating random HTML.",
-                "ext-iconv": "Required by Faker\\Provider\\ru_RU\\Text::realText() for generating real Russian text.",
-                "ext-mbstring": "Required for multibyte Unicode string functionality."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Faker\\": "src/Faker/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "François Zaninotto"
-                }
-            ],
-            "description": "Faker is a PHP library that generates fake data for you.",
-            "keywords": [
-                "data",
-                "faker",
-                "fixtures"
-            ],
-            "support": {
-                "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.24.1"
-            },
-            "time": "2024-11-21T13:46:39+00:00"
-        },
         {
             "name": "hamcrest/hamcrest-php",
             "version": "v2.0.1",

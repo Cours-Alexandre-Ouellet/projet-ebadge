@@ -38,6 +38,7 @@ Route::group([
         Route::post('/', [App\Http\Controllers\BadgeController::class, 'create']);
         Route::post('/image', [App\Http\Controllers\BadgeController::class, 'updateImage']);
         Route::put('/', [App\Http\Controllers\BadgeController::class, 'update']);
+        Route::put('/activation', [App\Http\Controllers\BadgeController::class, 'activation']);
         Route::delete('/{id}', [App\Http\Controllers\BadgeController::class, 'destroy']);
     });
 });
@@ -50,11 +51,11 @@ Route::group([
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\CategoryController::class, 'index']);
-    Route::post('/', [App\Http\Controllers\CategoryController::class, 'create']);
-    Route::put('/', [App\Http\Controllers\CategoryController::class, 'update']);
+    Route::post('/', [App\Http\Controllers\CategoryController::class, 'create'])->middleware('roles:' . Role::ADMIN);
+    Route::put('/', [App\Http\Controllers\CategoryController::class, 'update'])->middleware('roles:' . Role::ADMIN);
     Route::post('/assign-badge', [App\Http\Controllers\CategoryController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\CategoryController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
-    Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy']);
+    Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy'])->middleware('roles:' . Role::ADMIN);
 
     Route::get("/{id}/badges", [App\Http\Controllers\CategoryController::class, "getCategoryBadges"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\CategoryController::class, "getCategoryBadgeLeft"]);
@@ -80,6 +81,9 @@ Route::group([
     Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\UserController::class, "getUserBadgeLeft"]);
     Route::get("/role/{id}", [App\Http\Controllers\UserController::class, 'getAllByRole'])->middleware('roles:' . Role::ADMIN);
+    Route::delete("/admin/{id}", [App\Http\Controllers\UserController::class, 'deleteAdmin'])->middleware('roles:' . Role::ADMIN);
+    Route::post('/assign-admin', [App\Http\Controllers\UserController::class, 'assignAdmin'])->middleware('roles:' . Role::ADMIN);
+    Route::post("/remove-admin", [App\Http\Controllers\UserController::class, 'removeAdmin'])->middleware('roles:' . Role::ADMIN);
 
 });
 

@@ -21,7 +21,6 @@ const badgeDummy = {
     title: "",
     description: "",
     imagePath: null,
-    color: 'ffffff', // à retirer
     category: null
 };
 
@@ -135,9 +134,6 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
             imageFile === null || formData.append('image', imageFile);
             badge.imagePath === null || formData.append('imagePath', badge.imagePath);
             formData.append('color', badge.color); // à retirer
-
-            // Si le badge a une catégory
-            badge.category === undefined ||formData.append('category_id', badge.category.id);
             Api.post('/badge', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
