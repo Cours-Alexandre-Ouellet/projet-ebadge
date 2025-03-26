@@ -50,6 +50,7 @@ class Navbar extends React.Component {
       initials: 'ND',
       userSettings: [
         { name: 'Mon profil', href: '/' },
+        { name: 'Paramètre', href:'/modify_profile'},
         { name: 'Se déconnecter', href: '/auth/logout' }
       ]
     };

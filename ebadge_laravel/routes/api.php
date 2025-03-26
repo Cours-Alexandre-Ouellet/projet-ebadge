@@ -67,6 +67,7 @@ Route::group([
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
+    Route::get('/confirm/password', [App\Http\Controllers\UserController::class, 'confirmPassword']);
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
     Route::get("/my-badges", [App\Http\Controllers\UserController::class, "getMyBadges"]);
