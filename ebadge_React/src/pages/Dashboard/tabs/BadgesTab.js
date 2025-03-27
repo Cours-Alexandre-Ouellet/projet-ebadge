@@ -43,9 +43,9 @@ class BadgesTab extends React.Component {
      * Recupere la liste des badges depuis l'API
      */
     getBadges() {
-        Api.get('/badge').then(res => {
+        Api.get('/badge/category/names').then(res => {
             const badges = res.data;
-            this.setState({ badges: badges.badges });
+            this.setState({ badges: badges });
             this.setState({charge : true});
         }
         )
@@ -62,6 +62,7 @@ class BadgesTab extends React.Component {
     editBadge(badge) {
         const badges = this.state.badges.map(b => {
             if (b.id === badge.id) {
+                console.log("modifier");
                 return badge;
             }
             return b;
