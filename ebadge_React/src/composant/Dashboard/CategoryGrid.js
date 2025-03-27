@@ -19,6 +19,7 @@ const role = localStorage.getItem('role');
 /**
  * Composant qui affiche les catégories sous forme de tableau
  * 
+ * @author Alexandre del Fabbro
  * D'après le code du projet E-Badge
  * Inspiré du code de OpenAi - ChatGPT - [Modèle massif de langage] - chatpgt.com - [Consulté le 27 mars 2025]
  */
@@ -38,7 +39,7 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
     // Définition des colonnes du tableau
     const columns = [
         // Colonne pour l'ID de la catégorie
-        { field: 'id', headerName: 'ID', flex: 0.1, align: 'center', headerAlign: 'center' },
+        { field: 'id', headerName: 'ID', flex: 0.2, align: 'center', headerAlign: 'center' },
 
         // Colonne pour le nom de la catégorie
         { field: 'name', headerName: 'Nom', flex: 2, headerAlign: 'center' },
