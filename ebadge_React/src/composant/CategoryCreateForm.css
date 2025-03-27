@@ -41,7 +41,7 @@
     height: 100%;
 }
 
-form.create-category {
+.create-category {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
