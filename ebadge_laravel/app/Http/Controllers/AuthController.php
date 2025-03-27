@@ -95,6 +95,7 @@ class AuthController extends Controller
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'username' => $user->username,
+            'role_id' => $user->role_id,
             'privacy' => $user->privacy,
             'avatarImagePath' => $user->avatarImagePath,
             'backgroundImagePath' => $user->backgroundImagePath,
