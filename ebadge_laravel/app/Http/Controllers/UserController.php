@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Badge;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -356,5 +357,21 @@ public function removeAdmin(Request $request)
     return response()->json(['message' => 'Administrateur rétrogradé avec succès.']);
 }
 
+public function changeAdminPassword(Request $request, $id)
+{
+    $request->validate([
+        'password' => 'required|string|min:6'
+    ]);
+
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+    }
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return response()->json(['message' => 'Mot de passe mis à jour avec succès.']);
+}
 
 }

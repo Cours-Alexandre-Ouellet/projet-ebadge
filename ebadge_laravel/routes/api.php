@@ -81,7 +81,7 @@ Route::group([
     Route::delete("/admin/{id}", [App\Http\Controllers\UserController::class, 'deleteAdmin'])->middleware('roles:' . Role::ADMIN);
     Route::post('/assign-admin', [App\Http\Controllers\UserController::class, 'assignAdmin'])->middleware('roles:' . Role::ADMIN);
     Route::post("/remove-admin", [App\Http\Controllers\UserController::class, 'removeAdmin'])->middleware('roles:' . Role::ADMIN);
-
+    Route::post("/admin/{id}/change-password", [App\Http\Controllers\UserController::class, 'changeAdminPassword'])->middleware('roles:' . Role::ADMIN);
 });
 
 

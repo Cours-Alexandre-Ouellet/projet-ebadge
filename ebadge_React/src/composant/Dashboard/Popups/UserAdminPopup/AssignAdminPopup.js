@@ -123,7 +123,7 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
         <hr />
 
         {/* Tableau des administrateurs */}
-        <h4>Liste des administrateurs</h4>
+        {/* <h4>Liste des administrateurs</h4>
         <DataGrid
           autoHeight={true}
           rows={admins ?? []}
@@ -131,7 +131,7 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
           pageSize={5}
           rowsPerPageOptions={[5]}
           className="assign-admin-table"
-        />
+        /> */}
       </DialogContent>
       <DialogActions className="assign-admin-actions">
         <Button onClick={handleClose} variant="outlined">Fermer</Button>
