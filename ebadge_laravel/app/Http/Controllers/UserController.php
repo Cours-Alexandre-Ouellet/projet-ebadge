@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Badge;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -341,24 +342,36 @@ public function removeAdmin(Request $request)
 {
     $request->validate([
         'user_id' => 'required|exists:user,id',
+        'new_role' => 'required|in:2,3' // Accepte uniquement les rôles 2 (Professeur) et 3 (Étudiant)
     ]);
 
     $user = User::find($request->user_id);
-    $defaultRole = Role::where('name', 'Étudiant')->first(); // Par défaut, remet en étudiant
-
-    if (!$defaultRole) {
-        return response()->json(['message' => 'Le rôle Étudiant est introuvable.'], 500);
-    }
 
     if ($user->role_id != Role::Admin()->id) {
         return response()->json(['message' => 'Cet utilisateur n\'est pas administrateur.'], 400);
     }
 
-    $user->role_id = $defaultRole->id;
+    $user->role_id = $request->new_role; // Assigne le rôle choisi (Professeur ou Étudiant)
     $user->save();
 
     return response()->json(['message' => 'Administrateur rétrogradé avec succès.']);
 }
 
+public function changeAdminPassword(Request $request, $id)
+{
+    $request->validate([
+        'password' => 'required|string|min:6'
+    ]);
+
+    $user = User::find($id);
+    if (!$user) {
+        return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+    }
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+    return response()->json(['message' => 'Mot de passe mis à jour avec succès.']);
+}
 
 }

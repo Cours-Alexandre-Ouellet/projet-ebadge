@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
 import './UserAdminPopup.css';
-import ChangePasswordPopup from './ChangePasswordPopup';
+
 
 
 const UserAdminPopup = ({ isOpen, selectedAdmin, handleClose, deleteAdmin, canDelete }) => {
@@ -21,9 +21,7 @@ const UserAdminPopup = ({ isOpen, selectedAdmin, handleClose, deleteAdmin, canDe
         </div>
       </DialogContent>
       <DialogActions className="admin-actions">
-        <Button onClick={() => setOpenPasswordPopup(true)} variant="outlined">
-          Modifier le mot de passe
-        </Button>
+        
         <Button onClick={handleClose} variant="outlined">Fermer</Button>
         {canDelete && (
           <Button onClick={() => deleteAdmin(selectedAdmin.id)} className="admin-delete-btn" variant="contained">
@@ -32,12 +30,7 @@ const UserAdminPopup = ({ isOpen, selectedAdmin, handleClose, deleteAdmin, canDe
         )}
       </DialogActions>
 
-      {/* Popup de changement de mot de passe */}
-      <ChangePasswordPopup 
-        isOpen={openPasswordPopup} 
-        handleClose={() => setOpenPasswordPopup(false)}
-        adminId={selectedAdmin.id}
-      />
+    
     </Dialog>
   );
 };
