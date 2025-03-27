@@ -13,6 +13,10 @@ use App\Models\Badge;
 
 /**
  * Controller pour les catégories
+ * 
+ * @author: Alexandre del Fabbro - [alexandre.delfabbro@gmail.com]
+ * D'après le code de projet-ebadge
+ * Inspiré de OpenAi - ChatGPT - [Modèle massif de langage] - chatgpt.com - [Consulté le 20 mars 2025]
  */
 class CategoryController extends Controller
 {
@@ -113,19 +117,30 @@ class CategoryController extends Controller
     /**
      * Récupère les badges non assignés à la catégorie avec l'id donné
      */
-    public function getCategoryBadgeLeft(int $id)
+    // public function getCategoryBadgeLeft(int $id)
+    // {
+    //     $category = Category::find($id);
+
+    //     if ($category == null) {
+    //         return response()->json(['error' => 'Category not found'], 404);
+    //     }
+    //     $badges = $category->badges;
+    //     $missingBadges = Badge::whereNotIn('id', $badges->pluck('id'))->get();
+    //     return response()->json([
+    //         'badges' => $missingBadges
+    //     ]);
+
+    // }
+
+    /**
+     * Récupère les badges non assignés à une catégorie
+     */
+    public function getCategoryBadgeLeft()
     {
-        $category = Category::find($id);
-
-        if ($category == null) {
-            return response()->json(['error' => 'Category not found'], 404);
-        }
-        $badges = $category->badges;
-        $missingBadges = Badge::whereNotIn('id', $badges->pluck('id'))->get();
+        $unassignedBadges = Badge::whereDoesntHave('categories')->get();
         return response()->json([
-            'badges' => $missingBadges
+            'badges' => $unassignedBadges
         ]);
-
     }
 
     /**
