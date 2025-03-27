@@ -116,7 +116,6 @@ class BadgeController extends Controller
     public function activation(BadgeActivationRequest $request)
     {
         $badge = new Badge();
-        Log::debug('erreur'.$request);
         $badge = Badge::updateOrCreate(
             ['id' => $request->id],
             [
@@ -179,7 +178,6 @@ class BadgeController extends Controller
             }
             // Création du lien entre badge et catégorie
             else {
-                Log::debug("Create");
                 $categoryBadge = new CategoryBadge();
                 $categoryBadge->category_id = $request->category_id;
                 $categoryBadge->badge_id = $request->id;
@@ -192,9 +190,6 @@ class BadgeController extends Controller
         else if (count($categoryBadge) != 0) {
             $categoryBadge[0]->delete();
         }
-        Log::debug($badge);
-        Log::debug($request);
-
         return response()->json($badge);
     }
 

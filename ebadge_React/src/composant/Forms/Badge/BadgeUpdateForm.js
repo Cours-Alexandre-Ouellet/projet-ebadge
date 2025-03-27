@@ -39,32 +39,28 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
 
 
     useEffect(() => {
-        Api.get(`/badge/category/name/${badge.id}`).then((response) => {
-            if (response.data != null)
-                setBadge((prevState => (
-                    {
-                        ...prevState,
-                        category: response.data
-                    }
-                )));
-        }).catch((error) => {
-            console.log(error);
-        });
 
-    }, []);
-
-    // Va chercher les catégories
-    useEffect(() => {
         Api.get('/category/').then((response) => {
             setCategories(response.data.categories);
+            Api.get(`/badge/category/name/${badge.id}`).then((response) => {
+                setLoading(false);
+                if (response.data != null)
+                    setBadge((prevState => (
+                        {
+                            ...prevState,
+                            category: response.data
+                        }
+                    )));
+            }).catch((_) => {
+                errorBadge("Erreur lors de la selection du nom de la catégory du badge.")
+            });
 
-        }).catch((error) => {
-            console.log(error)
+        }).catch((_) => {
+            errorBadge("Erreur lors de la recherche des catégories.")
         });
-        setLoading(false);
+
 
     }, []);
-
 
 
     // Gère l'ouverture et la fermeture de l'image
@@ -131,7 +127,7 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
             return true;
         }
     }
-    
+
     // Gère l'envoie vers l'api
     const handleSubmit = (event) => {
         let formData = new FormData();
@@ -157,9 +153,10 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                 }
             })
                 .then((response) => {
+                    console.log(response.data)
                     editBadge(response.data);
                 })
-                .catch((error) => {
+                .catch((_) => {
                     errorBadge('Erreur lors de la modification du badge');
                 });
             handleClose();
@@ -216,27 +213,25 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
                             <div className='badge-create-form-category-selector'>
-                                <Autocomplete
-                                    value={badge.category}
-                                    onChange={(_, newValue) => {
-                                        setBadge(prevState => ({
-                                            ...prevState,
-                                            category: newValue
-                                        }));
-                                        
-                                    }}
-                                    inputValue={inputCategory}
-                                    onInputChange={(_, newInputValue) => {
-                                        setInputCategory(newInputValue);
-                                    }}
-                                    loading={loading}
-                                    id="controllable-states-demo"
-                                    options={categories.map((category) => category)}
-                                    getOptionLabel={(categories) => categories.name}
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Catégories" />}
-                                />
+                                {loading ? <Loading></Loading> :
+                                    <Autocomplete
+                                        value={badge.category}
+                                        onChange={(_, newValue) => {
+                                            setBadge(prevState => ({
+                                                ...prevState,
+                                                category: newValue
+                                            }));
 
+                                        }}
+                                        loading={!loading}
+                                        id="controllable-states-demo"
+                                        options={categories.map((category) => category)}
+                                        getOptionLabel={(categories) => categories.name}
+                                        isOptionEqualToValue={(option, value) => option.id == value.id}
+                                        sx={{ width: 300 }}
+                                        renderInput={(params) => <TextField {...params} label="Catégories" />}
+                                    />
+                                }
                             </div>
                             <div className="badge-create-form-button-field">
                                 <Button
@@ -330,6 +325,7 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                             <BadgeComponent badge={badge}></BadgeComponent>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

@@ -62,6 +62,7 @@ class BadgesTab extends React.Component {
     editBadge(badge) {
         const badges = this.state.badges.map(b => {
             if (b.id === badge.id) {
+                console.log("modifier");
                 return badge;
             }
             return b;
