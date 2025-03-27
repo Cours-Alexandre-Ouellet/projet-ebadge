@@ -276,6 +276,7 @@ export default class PageProfile extends React.Component {
                         {(this.state.user.role_id === RoleIds.Student) && (
                             <div style={{ width: "188px" }}>
                                 <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.user.privacy} onChange={this.handleOpenPrivacy} /></label>
+                                <Button variant="contained" onClick={this.handleClickBadges} className='badgeButton'>Modifier les badges favories</Button>
                             </div>
                         )}
                         <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>

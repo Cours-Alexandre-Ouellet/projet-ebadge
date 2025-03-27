@@ -18,6 +18,7 @@ class CreateUserBadgesTable extends Migration
     {
         Schema::create('user_badge', function (Blueprint $table) {
             $table->id();
+            $table->boolean('prefere')->default(false);
             $table->foreignId('user_id')->constrained('user');
             $table->foreignId('badge_id')->constrained('badge');
             $table->timestamps();
