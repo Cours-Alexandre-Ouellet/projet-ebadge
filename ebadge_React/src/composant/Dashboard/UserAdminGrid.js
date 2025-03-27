@@ -13,10 +13,9 @@ class UserAdminGrid extends React.Component {
       selectedAdmin: null,
       openPasswordPopup: false,
       confirmDelete: false,
-      adminToDelete: null,
-      confirmDowngrade: false,  // État pour la popup de rétrogradation
-      adminToDowngrade: null,   // Stocke l'admin à rétrograder
-      targetRole: null          // Stocke le rôle cible (Professeur ou Étudiant)
+      confirmDowngrade: false,
+      adminToModify: null,
+      downgradeRole: null
     };
   }
 
@@ -32,24 +31,24 @@ class UserAdminGrid extends React.Component {
 
   // Ouvre la popup de confirmation avant suppression
   handleConfirmDelete = (adminId) => {
-    this.setState({ confirmDelete: true, adminToDelete: adminId });
+    this.setState({ confirmDelete: true, adminToModify: adminId });
   };
 
   // Ferme la popup de confirmation
   handleCloseConfirmDelete = () => {
-    this.setState({ confirmDelete: false, adminToDelete: null });
+    this.setState({ confirmDelete: false, adminToModify: null });
   };
 
-  // Supprime un admin (uniquement si ce n'est pas le dernier)
+  // Supprime un admin (uniquement si ce n'est pas le dernier admin)
   deleteAdmin = () => {
     if (this.props.rows.length <= 1) return; // Empêche la suppression du dernier admin
-    const { adminToDelete } = this.state;
+    const { adminToModify } = this.state;
 
-    Api.delete(`/user/admin/${adminToDelete}`)
+    Api.delete(`/user/admin/${adminToModify}`)
       .then(() => {
-        console.log(`Admin ${adminToDelete} supprimé avec succès.`);
+        console.log(`Admin ${adminToModify} supprimé avec succès.`);
         if (this.props.onAdminDeleted) {
-          this.props.onAdminDeleted(adminToDelete);
+          this.props.onAdminDeleted(adminToModify);
         }
         this.handleCloseConfirmDelete();
       })
@@ -58,29 +57,25 @@ class UserAdminGrid extends React.Component {
       });
   };
 
-  // Ouvre la popup de confirmation pour rétrograder un admin
-  handleConfirmDowngrade = (admin, roleId) => {
-    this.setState({ 
-      confirmDowngrade: true, 
-      adminToDowngrade: admin, 
-      targetRole: roleId 
-    });
+  // Ouvre la popup de confirmation avant rétrogradation
+  handleConfirmDowngrade = (adminId, roleId) => {
+    this.setState({ confirmDowngrade: true, adminToModify: adminId, downgradeRole: roleId });
   };
 
   // Ferme la popup de confirmation de rétrogradation
   handleCloseConfirmDowngrade = () => {
-    this.setState({ confirmDowngrade: false, adminToDowngrade: null, targetRole: null });
+    this.setState({ confirmDowngrade: false, adminToModify: null, downgradeRole: null });
   };
 
-  // Effectue la rétrogradation après confirmation
+  // Rétrograde un admin en étudiant (3) ou professeur (2)
   downgradeAdmin = () => {
-    const { adminToDowngrade, targetRole } = this.state;
+    const { adminToModify, downgradeRole } = this.state;
 
-    Api.post("/user/remove-admin", { user_id: adminToDowngrade.id, new_role: targetRole })
+    Api.post("/user/remove-admin", { user_id: adminToModify, new_role: downgradeRole })
       .then(() => {
-        console.log(`Admin ${adminToDowngrade.id} rétrogradé en ${targetRole === 2 ? "Professeur" : "Étudiant"} avec succès.`);
+        console.log(`Admin ${adminToModify} rétrogradé avec succès.`);
         if (this.props.onAdminDeleted) {
-          this.props.onAdminDeleted(adminToDowngrade.id);
+          this.props.onAdminDeleted(adminToModify);
         }
         this.handleCloseConfirmDowngrade();
       })
@@ -110,15 +105,19 @@ class UserAdminGrid extends React.Component {
               const admin = params.row;
 
               if (action === "info") this.handleOpenDetails(admin);
-              if (action === "downgrade_student") this.handleConfirmDowngrade(admin, 3);
-              if (action === "downgrade_teacher") this.handleConfirmDowngrade(admin, 2);
+              if (action === "downgrade_student") this.handleConfirmDowngrade(admin.id, 3);
+              if (action === "downgrade_teacher") this.handleConfirmDowngrade(admin.id, 2);
               if (action === "delete") this.handleConfirmDelete(admin.id);
               if (action === "change_password") this.setState({ openPasswordPopup: true, selectedAdmin: admin });
             }}
           >
             <MenuItem value="info">Voir Infos</MenuItem>
-            <MenuItem value="downgrade_student">Rétrograder en Étudiant</MenuItem>
-            <MenuItem value="downgrade_teacher">Rétrograder en Professeur</MenuItem>
+            <MenuItem value="downgrade_student" disabled={this.props.rows.length <= 1}>
+              Rétrograder en Étudiant
+            </MenuItem>
+            <MenuItem value="downgrade_teacher" disabled={this.props.rows.length <= 1}>
+              Rétrograder en Professeur
+            </MenuItem>
             <MenuItem value="change_password">Modifier le mot de passe</MenuItem>
             <MenuItem value="delete" disabled={this.props.rows.length <= 1}>
               Supprimer
@@ -160,17 +159,24 @@ class UserAdminGrid extends React.Component {
 
         {/* Popup de confirmation de rétrogradation */}
         <Dialog open={this.state.confirmDowngrade} onClose={this.handleCloseConfirmDowngrade}>
-          <DialogTitle>Confirmer la rétrogradation</DialogTitle>
-          <DialogContent>
-            Êtes-vous sûr de vouloir rétrograder{"  "}
-            <strong>{this.state.adminToDowngrade?.first_name} {this.state.adminToDowngrade?.last_name} </strong> 
-            en <strong>{this.state.targetRole === 2 ? "Professeur" : "Étudiant"}</strong> ?
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleCloseConfirmDowngrade} variant="outlined">Annuler</Button>
-            <Button onClick={this.downgradeAdmin} variant="contained" color="warning">Confirmer</Button>
-          </DialogActions>
-        </Dialog>
+  <DialogTitle>Confirmer la rétrogradation</DialogTitle>
+  <DialogContent>
+    Êtes-vous sûr de vouloir rétrograder{" "}
+    <strong>
+      {this.props.rows.find(admin => admin.id === this.state.adminToModify)?.first_name}{" "}
+      {this.props.rows.find(admin => admin.id === this.state.adminToModify)?.last_name}
+    </strong>{" "}
+    en{" "}
+    <strong>
+      {this.state.downgradeRole === 2 ? "Professeur" : "Étudiant"}
+    </strong>{" "}
+    ?
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={this.handleCloseConfirmDowngrade} variant="outlined">Annuler</Button>
+    <Button onClick={this.downgradeAdmin} variant="contained" color="warning">Confirmer</Button>
+  </DialogActions>
+</Dialog>
 
         {/* Popup de changement de mot de passe */}
         {this.state.selectedAdmin && (

@@ -62,7 +62,7 @@ class UserAdminTab extends React.Component {
                 }}>
                     ⚠ Attention, vous avez seulement {this.state.adminUsers.length} administrateur. 
                     Il est recommandé d'en avoir entre 2 et 3. <br />
-                    L'administrateur restant ne peut pas être supprimé.
+                    L'administrateur restant ne peut pas être supprimé ou rétrogradé.
                 </p>
     )}
         <AssignAdminPopup 

@@ -5,7 +5,6 @@ import UserBadgesPopup from './Popups/UserBadgesPopup/UserBadgesPopup';
 
 
 class UserGrid extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -16,7 +15,15 @@ class UserGrid extends React.Component {
       selectedUser: null,
       columns: [
         { field: 'id', headerName: 'ID', flex: 1 },
-        { field: 'email', headerName: 'Email', flex: 1 },
+        { 
+          field: 'role', 
+          headerName: 'Rôle', 
+          flex: 1,
+          valueGetter: (params) => {
+            const roleMapping = { 1: "Administrateur", 2: "Professeur", 3: "Étudiant" };
+            return roleMapping[params.row.role_id] || "Inconnu"; // Gestion des valeurs imprévues
+          }
+        },
         { field: 'first_name', headerName: 'Prénom', flex: 1 },
         { field: 'last_name', headerName: 'Nom', flex: 1 },
         {
@@ -42,7 +49,6 @@ class UserGrid extends React.Component {
 
   /**
    * Ferme la popup de gestion des badges
-   * @param {*} event
    */
   handleClose = () => {
     this.setState({ open: false });
@@ -59,10 +65,11 @@ class UserGrid extends React.Component {
         />
 
         <UserBadgesPopup 
-        isOpen={this.state.open} 
-        selectedUser={this.state.selectedUser} 
-        handleClose={this.handleClose}
-        ref={this.badgeAssignationPopup} />
+          isOpen={this.state.open} 
+          selectedUser={this.state.selectedUser} 
+          handleClose={this.handleClose}
+          ref={this.badgeAssignationPopup} 
+        />
       </div>
     )
   }
