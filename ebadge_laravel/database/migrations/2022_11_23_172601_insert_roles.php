@@ -12,11 +12,11 @@ class InsertRoles extends Migration
      */
     public function up()
     {
-        DB::table('Role')->insert([
-            ['name' => Role::ADMIN],
-            ['name' => Role::ENSEIGNANT],
-            ['name' => Role::ETUDIANT]
-        ]);
+        // DB::table('Role')->insert([
+        //     ['name' => Role::ADMIN],
+        //     ['name' => Role::ENSEIGNANT],
+        //     ['name' => Role::ETUDIANT]
+        // ]);
     }
 
     /**

@@ -149,14 +149,14 @@ endpoints:
         name: code
         description: 'The <code>code</code> of an existing record in the teacher_code table.'
         required: true
-        example: nihil
+        example: iure
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      code: nihil
+      code: iure
     fileParameters: []
     responses: []
     responseFields: []
@@ -231,7 +231,7 @@ endpoints:
         name: title
         description: 'Le texte de value ne peut contenir plus de 45 caractères.'
         required: true
-        example: etibcpdrr
+        example: powakqkkasqujwhedqlenvy
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -241,7 +241,7 @@ endpoints:
         name: description
         description: 'Le texte de value ne peut contenir plus de 255 caractères.'
         required: true
-        example: 'In sapiente earum provident id dicta tempore.'
+        example: 'Sit accusantium dicta adipisci sint aut.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -251,7 +251,7 @@ endpoints:
         name: imagePath
         description: 'Le texte de value ne peut contenir plus de 2048 caractères.'
         required: false
-        example: abxfvgtam
+        example: exzmy
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -265,23 +265,99 @@ endpoints:
         type: file
         enumValues: []
         exampleWasSpecified: false
-        nullable: false
+        nullable: true
         custom: []
-      color:
-        name: color
-        description: 'Le texte du champ value doit contenir au moins 6 caractères. Le texte de value ne peut contenir plus de 8 caractères.'
+    cleanBodyParameters:
+      title: powakqkkasqujwhedqlenvy
+      description: 'Sit accusantium dicta adipisci sint aut.'
+      imagePath: exzmy
+    fileParameters:
+      image: null
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/badge/image
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: |-
+        Met à jour le badge avec l'id donné du badge
+        Version qui accepte les images et fichiers
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: multipart/form-data
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      id:
+        name: id
+        description: 'The <code>id</code> of an existing record in the badge table.'
         required: true
-        example: m
+        example: illo
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
+      title:
+        name: title
+        description: 'Le texte de value ne peut contenir plus de 45 caractères.'
+        required: true
+        example: ytwyqvotxmomdnaeeqyeiv
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: 'Le texte de value ne peut contenir plus de 255 caractères.'
+        required: true
+        example: 'Facilis pariatur laboriosam explicabo eius aut a nesciunt quo.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      imagePath:
+        name: imagePath
+        description: 'Le texte de value ne peut contenir plus de 2048 caractères.'
+        required: false
+        example: q
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      image:
+        name: image
+        description: 'Le champ value doit être une image.'
+        required: false
+        example: null
+        type: file
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
     cleanBodyParameters:
-      title: etibcpdrr
-      description: 'In sapiente earum provident id dicta tempore.'
-      imagePath: abxfvgtam
-      color: m
+      id: illo
+      title: ytwyqvotxmomdnaeeqyeiv
+      description: 'Facilis pariatur laboriosam explicabo eius aut a nesciunt quo.'
+      imagePath: q
     fileParameters:
       image: null
     responses: []
@@ -300,7 +376,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: "Met à jour le badge avec l'id donné"
+      title: "Met à jour le badge avec l'id donné du badge (Déprécié)"
       description: ''
       authenticated: false
       custom: []
@@ -316,7 +392,7 @@ endpoints:
         name: id
         description: 'The <code>id</code> of an existing record in the badge table.'
         required: true
-        example: exercitationem
+        example: voluptatum
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -326,7 +402,7 @@ endpoints:
         name: title
         description: 'Le texte de value ne peut contenir plus de 45 caractères.'
         required: true
-        example: uazeduebqntmducvohg
+        example: nkzpthtoxdfahtm
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -336,7 +412,7 @@ endpoints:
         name: description
         description: 'Le texte de value ne peut contenir plus de 255 caractères.'
         required: true
-        example: 'Quos totam similique temporibus odio similique.'
+        example: 'Ipsum eaque veniam quis est aspernatur animi.'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -346,28 +422,80 @@ endpoints:
         name: imagePath
         description: 'Le texte de value ne peut contenir plus de 2048 caractères.'
         required: false
-        example: ok
+        example: xrwgwdkliewj
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
-      color:
-        name: color
-        description: 'Le texte du champ value doit contenir au moins 6 caractères. Le texte de value ne peut contenir plus de 6 caractères.'
+    cleanBodyParameters:
+      id: voluptatum
+      title: nkzpthtoxdfahtm
+      description: 'Ipsum eaque veniam quis est aspernatur animi.'
+      imagePath: xrwgwdkliewj
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/badge/activation/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Met à jour l'activation d'un badge"
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the activation.'
         required: true
-        example: va
+        example: in
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
+    cleanUrlParameters:
+      id: in
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      id:
+        name: id
+        description: 'The <code>id</code> of an existing record in the badge table.'
+        required: true
+        example: facere
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      actovated:
+        name: actovated
+        description: ''
+        required: true
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
     cleanBodyParameters:
-      id: exercitationem
-      title: uazeduebqntmducvohg
-      description: 'Quos totam similique temporibus odio similique.'
-      imagePath: ok
-      color: va
+      id: facere
+      actovated: false
     fileParameters: []
     responses: []
     responseFields: []
@@ -397,14 +525,14 @@ endpoints:
         name: id
         description: 'The ID of the badge.'
         required: true
-        example: laborum
+        example: reiciendis
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: laborum
+      id: reiciendis
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -483,14 +611,14 @@ endpoints:
         name: name
         description: 'Le texte de value ne peut contenir plus de 45 caractères.'
         required: true
-        example: gnspzghvlpma
+        example: aluweqvbkkyuzt
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: gnspzghvlpma
+      name: aluweqvbkkyuzt
     fileParameters: []
     responses: []
     responseFields: []
@@ -524,7 +652,7 @@ endpoints:
         name: id
         description: 'The <code>id</code> of an existing record in the badge table.'
         required: true
-        example: hic
+        example: eligendi
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -534,15 +662,117 @@ endpoints:
         name: name
         description: 'Le texte de value ne peut contenir plus de 45 caractères.'
         required: true
-        example: keollzxgkdxf
+        example: ddxswjinbhjonuygofpuxv
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      id: hic
-      name: keollzxgkdxf
+      id: eligendi
+      name: ddxswjinbhjonuygofpuxv
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/category/assign-badge
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Assigne un badge à une catégorie'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      badge_id:
+        name: badge_id
+        description: 'The <code>id</code> of an existing record in the badge table.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      category_id:
+        name: category_id
+        description: 'The <code>id</code> of an existing record in the category table.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/category/remove-badge
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Enlève un badge d'une catégorie"
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      category_id:
+        name: category_id
+        description: 'The <code>id</code> of an existing record in the category table.'
+        required: true
+        example: quibusdam
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      badge_id:
+        name: badge_id
+        description: 'The <code>id</code> of an existing record in the badge table.'
+        required: true
+        example: quis
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      category_id: quibusdam
+      badge_id: quis
     fileParameters: []
     responses: []
     responseFields: []
@@ -572,20 +802,124 @@ endpoints:
         name: id
         description: 'The ID of the category.'
         required: true
-        example: est
+        example: exercitationem
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: est
+      id: exercitationem
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
     responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/category/{id}/badges'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Récupère les badges assignés à la catégorie avec l'id donné"
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the category.'
+        required: true
+        example: alias
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: alias
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+          access-control-allow-methods: 'GET, POST, PUT, DELETE, OPTIONS'
+          access-control-allow-headers: 'Content-Type, Authorization, X-Requested-With'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/category/{id}/badges-left'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: "Récupère les badges non assignés à la catégorie avec l'id donné"
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the category.'
+        required: true
+        example: nemo
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: nemo
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+          access-control-allow-methods: 'GET, POST, PUT, DELETE, OPTIONS'
+          access-control-allow-headers: 'Content-Type, Authorization, X-Requested-With'
+        description: null
+        custom: []
     responseFields: []
     auth: []
     controller: null
@@ -658,7 +992,7 @@ endpoints:
         name: user_id
         description: 'The <code>id</code> of an existing record in the user table.'
         required: true
-        example: nostrum
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -668,15 +1002,15 @@ endpoints:
         name: badge_id
         description: 'The <code>id</code> of an existing record in the badge table.'
         required: true
-        example: soluta
+        example: laborum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      user_id: nostrum
-      badge_id: soluta
+      user_id: et
+      badge_id: laborum
     fileParameters: []
     responses: []
     responseFields: []
@@ -710,7 +1044,7 @@ endpoints:
         name: user_id
         description: 'The <code>id</code> of an existing record in the user table.'
         required: true
-        example: ducimus
+        example: est
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -720,15 +1054,15 @@ endpoints:
         name: badge_id
         description: 'The <code>id</code> of an existing record in the badge table.'
         required: true
-        example: saepe
+        example: iste
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      user_id: ducimus
-      badge_id: saepe
+      user_id: est
+      badge_id: iste
     fileParameters: []
     responses: []
     responseFields: []
@@ -787,7 +1121,7 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: "Revoie tout les badges d'un utilisateur"
+      title: 'Récuperer une personne'
       description: ''
       authenticated: false
       custom: []
@@ -799,14 +1133,14 @@ endpoints:
         name: id
         description: 'The ID of the user.'
         required: true
-        example: eveniet
+        example: fugit
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: eveniet
+      id: fugit
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -865,14 +1199,14 @@ endpoints:
         name: backgroundUrl
         description: 'Must be a valid URL. Le texte de value ne peut contenir plus de 2048 caractères.'
         required: false
-        example: 'http://heidenreich.com/magni-aut-quisquam-dolores-sint.html'
+        example: 'http://www.paucek.info/quidem-ipsa-suscipit-recusandae-sequi-maiores-explicabo-incidunt'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      backgroundUrl: 'http://heidenreich.com/magni-aut-quisquam-dolores-sint.html'
+      backgroundUrl: 'http://www.paucek.info/quidem-ipsa-suscipit-recusandae-sequi-maiores-explicabo-incidunt'
     fileParameters:
       background: null
     responses: []
@@ -917,14 +1251,14 @@ endpoints:
         name: avatarUrl
         description: 'Must be a valid URL. Le texte de value ne peut contenir plus de 2048 caractères.'
         required: false
-        example: 'https://kub.com/quis-autem-aliquid-non-aut-eum-suscipit.html'
+        example: 'http://jones.net/vel-voluptas-ipsam-non-minus-rerum-dolor.html'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      avatarUrl: 'https://kub.com/quis-autem-aliquid-non-aut-eum-suscipit.html'
+      avatarUrl: 'http://jones.net/vel-voluptas-ipsam-non-minus-rerum-dolor.html'
     fileParameters:
       avatar: null
     responses: []
@@ -996,14 +1330,14 @@ endpoints:
         name: id
         description: 'The ID of the user.'
         required: true
-        example: minima
+        example: quia
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: minima
+      id: quia
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1048,14 +1382,14 @@ endpoints:
         name: id
         description: 'The ID of the user.'
         required: true
-        example: quia
+        example: modi
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: quia
+      id: modi
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1156,7 +1490,7 @@ endpoints:
         name: email
         description: 'Le champ value doit être une adresse email valide.'
         required: true
-        example: rblock@example.net
+        example: aylin83@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1166,7 +1500,7 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: '.h>&EW^DT"'
+        example: 'x)E"b:KO(k['
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1176,16 +1510,16 @@ endpoints:
         name: remember_me
         description: ''
         required: false
-        example: false
+        example: true
         type: boolean
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: rblock@example.net
-      password: '.h>&EW^DT"'
-      remember_me: false
+      email: aylin83@example.com
+      password: 'x)E"b:KO(k['
+      remember_me: true
     fileParameters: []
     responses: []
     responseFields: []
@@ -1222,7 +1556,7 @@ endpoints:
         name: username
         description: 'Le texte de value ne peut contenir plus de 50 caractères.'
         required: true
-        example: dusf
+        example: snxjcrrsosz
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1232,7 +1566,7 @@ endpoints:
         name: email
         description: 'Le champ value doit être une adresse email valide. Le texte de value ne peut contenir plus de 125 caractères.'
         required: true
-        example: wilhelmine.hudson@example.com
+        example: alejandrin06@example.com
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1242,7 +1576,7 @@ endpoints:
         name: password
         description: 'Le texte de value ne peut contenir plus de 60 caractères.'
         required: true
-        example: '^[={uz/unybdI'
+        example: "Wo']{&vtP,Md"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1252,7 +1586,7 @@ endpoints:
         name: first_name
         description: 'Le texte de value ne peut contenir plus de 50 caractères.'
         required: true
-        example: yeimejjbmevjqby
+        example: aquskrnwlqdmweg
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1262,7 +1596,7 @@ endpoints:
         name: last_name
         description: 'Le texte de value ne peut contenir plus de 50 caractères.'
         required: true
-        example: gognn
+        example: lmryfpqqapxudfzvxaujht
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1272,41 +1606,19 @@ endpoints:
         name: teacher_code
         description: ''
         required: false
-        example: veniam
+        example: inventore
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
-      organisation_id:
-        name: organisation_id
-        description: 'The <code>id</code> of an existing record in the organisation table.'
-        required: true
-        example: 13
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      program_id:
-        name: program_id
-        description: 'The <code>id</code> of an existing record in the program table.'
-        required: true
-        example: 10
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
     cleanBodyParameters:
-      username: dusf
-      email: wilhelmine.hudson@example.com
-      password: '^[={uz/unybdI'
-      first_name: yeimejjbmevjqby
-      last_name: gognn
-      teacher_code: veniam
-      organisation_id: 13
-      program_id: 10
+      username: snxjcrrsosz
+      email: alejandrin06@example.com
+      password: "Wo']{&vtP,Md"
+      first_name: aquskrnwlqdmweg
+      last_name: lmryfpqqapxudfzvxaujht
+      teacher_code: inventore
     fileParameters: []
     responses: []
     responseFields: []
@@ -1459,7 +1771,7 @@ endpoints:
         name: startDate
         description: ''
         required: true
-        example: magnam
+        example: est
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -1469,15 +1781,15 @@ endpoints:
         name: endDate
         description: ''
         required: true
-        example: temporibus
+        example: quia
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      startDate: magnam
-      endDate: temporibus
+      startDate: est
+      endDate: quia
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1522,14 +1834,14 @@ endpoints:
         name: category
         description: ''
         required: true
-        example: ut
+        example: aperiam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      category: ut
+      category: aperiam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -1579,7 +1891,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '[{"id":0,"name":"Organisation par d\u00e9faut","created_at":"2025-02-11T20:02:47.000000Z","updated_at":"2025-02-11T20:02:47.000000Z"}]'
+        content: '[{"id":0,"name":"Organisation par d\u00e9faut","created_at":"2025-03-18T18:43:05.000000Z","updated_at":"2025-03-18T18:43:05.000000Z"}]'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -1621,14 +1933,14 @@ endpoints:
         name: id
         description: 'The <code>id</code> of an existing record in the organisation table.'
         required: true
-        example: sint
+        example: eligendi
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      id: sint
+      id: eligendi
     fileParameters: []
     responses: []
     responseFields: []
@@ -1662,14 +1974,14 @@ endpoints:
         name: name
         description: 'Le texte de value ne peut contenir plus de 60 caractères.'
         required: true
-        example: aglccqepasazhmixech
+        example: yfxphznh
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: aglccqepasazhmixech
+      name: yfxphznh
     fileParameters: []
     responses: []
     responseFields: []
@@ -1704,7 +2016,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '[{"id":0,"name":"Programme par d\u00e9faut","created_at":"2025-02-11T20:02:47.000000Z","updated_at":"2025-02-11T20:02:47.000000Z"}]'
+        content: '[{"id":0,"name":"Programme par d\u00e9faut","created_at":"2025-03-18T18:43:05.000000Z","updated_at":"2025-03-18T18:43:05.000000Z"}]'
         headers:
           cache-control: 'no-cache, private'
           content-type: application/json
@@ -1746,14 +2058,14 @@ endpoints:
         name: id
         description: 'The <code>id</code> of an existing record in the program table. Must not be one of <code>0</code>.'
         required: true
-        example: 2
+        example: 15
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      id: 2
+      id: 15
     fileParameters: []
     responses: []
     responseFields: []
@@ -1787,14 +2099,14 @@ endpoints:
         name: name
         description: 'Le texte de value ne peut contenir plus de 60 caractères.'
         required: true
-        example: tst
+        example: qezbdmuztuepjrlgdcad
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: tst
+      name: qezbdmuztuepjrlgdcad
     fileParameters: []
     responses: []
     responseFields: []
