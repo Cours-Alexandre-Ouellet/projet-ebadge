@@ -117,7 +117,9 @@ html, body  {
 .backgroundButton {
     margin-top: 25px !important;
 }
-
+.badgeButton {
+    margin-top: 25px !important;
+}
 .infosLevel {
     display: flex;
     flex-direction: row;

@@ -37,6 +37,7 @@ export default class PageProfile extends React.Component {
 
         this.state = {
             openBackground: false,
+            openBadges:false,
             openConfirmationPopup: false,
             confirmPrivacyMessage: "",
             openAvatar: false,
@@ -132,10 +133,24 @@ export default class PageProfile extends React.Component {
     };
 
     /**
+     * fonction qui gère l'ouverture de la fenêtre de modification des badges favoris
+     */
+    handleClickBadge = () => {
+        this.setState({ openBadges: true });
+    };
+
+    /**
      * fonction qui gère la fermeture de la fenêtre de modification du fond d'écran
      */
     handleClose = () => {
         this.setState({ openBackground: false });
+    };
+
+    /**
+     * fonction qui gère la fermeture de la fenêtre de modification des badges favoris
+     */
+    handleCloseBadge = () => {
+        this.setState({ openBadges: false });
     };
 
     /**
@@ -274,9 +289,11 @@ export default class PageProfile extends React.Component {
                     <div className='infosUser'>
                         <p><strong>{this.state.user.first_name} {this.state.user.last_name}</strong></p>
                         {(this.state.user.role_id === RoleIds.Student) && (
+                            <div>
                             <div style={{ width: "188px" }}>
                                 <label>Compte privé :<input type="checkbox" className='checkbox' checked={this.state.user.privacy} onChange={this.handleOpenPrivacy} /></label>
-                                <Button variant="contained" onClick={this.handleClickBadges} className='badgeButton'>Modifier les badges favories</Button>
+                            </div>
+                            <Button variant="contained" onClick={this.handleClickBadge} className='badgeButton'>Modifier les badges favoris</Button>
                             </div>
                         )}
                         <Button variant="contained" onClick={this.handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
@@ -337,6 +354,63 @@ export default class PageProfile extends React.Component {
                                 <Button onClick={this.handleClose}>Annuler</Button>
                                 <Button onClick={this.handleDelete}>Supprimer</Button>
                                 <Button onClick={this.handleModify}>Modifier</Button>
+                            </DialogActions>
+                        </Dialog>
+                        <Dialog open={this.state.openBadges} onClose={this.handleCloseBadge}>
+                            <DialogTitle>Modifier vos badges favoris</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    Pour changer l'arrière plan, veuillez entrer l'URL de l'image.
+                                </DialogContentText>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="name"
+                                    label="URL"
+                                    type="url"
+                                    fullWidth
+                                    variant="standard"
+                                    onChange={e => {
+                                        this.setState({
+                                            backgroundUrlField: e.target.value
+                                        });
+                                    }}
+                                />
+                                <br />
+                                <br />
+                                <br />
+                                <DialogContentText>
+                                    Vous pouvez également importé une image.
+                                </DialogContentText>
+                                <br />
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                >
+                                    Importer une image
+                                    <input
+                                        type="file"
+                                        accept="image/png, image/jpeg"
+                                        hidden
+                                        onChange={e => {
+                                            this.setState({
+                                                backgroundImageFile: e.target.files[0]
+                                            });
+
+                                        }}
+                                    />
+                                </Button>
+                                <div hidden={this.state.backgroundImageFile === null}>
+                                    <Check></Check> Image importée
+                                </div>
+                                <div className="hiddenAlert">
+                                    <Alert variant="filled" severity="error" >
+                                        L'url de l'image n'est pas valide.
+                                    </Alert>
+                                </div>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.handleCloseBadge}>Fermer</Button>
                             </DialogActions>
                         </Dialog>
                         <Dialog open={this.state.openAvatar} onClose={this.handleCloseAvatar}>
