@@ -57,18 +57,19 @@ export default function PageProfileModify() {
 
 
     const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(user);
+
 
         if (validateOldPassword() && validateNewPassword() && validateNewPasswordConfirmation()) {
             let formData = new FormData();
             formData.append('id', user.id);
             formData.append('oldPassword', oldPassword);
             formData.append('newPassword', newPassword);
-            Api.get('/user/confirm/password', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+
+            event.preventDefault();
+            Api.post('/user/modify-password', {
+                id: user.id,
+                oldPassword : oldPassword,
+                newPassword : newPassword
             }).then((response) => {
                 console.log(response);
             }).catch((error) => {

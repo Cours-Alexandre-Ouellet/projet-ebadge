@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Badge;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -365,13 +367,16 @@ class UserController extends Controller
     /**
      * 
      */
-    public function confirmPassword(UserConfirmPasswordRequest $request)
-    {   
-        
+    public function modifyPassword(UserConfirmPasswordRequest $request)
+    {
+
         $user = User::find($request->id);
         $password = $user->password;
-
-        Log::debug(decrypt($password));
+        Log::debug($request->oldPassword);
+        Log::debug($password);
         
+        if (Hash::check($request->oldPassword, $password)) {
+            Log::debug("test");
+        }
     }
 }
