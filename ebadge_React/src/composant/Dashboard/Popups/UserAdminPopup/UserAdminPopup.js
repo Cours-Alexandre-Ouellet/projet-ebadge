@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import './UserAdminPopup.css';
 
 
 
 const UserAdminPopup = ({ isOpen, selectedAdmin, handleClose, deleteAdmin, canDelete }) => {
-  const [openPasswordPopup, setOpenPasswordPopup] = useState(false);
-
   if (!selectedAdmin) return null;
 
   return (

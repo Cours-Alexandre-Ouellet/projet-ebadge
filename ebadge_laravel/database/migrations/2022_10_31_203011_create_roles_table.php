@@ -26,6 +26,7 @@ class CreateRolesTable extends Migration
         // Insertion des rôles
         DB::table('role')->insert([
             ['name' => Role::ADMIN],
+            ['name' => Role::ADMIN_CONTACT],
             ['name' => Role::ENSEIGNANT],
             ['name' => Role::ETUDIANT],
         ]);

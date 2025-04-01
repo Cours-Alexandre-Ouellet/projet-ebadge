@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Models\Role;
@@ -8,7 +9,7 @@ Route::group([
     'prefix' => 'teacher-code',
     'middleware' => [
         'auth:api',
-        'roles:' . Role::ADMIN,
+        'roles:' . Role::ALL_ADMINS,
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\TeacherCodeController::class, 'index']);
@@ -22,7 +23,7 @@ Route::group([
     'prefix' => 'badge',
     'middleware' => [
         'auth:api',
-        'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT . ',' . Role::ETUDIANT,
+        'roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT . ',' . Role::ETUDIANT,
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\BadgeController::class, 'index']);
@@ -30,7 +31,7 @@ Route::group([
     Route::group([
         'middleware' => [
             'auth:api',
-            'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT,
+            'roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT,
         ],
     ], function () {
         Route::post('/', [App\Http\Controllers\BadgeController::class, 'create']);
@@ -45,15 +46,15 @@ Route::group([
     'prefix' => 'category',
     'middleware' => [
         'auth:api',
-        'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT,
+        'roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT,
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\CategoryController::class, 'index']);
-    Route::post('/', [App\Http\Controllers\CategoryController::class, 'create'])->middleware('roles:' . Role::ADMIN);
-    Route::put('/', [App\Http\Controllers\CategoryController::class, 'update'])->middleware('roles:' . Role::ADMIN);
-    Route::post('/assign-badge', [App\Http\Controllers\CategoryController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
-    Route::post('/remove-badge', [App\Http\Controllers\CategoryController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
-    Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy'])->middleware('roles:' . Role::ADMIN);
+    Route::post('/', [App\Http\Controllers\CategoryController::class, 'create'])->middleware('roles:' . Role::ALL_ADMINS);
+    Route::put('/', [App\Http\Controllers\CategoryController::class, 'update'])->middleware('roles:' . Role::ALL_ADMINS);
+    Route::post('/assign-badge', [App\Http\Controllers\CategoryController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
+    Route::post('/remove-badge', [App\Http\Controllers\CategoryController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
+    Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy'])->middleware('roles:' . Role::ALL_ADMINS);
 
     Route::get("/{id}/badges", [App\Http\Controllers\CategoryController::class, "getCategoryBadges"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\CategoryController::class, "getCategoryBadgeLeft"]);
@@ -67,10 +68,10 @@ Route::group([
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
-    Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
-    Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
+    Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
+    Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::get("/my-badges", [App\Http\Controllers\UserController::class, "getMyBadges"]);
-    Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT);
+    Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/edit-background', [App\Http\Controllers\UserController::class, 'editBackground']);
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);
     Route::post('/edit-privacy', [App\Http\Controllers\UserController::class, 'editPrivacy']);
@@ -78,10 +79,11 @@ Route::group([
     Route::get("/{id}", [App\Http\Controllers\UserController::class, "getUser"]);
     Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\UserController::class, "getUserBadgeLeft"]);
-    Route::get("/role/{id}", [App\Http\Controllers\UserController::class, 'getAllByRole'])->middleware('roles:' . Role::ADMIN);
-    Route::delete("/admin/{id}", [App\Http\Controllers\UserController::class, 'deleteAdmin'])->middleware('roles:' . Role::ADMIN);
-    Route::post('/assign-admin', [App\Http\Controllers\UserController::class, 'assignAdmin'])->middleware('roles:' . Role::ADMIN);
-    Route::post("/remove-admin", [App\Http\Controllers\UserController::class, 'removeAdmin'])->middleware('roles:' . Role::ADMIN);
+    Route::get("/role/{id}", [App\Http\Controllers\UserController::class, 'getAllByRole'])->middleware('roles:' . Role::ALL_ADMINS);
+    Route::delete("/admin/{id}", [App\Http\Controllers\UserController::class, 'deleteAdmin'])->middleware('roles:' . Role::ALL_ADMINS);
+    Route::post('/assign-admin', [App\Http\Controllers\UserController::class, 'assignAdmin'])->middleware('roles:' . Role::ALL_ADMINS);
+    Route::post("/assign-admin-contact", [App\Http\Controllers\UserController::class, 'assignAdminContact'])->middleware('roles:' . Role::ALL_ADMINS);
+    Route::post("/remove-admin", [App\Http\Controllers\UserController::class, 'removeAdmin'])->middleware('roles:' . Role::ALL_ADMINS);
     Route::post("/admin/{id}/change-password", [App\Http\Controllers\UserController::class, 'changeAdminPassword'])->middleware('roles:' . Role::ADMIN);
 });
 
@@ -107,7 +109,7 @@ Route::group([
     'prefix' => 'stats',
     'middleware' => [
         'auth:api',
-        'roles:' . Role::ADMIN . ',' . Role::ENSEIGNANT . ',' . Role::ETUDIANT,
+        'roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT . ',' . Role::ETUDIANT,
     ],
 ], function () {
     Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'Leaderboard']);
@@ -119,14 +121,20 @@ Route::group([
     'prefix' => 'organisation',
 ], function () {
     Route::get('/', [App\Http\Controllers\OrganisationController::class, 'index']);
-    Route::delete('/', [App\Http\Controllers\OrganisationController::class, 'delete'])->middleware('auth:api', 'roles:' . Role::ADMIN);
-    Route::post('/', [App\Http\Controllers\OrganisationController::class, 'create'])->middleware('auth:api', 'roles:' . Role::ADMIN);
+    Route::delete('/', [App\Http\Controllers\OrganisationController::class, 'delete'])->middleware('auth:api', 'roles:' . Role::ALL_ADMINS);
+    Route::post('/', [App\Http\Controllers\OrganisationController::class, 'create'])->middleware('auth:api', 'roles:' . Role::ALL_ADMINS);
 });
 
 Route::group([
     'prefix' => 'program',
 ], function () {
     Route::get('/', [App\Http\Controllers\ProgramController::class, 'index']);
-    Route::delete('/', [App\Http\Controllers\ProgramController::class, 'delete'])->middleware('auth:api', 'roles:' . Role::ADMIN);
-    Route::post('/', [App\Http\Controllers\ProgramController::class, 'create'])->middleware('auth:api', 'roles:' . Role::ADMIN);
+    Route::delete('/', [App\Http\Controllers\ProgramController::class, 'delete'])->middleware('auth:api', 'roles:' . Role::ALL_ADMINS);
+    Route::post('/', [App\Http\Controllers\ProgramController::class, 'create'])->middleware('auth:api', 'roles:' . Role::ALL_ADMINS);
+});
+
+Route::group([
+    'prefix' => 'contact',
+], function () {
+    Route::get('/', [ContactController::class, 'index']);
 });
