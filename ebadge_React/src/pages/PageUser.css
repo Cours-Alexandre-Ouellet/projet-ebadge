@@ -36,10 +36,9 @@ html, body  {
     margin: 50px;
     font-size: 24px;
     font-family: 'Barlow', sans-serif;
-    background-color: rgba(255, 255, 255, 0.5);
     padding: 25px;
     border-radius: 10px;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px);
     box-shadow: rgba(77, 77, 77, 0.1) 0px 19px 20px, rgba(66, 66, 66, 0.1) 0px -12px 30px, rgba(72, 71, 71, 0.1) 0px 4px 6px, rgba(63, 63, 63, 0.1) 0px 12px 13px, rgba(62, 62, 62, 0.1) 0px -3px 5px;
 
 }
@@ -88,3 +87,11 @@ html, body  {
     align-items: center;
 }
 
+.invertedText {
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Permet à background-clip: text de fonctionner */
+    filter: invert(1) contrast(2); /* Valeur de contraste plus raisonnable */
+    
+}
