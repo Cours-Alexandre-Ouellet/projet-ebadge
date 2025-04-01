@@ -21,6 +21,8 @@ class BadgeUpdateRequest extends FormRequest
             'title' => 'required|string|max:45',
             'description' => 'required|string|max:255',
             'imagePath' => 'nullable|max:2048',
+            'category_id' => 'nullable',
+            'category_name' => 'nullable'
         ];
     }
 }

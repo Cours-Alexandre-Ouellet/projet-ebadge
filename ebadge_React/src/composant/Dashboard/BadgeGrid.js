@@ -39,7 +39,7 @@ class BadgeGrid extends React.Component {
               <Avatar
                 alt={rows.row.title}
                 src={rows.value || getResource("badge.png")}
-                sx={{ width: 70, height: 70, bgcolor: `#${rows.row.color}` }}
+                sx={{ width: 70, height: 70 }}
               />
             );
           },
@@ -51,6 +51,7 @@ class BadgeGrid extends React.Component {
           flex: 4,
           headerAlign: "center",
         },
+        { field: "category", headerName: "Catégorie", flex: 4, headerAlign: "center" },
         {
           field: "BadgeActivationAction",
           flex: 1,
@@ -78,13 +79,13 @@ class BadgeGrid extends React.Component {
           headerAlign: "center",
           sortable: false,
           hideable: false,
-          renderCell: (rows) => {
+          renderCell: (params) => {
             const onClick = (e) => {
               e.stopPropagation();
 
               this.setState({
                 openEditDialog: true,
-                selectedBadge: rows.row,
+                selectedBadge: params.row,
               });
             };
             return (
@@ -139,15 +140,17 @@ class BadgeGrid extends React.Component {
   /**
    * donne une valeur a this.state.row lorsque props est chargé
    */
-  componentDidUpdate() {
-    if (this.state.rows.length == 0) {
+  componentDidUpdate(prevState) {
+    if (this.state.rows.length == 0 || this.props.rows != prevState.rows) {
       this.setState({ rows: this.props.rows.map((row) => ({ ...row })) });
     }
+
   }
+  
 
   /**
    * Fait un appelle à la base de données pour changer l'activation d'un badge
-   * Est appeler lorsqu'un "checkbox" est coché
+   * Est appeler lorsqu'un "switch" est coché
    * Code partiellement généré par : OpenAI. (2025). ChatGPT (version 20 mars 2025) [Modèle
    * massif de langage]. https://chat.openai.com/chat
    * @param {*} id l'id du badge
@@ -171,7 +174,6 @@ class BadgeGrid extends React.Component {
     )
       .then((_) => {})
       .catch((err) => {
-        console.log(this.state.rows);
         this.setState({rows: oldValues});
         this.props.errorBadge("La modification de l'état a échouée")
         console.error(err);

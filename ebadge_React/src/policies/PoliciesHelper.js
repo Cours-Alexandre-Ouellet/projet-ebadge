@@ -1,8 +1,6 @@
 import Role from './Role';
 
 export default class PoliciesHelper {
-
-
     constructor() {
         this.currentRoles = this.getCurrentRole();
     }
@@ -54,9 +52,12 @@ export default class PoliciesHelper {
 
         switch (role) {
             case Role.Admin:
+            case Role.AdminContact:
                 return Object.values(Role);
             case Role.Teacher:
                 return [Role.User, Role.Teacher];
+            case Role.User:
+                return [Role.User, Role.Guest];
             default:
                 return [role];
         }

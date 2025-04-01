@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Badge;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -35,20 +36,18 @@ class UserController extends Controller
 
             switch ($role) {
                 case Role::ADMIN:
+                case Role::ADMIN_CONTACT:
                     // retourne tous les élèves de tous les groupes
                     $users = User::all();
                     $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
                     return response()->json(['users' => $users]);
-                    break;
                 case Role::ENSEIGNANT:
                     // retourne tous les eleve du meme groupe que l'utilisateur
                     $users = User::where('program_id', $currentUser->program_id)->get();
                     $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
                     return response()->json(['users' => $users]);
-                    break;
                 default:
                     return response()->json(['error' => 'Unauthorized'], 401);
-                    break;
             }
         }
 
@@ -141,14 +140,14 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'user' =>[
-            'id' => $user->id,
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'username' => $user->username,
-            'privacy' => $user->privacy,
-            'avatarImagePath' => $user->avatarImagePath,
-            'backgroundImagePath' => $user->backgroundImagePath,
+            'user' => [
+                'id' => $user->id,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'username' => $user->username,
+                'privacy' => $user->privacy,
+                'avatarImagePath' => $user->avatarImagePath,
+                'backgroundImagePath' => $user->backgroundImagePath,
             ]
         ]);
     }
@@ -242,14 +241,14 @@ class UserController extends Controller
 
         $user = $request->user();
         $role_name = Role::where('id', $user->role_id)->first()->name;
-        
+
         if ($role_name != Role::ETUDIANT) {
             return response()->json([
                 'message' => 'You are not a student',
                 'role' => $user->role_name
             ]);
         }
-        
+
         $user->privacy = $request->privacy;
         $user->save();
         return response()->json([
@@ -280,7 +279,7 @@ class UserController extends Controller
         $users = User::where('role_id', $id)->get();
         return response()->json(['users' => $users]);
     }
-    
+
     /**
      * Supprime un utilisateur
      * 
@@ -297,68 +296,125 @@ class UserController extends Controller
     public function deleteAdmin($id)
     {
         $admin = User::find($id);
-    
+
         if (!$admin) {
             return response()->json(['message' => 'Administrateur non trouvé'], 404);
         }
-    
+
         $admin->delete();
-    
+
         return response()->json(['message' => 'Administrateur supprimé avec succès']);
     }
 
     /**
- * Assigne le rôle d'admin à un utilisateur
- *
- * @param Request $request
- * @return JsonResponse
- */
-public function assignAdmin(Request $request)
-{
-    $request->validate([
-        'user_id' => 'required|exists:user,id',
-    ]);
+     * Assigne le rôle d'admin à un utilisateur
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function assignAdmin(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:user,id',
+        ]);
 
-    $user = User::find($request->user_id);
-    $adminRole = Role::Admin(); // Récupère l'objet Role correspondant à "Administrateur"
+        $user = User::find($request->user_id);
+        $adminRole = Role::Admin(); // Récupère l'objet Role correspondant à "Administrateur"
 
-    if (!$adminRole) {
-        return response()->json(['message' => 'Le rôle Administrateur est introuvable.'], 500);
+        if (!$adminRole) {
+            return response()->json(['message' => 'Le rôle Administrateur est introuvable.'], 500);
+        }
+
+        if ($user->role_id == $adminRole->id) {
+            return response()->json(['message' => 'Cet utilisateur est déjà administrateur.'], 400);
+        }
+
+        // Met à jour le rôle avec l'ID du rôle Administrateur
+        $user->role_id = $adminRole->id;
+        $user->save();
+
+        return response()->json(['message' => 'Utilisateur promu administrateur.']);
     }
 
-    if ($user->role_id == $adminRole->id) {
-        return response()->json(['message' => 'Cet utilisateur est déjà administrateur.'], 400);
+    /**
+     * Assigne le rôle d'admin contact à un administrateur
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function assignAdminContact(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:user,id',
+        ]);
+
+        $user = User::find($request->user_id);
+        $adminContactRole = Role::AdminContact(); // Récupère l'objet Role correspondant à "Administrateur Contact"
+
+        if (!$adminContactRole) {
+            return response()->json(['message' => 'Le rôle Administrateur Contact est introuvable.'], 500);
+        }
+
+        if ($user->role_id == $adminContactRole->id) {
+            return response()->json(['message' => 'Cet utilisateur est déjà une personne de contact administrateur.'], 400);
+        }
+
+        // Rétrograder l'ancien Administrateur Contact en simple Administrateur
+        $ancienAdminContact = User::where('role_id', $adminContactRole->id)->first();
+
+        if ($ancienAdminContact) {
+            $ancienAdminContact->role_id = Role::Admin()->id;
+            $ancienAdminContact->save();
+        }
+
+        // Met à jour le rôle avec l'ID du rôle Administrateur Contact
+        $user->role_id = $adminContactRole->id;
+        $user->save();
+
+        return response()->json(['message' => 'Utilisateur promu administrateur.']);
     }
 
-    // Met à jour le rôle avec l'ID du rôle Administrateur
-    $user->role_id = $adminRole->id;
-    $user->save();
+    public function removeAdmin(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:user,id',
+            'new_role' => 'required|in:' . Role::Teacher()->id . ',' . Role::Student()->id // Accepte uniquement les rôles Professeur et Étudiant
+        ]);
 
-    return response()->json(['message' => 'Utilisateur promu administrateur.']);
-}
+        $user = User::find($request->user_id);
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+        }
 
-public function removeAdmin(Request $request)
-{
-    $request->validate([
-        'user_id' => 'required|exists:user,id',
-    ]);
+        if ($user->role_id == Role::AdminContact()->id) {
+            return response()->json(['message' => 'Cet utilisateur est une personne de contact administrateur.'], 400);
+        }
 
-    $user = User::find($request->user_id);
-    $defaultRole = Role::where('name', 'Étudiant')->first(); // Par défaut, remet en étudiant
+        if (!in_array($user->role_id, [Role::Admin()->id, Role::AdminContact()->id])) {
+            return response()->json(['message' => 'Cet utilisateur n\'est pas administrateur ou administrateur de contact.'], 400);
+        }
 
-    if (!$defaultRole) {
-        return response()->json(['message' => 'Le rôle Étudiant est introuvable.'], 500);
+        $user->role_id = $request->new_role; // Assigne le rôle choisi (Professeur ou Étudiant)
+        $user->save();
+
+        return response()->json(['message' => 'Administrateur rétrogradé avec succès.']);
     }
 
-    if ($user->role_id != Role::Admin()->id) {
-        return response()->json(['message' => 'Cet utilisateur n\'est pas administrateur.'], 400);
+    public function changeAdminPassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6'
+        ]);
+
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(['message' => 'Mot de passe mis à jour avec succès.']);
     }
-
-    $user->role_id = $defaultRole->id;
-    $user->save();
-
-    return response()->json(['message' => 'Administrateur rétrogradé avec succès.']);
-}
-
 
 }

@@ -1,4 +1,3 @@
-
 .badge-create-form {
     display: flex;
     flex-direction: row;
@@ -12,6 +11,7 @@
     align-items: center;
     width: 80%;
     height: 100%;
+    margin-bottom: 100px;
 }  
 
 .badge-create-form-content {
@@ -74,4 +74,9 @@ form.create-badge {
     margin-bottom: 0;
     margin-left: 14px;
     color: #d32f2f;
+}
+.badge-create-form-category-selector{
+    width: 80%;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
