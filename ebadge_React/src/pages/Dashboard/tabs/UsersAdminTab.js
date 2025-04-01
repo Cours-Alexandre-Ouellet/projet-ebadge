@@ -7,6 +7,7 @@ import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import UserAdminGrid from '../../../composant/Dashboard/UserAdminGrid';
 import AssignAdminPopup from '../../../composant/Dashboard/Popups/UserAdminPopup/AssignAdminPopup';
+import { RoleIds } from '../../../policies/Role';
 
 class UserAdminTab extends React.Component {
     constructor(props) {
@@ -16,12 +17,6 @@ class UserAdminTab extends React.Component {
             openAssignAdminPopup: false,
         };
     }
-
-    onAdminDeleted = (deletedId) => {
-        this.setState(prevState => ({
-            adminUsers: prevState.adminUsers.filter(admin => admin.id !== deletedId)
-        }));
-    };
 
     componentDidMount() {
         this.getAdminUsers();
@@ -33,7 +28,7 @@ class UserAdminTab extends React.Component {
     getAdminUsers() {
         Api.get('/user').then(res => {
             const users = res.data.users || [];
-            const adminUsers = users.filter(user => user.role_id === 1);
+            const adminUsers = users.filter(user => [RoleIds.Admin, RoleIds.AdminContact].includes(user.role_id));
             this.setState({ adminUsers });
         });
     }
@@ -50,7 +45,7 @@ class UserAdminTab extends React.Component {
                     Ajouter un Admin
                 </Button>
                 </div>
-                <UserAdminGrid rows={this.state.adminUsers} onAdminDeleted={this.onAdminDeleted}/>
+                <UserAdminGrid rows={this.state.adminUsers} refreshAdmins={this.getAdminUsers.bind(this)}/>
                 {this.state.adminUsers.length < 2 && (
                 <p style={{ 
                     color: 'red', 
@@ -76,3 +71,4 @@ class UserAdminTab extends React.Component {
 }
 
 export default UserAdminTab;
+

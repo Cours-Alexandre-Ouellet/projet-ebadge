@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '@mui/material';
-import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert, Divider } from '@mui/material';
-import { PhotoCamera, Check } from '@mui/icons-material';
+import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert, Divider, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { PhotoCamera, Check, Category } from '@mui/icons-material';
 import Api from '../../../utils/Api';
 import BadgeComponent from '../../PageProfil/BadgeComponent';
 import './BadgeCreateForm.css';
+import Loading from '../../Loading/LoadingComponent';
+
 
 /**
  *  Fonction qui vérifie si l'url est une image
@@ -15,11 +17,13 @@ function isImage(url) {
     return /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(url);
 }
 
-var badgeDummy = {
+const badgeDummy = {
     title: "",
     description: "",
     imagePath: null,
+    category: null
 };
+
 
 /**
  * Fonction qui affiche et gère la création de badge
@@ -38,6 +42,19 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
     const [imageFile, setImageFile] = useState(null);
     const [badge, setBadge] = useState(badgeDummy);
 
+    const [categories, setCategories] = useState([]);
+    const [loadingCategory, setLoadingCategory] = useState(true);
+    const [inputCategory, setInputCategory] = useState();
+
+
+    useEffect(() => {
+        Api.get('/category/').then((response) => {
+            setCategories(response.data.categories);
+            setLoadingCategory(false);
+        }).catch((error) => {
+            console.log(error)
+        });
+    }, []);
 
     // Gère l'ouverture et la fermeture de l'image
     const handleImageDialog = () => {
@@ -48,23 +65,35 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
     const handleImageDelete = () => {
         setImageFile(null);
         setImageUrlField("");
-        badgeDummy.imagePath = null
-        setBadge(badgeDummy);
+        setBadge((prevState) => (
+            {
+                ...prevState,
+                imagePath: null
+            }
+        ));
         handleImageDialog();
     }
 
     // Gère les modification de l'image du badge
     const handleImageModify = () => {
         if (imageFile !== null) {
-            badgeDummy.imagePath = URL.createObjectURL(imageFile);
             setImageUrlField("");
-            setBadge(badgeDummy);
+            setBadge((prevState) => (
+                {
+                    ...prevState,
+                    imagePath: URL.createObjectURL(imageFile)
+                }
+            ));
             handleImageDialog();
 
         } else if (isImage(imageUrlField)) {
-            badgeDummy.imagePath = imageUrlField;
             setImageFile(null);
-            setBadge(badgeDummy);
+            setBadge((prevState) => (
+                {
+                    ...prevState,
+                    imagePath: imageUrlField
+                }
+            ));
             handleImageDialog()
         } else {
             alert('Image invalide');
@@ -104,6 +133,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
             // Si l'image est un lien ou bien un fichier
             imageFile === null || formData.append('image', imageFile);
             badge.imagePath === null || formData.append('imagePath', badge.imagePath);
+            formData.append('color', badge.color); // à retirer
             Api.post('/badge', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -115,6 +145,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                 .catch((error) => {
                     errorBadge('Erreur lors de la création du badge');
                 });
+            setBadge(badgeDummy);
             handleClose();
 
         }
@@ -125,6 +156,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
         <div className="badge-create-form">
             <div className="badge-create-form-container">
                 <div className="badge-create-form-background">
+                    {!loadingCategory ?? <Loading></Loading>}
                     <div className="badge-create-form-content">
                         <h1>Créer un badge</h1>
                         <form className='create-badge' >
@@ -136,8 +168,12 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 variant="outlined"
                                 defaultValue={badge.title}
                                 onChange={(e) => {
-                                    badgeDummy.title = e.target.value;
-                                    setBadge(badgeDummy);
+                                    setBadge((prevState) => (
+                                        {
+                                            ...prevState,
+                                            title: e.target.value
+                                        }
+                                    ));
 
                                 }}
                                 onBlur={validateTitle}
@@ -157,8 +193,12 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 inputProps={{ maxLength: 255 }}
                                 defaultValue={badge.description}
                                 onChange={(e) => {
-                                    badgeDummy.description = e.target.value;
-                                    setBadge(badgeDummy);
+                                    setBadge((prevState) => (
+                                        {
+                                            ...prevState,
+                                            description: e.target.value
+                                        }
+                                    ));
 
                                 }}
                                 onBlur={validateDescription}
@@ -167,6 +207,27 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 required
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
+                            <div className='badge-create-form-category-selector'>
+                                <Autocomplete
+                                    onChange={(_, newValue) => {
+                                            setBadge((prevState) => (
+                                                {
+                                                    ...prevState,
+                                                    category: newValue
+                                                }
+                                            ));
+                                    }}
+                                    inputValue={inputCategory}
+                                    onInputChange={(_, newInputValue) => {
+                                        setInputCategory(newInputValue);
+                                    }}
+                                    id="controllable-states-demo"
+                                    options={categories.map((category) => category)}
+                                    getOptionLabel={(categories) => categories.name}
+                                    sx={{ width: 300 }}
+                                    renderInput={(params) => <TextField {...params} label="Catégories" />}
+                                />
+                            </div>
                             <div className="badge-create-form-button-field">
                                 <Button
                                     variant="contained"
@@ -241,7 +302,10 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 </Dialog>
                             </div>
                             <div className="badge-create-form-button-submit">
-                                <Button variant="outlined" onClick={handleClose} sx={{
+                                <Button variant="outlined" onClick={() => {
+                                    setBadge(badgeDummy);
+                                    handleClose();
+                                }} sx={{
                                     width: '100%',
                                     marginTop: '20px',
                                     marginRight: '20px'

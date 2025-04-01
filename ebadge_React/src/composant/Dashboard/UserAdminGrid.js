@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Select, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Select, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Tooltip } from '@mui/material';
 import Api from '../../../src/utils/Api';
 import UserAdminPopup from './Popups/UserAdminPopup/UserAdminPopup'; // Popup des détails
 import ChangePasswordPopup from './Popups/UserAdminPopup/ChangePasswordPopup';
+import Role, { RoleIds } from '../../policies/Role';
+import EmailIcon from '@mui/icons-material/Email';
 
 class UserAdminGrid extends React.Component {
   constructor(props) {
@@ -15,7 +17,12 @@ class UserAdminGrid extends React.Component {
       confirmDelete: false,
       confirmDowngrade: false,
       adminToModify: null,
-      downgradeRole: null
+      downgradeRole: null,
+      adminToDelete: null,
+      confirmDowngrade: false,  // État pour la popup de rétrogradation
+      confirmUpgrade: false,  // État pour la popup de promotion
+      adminToAffect: null,   // Stocke l'admin à rétrograder
+      targetRole: null          // Stocke le rôle cible (Professeur ou Étudiant)
     };
   }
 
@@ -50,6 +57,7 @@ class UserAdminGrid extends React.Component {
         if (this.props.onAdminDeleted) {
           this.props.onAdminDeleted(adminToModify);
         }
+        this.props.refreshAdmins();
         this.handleCloseConfirmDelete();
       })
       .catch(err => {
@@ -57,26 +65,54 @@ class UserAdminGrid extends React.Component {
       });
   };
 
-  // Ouvre la popup de confirmation avant rétrogradation
-  handleConfirmDowngrade = (adminId, roleId) => {
-    this.setState({ confirmDowngrade: true, adminToModify: adminId, downgradeRole: roleId });
+  // Ouvre la popup de confirmation pour promouvoir un admin en contact administrateur
+  handleConfirmUpgrade = (admin) => {
+    this.setState({
+      confirmUpgrade: true,
+      adminToAffect: admin
+    });
+  };
+
+  // Ouvre la popup de confirmation pour rétrograder un admin
+  handleConfirmDowngrade = (admin, roleId) => {
+    this.setState({
+      confirmDowngrade: true,
+      adminToAffect: admin,
+      targetRole: roleId
+    });
+  };
+
+  // Ferme la popup de confirmation de promotion
+  handleCloseConfirmUpgrade = () => {
+    this.setState({ confirmUpgrade: false });
   };
 
   // Ferme la popup de confirmation de rétrogradation
   handleCloseConfirmDowngrade = () => {
-    this.setState({ confirmDowngrade: false, adminToModify: null, downgradeRole: null });
+    this.setState({ confirmDowngrade: false, adminToAffect: null, targetRole: null });
+  };
+
+  // Effectue la promotion après confirmation
+  upgradeAdminContact = () => {
+    const { adminToAffect } = this.state;
+
+    Api.post("/user/assign-admin-contact", { user_id: adminToAffect.id })
+      .then(() => {
+        this.props.refreshAdmins();
+        this.handleCloseConfirmUpgrade();
+      })
+      .catch(err => {
+        console.error("Erreur lors de la promotion :", err);
+      });
   };
 
   // Rétrograde un admin en étudiant (3) ou professeur (2)
   downgradeAdmin = () => {
-    const { adminToModify, downgradeRole } = this.state;
+    const { adminToAffect, targetRole } = this.state;
 
-    Api.post("/user/remove-admin", { user_id: adminToModify, new_role: downgradeRole })
+    Api.post("/user/remove-admin", { user_id: adminToAffect.id, new_role: targetRole })
       .then(() => {
-        console.log(`Admin ${adminToModify} rétrogradé avec succès.`);
-        if (this.props.onAdminDeleted) {
-          this.props.onAdminDeleted(adminToModify);
-        }
+        this.props.refreshAdmins();
         this.handleCloseConfirmDowngrade();
       })
       .catch(err => {
@@ -100,30 +136,41 @@ class UserAdminGrid extends React.Component {
             displayEmpty
             inputProps={{ 'aria-label': 'Without label' }}
             renderValue={() => "Actions"}
-            onChange={(e) => {
-              const action = e.target.value;
-              const admin = params.row;
-
-              if (action === "info") this.handleOpenDetails(admin);
-              if (action === "downgrade_student") this.handleConfirmDowngrade(admin.id, 3);
-              if (action === "downgrade_teacher") this.handleConfirmDowngrade(admin.id, 2);
-              if (action === "delete") this.handleConfirmDelete(admin.id);
-              if (action === "change_password") this.setState({ openPasswordPopup: true, selectedAdmin: admin });
-            }}
+            fullWidth
+            value=''
           >
-            <MenuItem value="info">Voir Infos</MenuItem>
-            <MenuItem value="downgrade_student" disabled={this.props.rows.length <= 1}>
-              Rétrograder en Étudiant
-            </MenuItem>
-            <MenuItem value="downgrade_teacher" disabled={this.props.rows.length <= 1}>
-              Rétrograder en Professeur
-            </MenuItem>
-            <MenuItem value="change_password">Modifier le mot de passe</MenuItem>
-            <MenuItem value="delete" disabled={this.props.rows.length <= 1}>
+            <MenuItem onClick={() => this.handleOpenDetails(params.row)}>Détails</MenuItem>
+            {params.row.role_id !== RoleIds.AdminContact && (
+              <>
+                <MenuItem onClick={() => this.handleConfirmUpgrade(params.row)}>Promouvoir en contact</MenuItem>
+                <MenuItem onClick={() => this.handleConfirmDowngrade(params.row, RoleIds.Student)}>Rétrograder en étudiant</MenuItem>
+                <MenuItem onClick={() => this.handleConfirmDowngrade(params.row, RoleIds.Teacher)}>Rétrograder en professeur</MenuItem>
+              </>
+            )}
+            <MenuItem onClick={() => this.setState({ openPasswordPopup: true, selectedAdmin: params.row })}>Modifier le mot de passe</MenuItem>
+            <MenuItem onClick={() => this.handleConfirmDelete(params.row.id)} disabled={this.props.rows.length <= 1}>
               Supprimer
             </MenuItem>
           </Select>
         ),
+      },
+      {
+        field: "details",
+        minWidth: 50,
+        headerName: "Détails",
+        sortable: false,
+        renderCell: (params) => {
+          if (params.row.role_id === RoleIds.AdminContact) {
+            return (
+              <Tooltip title="Contact Administrateur">
+                <EmailIcon />
+              </Tooltip>
+            );
+          }
+
+          return <></>
+
+        },
       }
     ];
 
@@ -157,26 +204,33 @@ class UserAdminGrid extends React.Component {
           </DialogActions>
         </Dialog>
 
+        {/* Popup de confirmation de promotion */}
+        <Dialog open={this.state.confirmUpgrade} onClose={this.handleCloseConfirmUpgrade}>
+          <DialogTitle>Confirmer la promotion</DialogTitle>
+          <DialogContent>
+            Êtes-vous sûr de promouvoir <strong>{this.state.adminToAffect?.first_name} {this.state.adminToAffect?.last_name} </strong> en administrateur de contact ?
+            <br />
+            L'ancien utilisateur assigné sera rétrogradé en administrateur.
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseConfirmUpgrade} variant="outlined">Annuler</Button>
+            <Button onClick={this.upgradeAdminContact} variant="contained" color="warning">Confirmer</Button>
+          </DialogActions>
+        </Dialog>
+
         {/* Popup de confirmation de rétrogradation */}
         <Dialog open={this.state.confirmDowngrade} onClose={this.handleCloseConfirmDowngrade}>
-  <DialogTitle>Confirmer la rétrogradation</DialogTitle>
-  <DialogContent>
-    Êtes-vous sûr de vouloir rétrograder{" "}
-    <strong>
-      {this.props.rows.find(admin => admin.id === this.state.adminToModify)?.first_name}{" "}
-      {this.props.rows.find(admin => admin.id === this.state.adminToModify)?.last_name}
-    </strong>{" "}
-    en{" "}
-    <strong>
-      {this.state.downgradeRole === 2 ? "Professeur" : "Étudiant"}
-    </strong>{" "}
-    ?
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={this.handleCloseConfirmDowngrade} variant="outlined">Annuler</Button>
-    <Button onClick={this.downgradeAdmin} variant="contained" color="warning">Confirmer</Button>
-  </DialogActions>
-</Dialog>
+          <DialogTitle>Confirmer la rétrogradation</DialogTitle>
+          <DialogContent>
+            Êtes-vous sûr de vouloir rétrograder{"  "}
+            <strong>{this.state.adminToAffect?.first_name} {this.state.adminToAffect?.last_name} </strong>
+            en <strong>{this.state.targetRole === RoleIds.Teacher ? Role.Teacher : Role.User}</strong> ?
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseConfirmDowngrade} variant="outlined">Annuler</Button>
+            <Button onClick={this.downgradeAdmin} variant="contained" color="warning">Confirmer</Button>
+          </DialogActions>
+        </Dialog>
 
         {/* Popup de changement de mot de passe */}
         {this.state.selectedAdmin && (

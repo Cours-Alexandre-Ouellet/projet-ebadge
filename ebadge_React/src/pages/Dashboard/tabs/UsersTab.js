@@ -26,7 +26,7 @@ class UsersTab extends React.Component {
         Api.get('/user').then(res => {
             const users = res.data;
             this.setState({ users: users.users });
-            this.setState({charge:true});
+            this.setState({ charge: true });
         }
         )
     }
@@ -36,7 +36,7 @@ class UsersTab extends React.Component {
             <Item className='bordered'>
                 <h4>Liste des utilisateurs</h4>
                 <UserGrid rows={this.state.users} />
-                {this.state.charge?<hr></hr>:<Loading/>}
+                {this.state.charge ? <hr></hr> : <Loading />}
             </Item>
         );
     }

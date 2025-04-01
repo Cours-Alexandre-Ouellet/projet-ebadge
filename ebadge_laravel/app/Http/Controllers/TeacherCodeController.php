@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TeacherCode\TeacherCodeAssignRequest;
+use App\Models\Role;
 use App\Models\TeacherCode;
 use Illuminate\Http\Request;
+use User;
 
 class TeacherCodeController extends Controller
 {
@@ -40,11 +42,15 @@ class TeacherCodeController extends Controller
     public function assign(TeacherCodeAssignRequest $request)
     {
         $userId = $request->get('user_id');
+        $user = User::find($userId);
         $teacherCodeId = $request->get('teacher_code_id');
 
         $code = TeacherCode::where('id', $teacherCodeId)->first();
-        $code->user_id = $userId;
+        $code->user_id = $user->id;
         $code->save();
+
+        $user->role_id = Role::Teacher()->id;
+        $user->save();
 
         return response()->json(['message' => 'Code assigned']);
     }
@@ -62,6 +68,11 @@ class TeacherCodeController extends Controller
 
         $code = TeacherCode::where('code', $request->code)->first();
         $code->delete();
+
+        $user = User::where('id', $code->user_id)->first();
+        $user->role_id = Role::Student()->id;
+        $user->save();
+
         return response()->json([
             'message' => 'Code deleted'
         ]);
