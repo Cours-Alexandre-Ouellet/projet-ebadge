@@ -36,7 +36,7 @@ export default function PageProfile(){
     const [openBackground,setOpenBackground]= useState(false);
     const [openBadges,setOpenBadges]= useState(false);
     const [openConfirmationPopup,setOpenConfirmationPopup]= useState(false);
-    const [confirmPrivacyMessage,setConfirmPrivacyMessage]= useState("");
+    const [confirmPrivacyMessage,setConfirmPrivacyMessage]= useState(null);
     const [openAvatar, setOpenAvatar]= useState(false);
     const [avatarUrlField, setAvatarUrlField] = useState("");
     const [avatarImageFile, setAvatarImageFile] = useState(null);
@@ -71,8 +71,11 @@ export default function PageProfile(){
      */
     function updatePrivacyMessage() {
         setConfirmPrivacyMessage(
-            "Un compte privé ne sera pas visible dans les classements et ne sera pas accessible par les autres utilisateurs.\n\n" +
-            `Voulez-vous vraiment rendre votre compte ${user.privacy ? 'public' : 'privé'} ?`
+            <p id='privacyMessage'>
+                Un compte privé ne sera pas visible dans les classements et ne sera pas accessible par les autres utilisateurs.
+                <br /><br />
+                Voulez-vous vraiment rendre votre compte {user.privacy ? 'public' : 'privé'} ?
+            </p>
         );
     }
 
@@ -262,13 +265,13 @@ export default function PageProfile(){
                     </div>
                 </div>
                 <div className='infosUser'>
-                    <p><strong>{user.first_name} {user.last_name}</strong></p>
+                    <p><strong className="invertedText" style={{ backgroundImage: `url(${user.backgroundImagePath})` }}>{user.first_name} {user.last_name}</strong></p>
                     {(user.role_id === RoleIds.Student) && (
                         <div>
                         <div style={{ width: "188px" }}>
-                            <label>Compte privé :<input type="checkbox" className='checkbox' checked={user.privacy} onChange={handleOpenPrivacy} /></label>
+                            <label className="invertedText" style={{ backgroundImage: `url(${user.backgroundImagePath})` }} >Compte privé :<input type="checkbox" className='checkbox' checked={user.privacy} onChange={handleOpenPrivacy} /></label>
                         </div>
-                        <Button variant="contained" onClick={handleClickBadge} className='badgeButton'>Modifier les badges favoris</Button>
+                        {/* <Button variant="contained" onClick={handleClickBadge} className='badgeButton'>Modifier les badges favoris</Button> */}
                         </div>
                     )}
                     <Button variant="contained" onClick={handleClickOpen} className='backgroundButton'>Modifier l'arrière plan</Button>
@@ -327,7 +330,7 @@ export default function PageProfile(){
                         </DialogActions>
                     </Dialog>
 
-
+{/* 
 
 
 
@@ -361,7 +364,7 @@ export default function PageProfile(){
                             />
                     </Dialog>
 
-
+ */}
 
 
 

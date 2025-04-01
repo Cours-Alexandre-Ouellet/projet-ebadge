@@ -110,6 +110,28 @@ class UserController extends Controller
     /**
      * Get all badges of a user
      */
+    public function getUserBadges(int $id)
+    {
+        $user = User::find($id);
+
+        if ($user == null) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        $badges = $user->badges;
+
+        foreach ($user->badges as $badge) {
+            $badge->setPossessionPercentage();
+        }
+
+        return response()->json([
+            'badges' => $badges
+        ]);
+    }
+
+    /**
+     * Get all favorite badges of a user
+     */
     public function getUserBadgesFavorite(int $id)
     {
         $badges = User::select('badge')
