@@ -80,6 +80,8 @@ Route::group([
 
     Route::get("/{id}", [App\Http\Controllers\UserController::class, "getUser"]);
     Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"]);
+    Route::get("/{id}/badgesFavoris", [App\Http\Controllers\UserController::class, "getUserBadgesFavoris"]);
+    Route::get("/{id}/badgesNonFavoris", [App\Http\Controllers\UserController::class, "getUserBadgesNonFavoris"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\UserController::class, "getUserBadgeLeft"]);
     Route::get("/role/{id}", [App\Http\Controllers\UserController::class, 'getAllByRole'])->middleware('roles:' . Role::ALL_ADMINS);
     Route::delete("/admin/{id}", [App\Http\Controllers\UserController::class, 'deleteAdmin'])->middleware('roles:' . Role::ALL_ADMINS);
