@@ -20,7 +20,7 @@ class UserGrid extends React.Component {
           headerName: 'Rôle', 
           flex: 1,
           valueGetter: (params) => {
-            const roleMapping = { 1: "Administrateur", 2: "Professeur", 3: "Étudiant" };
+            const roleMapping = { 1: "Administrateur", 2:"Contact Admin", 3: "Professeur", 4: "Étudiant" };
             return roleMapping[params.row.role_id] || "Inconnu"; // Gestion des valeurs imprévues
           }
         },
