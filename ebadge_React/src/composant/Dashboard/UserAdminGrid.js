@@ -6,6 +6,7 @@ import UserAdminPopup from './Popups/UserAdminPopup/UserAdminPopup'; // Popup de
 import ChangePasswordPopup from './Popups/UserAdminPopup/ChangePasswordPopup';
 import Role, { RoleIds } from '../../policies/Role';
 import EmailIcon from '@mui/icons-material/Email';
+import Info from '@mui/icons-material/Info';
 
 class UserAdminGrid extends React.Component {
   constructor(props) {
@@ -140,13 +141,18 @@ class UserAdminGrid extends React.Component {
             value=''
           >
             <MenuItem onClick={() => this.handleOpenDetails(params.row)}>Détails</MenuItem>
-            {params.row.role_id !== RoleIds.AdminContact && (
-              <>
-                <MenuItem onClick={() => this.handleConfirmUpgrade(params.row)}>Promouvoir en contact</MenuItem>
-                <MenuItem onClick={() => this.handleConfirmDowngrade(params.row, RoleIds.Student)}>Rétrograder en étudiant</MenuItem>
-                <MenuItem onClick={() => this.handleConfirmDowngrade(params.row, RoleIds.Teacher)}>Rétrograder en professeur</MenuItem>
-              </>
-            )}
+            <MenuItem onClick={() => this.handleConfirmUpgrade(params.row)} disabled={params.row.role_id === RoleIds.AdminContact}>
+              Promouvoir en contact
+              {params.row.role_id === RoleIds.AdminContact && <Tooltip title="Impossible de promouvoir un contact administrateur"><Info style={{ marginLeft: 5, pointerEvents: 'auto' }} /></Tooltip>}
+            </MenuItem>
+            <MenuItem onClick={() => this.handleConfirmDowngrade(params.row, RoleIds.Student)} disabled={params.row.role_id === RoleIds.AdminContact}>
+              Rétrograder en étudiant
+              {params.row.role_id === RoleIds.AdminContact && <Tooltip title="Impossible de rétrograder un contact administrateur"><Info style={{ marginLeft: 5, pointerEvents: 'auto' }} /></Tooltip>}
+            </MenuItem>
+            <MenuItem onClick={() => this.handleConfirmDowngrade(params.row, RoleIds.Teacher)} disabled={params.row.role_id === RoleIds.AdminContact}>
+              Rétrograder en professeur
+              {params.row.role_id === RoleIds.AdminContact && <Tooltip title="Impossible de rétrograder un contact administrateur"><Info style={{ marginLeft: 5, pointerEvents: 'auto' }} /></Tooltip>}
+            </MenuItem>
             <MenuItem onClick={() => this.setState({ openPasswordPopup: true, selectedAdmin: params.row })}>Modifier le mot de passe</MenuItem>
             <MenuItem onClick={() => this.handleConfirmDelete(params.row.id)} disabled={this.props.rows.length <= 1}>
               Supprimer
