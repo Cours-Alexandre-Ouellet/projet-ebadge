@@ -128,7 +128,6 @@ class UserController extends Controller
 
         foreach ($badges as $badge) {
             $badge->setPossessionPercentage();
-
         }
 
         return response()->json([
@@ -369,18 +368,31 @@ class UserController extends Controller
 
 
     /**
-     * 
+     * Modification de mot de passe d'un utilisateur pour son propre compte
+     * @param Request $request
+     * @return Jsonresponse Response de l'état de réussite du la modification
+     * @author Vincent Houle
      */
     public function modifyPassword(UserConfirmPasswordRequest $request)
     {
 
         $user = User::find($request->id);
         $password = $user->password;
-        Log::debug($request->oldPassword);
-        Log::debug($password);
-        
+
+        // Vérifie si l'ancien mot de passe est le bon
         if (Hash::check($request->oldPassword, $password)) {
-            Log::debug("test");
+            // Vérifie si le nouveau mot de passe est différent de l'ancien
+            if (!Hash::check($request->newPassword, $password)) {
+
+                $newPassword =  Hash::make($request->newPassword);
+                $user->password = $newPassword;
+                $user->save();
+                return response()->json(['sucess' => 'Votre mot de passe a été mis à jour.']);
+            } else {
+                return response()->json(['errorNewPassword' => 'Votre nouveau mot de passe est identique à votre ancien.']);
+            }
+        } else {
+            return response()->json(['errorOldPassword' => 'Votre ancien mot de passe est incorrecte.']);
         }
     }
 }

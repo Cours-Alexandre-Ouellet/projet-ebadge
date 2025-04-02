@@ -14,9 +14,9 @@ class UserConfirmPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            "id" => 'required',
+            "id" => 'required|exists:user,id',
             "oldPassword" => 'required|string|max:60',
-            "newPassword" => 'required|string|max:60'
+            "newPassword" => 'required|string|max:60|min:6'
         ];
     }
 }

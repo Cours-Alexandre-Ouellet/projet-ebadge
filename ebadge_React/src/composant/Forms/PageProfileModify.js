@@ -1,8 +1,16 @@
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import './PageProfileModify.css';
 import Api from '../../utils/Api.js'
+import InformationPopup from '../Dashboard/Popups/InformationPopup.js';
+import { Link } from 'react-router-dom';
+import UserModifyPasswordPopup from '../Dashboard/Popups/UserModifyPasswordPopup.js';
 
+/**
+ * Affiche le formulaire de modfication de mot de passe
+ * @returns la page de modification de mot de passe
+ * @author Vincent Houle
+ */
 export default function PageProfileModify() {
 
     const [user, setUser] = useState();
@@ -13,13 +21,27 @@ export default function PageProfileModify() {
     const [newPasswordError, setNewPasswordError] = useState("");
     const [newPasswordConfirmationError, setNewPasswordConfirmationError] = useState("");
 
+    const [route, setRoute] = useState("/");
+
+    const [isOpenConfirmation, setIsOpenConfirmation] = useState(false);
+
+    const [severity, setSeverity] = useState("info");
+    const [isOpenInformation, setIsOpenInformation] = useState(false);
+    const [messageInfo, setMessageInfo] = useState("");
 
     // Va chercher l'utilisateur connecter
     useEffect(() => {
         Api.get('/auth/current_user').then((response) => {
             setUser(response.data);
-        }).catch((error) => {
-            console.log(error);
+
+            // Changer la route si ce n'est pas un étudiant
+            if (response.data.role_id < 4)
+                setRoute("/admin/users");
+
+        }).catch((_) => {
+            setSeverity("error");
+            setMessageInfo("Une erreur est survenue avec nos serveur. Veuillez ressayer plus tard ou contactez un admin sur l'onglet contactez-nous.");
+            setIsOpenInformation(true);
         })
     }, [])
 
@@ -35,16 +57,18 @@ export default function PageProfileModify() {
         }
     }
 
+    // Valide la confirmation de mot de passe
     const validateNewPassword = () => {
         setNewPasswordError("");
-        if (newPassword.length === 0) {
-            setNewPasswordError("Veuillez choisir un mot de passe plus long.");
+        if (newPassword.length < 6) {
+            setNewPasswordError("Veuillez choisir un mot de passe de 6 caractère et plus");
             return false;
         } else {
             return true;
         }
     }
 
+    // Valide la confirmation de mot de passe
     const validateNewPasswordConfirmation = () => {
         setNewPasswordConfirmationError("");
         if (newPasswordConfirmation != newPassword) {
@@ -55,9 +79,8 @@ export default function PageProfileModify() {
         }
     }
 
-
+    // Gère la modification de mot de passe
     const handleSubmit = (event) => {
-
 
         if (validateOldPassword() && validateNewPassword() && validateNewPasswordConfirmation()) {
             let formData = new FormData();
@@ -68,13 +91,58 @@ export default function PageProfileModify() {
             event.preventDefault();
             Api.post('/user/modify-password', {
                 id: user.id,
-                oldPassword : oldPassword,
-                newPassword : newPassword
+                oldPassword: oldPassword,
+                newPassword: newPassword
             }).then((response) => {
-                console.log(response);
-            }).catch((error) => {
-                console.log(error);
-            })
+
+                // Si ça marche
+                if (response.data.sucess) {
+                    setSeverity("success");
+                    setMessageInfo(response.data.sucess);
+                    setIsOpenInformation(true);
+                }
+                // Si l'ancien mot de passe n'est pas le bon
+                else if (response.data.errorOldPassword) {
+                    setSeverity("error");
+                    setMessageInfo(response.data.errorOldPassword);
+                    setIsOpenInformation(true);
+                    setOldPasswordError(response.data.errorOldPassword);
+                }
+                // Si le nouveau mot de passe est le même que l'ancien
+                else if (response.data.errorNewPassword) {
+                    setSeverity("error");
+                    setMessageInfo(response.data.errorNewPassword);
+                    setIsOpenInformation(true);
+                    setNewPasswordError(response.data.errorNewPassword);
+                }
+            }).catch((_) => {
+                setSeverity("error");
+                setMessageInfo("Une erreur est survenue avec nos serveur. Veuillez ressayer plus tard ou contactez un admin sur l'onglet contactez-nous.");
+                setIsOpenInformation(true);
+
+            });
+
+
+        }
+        handleCloseConfirmation();
+    }
+
+    // Actions faits après fermeture de la popup
+    const onClosePopupInformation = () => {
+        setIsOpenInformation(false);
+        setMessageInfo("");
+
+    }
+    
+    // Gère la fermeture de la confirmation
+    const handleCloseConfirmation = () => {
+        setIsOpenConfirmation(false);
+    }
+
+    // Gère l'ouverture de la confirmation
+    const handleOpenConfirmation = () => {
+        if (validateOldPassword() && validateNewPassword() && validateNewPasswordConfirmation()) {
+            setIsOpenConfirmation(true);
         }
     }
 
@@ -83,9 +151,8 @@ export default function PageProfileModify() {
             <div className="profile-modify-form-container">
                 <div className="profile-modify-form-background">
                     <div className="profile-modify-form-content">
-                        <h1>Modifier son profile</h1>
+                        <h1>Modification de mot de passe</h1>
                         <form className='profile-modify' >
-
                             <TextField
                                 id="oldPassword"
                                 name="oldPassword"
@@ -102,6 +169,7 @@ export default function PageProfileModify() {
                                 required
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
+                            <Typography variant="caption" component={Link} to={"/contactez-nous"} sx={{margin : '-0.8em 0em -0.8em 0em', paddingLeft : '10px'}}>* Mot de passe oublié</Typography>
                             <TextField
                                 id="newPassword"
                                 name="newPassword"
@@ -133,20 +201,21 @@ export default function PageProfileModify() {
                                 required
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
+                            <InformationPopup onClose={onClosePopupInformation} isOpen={isOpenInformation} message={messageInfo} severity={severity} />
+                            <UserModifyPasswordPopup handleClose={handleCloseConfirmation} isOpen={isOpenConfirmation} handleSubmit={handleSubmit} />
                             <div className="profile-modify-form-button-submit">
-                                <Button variant="outlined" sx={{
+                                <Button variant="outlined" component={Link} to={route} sx={{
                                     width: '100%',
                                     marginTop: '20px',
                                     marginRight: '20px'
                                 }}>Annuler</Button>
-                                <Button onClick={handleSubmit} variant="contained" sx={{
+                                <Button onClick={handleOpenConfirmation} variant="contained" sx={{
                                     width: '100%',
                                     marginTop: '20px'
                                 }}>Modifier</Button>
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
