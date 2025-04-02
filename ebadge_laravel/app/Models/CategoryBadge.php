@@ -17,6 +17,10 @@ class CategoryBadge extends Model
 
     protected $table = 'category_badge';
 
+    protected $fillable = [
+        'badge_id',
+        'category_id'
+    ];
 
     public function definition(): array
     {

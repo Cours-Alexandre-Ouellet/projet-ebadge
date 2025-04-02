@@ -44,7 +44,9 @@ class Navbar extends React.Component {
 
         { name: 'Liste des badges', href: '/badges', minimumRole: Role.User },
 
-        { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher }
+        { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher },
+        
+        { name: 'Contactez-nous', href: '/contactez-nous', minimumRole: Role.Guest }
 
       ]),
       initials: 'ND',

@@ -26,7 +26,10 @@ class Role extends Model
     public const ADMIN = "Administrateur";
     public const ETUDIANT = "Étudiant";
     public const ENSEIGNANT = "Enseignant";
-
+    public const ADMIN_CONTACT = "Contact Administrateur";
+    
+    public const ALL_ADMINS = self::ADMIN . "," . self::ADMIN_CONTACT;
+    
     /**
      * Va chercher le role Administrateur pour avoir son id
      * @return Role
@@ -34,6 +37,15 @@ class Role extends Model
     public static function Admin()
     {
         return Role::where('name', self::ADMIN)->first();
+    }
+    
+    /**
+     * Va chercher le role Contact Administrateur pour avoir son id
+     * @return Role
+     */
+    public static function AdminContact()
+    {
+        return Role::where('name', self::ADMIN_CONTACT)->first();
     }
 
     /**

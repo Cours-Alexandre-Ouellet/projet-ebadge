@@ -39,20 +39,18 @@ class UserController extends Controller
 
             switch ($role) {
                 case Role::ADMIN:
+                case Role::ADMIN_CONTACT:
                     // retourne tous les élèves de tous les groupes
                     $users = User::all();
                     $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
                     return response()->json(['users' => $users]);
-                    break;
                 case Role::ENSEIGNANT:
                     // retourne tous les eleve du meme groupe que l'utilisateur
                     $users = User::where('program_id', $currentUser->program_id)->get();
                     $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
                     return response()->json(['users' => $users]);
-                    break;
                 default:
                     return response()->json(['error' => 'Unauthorized'], 401);
-                    break;
             }
         }
 
@@ -125,6 +123,12 @@ class UserController extends Controller
 
         foreach ($user->badges as $badge) {
             $badge->setPossessionPercentage();
+        }
+
+
+        foreach ($badges as $badge) {
+            $badge->setPossessionPercentage();
+
         }
 
         return response()->json([

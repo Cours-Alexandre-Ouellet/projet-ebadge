@@ -7,12 +7,17 @@ use App\Http\Requests\Badge\BadgeUpdateImageRequest;
 use App\Http\Requests\Badge\BadgeUpdateRequest;
 use App\Http\Requests\Badge\CreateBadgeRequest;
 use App\Models\Badge;
+use App\Models\Category;
+use App\Models\CategoryBadge;
 use App\Models\UserBadge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Mockery\Undefined;
 use PHPUnit\Framework\Constraint\Count;
+use Symfony\Component\ErrorHandler\Debug;
+
+use function Psy\debug;
 
 /**
  * Controller pour les badges
@@ -45,6 +50,7 @@ class BadgeController extends Controller
         $badge->title = $request->title;
         $badge->description = $request->description;
         $badge->teacher_id = $request->user()->id;
+
         //insertion de l'image dans le dossier public avec un nom original
         if ($request->hasFile('image')) {
             $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());
@@ -53,6 +59,15 @@ class BadgeController extends Controller
 
 
         $badge->save();
+        if ($request->category_id != 0) {
+            $categoryBadge = new CategoryBadge();
+            $categoryBadge->badge_id = $badge->id;
+            $categoryBadge->category_id = $request->category_id;
+            $categoryBadge->save();
+            $badge->category = $request->category_name;
+        }
+
+
         return response()->json($badge);
     }
 
@@ -101,7 +116,6 @@ class BadgeController extends Controller
     public function activation(BadgeActivationRequest $request)
     {
         $badge = new Badge();
-        Log::debug('erreur'.$request);
         $badge = Badge::updateOrCreate(
             ['id' => $request->id],
             [
@@ -122,20 +136,22 @@ class BadgeController extends Controller
      */
     public function updateImage(BadgeUpdateImageRequest $request)
     {
+        //----- Gerer l'image -----
         $imagePath = null;
-        $ancienBadge = Badge::find($request->id);
+        $oldBadge = Badge::find($request->id);
 
-        //Va supprimer l'ancienne image dans le serveur si elle est différente
-        if($ancienBadge->imagePath != $request->imagePath)
-            BadgeController::destroyOldImage($ancienBadge);
+        // Va supprimer l'ancienne image dans le serveur si elle est différente
+        if ($oldBadge->imagePath != $request->imagePath)
+            BadgeController::destroyOldImage($oldBadge);
 
-        //insertion de l'image dans le dossier public avec un nom original
+        // Insertion de l'image dans le dossier public avec un nom original
         if ($request->hasFile('image')) {
             $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());
             $imagePath = asset(Storage::url($path));
         } else
             $imagePath = $request->imagePath; // Si la requête n'a pas de fichier image
 
+        //----- Modification du badge -----
         $badge = Badge::updateOrCreate(
             ['id' => $request->id],
             [
@@ -145,8 +161,40 @@ class BadgeController extends Controller
             ]
         );
 
+        //----- Gerer la catégorie -----
+        $categoryBadge = CategoryBadge::where('badge_id', $request->id)->get();
+
+        if ($request->category_id) {
+
+            // Modification du lien entre badge et catégorie
+            if (count($categoryBadge) != 0) {
+                CategoryBadge::updateOrCreate(
+                    ['id' => $categoryBadge[0]->id],
+                    [
+                        'badge_id' => $request->id,
+                        'category_id' => $request->category_id
+                    ]
+                );
+            }
+            // Création du lien entre badge et catégorie
+            else {
+                $categoryBadge = new CategoryBadge();
+                $categoryBadge->category_id = $request->category_id;
+                $categoryBadge->badge_id = $request->id;
+                $categoryBadge->save();
+            }
+            $badge->{"category"} = $request->category_name;
+
+        }
+        // suppression du lien entre badge et catégorie
+        else if (count($categoryBadge) != 0) {
+            $categoryBadge[0]->delete();
+        }
         return response()->json($badge);
     }
+
+
+
 
     /**
      * Supprime l'ancienne image de badge dans le serveur
@@ -159,10 +207,12 @@ class BadgeController extends Controller
     {
         // nombre de badge avec la même image
         $badges = Badge::where('imagePath', '=', $badge->imagePath);
-
+        $port = $_SERVER['SERVER_PORT'];
+        $url = $_ENV['APP_URL'];
         // Supprimer l'image seulement si elle est dans un seul badge
         if ($badges->count() < 2) {
-            $nameImage = str_replace($_ENV['APP_URL'] . ":8000/storage", '', $badge->imagePath); // le 8000 sera à supprimer si il est en ligne
+            $nameImage = str_replace($url . ":" . $port . "/storage", '', $badge->imagePath);
+            // le 8000 sera à supprimer si il est en ligne
             if (Storage::disk('public')->exists($nameImage)) {
                 return Storage::disk('public')->delete($nameImage);
             }
@@ -181,7 +231,7 @@ class BadgeController extends Controller
     {
         $badge = Badge::find($id);
 
-        //Va supprimer l'ancienne image dans le serveur
+        // Va supprimer l'ancienne image dans le serveur
         BadgeController::destroyOldImage($badge);
 
         // Supprime les relations avec les catégories
@@ -191,5 +241,38 @@ class BadgeController extends Controller
 
         $badge->delete();
         return response()->json(['message' => 'Badge ' . $badge . ' supprimé']);
+    }
+
+    /**
+     * Va chercher la catégory d'un badge
+     * 
+     * @param id id du badge
+     * @return \Illuminate\Http\JsonResponse une catégorie
+     * @author Vincent Houle
+     */
+    public function getBadgeCategory($id)
+    {
+
+        $categoryId = CategoryBadge::where('badge_id', $id)->get();
+        $category = null;
+        if (count($categoryId) != 0)
+            $category = Category::find($categoryId[0]->category_id);
+        return response()->json($category);
+    }
+
+    /**
+     * Va chercher tous les badges avec leur nom de catégorie
+     * 
+     * @return \Illuminate\Http\JsonResponse les badges avec leur catégorie
+     * @author Vincent Houle
+     */
+    public function getAllBadgesWithCategory()
+    {
+        $badges = Badge::leftJoin('category_badge', 'category_badge.badge_id', '=', 'badge.id')
+            ->leftJoin('category', 'category.id', '=', 'category_badge.category_id')
+            ->select(['badge.*', 'category.name AS category'])
+            ->get();
+
+        return response()->json($badges);
     }
 }
