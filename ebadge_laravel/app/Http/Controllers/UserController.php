@@ -370,7 +370,7 @@ class UserController extends Controller
     /**
      * Modification de mot de passe d'un utilisateur pour son propre compte
      * @param Request $request
-     * @return Jsonresponse Response de l'état de réussite du la modification
+     * @return Jsonresponse Réponse de l'état de réussite de la modification
      * @author Vincent Houle
      */
     public function modifyPassword(UserConfirmPasswordRequest $request)
