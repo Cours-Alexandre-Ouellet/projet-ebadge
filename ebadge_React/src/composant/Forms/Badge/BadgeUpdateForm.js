@@ -30,10 +30,8 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
     const [imageUrlField, setImageUrlField] = useState("");
     const [imageFile, setImageFile] = useState(null);
     const [badge, setBadge] = useState(badgeDummy);
-    //const [badgeModify, setBadgeModify] = useState(true);
 
     const [categories, setCategories] = useState([]);
-    const [inputCategory, setInputCategory] = useState();
 
     const [loading, setLoading] = useState(true);
 
