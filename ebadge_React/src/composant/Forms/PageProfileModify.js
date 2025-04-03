@@ -208,7 +208,7 @@ export default function PageProfileModify() {
                                     width: '100%',
                                     marginTop: '20px',
                                     marginRight: '20px'
-                                }}>Annuler</Button>
+                                }}>Retour</Button>
                                 <Button onClick={handleOpenConfirmation} variant="contained" sx={{
                                     width: '100%',
                                     marginTop: '20px'
