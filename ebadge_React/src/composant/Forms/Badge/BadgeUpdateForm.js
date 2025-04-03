@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import '@mui/material';
-import { Button, TextField, InputAdornment, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert, Divider } from '@mui/material';
-import { PhotoCamera, Check, Description } from '@mui/icons-material';
+import { Button, TextField, Autocomplete, Dialog, DialogTitle, DialogActions, DialogContent, DialogContentText, Alert } from '@mui/material';
+import { PhotoCamera, Check, Refresh } from '@mui/icons-material';
 import Api from '../../../utils/Api';
 import './BadgeCreateForm.css';
 import BadgeComponent from '../../PageProfil/BadgeComponent';
-
+import Loading from '../../Loading/LoadingComponent';
 
 
 
@@ -23,14 +23,43 @@ function isImage(url) {
  * @author Vincent Houle /partiellement
  */
 export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge, errorBadge }) {
-    var badgeDummy = structuredClone(selectedBadge);
+    const badgeDummy = structuredClone(selectedBadge);
     const [titleError, setTitleError] = useState('');
     const [descriptionError, setDescriptionError] = useState('');
     const [openImageDialog, setOpenImageDialog] = useState(false);
     const [imageUrlField, setImageUrlField] = useState("");
     const [imageFile, setImageFile] = useState(null);
     const [badge, setBadge] = useState(badgeDummy);
-    //const [badgeModify, setBadgeModify] = useState(true);
+
+    const [categories, setCategories] = useState([]);
+
+    const [loading, setLoading] = useState(true);
+
+
+    useEffect(() => {
+
+        Api.get('/category/').then((response) => {
+            setCategories(response.data.categories);
+            Api.get(`/badge/category/name/${badge.id}`).then((response) => {
+                setLoading(false);
+                if (response.data != null)
+                    setBadge((prevState => (
+                        {
+                            ...prevState,
+                            category: response.data
+                        }
+                    )));
+            }).catch((_) => {
+                errorBadge("Erreur lors de la selection du nom de la catégory du badge.")
+            });
+
+        }).catch((_) => {
+            errorBadge("Erreur lors de la recherche des catégories.")
+        });
+
+
+    }, []);
+
 
     // Gère l'ouverture et la fermeture de l'image
     const handleImageDialog = () => {
@@ -39,24 +68,36 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
 
     // Gère la suppression de l'image
     const handleImageDelete = () => {
-        badgeDummy.imagePath = null;
         setImageFile(null);
-        setBadge(badgeDummy);
+        setBadge((prevState => (
+            {
+                ...prevState,
+                imagePath: null
+            }
+        )));
         handleImageDialog();
     }
 
     // Gère les modification de l'image du badge
     const handleImageModify = () => {
         if (imageFile !== null) {
-            badgeDummy.imagePath = URL.createObjectURL(imageFile);
-            setBadge(badgeDummy);
+            setBadge((prevState => (
+                {
+                    ...prevState,
+                    imagePath: URL.createObjectURL(imageFile)
+                }
+            )));
 
             handleImageDialog();
 
         } else if (isImage(imageUrlField)) {
-            badgeDummy.imagePath = imageUrlField;
             setImageFile(null);
-            setBadge(badgeDummy);
+            setBadge((prevState => (
+                {
+                    ...prevState,
+                    imagePath: imageUrlField
+                }
+            )));
             handleImageDialog()
         } else {
             alert('Image invalide');
@@ -96,6 +137,11 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
         badge.imagePath === null || formData.append('imagePath', badge.imagePath);
 
 
+        if (badge.category) {
+            badge.category.id === undefined || formData.append('category_id', badge.category.id);
+            badge.category.name === undefined || formData.append('category_name', badge.category.name);
+        }
+
         event.preventDefault();
         if (validateTitle() && validateDescription()) {
 
@@ -105,9 +151,10 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                 }
             })
                 .then((response) => {
+                    console.log(response.data)
                     editBadge(response.data);
                 })
-                .catch((error) => {
+                .catch((_) => {
                     errorBadge('Erreur lors de la modification du badge');
                 });
             handleClose();
@@ -122,7 +169,6 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                     <div className="badge-create-form-content">
                         <h1>Modifier un badge</h1>
                         <form className='create-badge'>
-
                             <TextField
                                 id="title"
                                 name="title"
@@ -130,8 +176,10 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                 variant="outlined"
                                 defaultValue={badge.title}
                                 onChange={(e) => {
-                                    badgeDummy.title = e.target.value;
-                                    setBadge(badgeDummy);
+                                    setBadge((prevState => ({
+                                        ...prevState,
+                                        title: e.target.value
+                                    })));
 
                                 }}
                                 onBlur={validateTitle}
@@ -151,9 +199,10 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                 inputProps={{ maxLength: 255 }}
                                 defaultValue={badge.description}
                                 onChange={(e) => {
-                                    badgeDummy.description = e.target.value;
-                                    setBadge(badgeDummy);
-
+                                    setBadge((prevState => ({
+                                        ...prevState,
+                                        description: e.target.value
+                                    })));
                                 }}
                                 onBlur={validateDescription}
                                 error={descriptionError.length > 0}
@@ -161,6 +210,27 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                 required
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
+                            <div className='badge-create-form-category-selector'>
+                                {loading ? <Loading></Loading> :
+                                    <Autocomplete
+                                        value={badge.category}
+                                        onChange={(_, newValue) => {
+                                            setBadge(prevState => ({
+                                                ...prevState,
+                                                category: newValue
+                                            }));
+
+                                        }}
+                                        loading={!loading}
+                                        id="controllable-states-demo"
+                                        options={categories.map((category) => category)}
+                                        getOptionLabel={(categories) => categories.name}
+                                        isOptionEqualToValue={(option, value) => option.id == value.id}
+                                        sx={{ width: 300 }}
+                                        renderInput={(params) => <TextField {...params} label="Catégories" />}
+                                    />
+                                }
+                            </div>
                             <div className="badge-create-form-button-field">
                                 <Button
                                     variant="contained"
@@ -253,6 +323,7 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                             <BadgeComponent badge={badge}></BadgeComponent>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

@@ -36,7 +36,6 @@ export default function PageUser() {
           }
           setLoaded(true);
           setUser(response.data);
-          console.log("/////////////////");
           console.log(response.data);
         })
         .catch((error) => {
@@ -62,7 +61,7 @@ export default function PageUser() {
             </div>
             <div className="infosUser">
               <p>
-                <strong>
+                <strong className="invertedText" style={{ backgroundImage: `url(${user.user.backgroundImagePath})` }}>
                   {user.user.first_name} {user.user.last_name}
                 </strong>
               </p>
