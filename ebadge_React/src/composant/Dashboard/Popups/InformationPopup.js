@@ -5,8 +5,8 @@ import { Alert, Snackbar } from "@mui/material";
  * 
  * @param {*} onClose fonction qui gère ce qui doit être fait après la fermeture du popup.
  * @param {*} openPopup UseState qui gère la fermeture.
- * @param {*} message Message à affichier
- * @param {*} severity Importance du message. Seule exemple possible : success, info, warning, error
+ * @param {*} message Message à afficher
+ * @param {*} severity Importance du message. Seul exemple possible : success, info, warning, error
  * @returns Un message d'information
  * @author Vincent Houle
  */

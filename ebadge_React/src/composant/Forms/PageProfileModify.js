@@ -169,10 +169,8 @@ export default function PageProfileModify() {
                                 required
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
-                            <Tooltip title="Veuillez contactez l'administrateur de contacte.">
                             <Typography variant="caption" component={Link} to={"/contactez-nous"} 
                             sx={{margin : '-0.8em 0em -0.8em 0em', paddingLeft : '10px'}}>* Mot de passe oublié</Typography>
-                            </Tooltip>
                             <TextField
                                 id="newPassword"
                                 name="newPassword"
