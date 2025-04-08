@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { RoleIds } from "../../../../policies/Role";
 import Api from "../../../../utils/Api";
-import "./AssignAdminPopup.css"; 
+import "./AssignAdminPopup.css";
 
 const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
   const [users, setUsers] = useState([]);
@@ -21,7 +21,7 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
   const fetchUsers = () => {
     Api.get("/user")
       .then((res) => {
-        const nonAdmins = res.data.users.filter(user => user.role_id !== 1);
+        const nonAdmins = res.data.users.filter(user => ![RoleIds.Admin, RoleIds.AdminContact].includes(user.role_id));
         setUsers(nonAdmins);
       })
       .catch(() => setUsers([]));
@@ -96,9 +96,9 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
         {/* Formulaire pour assigner un admin */}
         <div className="assign-admin-form">
           <FormControl fullWidth>
-            <InputLabel id="user-select-label">Sélectionner un utilisateur</InputLabel>
+            <InputLabel>Sélectionner un utilisateur</InputLabel>
             <Select
-              labelId="user-select-label"
+              label="Sélectionner un utilisateur"
               value={selectedUser}
               onChange={(e) => setSelectedUser(e.target.value)}
             >
@@ -110,10 +110,10 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
             </Select>
           </FormControl>
 
-          <Button 
-            onClick={handleAssignAdmin} 
-            variant="contained" 
-            color="primary" 
+          <Button
+            onClick={handleAssignAdmin}
+            variant="contained"
+            color="primary"
             disabled={loading || !selectedUser}
           >
             Confirmer l'assignation

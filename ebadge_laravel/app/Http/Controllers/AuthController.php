@@ -83,7 +83,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return JsonResponse les informations de l'utilisateur connecté
      */
-    public function current_user(Request $request)
+    public function currentUser(Request $request)
     {
         $user = $request->user();
         $user->program_name = Program::where('id', $user->program_id)->first()->name;

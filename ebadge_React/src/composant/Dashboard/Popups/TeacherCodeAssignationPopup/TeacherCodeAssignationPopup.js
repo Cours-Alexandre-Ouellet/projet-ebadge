@@ -138,7 +138,7 @@ export default function TeacherCodeAssignationPopup({ isOpen, handleClose, teach
                                 }}
                             >
                                 {
-                                    users.length === 0 ? <MenuItem disabled value={0}>Aucun enseignant disponible</MenuItem> :
+                                    users.length === 0 ? <MenuItem disabled value={0}>Aucun utilisateur disponible</MenuItem> :
                                         users.map((user, index) => {
                                             return (
                                                 <MenuItem value={user.id} key={index}>
