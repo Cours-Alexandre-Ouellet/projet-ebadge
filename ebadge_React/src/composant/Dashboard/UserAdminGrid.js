@@ -52,7 +52,7 @@ class UserAdminGrid extends React.Component {
     if (this.props.rows.length <= 1) return; // Empêche la suppression du dernier admin
     const { adminToModify } = this.state;
 
-    Api.delete(`/user/admin/${adminToModify}`)
+    Api.delete(`/user/${adminToModify}`)
       .then(() => {
         console.log(`Admin ${adminToModify} supprimé avec succès.`);
         if (this.props.onAdminDeleted) {
@@ -75,11 +75,11 @@ class UserAdminGrid extends React.Component {
   };
 
   // Ouvre la popup de confirmation pour rétrograder un admin
-  handleConfirmDowngrade = (admin, roleId) => {
+  handleConfirmDowngrade = (admin) => {
     this.setState({
       confirmDowngrade: true,
       adminToAffect: admin,
-      targetRole: roleId
+      targetRole: RoleIds.Teacher
     });
   };
 
@@ -107,7 +107,7 @@ class UserAdminGrid extends React.Component {
       });
   };
 
-  // Rétrograde un admin en étudiant (3) ou professeur (2)
+  // Rétrograde un admin en professeur (2)
   downgradeAdmin = () => {
     const { adminToAffect, targetRole } = this.state;
 
@@ -145,11 +145,7 @@ class UserAdminGrid extends React.Component {
               Promouvoir en contact
               {params.row.role_id === RoleIds.AdminContact && <Tooltip title="Impossible de promouvoir un contact administrateur"><Info style={{ marginLeft: 5, pointerEvents: 'auto' }} /></Tooltip>}
             </MenuItem>
-            <MenuItem onClick={() => this.handleConfirmDowngrade(params.row, RoleIds.Student)} disabled={params.row.role_id === RoleIds.AdminContact}>
-              Rétrograder en étudiant
-              {params.row.role_id === RoleIds.AdminContact && <Tooltip title="Impossible de rétrograder un contact administrateur"><Info style={{ marginLeft: 5, pointerEvents: 'auto' }} /></Tooltip>}
-            </MenuItem>
-            <MenuItem onClick={() => this.handleConfirmDowngrade(params.row, RoleIds.Teacher)} disabled={params.row.role_id === RoleIds.AdminContact}>
+            <MenuItem onClick={() => this.handleConfirmDowngrade(params.row)} disabled={params.row.role_id === RoleIds.AdminContact}>
               Rétrograder en professeur
               {params.row.role_id === RoleIds.AdminContact && <Tooltip title="Impossible de rétrograder un contact administrateur"><Info style={{ marginLeft: 5, pointerEvents: 'auto' }} /></Tooltip>}
             </MenuItem>
@@ -243,7 +239,7 @@ class UserAdminGrid extends React.Component {
           <ChangePasswordPopup
             isOpen={this.state.openPasswordPopup}
             handleClose={() => this.setState({ openPasswordPopup: false })}
-            adminId={this.state.selectedAdmin.id}
+            userId ={this.state.selectedAdmin.id}
           />
         )}
       </div>

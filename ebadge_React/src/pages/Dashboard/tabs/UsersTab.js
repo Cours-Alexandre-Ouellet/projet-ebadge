@@ -35,7 +35,7 @@ class UsersTab extends React.Component {
         return (
             <Item className='bordered'>
                 <h4>Liste des utilisateurs</h4>
-                <UserGrid rows={this.state.users} />
+                <UserGrid rows={this.state.users} refreshUsers={this.getUsers.bind(this)} />
                 {this.state.charge ? <hr></hr> : <Loading />}
             </Item>
         );

@@ -319,17 +319,17 @@ class UserController extends Controller
         return response()->json(['message' => 'Utilisateur supprimé']);
     }
 
-    public function deleteAdmin($id)
+    public function deleteUser($id)
     {
-        $admin = User::find($id);
-
-        if (!$admin) {
-            return response()->json(['message' => 'Administrateur non trouvé'], 404);
+        $user = User::find($id);
+    
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
-
-        $admin->delete();
-
-        return response()->json(['message' => 'Administrateur supprimé avec succès']);
+    
+        $user->delete();
+    
+        return response()->json(['message' => 'Utilisateur supprimé avec succès']);
     }
 
     /**
@@ -426,20 +426,20 @@ class UserController extends Controller
         return response()->json(['message' => 'Administrateur rétrogradé avec succès.']);
     }
 
-    public function changeAdminPassword(Request $request, $id)
+    public function changePassword(Request $request, $id)
     {
         $request->validate([
             'password' => 'required|string|min:6'
         ]);
-
+    
         $user = User::find($id);
         if (!$user) {
             return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
         }
-
+    
         $user->password = Hash::make($request->password);
         $user->save();
-
+    
         return response()->json(['message' => 'Mot de passe mis à jour avec succès.']);
     }
 

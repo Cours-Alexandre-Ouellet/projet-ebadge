@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } 
 import Api from '../../../../utils/Api';
 import "./UserAdminPopup.css";
 
-const ChangePasswordPopup = ({ isOpen, handleClose, adminId }) => {
+const ChangePasswordPopup = ({ isOpen, handleClose, userId }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
@@ -31,7 +31,7 @@ const ChangePasswordPopup = ({ isOpen, handleClose, adminId }) => {
       return;
     }
 
-    Api.post(`/user/admin/${adminId}/change-password`, { password })
+    Api.post(`/user/${userId}/change-password`, { password })
       .then(() => {
         setSuccess("Mot de passe mis à jour !");
         setTimeout(() => {
