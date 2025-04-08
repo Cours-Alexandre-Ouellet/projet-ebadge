@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, FormControl, TextField, Box, Typography } from '@mui/material';
 import Api from '../utils/Api';
 import './CategoryCreateForm.css';
-import { MuiColorInput } from 'mui-color-input'
+// import { MuiColorInput } from 'mui-color-input'
 
 /**
  * Composant du formulaire de création de catégorie
@@ -100,13 +100,13 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
                 <Box sx={{ marginTop: '20px', width: '80%' }}>
                 <Typography variant="h6" gutterBottom>Couleur de la catégorie</Typography>
 
-                    <MuiColorInput
+                    {/* <MuiColorInput
                         format="hex"
                         value={categoryColor}
                         onChange={handleColorChange}
                         // disableAlpha
                         // fullWidth
-                    />
+                    /> */}
                 </Box>
                 
                 <div className="category-create-form-button-submit">
