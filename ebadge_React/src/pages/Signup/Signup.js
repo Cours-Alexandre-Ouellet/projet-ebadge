@@ -72,7 +72,6 @@ export default function Signup() {
                     setIsLoading(false);
                 })
                 .catch((error) => {
-                    console.log(error);
                     if (error.response.status === 422) {
                         for (const [key, value] of Object.entries(error.response.data.errors)) {
                             setErrors((prevState) => ({ ...prevState, [key]: value[0] }));
