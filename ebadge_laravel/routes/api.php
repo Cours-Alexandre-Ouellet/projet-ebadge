@@ -70,6 +70,9 @@ Route::group([
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
+    Route::post('/modify-password', [App\Http\Controllers\UserController::class, 'modifyPassword']);
+    Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
+    Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::get("/my-badges", [App\Http\Controllers\UserController::class, "getMyBadges"]);
@@ -103,7 +106,7 @@ Route::group([
         'middleware' => 'auth:api'
     ], function () {
         Route::get('logout', [AuthController::class, 'logout']);
-        Route::get('current_user', [AuthController::class, 'current_user']);
+        Route::get('current_user', [AuthController::class, 'currentUser']);
     });
 });
 
