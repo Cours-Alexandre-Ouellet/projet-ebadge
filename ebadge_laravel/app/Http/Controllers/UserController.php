@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Badge;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\Badge\BadgeUpdateFavoriteRequest;
 
 class UserController extends Controller
 {
@@ -130,13 +131,14 @@ class UserController extends Controller
     }
 
     /**
-     * Get all favorite badges of a user
+     * Obtient tous les badges favoris d'un utilisateur
      */
     public function getUserBadgesFavorite(int $id)
     {
-        $badges = User::select('badge')
+        $badges = Badge::select('b.*')
         ->join('user_badge', 'user_badge.user_id','=','user.id')
-        ->join('badge', 'badge.id','=','user_badge')
+        ->join('badge as b', 'b.id','=','user_badge.badge_id')
+        ->from('user')
         ->where('user_badge.favorite','1')
         ->where('user.id', $id)
         ->get();
@@ -155,6 +157,51 @@ class UserController extends Controller
             'badges' => $badges
         ]);
     }
+
+    /**
+     * obtient tous les badges non favoris d'un utilisateur
+     */
+    public function getUserBadgesNonFavorite(int $id)
+    {
+        $badges = Badge::select('b.*')
+        ->join('user_badge', 'user_badge.user_id','=','user.id')
+        ->join('badge as b', 'b.id','=','user_badge.badge_id')
+        ->from('user')
+        ->where('user_badge.favorite','0')
+        ->where('user.id', $id)
+        ->get();
+
+        if ($badges == null) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+
+        foreach ($badges as $badge) {
+            $badge->setPossessionPercentage();
+
+        }
+
+        return response()->json([
+            'badges' => $badges
+        ]);
+    }
+
+    /**
+     * Change le favoritisme d'un badge
+     */
+    public function changeFavoriteBadge(BadgeUpdateFavoriteRequest $request)
+    {
+        $userId = $request->get('user_id');
+        $badgeId = $request->get('badge_id');
+        $favorite = $request->get('favorite');
+        $userBadge = UserBadge::where('user_id', $userId)->where('badge_id', $badgeId)->first();
+
+        $userBadge->favorite = $favorite;
+        $userBadge->save();
+
+        return response()->json(['message' => 'favoritisme changé']);
+    }
+
 
     /**
      * Récuperer une personne

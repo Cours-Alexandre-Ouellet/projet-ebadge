@@ -79,8 +79,9 @@ Route::group([
 
     Route::get("/{id}", [App\Http\Controllers\UserController::class, "getUser"]);
     Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"]);
-    Route::get("/{id}/badgesFavoris", [App\Http\Controllers\UserController::class, "getUserBadgesFavoris"]);
-    Route::get("/{id}/badgesNonFavoris", [App\Http\Controllers\UserController::class, "getUserBadgesNonFavoris"]);
+    Route::get("/{id}/favoriteBadges", [App\Http\Controllers\UserController::class, "getUserBadgesFavorite"]);
+    Route::get("/{id}/notFavoriteBadges", [App\Http\Controllers\UserController::class, "getUserBadgesNonFavorite"]);
+    Route::put("/changeFavoriteBadge", [App\Http\Controllers\UserController::class, "changeFavoriteBadge"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\UserController::class, "getUserBadgeLeft"]);
     Route::get("/role/{id}", [App\Http\Controllers\UserController::class, 'getAllByRole'])->middleware('roles:' . Role::ADMIN);
     Route::delete("/admin/{id}", [App\Http\Controllers\UserController::class, 'deleteAdmin'])->middleware('roles:' . Role::ADMIN);
