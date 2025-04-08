@@ -7,7 +7,7 @@ import Loading from '../../composant/Loading/LoadingComponent';
 import { Navigate } from "react-router-dom";
 
 /**
- * 
+ * Page de création de compte
  * @returns La page de création de compte
  * @author Vincent Houle
  */
@@ -82,7 +82,6 @@ export default function Signup() {
         }
     }
 
-
     // Validation du nom d'utilisateur
     const validateUsername = () => {
         setErrors((prevState) => ({ ...prevState, username: "" }));
@@ -105,6 +104,7 @@ export default function Signup() {
         return true;
     }
 
+    // Validation du email
     const validateEmail = () => {
         setErrors((prevState) => ({ ...prevState, email: "" }));
 
@@ -130,6 +130,7 @@ export default function Signup() {
         return true;
     }
 
+    // Validation du mot de passe
     const validatePassword = () => {
         setErrors((prevState) => ({ ...prevState, password: "" }));
         if (password.length == 0) {
@@ -150,6 +151,7 @@ export default function Signup() {
         return true;
     }
 
+    // Validation de la confirmation du mot de passe
     const validatePassword2 = () => {
         setErrors((prevState) => ({ ...prevState, password: "" }));
         if (password2 != password) {
@@ -163,6 +165,7 @@ export default function Signup() {
 
     }
 
+    // Validation du prénom
     const validateFirstName = () => {
         setErrors((prevState) => ({ ...prevState, first_name: "" }));
         if (firstName.length == 0) {
@@ -183,6 +186,8 @@ export default function Signup() {
         }
         return true;
     }
+
+    // Validation du nom de famille
     const validateLastName = () => {
         setErrors((prevState) => ({ ...prevState, last_name: "" }));
         if (lastName.length == 0) {
@@ -206,7 +211,7 @@ export default function Signup() {
 
 
 
-    // Popup de confirmation de courriel
+    // Popup de confirmation de courriel À faire
 
     return (
         <div className="signup">
