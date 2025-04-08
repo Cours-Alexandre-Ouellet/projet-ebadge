@@ -9,7 +9,9 @@
     background-repeat: no-repeat;
     display: flex;
     flex-direction: row;
-    height: 100%;
+    height: fit-content;
+    min-height: 100%;
+   
 }
 
 .signup-right {
@@ -18,7 +20,7 @@
     align-items: center;
     width: 900px;
     background: white;
-    height: 100%;
+
 }
 
 .signup-right-content {
@@ -26,12 +28,12 @@
     flex-direction: column;
     align-items: flex-start;
     width: 60%;
-    height: 100%;
+
 }
 
 .signup-background {
     width: 100%;
-    height: 100%;
+
 }
 .titre-creer-compte {
     font-size: 5vh;
@@ -45,7 +47,7 @@ form.signup-form {
     align-items: flex-end;
     justify-content: center;
     width: 100%;
-    height: 80%;
+
 }
 
 .hidden-div {
