@@ -22,6 +22,7 @@ import ListeBadge from "./pages/ListeBadge";
 import TeacherCodesTab from "./pages/Dashboard/tabs/TeacherCodesTab";
 import PageUser from "./pages/PageUser";
 import DefaultTheme from "./theme";
+import PageProfileModify from "./composant/Forms/PageProfileModify";
 import Contact from "./pages/Contact";
 
 const estConnecter = localStorage.getItem("token");
@@ -35,7 +36,7 @@ function App() {
         <Routes>
           <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
             <Route index path="/" element={<PageProfile />} />
-
+            <Route path="/modify_profile" element={<PageProfileModify/>}/>
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="contactez-nous" element={<Contact />} />
             <Route path="badges" element={<ListeBadge />} />
