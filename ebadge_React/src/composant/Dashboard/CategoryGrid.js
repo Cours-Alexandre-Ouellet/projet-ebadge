@@ -39,7 +39,27 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
     // Définition des colonnes du tableau
     const columns = [
         // Colonne pour l'ID de la catégorie
-        { field: 'id', headerName: 'ID', flex: 0.2, align: 'center', headerAlign: 'center' },
+        { 
+            field: 'id',
+            headerName: 'ID', 
+            flex: 0.2, 
+            align: 'center', 
+            headerAlign: 'center',
+            renderCell: (params) => {
+                return (
+                <div
+                    style={{
+                        borderLeft: `15px solid ${params.row.color || 'transparent'}`,
+                        width: '100%',
+                        textAlign: 'center',
+                        lineHeight: '100px',
+                    }}
+                    >
+                        {params.value}
+                    </div>
+                );
+            },
+        },
 
         // Colonne pour le nom de la catégorie
         { field: 'name', headerName: 'Nom', flex: 2, headerAlign: 'center' },

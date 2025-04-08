@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import '@mui/material';
-import { Button, FormControl, TextField } from '@mui/material';
+import { Button, FormControl, TextField, Box, Typography } from '@mui/material';
 import Api from '../utils/Api';
 import './CategoryCreateForm.css';
+import { MuiColorInput } from 'mui-color-input'
 
 /**
  * Composant du formulaire de création de catégorie
@@ -10,6 +10,7 @@ import './CategoryCreateForm.css';
  * @author Alexandre del Fabbro
  * D'après le code du projet E-Badge
  * Inspiré du code de OpenAi - ChatGPT - [Modèle massif de langage] - chatpgt.com - [Consulté le 27 mars 2025]
+ * Inspiré de code de Google - Gemini 2.0 Flash - [Modèle massif de langage] - VSCode Copilot chat - [Consulté le 6 avril 2025]
  */
 export default function CategoryCreateForm({ addCategory, errorCategory, handleClose }) {
 
@@ -19,12 +20,23 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
     // État pour gérer les erreurs de validation du nom de la catégorie
     const [nameError, setNameError] = useState('');
 
+    // État pour gérer la couleur de la catégorie
+    const [categoryColor, setCategoryColor] = useState('#FFFFFF');
+
     /**
      * Fonction qui change la valeur du champ quand on tape dedans
      * @param {*} event 
      */
     const handleCategoryChange = (event) => {
         setCategoryName(event.target.value);
+    };
+
+    /**
+     * Fonction qui change la couleur de la catégorie
+     * @param {*} color 
+     */
+    const handleColorChange = (color) => {
+        setCategoryColor(color);
     };
 
     /**
@@ -51,6 +63,7 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
         try {
             const formData = new FormData();
             formData.append('name', categoryName);
+            formData.append('color', categoryColor);
 
             const response = await Api.post('/category', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
@@ -84,6 +97,17 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
                     required
                     sx={{ width: '80%', marginTop: '20px' }}
                 />
+                <Box sx={{ marginTop: '20px', width: '80%' }}>
+                <Typography variant="h6" gutterBottom>Couleur de la catégorie</Typography>
+
+                    <MuiColorInput
+                        format="hex"
+                        value={categoryColor}
+                        onChange={handleColorChange}
+                        // disableAlpha
+                        // fullWidth
+                    />
+                </Box>
                 
                 <div className="category-create-form-button-submit">
                     <Button variant="outlined" onClick={handleClose} sx={{
@@ -96,8 +120,10 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
                         marginTop: '20px',
                     }}>Créer</Button>
                 </div>
+                
             </FormControl>
             </div>
+            
             </div>
             </div>
         </div>

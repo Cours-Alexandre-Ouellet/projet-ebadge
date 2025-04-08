@@ -38,7 +38,14 @@ const CategoriesTab = () => {
     // Utilise useCallback pour éviter de recréer la fonction à chaque rendu
     const getCategories = useCallback(() => {
         Api.get('/category')
-            .then(res => {setCategories(res.data.categories);setCharge(true);})
+            .then(res => {
+                const categories = res.data.categories.map(category => ({
+                    ...category,
+                    color: category.color || '#FFFFFF',
+                })); 
+                setCategories(categories);
+                setCharge(true);
+            })
             .catch(err => setErrorMessage("Erreur lors de la récupération des catégories."));
     }, []);
 
