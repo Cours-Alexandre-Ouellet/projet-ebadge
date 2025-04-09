@@ -195,6 +195,12 @@ class UserController extends Controller
         $userId = $request->get('user_id');
         $badgeId = $request->get('badge_id');
         $favorite = $request->get('favorite');
+        if($favorite == 1) {
+            $count = UserBadge::where('user_id', $userId)->where('favorite', 1)->count();
+            if ($count >=3) {
+                return response()->json(['error' => 'le nombre maximum de badges favoris à été atteint'], 404);
+            }
+        }
         $userBadge = UserBadge::where('user_id', $userId)->where('badge_id', $badgeId)->first();
 
         $userBadge->favorite = $favorite;

@@ -124,6 +124,7 @@ export default function PageProfile() {
           .catch((error) => {
             console.error(error);
           });
+           
       })
       .catch((error) => {
         console.error(error);
@@ -343,17 +344,20 @@ export default function PageProfile() {
         },
       }
     )
-      .then((response) => {})
+      .then((response) => {
+        refreshBadges();
+      })
       .catch((error) => {
         console.error(error);
       });
     setBadgeIdToFavorite(0);
     setLoadingBadge(false);
-    refreshBadges();
+    
   }
 
   //recharge les badges favoris et non-favoris
   function refreshBadges() {
+    console.log("///////////////");
     updateFavoriteBadges();
     Api.get("/user/" + user.id + "/notFavoriteBadges")
       .then((response) => {
