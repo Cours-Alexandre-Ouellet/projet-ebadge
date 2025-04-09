@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { Button, DialogActions } from "@mui/material";
-import { Dialog, DialogContent, DialogTitle, DialogContentText } from '@mui/material';
+import { Dialog, DialogContent, DialogTitle } from '@mui/material';
 
 export default function ConfirmationPopup({ isOpen, onCancel, onConfirm, message, cancelText = "Annuler", confirmText = "Confirmer" }) {
     return (
@@ -27,9 +27,7 @@ export default function ConfirmationPopup({ isOpen, onCancel, onConfirm, message
                 ) : null}
             </DialogTitle>
             <DialogContent className={"confirmation-popup"}>
-                <DialogContentText align="center">
-                    {message}
-                </DialogContentText>
+                {message}
             </DialogContent>
             <DialogActions>
                 <Button className={"mt-2"} onClick={onCancel}>{cancelText}</Button>
