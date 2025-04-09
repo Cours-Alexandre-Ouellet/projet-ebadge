@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import "./PageProfile.css";
 import "@mui/material";
-import { FormControl, Button, Autocomplete, Avatar } from "@mui/material";
+import { FormControl, Button, Autocomplete, Avatar, Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -333,6 +333,7 @@ export default function PageProfile() {
       setBadgeIdToFavoriteErrorMessage("Veuillez sélectionner un badge");
       return;
     }
+    setBadgeIdToFavoriteErrorMessage("");
     Api.put(
       "/user/changeFavoriteBadge",
       { badge_id: badgeIdToFavorite, user_id: user.id, favorite: 1 },
@@ -494,7 +495,7 @@ export default function PageProfile() {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Badge à assigner"
+                  label="Badge à afficher"
                   variant="outlined"
                   error={!!badgeIdToFavoriteErrorMessage}
                   labelId="badge-select-label"
@@ -514,6 +515,7 @@ export default function PageProfile() {
             />
             <p>{badgeIdToFavoriteErrorMessage}</p>
             <FormControl fullWidth>
+            {currentFavoriteBadges.length >= badgeQuantity && <Typography>Vous afficher le maximum possible de badges.</Typography>}
               <Button
                 variant="contained"
                 className={"mt-2"}
@@ -523,6 +525,7 @@ export default function PageProfile() {
                 afficher le badge
               </Button>
             </FormControl>
+            
             <hr />
             Liste des badges obtenues
             <DataGrid

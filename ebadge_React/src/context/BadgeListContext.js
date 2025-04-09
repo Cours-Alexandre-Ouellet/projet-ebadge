@@ -12,15 +12,11 @@ const BadgeListContextProvider = ({ children }) => {
   }, []);
 
   const updateFavoriteBadges = async () => {
-    console.log(userContext);
     if (userContext) {
-        console.log("&&&&&&&&&&&&&&&&");
-        console.log(loaded);
         Api.get(`/user/${userContext}/favoriteBadges`)
             .then((response) => {
               setCurrentFavoriteBadges(response.data.badges);
               setLoaded(false);
-              console.log("%%%%%%%%%%%%%%%%%%%%%%");
             })
             .catch((error) => {
               console.error(error);
