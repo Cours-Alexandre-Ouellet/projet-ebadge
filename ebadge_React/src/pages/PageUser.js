@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import './PageUser.css'
+import React, { useEffect, useState, useContext } from "react";
+import "./PageUser.css";
 import Api from "../utils/Api";
 import { Typography } from "@mui/material";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loading from "../composant/Loading/LoadingComponent";
 import BadgeList from "../composant/PageProfil/BadgeList";
+import { BadgeListContext } from "../context/BadgeListContext";
 
 /**
  * revoie la page d'un utilisateur
@@ -13,15 +14,16 @@ import BadgeList from "../composant/PageProfil/BadgeList";
  */
 export default function PageUser() {
   const [user, setUser] = useState(null);
-  const location = useLocation();
+  const { updateFavoriteBadges } = useContext(BadgeListContext);
+  const { userContext, setUserContext } = useContext(BadgeListContext);
   const params = useParams();
-  const [loaded, setLoaded] = useState(false);
-
+  const { setLoaded } = useContext(BadgeListContext);
 
   /**
    * cherche les donnée de l'utilisateur
    */
   useEffect(() => {
+    setLoaded(true);
     if (params.id) {
       Api.get(`/user/${params.id}`)
         .then((response) => {
@@ -36,6 +38,7 @@ export default function PageUser() {
           }
           setLoaded(true);
           setUser(response.data);
+          setUserContext(response.data.user.id);
           console.log(response.data);
         })
         .catch((error) => {
@@ -43,6 +46,9 @@ export default function PageUser() {
         });
     }
   }, []);
+  useEffect(() => {
+    updateFavoriteBadges();
+  }, [userContext]);
 
   if (user) {
     if (user.user.privacy == 0) {
@@ -53,31 +59,25 @@ export default function PageUser() {
             backgroundImage: `url(${user.user.backgroundImagePath})`,
           }}
         >
-          {!loaded?<Loading></Loading>:<br></br>}
           <div className="profil">
             <div>
               <img className="avatar" src={user.user.avatarImagePath} />
-              
             </div>
             <div className="infosUser">
               <p>
-                <strong className="invertedText" style={{ backgroundImage: `url(${user.user.backgroundImagePath})` }}>
+                <strong>
                   {user.user.first_name} {user.user.last_name}
                 </strong>
               </p>
-              
-              
             </div>
           </div>
           <BadgeList user={user.user} />
-          
         </div>
-        
       );
     } else {
       return <Typography>Cet utilisateur est privé</Typography>;
     }
   } else {
-    <Loading></Loading>;
+    return <Loading></Loading>;
   }
 }

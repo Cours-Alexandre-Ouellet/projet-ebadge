@@ -15,6 +15,7 @@ import Logout from "./pages/Logout";
 import ProtectedRoute from "./policies/ProtectedRoute";
 import Role from "./policies/Role";
 import Signup from "./pages/Signup/Signup";
+import { BadgeListContextProvider } from "./context/BadgeListContext";
 
 import ListeBadge from "./pages/ListeBadge";
 //import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
@@ -33,6 +34,7 @@ function App() {
   return (
     <BrowserRouter>
       <DefaultTheme>
+        <BadgeListContextProvider>
         <Routes>
           <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
             <Route index path="/" element={<PageProfile />} />
@@ -66,6 +68,7 @@ function App() {
             </Route>
           </Route>
         </Routes>
+        </BadgeListContextProvider>
       </DefaultTheme>
     </BrowserRouter>
   );
