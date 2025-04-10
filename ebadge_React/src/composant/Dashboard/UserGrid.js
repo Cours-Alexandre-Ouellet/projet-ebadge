@@ -49,6 +49,7 @@ class UserGrid extends React.Component {
               fullWidth
               value={''}
             >
+              
               <MenuItem onClick={() => this.handleBadgeManagement(params.row)}>Gestion des badges</MenuItem>
               <MenuItem onClick={() => this.setState({ openPasswordPopup: true, selectedUser: params.row })}>Modifier le mot de passe</MenuItem>
               <MenuItem onClick={() => this.setState({ confirmDelete: true, selectedUser: params.row })}>Supprimer</MenuItem>
