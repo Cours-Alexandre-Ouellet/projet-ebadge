@@ -70,7 +70,7 @@ Route::group([
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
-    Route::post('/modify-password', [App\Http\Controllers\UserController::class, 'modifyPassword']);
+    Route::put('/modify-password', [App\Http\Controllers\UserController::class, 'modifyPassword']);
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);

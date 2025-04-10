@@ -89,7 +89,7 @@ export default function PageProfileModify() {
             formData.append('newPassword', newPassword);
 
             event.preventDefault();
-            Api.post('/user/modify-password', {
+            Api.put('/user/modify-password', {
                 id: user.id,
                 oldPassword: oldPassword,
                 newPassword: newPassword

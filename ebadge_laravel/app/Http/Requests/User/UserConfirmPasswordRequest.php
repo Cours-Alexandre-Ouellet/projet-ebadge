@@ -15,7 +15,7 @@ class UserConfirmPasswordRequest extends FormRequest
     {
         return [
             "id" => 'required|exists:user,id',
-            "oldPassword" => 'required|string|max:60',
+            "oldPassword" => 'required|string',
             "newPassword" => 'required|string|max:60|min:6'
         ];
     }
