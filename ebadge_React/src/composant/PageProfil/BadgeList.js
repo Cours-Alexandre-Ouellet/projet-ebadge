@@ -1,6 +1,7 @@
-import React, { useEffect,useState } from "react";
+import React, { useContext, useEffect,useState } from "react";
 import BadgeComponent from "./BadgeComponent";
 import Api from "../../utils/Api";
+import { BadgeListContext } from "../../context/BadgeListContext";
 
 /**
  * élément affichant la liste de tous les badges d'un utilisateur
@@ -8,23 +9,9 @@ import Api from "../../utils/Api";
  */
 export default function BadgeList(props) {
   const [user, setUser] = useState(props.user);
-  const [badges, setBadges] = useState([]);
-  const [loaded, setLoaded] = useState(true);
+  const {currentFavoriteBadges, updateFavoriteBadges} = useContext(BadgeListContext);
+  const {loaded} = useContext(BadgeListContext)
 
-  useEffect(() => {
-    if (user.id) {
-      Api.get(`/user/${user.id}/badges`)
-        .then((response) => {
-          console.log(response.data);
-          setBadges(response.data.badges);
-          setLoaded(false);
-        })
-
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, []);
 
   if (loaded) {
     return (
@@ -36,8 +23,8 @@ export default function BadgeList(props) {
 
   return (
     <div className="BadgeArray">
-      {badges.length ? (
-        badges.map((badge, index) => {
+      {currentFavoriteBadges.length ? (
+        currentFavoriteBadges.map((badge, index) => {
           return <BadgeComponent badge={badge} key={index} />;
         })
       ) : (

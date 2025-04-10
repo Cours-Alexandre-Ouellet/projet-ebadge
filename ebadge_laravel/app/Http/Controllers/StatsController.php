@@ -27,7 +27,11 @@ class StatsController extends Controller
      */
     public function leaderboard()
     {
-        $users = User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount('badges')->orderBy('badges_count', 'desc')->get();
+        $users = User::where('role_id', '=', Role::Student()->id)
+        ->where('privacy', '=', 0)
+        ->where('active', '=', 1)
+        ->withCount('badges')
+        ->orderBy('badges_count', 'desc')->get();
         $users = array_map([$this, 'CleanUp'], $users->toArray() ?? []);
         return response()->json($users);
     }
@@ -44,7 +48,10 @@ class StatsController extends Controller
     {
         $sessionStartDate = new DateTime($startDate);
         $sessionEndDate = new DateTime($endDate);
-        $users = User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount([
+        $users = User::where('role_id', '=', Role::Student()->id)
+        ->where('privacy', '=', 0)
+        ->where('active', '=', 1)
+        ->withCount([
             'badges' => function ($query) use ($sessionStartDate, $sessionEndDate) {
                 $query->whereBetween('user_badge.created_at', [$sessionStartDate, $sessionEndDate]);
             }
@@ -55,7 +62,10 @@ class StatsController extends Controller
 
     public function leaderboardByCategory(string $category)
     {
-        $users = User::where('role_id', '=', Role::Student()->id)->where('privacy', '=', 0)->withCount([
+        $users = User::where('role_id', '=', Role::Student()->id)
+        ->where('privacy', '=', 0)
+        ->where('active', '=', 1)
+        ->withCount([
             'badges' => function ($query) use ($category) {
                 $query->where('category', '=', $category);
             }
