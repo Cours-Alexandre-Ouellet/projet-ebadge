@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, FormControl, TextField, Box, Typography } from '@mui/material';
+import { Button, FormControl, TextField, Box } from '@mui/material';
 import Api from '../utils/Api';
 import './CategoryCreateForm.css';
-// import { MuiColorInput } from 'mui-color-input'
+import { MuiColorInput } from 'mui-color-input'
 
 /**
  * Composant du formulaire de création de catégorie
@@ -61,6 +61,7 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
         if (!validateName()) return;
 
         try {
+
             const formData = new FormData();
             formData.append('name', categoryName);
             formData.append('color', categoryColor);
@@ -98,15 +99,12 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
                     sx={{ width: '80%', marginTop: '20px' }}
                 />
                 <Box sx={{ marginTop: '20px', width: '80%' }}>
-                <Typography variant="h6" gutterBottom>Couleur de la catégorie</Typography>
-
-                    {/* <MuiColorInput
+                    <MuiColorInput
                         format="hex"
                         value={categoryColor}
                         onChange={handleColorChange}
-                        // disableAlpha
-                        // fullWidth
-                    /> */}
+                        fullWidth
+                    />
                 </Box>
                 
                 <div className="category-create-form-button-submit">
@@ -115,7 +113,7 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
                         marginTop: '20px',
                         marginRight: '20px',
                     }}>Annuler</Button>
-                    <Button type="submit" variant="contained" sx={{
+                    <Button type="submit" variant="contained" onClick={handleSubmit} sx={{
                         width: '100%',
                         marginTop: '20px',
                     }}>Créer</Button>

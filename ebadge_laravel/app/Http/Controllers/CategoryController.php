@@ -40,6 +40,7 @@ class CategoryController extends Controller
     {
         $category = new Category();
         $category->name = $request->name;
+        $category->color = $request->color;
         $category->save();
         return response()->json($category);
     }
