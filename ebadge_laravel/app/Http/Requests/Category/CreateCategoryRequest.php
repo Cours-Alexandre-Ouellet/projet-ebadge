@@ -15,6 +15,7 @@ class CreateCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:45',
+            'color' => 'required|string|max:7',
         ];
     }
 }
