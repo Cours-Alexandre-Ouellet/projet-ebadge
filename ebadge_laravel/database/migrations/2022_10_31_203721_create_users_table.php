@@ -26,6 +26,8 @@ class CreateUsersTable extends Migration
             $table->foreignId('role_id')->constrained('role');
             $table->boolean('privacy')->default(0);
             $table->boolean('active')->default(1);
+            $table->string('code_activation', 2048)->nullable();
+            $table->dateTime('code_expiration')->nullable();
             $table->string('avatarImagePath', 2048)->nullable();
             $table->string('backgroundImagePath', 2048)->nullable();
             $table->foreignId('organisation_id')->constrained('organisation');
