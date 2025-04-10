@@ -65,6 +65,14 @@ class AuthController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         $user = $request->user();
+
+        //Verification du statut de l'utilisateur -> actif ou inactif
+        if ($user->active == 0) {
+            return response()->json([
+                'message' => 'Votre compte a été désactivé. Veuillez contacter un administrateur.'
+            ], 403);
+        }
+
         $tokenResult = $this->createToken($user);
         return response()->json([
             'access_token' => $tokenResult->accessToken,

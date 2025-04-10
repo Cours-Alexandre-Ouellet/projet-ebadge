@@ -30,6 +30,12 @@ class UserGrid extends React.Component {
         { field: 'first_name', headerName: 'Prénom', flex: 1 },
         { field: 'last_name', headerName: 'Nom', flex: 1 },
         {
+          field: 'active',
+          headerName: 'Statut',
+          flex: 1,
+          valueGetter: (params) => (params.row.active === 1 ? 'Actif' : 'Désactivé')
+        },
+        {
           field: "actions",
           headerName: "Actions",
           sortable: false,
@@ -46,6 +52,9 @@ class UserGrid extends React.Component {
               <MenuItem onClick={() => this.handleBadgeManagement(params.row)}>Gestion des badges</MenuItem>
               <MenuItem onClick={() => this.setState({ openPasswordPopup: true, selectedUser: params.row })}>Modifier le mot de passe</MenuItem>
               <MenuItem onClick={() => this.setState({ confirmDelete: true, selectedUser: params.row })}>Supprimer</MenuItem>
+              <MenuItem onClick={() => this.toggleUserStatus(params.row)}>
+                {params.row.active === 1 ? 'Désactiver' : 'Activer'}
+              </MenuItem>
             </Select>
           )
         }
@@ -74,6 +83,16 @@ class UserGrid extends React.Component {
       });
   };
 
+  toggleUserStatus = (user) => {
+    Api.post(`/user/${user.id}/toggle-active`)
+      .then(() => {
+        this.props.refreshAllUsers?.();
+      })
+      .catch(() => {
+        alert("Erreur lors du changement de statut de l'utilisateur.");
+      });
+  };
+
   render() {
     return (
       <div style={{ height: 400, width: '100%' }}>
@@ -95,7 +114,7 @@ class UserGrid extends React.Component {
           <ChangePasswordPopup
             isOpen={this.state.openPasswordPopup}
             handleClose={() => this.setState({ openPasswordPopup: false })}
-            userId={this.state.selectedUser.id} // fonctionne tant que le popup accepte adminId
+            userId={this.state.selectedUser.id}
           />
         )}
 

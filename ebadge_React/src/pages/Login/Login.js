@@ -26,10 +26,6 @@ class Login extends React.Component {
         this.redirectUser = this.redirectUser.bind(this);
     }
 
-    /**
-     * fonction qui change la valeur du champ quand on tape dedans
-     * @param {*} event 
-     */
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
@@ -37,15 +33,10 @@ class Login extends React.Component {
         });
     }
 
-    /**
-     * fonction qui valide l'identifiant
-     * @returns boolean 
-     */
     validateIdentifier() {
         if (this.state.identifier.length === 0) {
             this.setState({ identifierError: 'Veuillez renseigner votre identifiant' });
             return false;
-            //regex email
         } else if (!this.state.identifier.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
             this.setState({ identifierError: 'Le format de l\'adresse couriel est invalide' });
             return false;
@@ -55,10 +46,6 @@ class Login extends React.Component {
         }
     }
 
-    /**
-     * fonction qui valide le mot de passe
-     * @returns 
-     */
     validatePassword() {
         if (this.state.password.length === 0) {
             this.setState({ passwordError: 'Veuillez renseigner votre mot de passe' });
@@ -69,15 +56,9 @@ class Login extends React.Component {
         }
     }
 
-    /**
-     * fonction qui gère la soumission du formulaire
-     * @param {*} event 
-     */
     redirectUser() {
         this.setState({ isLoading: false });
-
         var policiesHelper = new PoliciesHelper();
-
         window.location = policiesHelper.getDefaultRoute();
     }
 
@@ -92,15 +73,18 @@ class Login extends React.Component {
                 localStorage.setItem('token', response.data.access_token);
                 localStorage.setItem('username', response.data.username);
                 localStorage.setItem('role', response.data.role);
-
                 this.redirectUser();
             }).catch((error) => {
-                this.setState({ isLoading: false })
+                this.setState({ isLoading: false });
                 if (error.response) {
                     switch (error.response.status) {
                         case 401:
                             this.setState({ identifierError: 'Identifiant ou mot de passe incorrect' });
                             this.setState({ passwordError: 'Identifiant ou mot de passe incorrect' });
+                            break;
+                        case 403:
+                            this.setState({ identifierError: 'Votre compte est désactivé. Veuillez contacter un administrateur.' });
+                            this.setState({ passwordError: '' });
                             break;
                         case 422:
                             this.setState({ identifierError: 'Le format de l\'adresse couriel est invalide' });
@@ -118,15 +102,10 @@ class Login extends React.Component {
         }
     }
 
-    /**
-     * Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
-     */
     componentDidMount() {
         if (localStorage.getItem('token')) {
             Api.get('/auth/current_user').then((response) => {
-
                 this.redirectUser();
-
             }).catch((error) => {
                 console.error(error);
             });

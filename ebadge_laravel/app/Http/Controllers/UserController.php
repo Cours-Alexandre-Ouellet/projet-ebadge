@@ -366,6 +366,22 @@ class UserController extends Controller
         return response()->json(['message' => 'Administrateur rétrogradé avec succès.']);
     }
 
+    public function changePassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6'
+        ]);
+    
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+        }
+    
+        $user->password = Hash::make($request->password);
+        $user->save();
+    
+        return response()->json(['message' => 'Mot de passe mis à jour avec succès.']);
+    }
 
     /**
      * Modification de mot de passe d'un utilisateur pour son propre compte
@@ -394,5 +410,25 @@ class UserController extends Controller
         } else {
             return response()->json(['errorOldPassword' => 'Votre ancien mot de passe est incorrecte.']);
         }
+    }
+
+    public function getUsersByActiveStatus($status)
+    {
+        $users = User::where('active', $status)->get();
+    
+        return response()->json(['users' => $users]);
+    }
+
+    public function toggleActiveStatus($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+        }
+
+        $user->active = $user->active ? 0 : 1;
+        $user->save();
+
+        return response()->json(['message' => 'Statut mis à jour avec succès.']);
     }
 }

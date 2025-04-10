@@ -92,6 +92,8 @@ Route::group([
     Route::post("/assign-admin-contact", [App\Http\Controllers\UserController::class, 'assignAdminContact'])->middleware('roles:' . Role::ALL_ADMINS);
     Route::post("/remove-admin", [App\Http\Controllers\UserController::class, 'removeAdmin'])->middleware('roles:' . Role::ALL_ADMINS);
     Route::post('/{id}/change-password', [App\Http\Controllers\UserController::class, 'changePassword'])->middleware('roles:' . Role::ALL_ADMINS);
+    Route::get('/active/{status}', [App\Http\Controllers\UserController::class, 'getUsersByActiveStatus'])->middleware('roles:' . Role::ALL_ADMINS);
+    Route::post('/{id}/toggle-active', [App\Http\Controllers\UserController::class, 'toggleActiveStatus'])->middleware('roles:' . Role::ALL_ADMINS);
 });
 
 
