@@ -26,17 +26,23 @@ class Login extends React.Component {
         this.redirectUser = this.redirectUser.bind(this);
     }
 
+    /* fonction qui change la valeur du champ quand on tape dedans
+    * @param {*} event 
+    */
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
             [name]: value
         });
     }
-
+    /* fonction qui valide l'identifiant
+    * @returns boolean 
+    */
     validateIdentifier() {
         if (this.state.identifier.length === 0) {
             this.setState({ identifierError: 'Veuillez renseigner votre identifiant' });
             return false;
+            //regex email
         } else if (!this.state.identifier.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
             this.setState({ identifierError: 'Le format de l\'adresse couriel est invalide' });
             return false;
@@ -45,7 +51,10 @@ class Login extends React.Component {
             return true;
         }
     }
-
+    /** 
+     * fonction qui valide le mot de passe
+     * @returns 
+     */
     validatePassword() {
         if (this.state.password.length === 0) {
             this.setState({ passwordError: 'Veuillez renseigner votre mot de passe' });
@@ -56,6 +65,9 @@ class Login extends React.Component {
         }
     }
 
+    /** fonction qui gère la soumission du formulaire
+    * @param {*} event 
+    */
     redirectUser() {
         this.setState({ isLoading: false });
         var policiesHelper = new PoliciesHelper();
@@ -101,7 +113,9 @@ class Login extends React.Component {
             });
         }
     }
-
+     /**
+     * Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
+     */
     componentDidMount() {
         if (localStorage.getItem('token')) {
             Api.get('/auth/current_user').then((response) => {
