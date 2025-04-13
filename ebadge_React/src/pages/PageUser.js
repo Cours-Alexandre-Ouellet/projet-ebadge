@@ -87,7 +87,7 @@ export default function PageUser() {
         console.log(user);
         console.log(RoleIds.Student);
         return (
-          <Typography>Seul les étudiants peuvent êtres affiché</Typography>
+          <Typography>Seuls les étudiants peuvent êtres affiché</Typography>
         );
       }
     } else {
