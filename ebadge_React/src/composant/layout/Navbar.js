@@ -18,7 +18,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Role from '../../policies/Role';
 import PoliciesHelper from '../../policies/PoliciesHelper';
 import { Link } from 'react-router-dom';
-import { red } from '@mui/material/colors';
 
 /**
  * Composant Navbar
