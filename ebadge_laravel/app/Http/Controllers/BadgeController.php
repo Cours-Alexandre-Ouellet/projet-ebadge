@@ -270,7 +270,7 @@ class BadgeController extends Controller
     {
         $badges = Badge::leftJoin('category_badge', 'category_badge.badge_id', '=', 'badge.id')
             ->leftJoin('category', 'category.id', '=', 'category_badge.category_id')
-            ->select(['badge.*', 'category.name AS category'])
+            ->select(['badge.*', 'category.name AS category', 'category.color AS categoryColor'])
             ->get();
 
         return response()->json($badges);
