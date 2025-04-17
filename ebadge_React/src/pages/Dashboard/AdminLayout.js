@@ -44,9 +44,9 @@ class AdminLayout extends React.Component {
                 {
                     sectionName: "Gestion des utilisateurs",
                     tabs: this.policiesHelper.getvisibleRoutes([
-                        { id: 1, label: 'Mes utilisateurs', icon: <PeopleIcon />, path: '/admin/users', minimumRole: Role.Teacher },
-                        { id: 2, label: 'Gestion Administrateurs', icon: <PeopleIcon />, path: '/admin/admin_users', minimumRole: Role.Admin },
-                        { id: 6, label: 'Gestion Enseignants', icon: <School />, path: '/admin/teacher_codes', minimumRole: Role.Admin },
+                        { id: 1, label: 'Utilisateurs', icon: <PeopleIcon />, path: '/admin/users', minimumRole: Role.Teacher },
+                        { id: 2, label: 'Administrateurs', icon: <PeopleIcon />, path: '/admin/admin_users', minimumRole: Role.Admin },
+                        { id: 6, label: 'Codes Enseignants', icon: <School />, path: '/admin/teacher_codes', minimumRole: Role.Admin },
                     ])
                 },
                 {
