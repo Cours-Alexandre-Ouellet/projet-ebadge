@@ -35,7 +35,7 @@ class AdminLayout extends React.Component {
         this.policiesHelper = new PoliciesHelper();
 
         this.container = window !== undefined ? () => window.document.body : undefined;
-        this.mobileOpen = false;
+        
 
         this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
 
@@ -57,12 +57,13 @@ class AdminLayout extends React.Component {
                     ])
                 }
             ],
+            mobileOpen:false,
         };
 
     }
 
     handleDrawerToggle = () => {
-        this.mobileOpen = !this.mobileOpen;
+        this.setState({mobileOpen: !this.state.mobileOpen});
     };
 
     render() {
@@ -98,13 +99,13 @@ class AdminLayout extends React.Component {
                     </AppBar>
                     <Box
                         component="nav"
-                        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 },backgroundColor: 'lightblue' }}
                         aria-label="mailbox folders"
                     >
                         <Drawer
                             container={this.container}
                             variant="temporary"
-                            open={this.mobileOpen}
+                            open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
                             ModalProps={{
                                 keepMounted: true,
