@@ -128,22 +128,20 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
 
     // Gère l'envoie vers l'api
     const handleSubmit = (event) => {
-        let formData = new FormData();
-        formData.append('id', badge.id)
-        formData.append('title', badge.title);
-        formData.append('description', badge.description);
-        // Si l'image est un lien ou bien un fichier
-        imageFile === null || formData.append('image', imageFile);
-        badge.imagePath === null || formData.append('imagePath', badge.imagePath);
-
-
-        if (badge.category) {
-            badge.category.id === undefined || formData.append('category_id', badge.category.id);
-            badge.category.name === undefined || formData.append('category_name', badge.category.name);
-        }
-
         event.preventDefault();
         if (validateTitle() && validateDescription()) {
+            let formData = new FormData();
+            formData.append('id', badge.id)
+            formData.append('title', badge.title);
+            formData.append('description', badge.description);
+            // Si l'image est un lien ou bien un fichier
+            imageFile === null || formData.append('image', imageFile);
+            badge.imagePath === null || formData.append('imagePath', badge.imagePath);
+
+            if (badge.category) {
+                badge.category.id === undefined || formData.append('category_id', badge.category.id);
+                badge.category.name === undefined || formData.append('category_name', badge.category.name);
+            }
 
             Api.post('/badge/image', formData, {
                 headers: {
