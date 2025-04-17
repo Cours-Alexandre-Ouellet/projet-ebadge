@@ -225,6 +225,7 @@ class UserController extends Controller
                 'id' => $user->id,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
+                'role_id' => $user->role_id,
                 'username' => $user->username,
                 'privacy' => $user->privacy,
                 'avatarImagePath' => $user->avatarImagePath,
