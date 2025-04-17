@@ -357,7 +357,6 @@ export default function PageProfile() {
 
   //recharge les badges favoris et non-favoris
   function refreshBadges() {
-    console.log("///////////////");
     updateFavoriteBadges();
     Api.get("/user/" + user.id + "/notFavoriteBadges")
       .then((response) => {

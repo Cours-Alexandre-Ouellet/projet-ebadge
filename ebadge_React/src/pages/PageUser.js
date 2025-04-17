@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import "./PageUser.css";
+import "../composant/PageProfile.css";
 import Api from "../utils/Api";
 import { Typography } from "@mui/material";
 import { useParams } from "react-router-dom";

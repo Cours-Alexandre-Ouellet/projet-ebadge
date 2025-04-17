@@ -147,7 +147,7 @@ export default function ListeBadge() {
               />
             </div>
             <div className="listeBadge-listes">
-              <div style={{ height: 400, width: "100%" }}>
+              <div style={{ "height": 370, width: "100%" }} className="listeBadge-inner">
                 <div className="listeBadge-title">
                   <h2>Obtenus</h2>
                 </div>
@@ -155,9 +155,11 @@ export default function ListeBadge() {
                   onRowClick={handleRowClick}
                   rows={filterObtainedBadges()}
                   columns={columns}
+                  rowsPerPageOptions={[5]}
+                  pageSize={5}
                 />
               </div>
-              <div style={{ height: 400, width: "100%" }}>
+              <div style={{ "height": 370, width: "100%" }} className="listeBadge-inner">
                 <div className="listeBadge-title">
                   <h2>Non obtenus</h2>
                 </div>
@@ -165,6 +167,8 @@ export default function ListeBadge() {
                   onRowClick={handleRowClick}
                   rows={filterMissingBadges()}
                   columns={columns}
+                  rowsPerPageOptions={[5]}
+                  pageSize={5}
                 />
               </div>
             </div>

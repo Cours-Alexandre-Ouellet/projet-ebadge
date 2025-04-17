@@ -1,3 +1,4 @@
+import "./BadgeList.css";
 import React, { useContext, useEffect,useState } from "react";
 import BadgeComponent from "./BadgeComponent";
 import Api from "../../utils/Api";
@@ -28,7 +29,7 @@ export default function BadgeList(props) {
           return <BadgeComponent badge={badge} key={index} />;
         })
       ) : (
-        <h1>Aucun badge à afficher.</h1>
+        <h1 className="message">Aucun badge affiché.</h1>
       )}
     </div>
   );
