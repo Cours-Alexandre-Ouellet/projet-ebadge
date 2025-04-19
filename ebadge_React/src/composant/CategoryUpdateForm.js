@@ -5,7 +5,7 @@ import './CategoryCreateForm.css';
 import { MuiColorInput } from 'mui-color-input'
 
 /**
- * Composant du formulaire de modification de catégorie
+ * Composant du formulaire de modification d'une catégorie
  * 
  * D'après le code du projet E-Badge
  * Inspiré du code de OpenAi - ChatGPT - [Modèle massif de langage] - chatpgt.com - [Consulté le 27 mars 2025]
@@ -25,15 +25,18 @@ export default function CategoryUpdateForm ({ selectedCategory, editCategory, er
         }
     }, [selectedCategory]);
 
+    // Fonction pour gérer le changement de nom de la catégorie
     const handleCategoryChange = (event) => {
         const { name, value } = event.target;
         setCategory(prev => ({ ...prev, [name]: value }));
     };
 
+    // Fonction pour gérer le changement de couleur de la catégorie
     const handleColorChange = (newColor) => {
         setCategory(prev => ({ ...prev, color: newColor }));
     };
 
+    // Fonction pour valider le nom de la catégorie
     const validateName = () => {
         if (!category.name.trim()) {
             setNameError('Veuillez donner un nom à la catégorie.');
@@ -43,6 +46,7 @@ export default function CategoryUpdateForm ({ selectedCategory, editCategory, er
         return true;
     };
 
+    // Fonction pour gérer la soumission du formulaire
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateName()) return;
@@ -58,6 +62,7 @@ export default function CategoryUpdateForm ({ selectedCategory, editCategory, er
             });
     };
 
+    // Constante de comparaison pour vérifier si la catégorie n'a pas changé
     const isUnchanged = category.name === selectedCategory?.name && category.color === selectedCategory?.color;
 
     return (

@@ -261,9 +261,9 @@ class BadgeController extends Controller
     }
 
     /**
-     * Va chercher tous les badges avec leur nom de catégorie
+     * Va chercher tous les badges avec le nom et la couleur de catégorie
      * 
-     * @return \Illuminate\Http\JsonResponse les badges avec leur catégorie
+     * @return \Illuminate\Http\JsonResponse les badges avec leur catégorie et couleur de catégorie
      * @author Vincent Houle
      */
     public function getAllBadgesWithCategory()

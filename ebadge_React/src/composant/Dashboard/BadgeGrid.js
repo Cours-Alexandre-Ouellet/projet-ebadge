@@ -36,11 +36,19 @@ class BadgeGrid extends React.Component {
           headerAlign: "center",
           renderCell: (rows) => {
             return (
+              <div style={{ 
+                width: '100%', 
+                height: '100%', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center' 
+              }}>
               <Avatar
                 alt={rows.row.title}
                 src={rows.value || getResource("badge.png")}
-                sx={{ width: 70, height: 70 }}
+                sx={{ width: 70, height: 70, boxShadow: `0 0 8px 10px ${rows.row.categoryColor}` }}
               />
+            </div>
             );
           },
         },

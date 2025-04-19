@@ -108,7 +108,6 @@ export default function Leaderboard() {
    * @param {*} id l'id de l'utilisateur à visité
    */
   function visitUser(id) {
-    console.log(id);
     navigate(`/utilisateur/${id}`);
   }
 

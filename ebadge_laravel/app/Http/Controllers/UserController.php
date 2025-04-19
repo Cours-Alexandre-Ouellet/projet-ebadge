@@ -135,9 +135,11 @@ class UserController extends Controller
      */
     public function getUserBadgesFavorite(int $id)
     {
-        $badges = Badge::select('b.*')
+        $badges = Badge::select('b.*', 'c.color as category_color')
         ->join('user_badge', 'user_badge.user_id','=','user.id')
         ->join('badge as b', 'b.id','=','user_badge.badge_id')
+        ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'b.id')
+        ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
         ->from('user')
         ->where('user_badge.favorite','1')
         ->where('user.id', $id)
