@@ -385,7 +385,7 @@ export default function PageProfile() {
                 onClick={handleClickOpenAvatar}
                 src="http://cdn.onlinewebfonts.com/svg/img_520583.png"
                 alt="profil"
-                title="image de profil"
+                title="Modifier son image de profil"
               />
             </label>
           </div>
@@ -528,7 +528,7 @@ export default function PageProfile() {
             </FormControl>
             
             <hr />
-            Liste des badges obtenues
+            Liste des badges obtenus
             <DataGrid
               className="listFavorite"
               autoHeight={true}

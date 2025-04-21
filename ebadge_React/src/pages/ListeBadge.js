@@ -100,11 +100,20 @@ export default function ListeBadge() {
       align: "center",
       renderCell: (params) => {
         return (
+          <div style={{ 
+            width: '100%', 
+            height: '100%', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center' 
+          }}>
           <Avatar
             alt={params.row.title}
             src={params.value}
-            sx={{ width: 40, height: 40 }}
+            sx={{ width: 40, height: 40, boxShadow: `0 0 4px 7px ${params.row.category_color}` }}
+            
           />
+        </div>
         );
       },
     },
