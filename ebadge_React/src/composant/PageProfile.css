@@ -14,12 +14,15 @@
     height: 100%;
 }
 
-html, body  {
+html,
+body {
     height: 100%;
 }
+
 #root {
     height: 100%;
 }
+
 .avatar {
     height: 200px;
     width: 200px;
@@ -27,6 +30,7 @@ html, body  {
     border: solid 5px black;
     line-height: 200px;
 }
+
 .profil {
     display: flex;
     flex-direction: row;
@@ -73,7 +77,7 @@ html, body  {
     }
 
     .infosLevel {
-        inline-size: min-content;      
+        inline-size: min-content;
         flex-direction: column !important;
         justify-content: center !important;
         align-items: center;
@@ -105,6 +109,7 @@ html, body  {
     align-items: center;
     padding-left: 50px;
 }
+
 .checkbox {
     width: 20px;
     height: 20px;
@@ -112,13 +117,16 @@ html, body  {
     vertical-align: middle;
     cursor: pointer;
     accent-color: #3949b5;
-}  
+}
+
 .backgroundButton {
     margin-top: 25px !important;
 }
+
 .badgeButton {
     margin-top: 25px !important;
 }
+
 .infosLevel {
     display: flex;
     flex-direction: row;
@@ -148,7 +156,7 @@ html, body  {
     border-radius: 10px;
     text-align: center;
     line-height: 40px;
-    color: white;       
+    color: white;
 }
 
 .hiddenAlert {
@@ -174,7 +182,7 @@ html, body  {
     width: 100px;
     height: 100px;
     border-radius: 100%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.45), 0 6px 5px 0 rgba(0, 0, 0, 0.45);   
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.45), 0 6px 5px 0 rgba(0, 0, 0, 0.45);
 }
 
 .Badge {
@@ -183,26 +191,33 @@ html, body  {
     justify-content: center;
     align-items: center;
 }
-.badgeIcon:hover{
+
+.badgeIcon:hover {
     transition: ease-in-out 0.25s;
     height: 150px;
     width: 150px;
 }
-.badgeIcon:hover + .hideDisplay {
+
+.badgeIcon:hover+.hideDisplay {
     display: block;
     animation: fadeIn .35s;
     z-index: 50000;
-  }
+}
 
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
 
 
 .hideDisplay {
-    display: none; 
-    position: absolute;  
+    display: none;
+    position: fixed;
     text-align: center;
     font-size: 12px;
     margin-left: 10px;
@@ -239,12 +254,13 @@ html, body  {
 
 @keyframes rotation {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
+
     to {
-      transform: rotate(359deg);
+        transform: rotate(359deg);
     }
-  }
+}
 
 
 .textBadge {
@@ -272,7 +288,6 @@ html, body  {
     margin-bottom: 20px;
 }
 
-.listFavorite{
+.listFavorite {
     min-height: 250px
 }
-
