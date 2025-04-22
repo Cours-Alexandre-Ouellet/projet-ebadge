@@ -91,7 +91,7 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle>Gestion des administrateurs</DialogTitle>
+      <DialogTitle>Administrateurs</DialogTitle>
       <DialogContent className="assign-admin-popup">
         {message && <p className={message.includes("Erreur") ? "error-message" : "success-message"}>{message}</p>}
 

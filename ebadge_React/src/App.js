@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./App.css";
@@ -15,10 +15,9 @@ import Logout from "./pages/Logout";
 import ProtectedRoute from "./policies/ProtectedRoute";
 import Role from "./policies/Role";
 import Signup from "./pages/Signup/Signup";
+import { BadgeListContextProvider } from "./context/BadgeListContext";
 import Stats from "./pages/Dashboard/tabs/Stats"; 
 import ListeBadge from "./pages/ListeBadge";
-//import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
-//import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
 import TeacherCodesTab from "./pages/Dashboard/tabs/TeacherCodesTab";
 import PageUser from "./pages/PageUser";
 import DefaultTheme from "./theme";
@@ -54,7 +53,6 @@ function App() {
               <Route path="/admin/admin_users" element={<UsersAdminTab />} />
               <Route path="/admin/badges" element={<BadgesTab />} />
               <Route path="/admin/categories" element={<CategoriesTab />} />
-              <Route path="/admin/stats" element={<Stats />} />
               <Route
                 path="/admin/teacher_codes"
                 element={ProtectedRoute(Role.Admin)}

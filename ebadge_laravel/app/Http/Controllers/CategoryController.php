@@ -28,9 +28,6 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        // foreach ($categories as $category) {
-        //     $category->setPossessionPercentage();
-        // }
         return response()->json(['categories' => $categories]);
     }
 
@@ -43,6 +40,7 @@ class CategoryController extends Controller
     {
         $category = new Category();
         $category->name = $request->name;
+        $category->color = $request->color;
         $category->save();
         return response()->json($category);
     }
@@ -146,18 +144,17 @@ class CategoryController extends Controller
     /**
      * Met à jour la catégorie avec l'id donné
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Badge  $badge
      * @return \Illuminate\Http\Response
      */
     public function update(CategoryUpdateRequest $request)
     {
-        $category = Category::updateOrCreate(
-            ['id' => $request->id],
-            [
-                'name' => $request->name,
-            ]
-        );
+        $category = Category::find($request->id);
+
+        $category->name = $request->name;
+        $category->color = $request->color;
+
+        $category->save();
 
         return response()->json($category);
     }
@@ -171,10 +168,10 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
-
         CategoryBadge::where('category_id', $category->id)->delete();
 
         $category->delete();
+        return response()->json($category);
         return response()->json($category);
     }
 }

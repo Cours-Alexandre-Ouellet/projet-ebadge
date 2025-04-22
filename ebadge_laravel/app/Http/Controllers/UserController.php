@@ -9,9 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Role;
 use App\Models\Badge;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+use App\Http\Requests\Badge\BadgeUpdateFavoriteRequest;
 
 class UserController extends Controller
 {
@@ -113,11 +112,38 @@ class UserController extends Controller
      */
     public function getUserBadges(int $id)
     {
-        $badges = Badge::select('badge.*')
-            ->from('badge')
-            ->join('user_badge','badge_id','=','badge.id')
-            ->where('user_id', $id)
+        $badges = Badge::select('badge.*', 'c.color as category_color', 'c.name as category_name')
+            ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'badge.id')
+            ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
+            ->join('user_badge','badge.id','=','user_badge.badge_id')
+            ->where('user_badge.user_id', $id)
             ->get();
+
+        if ($badges == null) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+
+        return response()->json([
+            'badges' => $badges
+        ]);
+    }
+
+    /**
+     * Obtient tous les badges favoris d'un utilisateur
+     */
+    public function getUserBadgesFavorite(int $id)
+    {
+        $badges = Badge::select('b.*', 'c.color as category_color', 'c.name as category_name', 'u.first_name as creator_name', 'u.last_name as creator_last_name')
+        ->join('user_badge', 'user_badge.user_id','=','user.id')
+        ->join('badge as b', 'b.id','=','user_badge.badge_id')
+        ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'b.id')
+        ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
+        ->leftJoin('user as u', 'u.id', '=', 'b.teacher_id')
+        ->from('user')
+        ->where('user_badge.favorite','1')
+        ->where('user.id', $id)
+        ->get();
 
         if ($badges == null) {
             return response()->json(['error' => 'User not found'], 404);
@@ -135,6 +161,57 @@ class UserController extends Controller
     }
 
     /**
+     * obtient tous les badges non favoris d'un utilisateur
+     */
+    public function getUserBadgesNonFavorite(int $id)
+    {
+        $badges = Badge::select('b.*')
+            ->join('user_badge', 'user_badge.user_id', '=', 'user.id')
+            ->join('badge as b', 'b.id', '=', 'user_badge.badge_id')
+            ->from('user')
+            ->where('user_badge.favorite', '0')
+            ->where('user.id', $id)
+            ->get();
+
+        if ($badges == null) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+
+        foreach ($badges as $badge) {
+            $badge->setPossessionPercentage();
+
+        }
+
+        return response()->json([
+            'badges' => $badges
+        ]);
+    }
+
+    /**
+     * Change le favoritisme d'un badge
+     */
+    public function changeFavoriteBadge(BadgeUpdateFavoriteRequest $request)
+    {
+        $userId = $request->get('user_id');
+        $badgeId = $request->get('badge_id');
+        $favorite = $request->get('favorite');
+        if ($favorite == 1) {
+            $count = UserBadge::where('user_id', $userId)->where('favorite', 1)->count();
+            if ($count >= 3) {
+                return response()->json(['error' => 'le nombre maximum de badges favoris à été atteint'], 404);
+            }
+        }
+        $userBadge = UserBadge::where('user_id', $userId)->where('badge_id', $badgeId)->first();
+
+        $userBadge->favorite = $favorite;
+        $userBadge->save();
+
+        return response()->json(['message' => 'favoritisme changé']);
+    }
+
+
+    /**
      * Récuperer une personne
      */
     public function getUser(int $id)
@@ -150,6 +227,7 @@ class UserController extends Controller
                 'id' => $user->id,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
+                'role_id' => $user->role_id,
                 'username' => $user->username,
                 'privacy' => $user->privacy,
                 'avatarImagePath' => $user->avatarImagePath,
@@ -171,7 +249,11 @@ class UserController extends Controller
         //TODO: valider avec le group
 
         $badges = $user->badges;
-        $missingBadges = Badge::whereNotIn('id', $badges->pluck('id'))->get();
+        $missingBadges = Badge::select('badge.*', 'c.color as category_color', 'c.name as category_name')
+        ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'badge.id')
+        ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
+        ->whereNotIn('badge.id', $badges->pluck('id'))
+        ->get();
         return response()->json([
             'badges' => $missingBadges
         ]);
@@ -275,6 +357,37 @@ class UserController extends Controller
     }
 
     /**
+     * Retourne tous les badges d'un utilisateur
+     * 
+     * @param $request 
+     * @return JsonResponse tout les badges de l'utilisateur actif
+     */
+    public function getMyNewBadges(Request $request)
+    {
+        $userBadges = UserBadge::where('user_id', $request->user()->id)->where('is_new', true)->get();
+        return Badge::whereIn('id', $userBadges->pluck('badge_id'))->get();
+    }
+
+    /**
+     * Notifie le système que l'utilisateur a vu certains badges
+     * 
+     * @param $request 
+     * @return JsonResponse tout les badges de l'utilisateur actif
+     */
+    public function notifyHasSeenBadges(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array'
+        ]);
+
+        UserBadge::whereIn('badge_id', $request->ids)->where('user_id', $request->user()->id)->update([
+            'is_new' => false
+        ]);
+
+        return response()->json(['message' => 'Les badges ont bien été marqués comme vus']);
+    }
+
+    /**
      * Retourne les utilisateurs ayant un role.
      * 
      * @param int $id Id du role
@@ -302,13 +415,13 @@ class UserController extends Controller
     public function deleteUser($id)
     {
         $user = User::find($id);
-    
+
         if (!$user) {
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
-    
+
         $user->delete();
-    
+
         return response()->json(['message' => 'Utilisateur supprimé avec succès']);
     }
 
@@ -342,6 +455,44 @@ class UserController extends Controller
         return response()->json(['message' => 'Utilisateur promu administrateur.']);
     }
 
+    /**
+     * Assigne le rôle d'admin contact à un administrateur
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function assignAdminContact(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:user,id',
+        ]);
+
+        $user = User::find($request->user_id);
+        $adminContactRole = Role::AdminContact(); // Récupère l'objet Role correspondant à "Administrateur Contact"
+
+        if (!$adminContactRole) {
+            return response()->json(['message' => 'Le rôle Administrateur Contact est introuvable.'], 500);
+        }
+
+        if ($user->role_id == $adminContactRole->id) {
+            return response()->json(['message' => 'Cet utilisateur est déjà une personne de contact administrateur.'], 400);
+        }
+
+        // Rétrograder l'ancien Administrateur Contact en simple Administrateur
+        $ancienAdminContact = User::where('role_id', $adminContactRole->id)->first();
+
+        if ($ancienAdminContact) {
+            $ancienAdminContact->role_id = Role::Admin()->id;
+            $ancienAdminContact->save();
+        }
+
+        // Met à jour le rôle avec l'ID du rôle Administrateur Contact
+        $user->role_id = $adminContactRole->id;
+        $user->save();
+
+        return response()->json(['message' => 'Utilisateur promu administrateur.']);
+    }
+
     public function removeAdmin(Request $request)
     {
         $request->validate([
@@ -370,15 +521,15 @@ class UserController extends Controller
         $request->validate([
             'password' => 'required|string|min:6'
         ]);
-    
+
         $user = User::find($id);
         if (!$user) {
             return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
         }
-    
+
         $user->password = Hash::make($request->password);
         $user->save();
-    
+
         return response()->json(['message' => 'Mot de passe mis à jour avec succès.']);
     }
 
@@ -399,7 +550,7 @@ class UserController extends Controller
             // Vérifie si le nouveau mot de passe est différent de l'ancien
             if (!Hash::check($request->newPassword, $password)) {
 
-                $newPassword =  Hash::make($request->newPassword);
+                $newPassword = Hash::make($request->newPassword);
                 $user->password = $newPassword;
                 $user->save();
                 return response()->json(['sucess' => 'Votre mot de passe a été mis à jour.']);
@@ -414,7 +565,7 @@ class UserController extends Controller
     public function getUsersByActiveStatus($status)
     {
         $users = User::where('active', $status)->get();
-    
+
         return response()->json(['users' => $users]);
     }
 

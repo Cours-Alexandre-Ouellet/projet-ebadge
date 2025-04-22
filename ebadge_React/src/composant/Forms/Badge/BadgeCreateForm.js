@@ -43,16 +43,14 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
     const [badge, setBadge] = useState(badgeDummy);
 
     const [categories, setCategories] = useState([]);
-    const [loadingCategory, setLoadingCategory] = useState(true);
-    const [inputCategory, setInputCategory] = useState();
-
+    const [loading, setLoading] = useState(true);
+    
 
     useEffect(() => {
         Api.get('/category/').then((response) => {
             setCategories(response.data.categories);
-            setLoadingCategory(false);
-        }).catch((error) => {
-            console.log(error)
+            setLoading(false);
+        }).catch((_) => {
         });
     }, []);
 
@@ -134,6 +132,12 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
             imageFile === null || formData.append('image', imageFile);
             badge.imagePath === null || formData.append('imagePath', badge.imagePath);
             formData.append('color', badge.color); // à retirer
+
+            if (badge.category) {
+                badge.category.id === undefined || formData.append('category_id', badge.category.id);
+                badge.category.name === undefined || formData.append('category_name', badge.category.name);
+            }
+
             Api.post('/badge', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -142,7 +146,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                 .then((response) => {
                     addBadge(response.data);
                 })
-                .catch((error) => {
+                .catch((_) => {
                     errorBadge('Erreur lors de la création du badge');
                 });
             setBadge(badgeDummy);
@@ -156,7 +160,6 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
         <div className="badge-create-form">
             <div className="badge-create-form-container">
                 <div className="badge-create-form-background">
-                    {!loadingCategory ?? <Loading></Loading>}
                     <div className="badge-create-form-content">
                         <h1>Créer un badge</h1>
                         <form className='create-badge' >
@@ -208,25 +211,25 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
                             <div className='badge-create-form-category-selector'>
-                                <Autocomplete
-                                    onChange={(_, newValue) => {
-                                            setBadge((prevState) => (
-                                                {
-                                                    ...prevState,
-                                                    category: newValue
-                                                }
-                                            ));
-                                    }}
-                                    inputValue={inputCategory}
-                                    onInputChange={(_, newInputValue) => {
-                                        setInputCategory(newInputValue);
-                                    }}
-                                    id="controllable-states-demo"
-                                    options={categories.map((category) => category)}
-                                    getOptionLabel={(categories) => categories.name}
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Catégories" />}
-                                />
+                                {loading ? <Loading></Loading> :
+                                    <Autocomplete
+                                        value={badge.category}
+                                        onChange={(_, newValue) => {
+                                            setBadge(prevState => ({
+                                                ...prevState,
+                                                category: newValue
+                                            }));
+
+                                        }}
+                                        loading={!loading}
+                                        id="controllable-states-demo"
+                                        options={categories.map((category) => category)}
+                                        getOptionLabel={(categories) => categories.name}
+                                        isOptionEqualToValue={(option, value) => option.id == value.id}
+                                        sx={{ width: 300 }}
+                                        renderInput={(params) => <TextField {...params} label="Catégories" />}
+                                    />
+                                }
                             </div>
                             <div className="badge-create-form-button-field">
                                 <Button

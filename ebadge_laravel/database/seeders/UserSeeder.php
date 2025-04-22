@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 'username' => 'EtudiantTest',
                 'email' => 'etudiant@test.com',
                 'password' => Hash::make('etudiant'), 
-                'role_id' => 4, 
+                'role_id' => Role::Student()->id, 
                 'privacy' => 0,
                 'active' => 1,
                 'avatarImagePath' => null,
@@ -38,7 +38,7 @@ class UserSeeder extends Seeder
                 'username' => 'ProfesseurTest',
                 'email' => 'professeur@test.com',
                 'password' => Hash::make('professeur'), 
-                'role_id' => 3, 
+                'role_id' => Role::Teacher()->id, 
                 'privacy' => 0,
                 'active' => 1,
                 'avatarImagePath' => null,
@@ -54,7 +54,7 @@ class UserSeeder extends Seeder
                 'username' => 'AdminTest',
                 'email' => 'admin@test.com',
                 'password' => Hash::make('admin'), 
-                'role_id' => 1, 
+                'role_id' => Role::AdminContact()->id, 
                 'privacy' => 0,
                 'active' => 1,
                 'avatarImagePath' => null,

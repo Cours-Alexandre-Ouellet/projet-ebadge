@@ -19,12 +19,12 @@ class UserGrid extends React.Component {
       columns: [
         { field: 'id', headerName: 'ID', flex: 1 },
         {
-          field: 'role',
+          field: 'role_id',
           headerName: 'Rôle',
           flex: 1,
           valueGetter: (params) => {
             const roleMapping = { 1: "Administrateur", 2: "Contact Admin", 3: "Professeur", 4: "Étudiant" };
-            return roleMapping[params.row.role_id] || "Inconnu";
+            return roleMapping[params] || "Inconnu";
           }
         },
         { field: 'first_name', headerName: 'Prénom', flex: 1 },
@@ -33,7 +33,10 @@ class UserGrid extends React.Component {
           field: 'active',
           headerName: 'Statut',
           flex: 1,
-          valueGetter: (params) => (params.row.active === 1 ? 'Actif' : 'Désactivé')
+          valueGetter: (params) => {
+            const isActive = params;
+            return isActive === 1 ? 'Actif' : 'Désactivé';
+            }
         },
         {
           field: "actions",

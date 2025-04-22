@@ -14,12 +14,15 @@
     height: 100%;
 }
 
-html, body  {
+html,
+body {
     height: 100%;
 }
+
 #root {
     height: 100%;
 }
+
 .avatar {
     height: 200px;
     width: 200px;
@@ -27,6 +30,7 @@ html, body  {
     border: solid 5px black;
     line-height: 200px;
 }
+
 .profil {
     display: flex;
     flex-direction: row;
@@ -36,9 +40,10 @@ html, body  {
     margin: 50px;
     font-size: 24px;
     font-family: 'Barlow', sans-serif;
+    background-color: rgba(255, 255, 255, 0.5);
     padding: 25px;
     border-radius: 10px;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
     box-shadow: rgba(77, 77, 77, 0.1) 0px 19px 20px, rgba(66, 66, 66, 0.1) 0px -12px 30px, rgba(72, 71, 71, 0.1) 0px 4px 6px, rgba(63, 63, 63, 0.1) 0px 12px 13px, rgba(62, 62, 62, 0.1) 0px -3px 5px;
 }
 
@@ -72,7 +77,7 @@ html, body  {
     }
 
     .infosLevel {
-        inline-size: min-content;      
+        inline-size: min-content;
         flex-direction: column !important;
         justify-content: center !important;
         align-items: center;
@@ -82,7 +87,6 @@ html, body  {
 
     .BadgeArray {
         overflow-x: scroll;
-        overflow-y: hidden;
         white-space: nowrap;
         display: block !important;
         padding-bottom: 0px !important;
@@ -105,6 +109,7 @@ html, body  {
     align-items: center;
     padding-left: 50px;
 }
+
 .checkbox {
     width: 20px;
     height: 20px;
@@ -112,13 +117,16 @@ html, body  {
     vertical-align: middle;
     cursor: pointer;
     accent-color: #3949b5;
-}  
+}
+
 .backgroundButton {
     margin-top: 25px !important;
 }
+
 .badgeButton {
     margin-top: 25px !important;
 }
+
 .infosLevel {
     display: flex;
     flex-direction: row;
@@ -148,7 +156,7 @@ html, body  {
     border-radius: 10px;
     text-align: center;
     line-height: 40px;
-    color: white;       
+    color: white;
 }
 
 .hiddenAlert {
@@ -163,9 +171,11 @@ html, body  {
     justify-content: center;
     padding: 20px;
     border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
     margin: 50px;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(15px);
     box-shadow: rgba(77, 77, 77, 0.1) 0px 19px 20px, rgba(66, 66, 66, 0.1) 0px -12px 30px, rgba(72, 71, 71, 0.1) 0px 4px 6px, rgba(63, 63, 63, 0.1) 0px 12px 13px, rgba(62, 62, 62, 0.1) 0px -3px 5px;
+    gap: 40px;
 }
 
 .badgeIcon {
@@ -174,39 +184,73 @@ html, body  {
     height: 100px;
     border-radius: 100%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.45), 0 6px 5px 0 rgba(0, 0, 0, 0.45);   
+    z-index: 1;
 }
 
 .Badge {
-    width: 200px;
     height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.badgeIcon:hover{
-    transition: ease-in-out 0.25s;
-    height: 150px;
-    width: 150px;
-}
-.badgeIcon:hover + .hideDisplay {
-    display: block;
-    animation: fadeIn .35s;
-    z-index: 10;
-  }
 
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+.badge-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
   }
+  
+  .teacher-circle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #3949b5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid white;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 3;
+  }
+  
+.teacher-circle:hover {
+    transform: scale(1.1);
+    background-color: #1565c0;
+}
+
+.badgeIcon:hover + .hideDisplay,
+.teacher-circle:hover + .hideDisplay,
+.badge-wrapper:hover + .hideDisplay {
+  display: block;
+  animation: fadeIn .35s;
+  z-index: 10;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
 
 
 .hideDisplay {
-    display: none; 
-    position: absolute;  
+    display: none;
+    position: fixed;
     text-align: center;
     font-size: 12px;
     margin-left: 10px;
-    margin-top: 200px;
+    margin-top: 275px;
     z-index: -1000;
     background-color: #3949b5;
     color: white;
@@ -239,22 +283,40 @@ html, body  {
 
 @keyframes rotation {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
+
     to {
-      transform: rotate(359deg);
+        transform: rotate(359deg);
     }
-  }
+}
 
 
 .textBadge {
     font-size: 14;
 }
-.invertedText {
-    background: inherit;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent; /* Permet à background-clip: text de fonctionner */
-    filter: invert(1) contrast(2); /* Valeur de contraste plus raisonnable */
-    
+
+.badge-popup {
+    min-width: 500px;
+    min-height: 400px;
+    margin: 25px;
+}
+
+.badge-popup hr {
+    margin: 35px;
+    border: 1px solid #e0e0e0;
+}
+
+.mt-2 {
+    margin-top: 10px;
+}
+
+.badge-selector {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.listFavorite {
+    min-height: 250px
 }

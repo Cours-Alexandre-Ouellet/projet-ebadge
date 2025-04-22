@@ -36,7 +36,7 @@ class AdminLayout extends React.Component {
         this.policiesHelper = new PoliciesHelper();
 
         this.container = window !== undefined ? () => window.document.body : undefined;
-        this.mobileOpen = false;
+        
 
         this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
 
@@ -45,9 +45,9 @@ class AdminLayout extends React.Component {
                 {
                     sectionName: "Gestion des utilisateurs",
                     tabs: this.policiesHelper.getvisibleRoutes([
-                        { id: 1, label: 'Mes utilisateurs', icon: <PeopleIcon />, path: '/admin/users', minimumRole: Role.Teacher },
-                        { id: 2, label: 'Gestion Administrateurs', icon: <PeopleIcon />, path: '/admin/admin_users', minimumRole: Role.Admin },
-                        { id: 6, label: 'Gestion Enseignants', icon: <School />, path: '/admin/teacher_codes', minimumRole: Role.Admin },
+                        { id: 1, label: 'Utilisateurs', icon: <PeopleIcon />, path: '/admin/users', minimumRole: Role.Teacher },
+                        { id: 2, label: 'Administrateurs', icon: <PeopleIcon />, path: '/admin/admin_users', minimumRole: Role.Admin },
+                        { id: 6, label: 'Codes Enseignants', icon: <School />, path: '/admin/teacher_codes', minimumRole: Role.Admin },
                     ])
                 },
                 {
@@ -64,12 +64,13 @@ class AdminLayout extends React.Component {
                     ])
                 }
             ],
+            mobileOpen:false,
         };
 
     }
 
     handleDrawerToggle = () => {
-        this.mobileOpen = !this.mobileOpen;
+        this.setState({mobileOpen: !this.state.mobileOpen});
     };
 
     render() {
@@ -105,13 +106,13 @@ class AdminLayout extends React.Component {
                     </AppBar>
                     <Box
                         component="nav"
-                        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 },backgroundColor: 'lightblue' }}
                         aria-label="mailbox folders"
                     >
                         <Drawer
                             container={this.container}
                             variant="temporary"
-                            open={this.mobileOpen}
+                            open={this.state.mobileOpen}
                             onClose={this.handleDrawerToggle}
                             ModalProps={{
                                 keepMounted: true,
