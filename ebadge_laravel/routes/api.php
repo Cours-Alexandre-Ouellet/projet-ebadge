@@ -27,7 +27,7 @@ Route::group([
     ],
 ], function () {
     Route::get('/', [App\Http\Controllers\BadgeController::class, 'index']);
-
+    Route::get('/{id}', [App\Http\Controllers\BadgeController::class, 'getBadgeById']);
     Route::group([
         'middleware' => [
             'auth:api',
@@ -57,7 +57,7 @@ Route::group([
     Route::post('/assign-badge', [App\Http\Controllers\CategoryController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\CategoryController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::delete('/{id}', [App\Http\Controllers\CategoryController::class, 'destroy'])->middleware('roles:' . Role::ALL_ADMINS);
-
+    
     Route::get("/{id}/badges", [App\Http\Controllers\CategoryController::class, "getCategoryBadges"]);
     Route::get("/{id}/badges-left", [App\Http\Controllers\CategoryController::class, "getCategoryBadgeLeft"]);
 });
@@ -124,6 +124,11 @@ Route::group([
     Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'Leaderboard']);
     Route::get('/leaderboard/{startDate}/{endDate}', [App\Http\Controllers\StatsController::class, 'LeaderboardBySession']);
     Route::get('/leaderboard/{category}', [App\Http\Controllers\StatsController::class, 'LeaderboardByCategory']);
+    Route::get('/assigned-count', [App\Http\Controllers\StatsController::class, 'totalAssignedBadges']);
+    Route::get('/average-badges', [App\Http\Controllers\StatsController::class, 'averageBadgesPerStudent']);
+    Route::get('/top-bottom-badges', [App\Http\Controllers\StatsController::class, 'mostAndLeastAssignedBadges']);
+    Route::get('/last-badge', [App\Http\Controllers\StatsController::class, 'lastAssignedBadge']); 
+    Route::get('/distribution/badges', [App\Http\Controllers\StatsController::class, 'badgeDistributionByCategory']);
 });
 
 Route::group([

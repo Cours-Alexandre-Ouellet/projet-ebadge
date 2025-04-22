@@ -8,6 +8,7 @@ import { Button } from '@mui/material';
 import UserAdminGrid from '../../../composant/Dashboard/UserAdminGrid';
 import AssignAdminPopup from '../../../composant/Dashboard/Popups/UserAdminPopup/AssignAdminPopup';
 import { RoleIds } from '../../../policies/Role';
+import Loading from '../../../composant/Loading/LoadingComponent';
 
 class UserAdminTab extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class UserAdminTab extends React.Component {
         this.state = {
             adminUsers: [],
             openAssignAdminPopup: false,
+            charge: false
         };
     }
 
@@ -29,7 +31,7 @@ class UserAdminTab extends React.Component {
         Api.get('/user').then(res => {
             const users = res.data.users || [];
             const adminUsers = users.filter(user => [RoleIds.Admin, RoleIds.AdminContact].includes(user.role_id));
-            this.setState({ adminUsers });
+            this.setState({ adminUsers, charge: true }); 
         });
     }
 
@@ -45,8 +47,9 @@ class UserAdminTab extends React.Component {
                     Ajouter un Admin
                 </Button>
                 </div>
+                {!this.state.charge && <Loading />} 
                 <UserAdminGrid rows={this.state.adminUsers} refreshAdmins={this.getAdminUsers.bind(this)}/>
-                {this.state.adminUsers.length < 2 && (
+                {this.state.charge && this.state.adminUsers.length < 2 && (
                 <p style={{ 
                     color: 'red', 
                     // fontWeight: 'bold', 

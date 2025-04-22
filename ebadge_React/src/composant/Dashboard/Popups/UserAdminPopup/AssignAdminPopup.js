@@ -21,8 +21,10 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
   const fetchUsers = () => {
     Api.get("/user")
       .then((res) => {
-        const nonAdmins = res.data.users.filter(user => ![RoleIds.Admin, RoleIds.AdminContact].includes(user.role_id));
-        setUsers(nonAdmins);
+        const profsOnly = res.data.users.filter(
+          user => user.role_id === RoleIds.Teacher
+        );
+        setUsers(profsOnly);
       })
       .catch(() => setUsers([]));
   };

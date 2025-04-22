@@ -275,4 +275,21 @@ class BadgeController extends Controller
 
         return response()->json($badges);
     }
+
+    /**
+     * Retourne un badge spécifique avec son ID, sans affecter la méthode show()
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getBadgeById($id)
+    {
+        $badge = Badge::find($id);
+
+        if (!$badge) {
+            return response()->json(['error' => 'Badge introuvable'], 404);
+        }
+
+        return response()->json(['badge' => $badge]);
+    }
 }

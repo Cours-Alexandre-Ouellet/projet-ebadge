@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
+use App\Models\Category;
+use App\Models\CategoryBadge;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 
 
 /**
@@ -72,5 +75,91 @@ class StatsController extends Controller
         ])->orderBy('badges_count', 'desc')->get();
         $users = array_map([$this, 'CleanUp'], $users->toArray());
         return response()->json($users);
+    }
+
+    /**
+     * Retourne le nombre total de badges attribués à des utilisateurs
+     * Source : table pivot user_badge
+     */
+    public function totalAssignedBadges()
+    {
+        $count = DB::table('user_badge')->count();
+        return response()->json(['assigned' => $count]);
+    }
+
+    /**
+     * Retourne le nombre moyen de badges attribués par étudiant
+     * - Compte les lignes de la table pivot user_badge
+     * - Compte les utilisateurs avec role_id = 4 (étudiants)
+     * - Divise les deux valeurs pour obtenir la moyenne
+     */
+    public function averageBadgesPerStudent()
+    {
+        $studentCount = User::where('role_id', 4)->count();
+        $totalBadgesAssigned = DB::table('user_badge')->count();
+
+        // Évite la division par zéro
+        $average = $studentCount > 0 ? $totalBadgesAssigned / $studentCount : 0;
+
+        return response()->json(['average' => round($average, 2)]);
+    }
+
+    /**
+     * Retourne le badge le plus et le moins attribué
+     * - Groupe les entrées de user_badge par badge_id
+     * - Trie par nombre d’assignations
+     */
+    public function mostAndLeastAssignedBadges()
+    {
+        $results = DB::table('user_badge')
+            ->select('badge_id', DB::raw('COUNT(*) as count'))
+            ->groupBy('badge_id')
+            ->orderByDesc('count')
+            ->get();
+
+        // Badge le plus attribué
+        $max = $results->first();
+
+        // Badge le moins attribué (avec au moins une attribution)
+        $min = $results->sortBy('count')->first();
+
+        return response()->json([
+            'most' => $max,
+            'least' => $min
+        ]);
+    }
+    /**
+     * Retourne le dernier badge attribué (chronologiquement)
+     * - Trie la table user_badge selon created_at
+     */
+    public function lastAssignedBadge()
+    {
+        $record = DB::table('user_badge')
+            ->latest('created_at')
+            ->first();
+
+        return response()->json($record);
+    }
+
+    /**
+     * Retourne la répartition des badges par catégorie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function badgeDistributionByCategory()
+    {
+        $badges = CategoryBadge::with('category:id,name')->get();
+    
+        // Regroupe les badges par nom de catégorie (ou 'Inconnue' si la relation est absente)
+        $grouped = $badges->groupBy(fn($item) => $item->category->name ?? 'Inconnue');
+    
+        // Transforme chaque groupe en objet { name, count }
+        $distribution = $grouped->map(function ($group, $name) {
+            return [
+                'name' => $name,
+                'count' => $group->count(),
+            ];
+        })->values(); // Réindexe proprement le tableau
+    
+        return response()->json($distribution);
     }
 }

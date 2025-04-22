@@ -29,4 +29,9 @@ class CategoryBadge extends Model
             'category_id' => $this->faker->numberBetween(1, 100),
         ];
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

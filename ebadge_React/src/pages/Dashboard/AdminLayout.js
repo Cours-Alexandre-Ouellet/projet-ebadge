@@ -23,6 +23,7 @@ import PoliciesHelper from '../../policies/PoliciesHelper';
 import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import { School } from "@mui/icons-material";
+import InsertChartIcon from '@mui/icons-material/InsertChart';
 
 
 const drawerWidth = 240;
@@ -54,6 +55,12 @@ class AdminLayout extends React.Component {
                     tabs: this.policiesHelper.getvisibleRoutes([
                         { id: 3, label: 'Liste des badges', icon: <AssignmentIcon />, path: "/admin/badges", minimumRole: Role.Teacher },
                         { id: 7, label: 'Liste des catégories', icon: <AssignmentIcon />, path: "/admin/categories", minimumRole: Role.Teacher },
+                    ])
+                },
+                {
+                    sectionName: "Données analytiques",
+                    tabs: this.policiesHelper.getvisibleRoutes([
+                        { id: 4, label: 'Statistiques', icon: <InsertChartIcon />, path: "/admin/stats", minimumRole: Role.Admin },
                     ])
                 }
             ],
