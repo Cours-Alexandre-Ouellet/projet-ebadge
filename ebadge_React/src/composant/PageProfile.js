@@ -528,7 +528,7 @@ export default function PageProfile() {
             </FormControl>
             
             <hr />
-            Liste des badges obtenus
+            Liste des badges favoris
             <DataGrid
               className="listFavorite"
               autoHeight={true}
