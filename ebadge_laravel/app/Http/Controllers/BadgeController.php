@@ -261,16 +261,16 @@ class BadgeController extends Controller
     }
 
     /**
-     * Va chercher tous les badges avec leur nom de catégorie
+     * Va chercher tous les badges avec le nom et la couleur de catégorie
      * 
-     * @return \Illuminate\Http\JsonResponse les badges avec leur catégorie
+     * @return \Illuminate\Http\JsonResponse les badges avec leur catégorie et couleur de catégorie
      * @author Vincent Houle
      */
     public function getAllBadgesWithCategory()
     {
         $badges = Badge::leftJoin('category_badge', 'category_badge.badge_id', '=', 'badge.id')
             ->leftJoin('category', 'category.id', '=', 'category_badge.category_id')
-            ->select(['badge.*', 'category.name AS category'])
+            ->select(['badge.*', 'category.name AS category', 'category.color AS categoryColor'])
             ->get();
 
         return response()->json($badges);

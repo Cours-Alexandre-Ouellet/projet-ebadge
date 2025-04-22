@@ -23,26 +23,31 @@ class CategorySeeder extends Seeder
         DB::table('category')->insert([
             [
                 'name' => 'Apprentissage',
+                'color' => '#FF5733',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Participation',
+                'color' => '#33FF57',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Excellence',
+                'color' => '#3357FF',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Engagement',
+                'color' => '#FF33A1',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Créativité',
+                'color' => '#A133FF',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

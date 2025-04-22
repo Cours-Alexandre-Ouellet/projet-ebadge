@@ -21,12 +21,12 @@
 }
 
 .avatar {
-    min-height: 200px !important;
+    min-height: 150px !important;
     min-width: 150px !important;
     margin-top: 16px !important;
-    
 }
 
 .description{
     margin-top:70px !important;
+    text-align: center;
 }

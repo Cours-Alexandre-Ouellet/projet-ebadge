@@ -98,6 +98,7 @@ export default function BadgeAchievementPopup() {
                 <DialogContent>
                     <Carousel
                         navButtonsAlwaysVisible
+                        navButtonsAlwaysInvisible={badges.length < 2}
                         indicators={false}
                         autoPlay
                         stopAutoPlayOnHover
