@@ -181,7 +181,7 @@ const Stats = () => {
                       label: role.role
                     }))
                   }]}
-                  margin={{ right: 200 }}
+                  margin={{ right: 230 }}
                   width={400}
                   height={300}
                 />
