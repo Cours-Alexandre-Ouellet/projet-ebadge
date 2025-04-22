@@ -19,17 +19,17 @@ projet-ebadge created by GitHub Classroom
 
 Créer tous les tables dans la base de données
 ```bash
- php artisan migrate
+ php artisan migrate --seed
 ```
 
 Configure l'application pour utiliser les clés de chiffrement de Passport
 ```bash
-php artisan passport:install
+ php artisan passport:install
 ```
 
 Générer les clés de chiffrement de Passport
 ```bash
-php artisan passport:keys
+ php artisan passport:keys
 ```
 
 Créer un lien symbolique depuis le répertoire public/storage vers le répertoire storage/app/public
@@ -44,5 +44,5 @@ Création d'un utilisateur admin avec l'api ou le site web. (changer le role dan
 - Éxécuter la commande suivants dans le répertoire du projet Laravel
 
 ```bash
-php artisan test
+ php artisan test
 ```
