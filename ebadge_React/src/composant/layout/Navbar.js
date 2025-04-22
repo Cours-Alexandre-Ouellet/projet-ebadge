@@ -199,7 +199,7 @@ class Navbar extends React.Component {
               ))}
             </Box>
 
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ display: 'flex'  }}>
               <Tooltip title="Mon compte">
                 <IconButton
                   size="large"

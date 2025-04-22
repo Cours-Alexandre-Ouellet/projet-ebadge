@@ -1,10 +1,11 @@
+import "./BadgeList.css";
 import React, { useContext, useEffect,useState } from "react";
 import BadgeComponent from "./BadgeComponent";
 import Api from "../../utils/Api";
 import { BadgeListContext } from "../../context/BadgeListContext";
 
 /**
- * élément affichant la liste de tous les badges d'un utilisateur
+ * Élément affichant la liste de tous les badges d'un utilisateur
  * @returns la liste de badge
  */
 export default function BadgeList(props) {
@@ -28,7 +29,7 @@ export default function BadgeList(props) {
           return <BadgeComponent badge={badge} key={index} />;
         })
       ) : (
-        <h1>Vous n'avez aucun badge</h1>
+        <h1 className="message">Aucun badge affiché.</h1>
       )}
     </div>
   );

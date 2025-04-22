@@ -176,6 +176,7 @@ html, body  {
     height: 100px;
     border-radius: 100%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.45), 0 6px 5px 0 rgba(0, 0, 0, 0.45);   
+    z-index: 1;
 }
 
 .Badge {
@@ -185,16 +186,45 @@ html, body  {
     justify-content: center;
     align-items: center;
 }
-.badgeIcon:hover{
-    transition: ease-in-out 0.25s;
-    height: 150px;
-    width: 150px;
-}
-.badgeIcon:hover + .hideDisplay {
-    display: block;
-    animation: fadeIn .35s;
-    z-index: 10;
+
+.badge-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
   }
+  
+  .teacher-circle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #3949b5;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid white;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 3;
+  }
+  
+.teacher-circle:hover {
+    transform: scale(1.1);
+    background-color: #1565c0;
+}
+
+.badgeIcon:hover + .hideDisplay,
+.teacher-circle:hover + .hideDisplay,
+.badge-wrapper:hover + .hideDisplay {
+  display: block;
+  animation: fadeIn .35s;
+  z-index: 10;
+}
 
   @keyframes fadeIn {
     0% { opacity: 0; }
@@ -277,3 +307,4 @@ html, body  {
 .listFavorite{
     min-height: 250px
 }
+

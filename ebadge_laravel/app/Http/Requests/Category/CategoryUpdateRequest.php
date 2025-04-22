@@ -19,6 +19,7 @@ class CategoryUpdateRequest extends FormRequest
         return [
             'id' => 'required|exists:badge,id',
             'name' => 'required|string|max:45',
+            'color' => 'required|string|max:7',
         ];
     }
 }

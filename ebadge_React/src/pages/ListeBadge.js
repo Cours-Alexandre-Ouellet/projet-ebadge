@@ -100,11 +100,20 @@ export default function ListeBadge() {
       align: "center",
       renderCell: (params) => {
         return (
+          <div style={{ 
+            width: '100%', 
+            height: '100%', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center' 
+          }}>
           <Avatar
             alt={params.row.title}
             src={params.value}
-            sx={{ width: 40, height: 40 }}
+            sx={{ width: 40, height: 40, boxShadow: `0 0 4px 7px ${params.row.category_color}` }}
+            
           />
+        </div>
         );
       },
     },
@@ -147,7 +156,7 @@ export default function ListeBadge() {
               />
             </div>
             <div className="listeBadge-listes">
-              <div style={{ height: 400, width: "100%" }}>
+              <div style={{ "height": 370, width: "100%" }} className="listeBadge-inner">
                 <div className="listeBadge-title">
                   <h2>Obtenus</h2>
                 </div>
@@ -155,9 +164,11 @@ export default function ListeBadge() {
                   onRowClick={handleRowClick}
                   rows={filterObtainedBadges()}
                   columns={columns}
+                  rowsPerPageOptions={[5]}
+                  pageSize={5}
                 />
               </div>
-              <div style={{ height: 400, width: "100%" }}>
+              <div style={{ "height": 370, width: "100%" }} className="listeBadge-inner">
                 <div className="listeBadge-title">
                   <h2>Non obtenus</h2>
                 </div>
@@ -165,6 +176,8 @@ export default function ListeBadge() {
                   onRowClick={handleRowClick}
                   rows={filterMissingBadges()}
                   columns={columns}
+                  rowsPerPageOptions={[5]}
+                  pageSize={5}
                 />
               </div>
             </div>

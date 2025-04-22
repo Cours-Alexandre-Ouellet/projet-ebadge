@@ -43,9 +43,9 @@ class Badge extends Model
      */
     public function setPossessionPercentage()
     {
-        $users = $this->users;
         $totalUsers = User::all()->where('role_id', '=', Role::Student()->id)->count();
-        $this->possession = $totalUsers == 0 ? 0 : $users->count() / $totalUsers * 100;
+        $this->possession = $totalUsers == 0 ? 0 : $this->users->count() / $totalUsers * 100;
+        unset($this->users);
     }
 
     /**
