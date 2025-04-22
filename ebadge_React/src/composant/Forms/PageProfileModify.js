@@ -5,6 +5,7 @@ import Api from '../../utils/Api.js'
 import InformationPopup from '../Dashboard/Popups/InformationPopup.js';
 import { Link } from 'react-router-dom';
 import UserModifyPasswordPopup from '../Dashboard/Popups/UserModifyPasswordPopup.js';
+import Loading from '../Loading/LoadingComponent.js';
 
 /**
  * Affiche le formulaire de modfication de mot de passe
@@ -20,6 +21,8 @@ export default function PageProfileModify() {
     const [oldPasswordError, setOldPasswordError] = useState("");
     const [newPasswordError, setNewPasswordError] = useState("");
     const [newPasswordConfirmationError, setNewPasswordConfirmationError] = useState("");
+
+    const [loading, setLoading] = useState(false);
 
     const [route, setRoute] = useState("/");
 
@@ -81,20 +84,21 @@ export default function PageProfileModify() {
 
     // Gère la modification de mot de passe
     const handleSubmit = (event) => {
+        event.preventDefault();
 
+        setLoading(true);
         if (validateOldPassword() && validateNewPassword() && validateNewPasswordConfirmation()) {
             let formData = new FormData();
             formData.append('id', user.id);
             formData.append('oldPassword', oldPassword);
             formData.append('newPassword', newPassword);
 
-            event.preventDefault();
             Api.put('/user/modify-password', {
                 id: user.id,
                 oldPassword: oldPassword,
                 newPassword: newPassword
             }).then((response) => {
-
+                setLoading(false);
                 // Si ça marche
                 if (response.data.sucess) {
                     setSeverity("success");
@@ -116,6 +120,7 @@ export default function PageProfileModify() {
                     setNewPasswordError(response.data.errorNewPassword);
                 }
             }).catch((_) => {
+                setLoading(false);
                 setSeverity("error");
                 setMessageInfo("Une erreur est survenue avec nos serveur. Veuillez ressayer plus tard ou contactez un admin sur l'onglet contactez-nous.");
                 setIsOpenInformation(true);
@@ -133,7 +138,7 @@ export default function PageProfileModify() {
         setMessageInfo("");
 
     }
-    
+
     // Gère la fermeture de la confirmation
     const handleCloseConfirmation = () => {
         setIsOpenConfirmation(false);
@@ -150,6 +155,7 @@ export default function PageProfileModify() {
         <div className="profile-modify-form">
             <div className="profile-modify-form-container">
                 <div className="profile-modify-form-background">
+                {loading ? <Loading></Loading> : null}
                     <div className="profile-modify-form-content">
                         <h1>Modification de mot de passe</h1>
                         <form className='profile-modify' >
@@ -169,8 +175,8 @@ export default function PageProfileModify() {
                                 required
                                 sx={{ width: '80%', marginTop: '20px' }}
                             />
-                            <Typography variant="caption" component={Link} to={"/contactez-nous"} 
-                            sx={{margin : '-0.8em 0em -0.8em 0em', paddingLeft : '10px'}}>* Mot de passe oublié</Typography>
+                            <Typography variant="caption" component={Link} to={"/contactez-nous"}
+                                sx={{ margin: '-0.8em 0em -0.8em 0em', paddingLeft: '10px' }}>* Mot de passe oublié</Typography>
                             <TextField
                                 id="newPassword"
                                 name="newPassword"
