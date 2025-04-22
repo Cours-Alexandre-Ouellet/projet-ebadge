@@ -5,7 +5,7 @@ import { Edit, Delete } from '@mui/icons-material';
 import CategoryDeleteAction from './CategoryDeletePopup';
 import CategoryUpdateForm from '../CategoryUpdateForm';
 import CategoryBadgesPopup from './Popups/CategoryBadgesPopup/CategoryBadgesPopup';
-
+import Role from '../../policies/Role';
 
 // Transition pour l'affichage en glissement du Dialog (modale) d'édition
 const Transition = React.forwardRef((props, ref) => (
@@ -84,7 +84,7 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
         },
 
         // Colonnes supplémentaires visibles uniquement pour les administrateurs
-        ...(role === 'Administrateur' ? [
+        ...([Role.Admin, Role.AdminContact].includes(role) ? [
             // Colonne pour l'action de modification
             {
                 field: 'editAction',
