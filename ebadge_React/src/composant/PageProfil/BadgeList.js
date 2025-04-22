@@ -5,7 +5,7 @@ import Api from "../../utils/Api";
 import { BadgeListContext } from "../../context/BadgeListContext";
 
 /**
- * élément affichant la liste de tous les badges d'un utilisateur
+ * Élément affichant la liste de tous les badges d'un utilisateur
  * @returns la liste de badge
  */
 export default function BadgeList(props) {

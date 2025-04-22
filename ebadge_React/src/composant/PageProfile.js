@@ -104,12 +104,10 @@ export default function PageProfile() {
     Api.get("/auth/current_user")
       .then((response) => {
         if (response.data.avatarImagePath == null) {
-          console.log("avatar null");
           response.data.avatarImagePath =
             "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
         }
         if (response.data.backgroundImagePath == null) {
-          console.log("background null");
           response.data.backgroundImagePath = "./background.png";
         }
         setUser(response.data);
@@ -387,7 +385,7 @@ export default function PageProfile() {
                 onClick={handleClickOpenAvatar}
                 src="http://cdn.onlinewebfonts.com/svg/img_520583.png"
                 alt="profil"
-                title="image de profil"
+                title="Modifier son image de profil"
               />
             </label>
           </div>
@@ -530,7 +528,7 @@ export default function PageProfile() {
             </FormControl>
             
             <hr />
-            Liste des badges obtenues
+            Liste des badges obtenus
             <DataGrid
               className="listFavorite"
               autoHeight={true}

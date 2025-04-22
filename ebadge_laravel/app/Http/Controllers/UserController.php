@@ -114,10 +114,11 @@ class UserController extends Controller
      */
     public function getUserBadges(int $id)
     {
-        $badges = Badge::select('badge.*')
-            ->from('badge')
-            ->join('user_badge','badge_id','=','badge.id')
-            ->where('user_id', $id)
+        $badges = Badge::select('badge.*', 'c.color as category_color', 'c.name as category_name')
+            ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'badge.id')
+            ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
+            ->join('user_badge','badge.id','=','user_badge.badge_id')
+            ->where('user_badge.user_id', $id)
             ->get();
 
         if ($badges == null) {
@@ -135,9 +136,12 @@ class UserController extends Controller
      */
     public function getUserBadgesFavorite(int $id)
     {
-        $badges = Badge::select('b.*')
+        $badges = Badge::select('b.*', 'c.color as category_color', 'c.name as category_name', 'u.first_name as creator_name', 'u.last_name as creator_last_name')
         ->join('user_badge', 'user_badge.user_id','=','user.id')
         ->join('badge as b', 'b.id','=','user_badge.badge_id')
+        ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'b.id')
+        ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
+        ->leftJoin('user as u', 'u.id', '=', 'b.teacher_id')
         ->from('user')
         ->where('user_badge.favorite','1')
         ->where('user.id', $id)
@@ -247,7 +251,11 @@ class UserController extends Controller
         //TODO: valider avec le group
 
         $badges = $user->badges;
-        $missingBadges = Badge::whereNotIn('id', $badges->pluck('id'))->get();
+        $missingBadges = Badge::select('badge.*', 'c.color as category_color', 'c.name as category_name')
+        ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'badge.id')
+        ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
+        ->whereNotIn('badge.id', $badges->pluck('id'))
+        ->get();
         return response()->json([
             'badges' => $missingBadges
         ]);

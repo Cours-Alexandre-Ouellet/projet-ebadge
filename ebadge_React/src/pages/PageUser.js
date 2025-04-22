@@ -9,8 +9,8 @@ import { BadgeListContext } from "../context/BadgeListContext";
 import { RoleIds } from "../policies/Role";
 
 /**
- * revoie la page d'un utilisateur
- * l'id de l'utilisateur doit etre envoyé dans l'url de la page
+ * La page d'un utilisateur
+ * L'id de l'utilisateur doit être envoyé dans l'url de la page
  * @returns la page de l'étudiant
  */
 export default function PageUser() {
@@ -22,7 +22,7 @@ export default function PageUser() {
   const [error, setError] = useState(false);
 
   /**
-   * cherche les donnée de l'utilisateur
+   * Cherche les données de l'utilisateur
    */
   useEffect(() => {
     setLoaded(true);
@@ -30,12 +30,10 @@ export default function PageUser() {
       Api.get(`/user/${params.id}`)
         .then((response) => {
           if (response.data.user.avatarImagePath == null) {
-            console.log("avatar null");
             response.data.user.avatarImagePath =
               "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909__340.png";
           }
           if (response.data.user.backgroundImagePath == null) {
-            console.log("background null");
             response.data.user.backgroundImagePath = "../background.png";
           }
           setLoaded(true);

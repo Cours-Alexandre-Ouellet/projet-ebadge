@@ -1,117 +1,130 @@
-import React from 'react';
-import '@mui/material';
-import { Button, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, FormControl, TextField, Box } from '@mui/material';
 import Api from '../utils/Api';
-import CategoryComponent from './PageProfil/CategoryComponent';
 import './CategoryCreateForm.css';
+import { MuiColorInput } from 'mui-color-input'
 
-class CategoryCreateForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            nameError: '',
-            category: {
-                name: '',
-                possession: 0
-            }
-        }
+/**
+ * Composant du formulaire de création de catégorie
+ * 
+ * @author Alexandre del Fabbro
+ * D'après le code du projet E-Badge
+ * Inspiré du code de OpenAi - ChatGPT - [Modèle massif de langage] - chatpgt.com - [Consulté le 27 mars 2025]
+ * Inspiré de code de Google - Gemini 2.0 Flash - [Modèle massif de langage] - VSCode Copilot chat - [Consulté le 6 avril 2025]
+ */
+export default function CategoryCreateForm({ addCategory, errorCategory, handleClose }) {
 
-        this.handleCategoryChange = this.handleCategoryChange.bind(this);
-        this.validateName = this.validateName.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    // État pour stocker le nom de la catégorie
+    const [categoryName, setCategoryName] = useState('');
+
+    // État pour gérer les erreurs de validation du nom de la catégorie
+    const [nameError, setNameError] = useState('');
+
+    // État pour gérer la couleur de la catégorie
+    const [categoryColor, setCategoryColor] = useState('#FFFFFF');
 
     /**
-     * fonction qui change la valeur du champ quand on tape dedans
+     * Fonction qui change la valeur du champ quand on tape dedans
      * @param {*} event 
      */
-    handleCategoryChange(event) {
-        this.setState({ category: { ...this.state.category, [event.target.name]: event.target.value } });
-    }
+    const handleCategoryChange = (event) => {
+        setCategoryName(event.target.value);
+    };
+
+    /**
+     * Fonction qui change la couleur de la catégorie
+     * @param {*} color 
+     */
+    const handleColorChange = (color) => {
+        setCategoryColor(color);
+    };
 
     /**
      * Fonction qui vérifie si le nom est valide
      * @returns boolean 
      */
-    validateName() {
-        if (this.state.category.name.length === 0) {
-            this.setState({ nameError: 'Veuillez donner un nom à la catégorie' });
+    const validateName = () => {
+        if (categoryName.trim().length === 0) {
+            setNameError('Veuillez donner un nom à la catégorie');
             return false;
-        } else {
-            this.setState({ nameError: '' });
-            return true;
         }
-    }
+        setNameError('');
+        return true;
+    };
 
     /**
      * fonction qui envoie les données au serveur
      * @param {*} event 
      */
-    handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        if (this.validateName()) {
+        if (!validateName()) return;
 
-                let formData = new FormData();
+        try {
 
-                formData.append('name', this.state.category.name);
+            const formData = new FormData();
+            formData.append('name', categoryName);
+            formData.append('color', categoryColor);
 
-                Api.post('/category', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then((response) => {
-                    this.props.addCategory(response.data);
-                })
-                .catch((error) => {
-                    this.props.errorCategory('Erreur lors de la création de la catégorie');
-                    console.error(error);
-                });
-            this.props.handleClose();
+            const response = await Api.post('/category', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            addCategory(response.data);
+            handleClose();
+        } catch (error) {
+            errorCategory('Erreur lors de la création de la catégorie');
+            console.error(error);
         }
-    }
+    };
 
-    render() {
-        return (
-            <div className="category-create-form">
-                <div className="category-create-form-container">
-                    <div className="category-create-form-background">
-                        <div className="category-create-form-content">
-                            <h1>Créer une catégorie</h1>
-                            <form className='create-category' onSubmit={this.handleSubmit}>
-                                <TextField
-                                    id="name"
-                                    name="name"
-                                    label="Nom"
-                                    variant="outlined"
-                                    value={this.state.category.name}
-                                    onChange={this.handleCategoryChange}
-                                    onBlur={this.validateName}
-                                    error={this.state.nameError.length > 0}
-                                    helperText={this.state.nameError}
-                                    inputProps={{ maxLength: 45 }}
-                                    required
-                                    sx={{ width: '80%', marginTop: '20px' }}
-                                />
-                                
-                                <div className="category-create-form-button-submit">
-                                    <Button variant="outlined" onClick={this.props.handleClose} sx={{
-                                        width: '100%',
-                                        marginTop: '20px',
-                                        marginRight: '20px'
-                                    }}>Annuler</Button>
-                                    <Button type="submit" variant="contained" sx={{
-                                        width: '100%',
-                                        marginTop: '20px'
-                                    }}>Créer</Button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+    return (
+        <div className="category-create-form">
+            <div className="category-create-form-container">
+                <div className="category-create-form-background">
+                <div className="category-create-form-content">
+            <h1>Créer une catégorie</h1>
+            <FormControl className="create-category" onSubmit={handleSubmit}>
+                <TextField
+                    name="name"
+                    label="Nom"
+                    variant="outlined"
+                    value={categoryName}
+                    onChange={handleCategoryChange}
+                    onBlur={validateName}
+                    error={Boolean(nameError)}
+                    helperText={nameError}
+                    inputProps={{ maxLength: 45 }}
+                    required
+                    sx={{ width: '80%', marginTop: '20px' }}
+                />
+                <Box sx={{ marginTop: '20px', width: '80%' }}>
+                    <MuiColorInput
+                        format="hex"
+                        value={categoryColor}
+                        onChange={handleColorChange}
+                        fullWidth
+                    />
+                </Box>
+                
+                <div className="category-create-form-button-submit">
+                    <Button variant="outlined" onClick={handleClose} sx={{
+                        width: '100%',
+                        marginTop: '20px',
+                        marginRight: '20px',
+                    }}>Annuler</Button>
+                    <Button type="submit" variant="contained" onClick={handleSubmit} sx={{
+                        width: '100%',
+                        marginTop: '20px',
+                    }}>Créer</Button>
                 </div>
+                
+            </FormControl>
             </div>
-        );
-    }
-}
+            
+            </div>
+            </div>
+        </div>
+    );
+};
 
-export default CategoryCreateForm;
