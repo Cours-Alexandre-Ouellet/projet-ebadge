@@ -68,7 +68,7 @@ export default function BadgeAchievementPopup() {
     };
 
     return (
-        <div className="badge-achievement-popup-container">
+        <div className="badge-achievement-popup-container" style={{ display: isOpen ? "block" : "none" }}>
             <Confetti
                 className={`confetti-wrapper ${isOpen ? "active" : ""}`}
                 width={width}
