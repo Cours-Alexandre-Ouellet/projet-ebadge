@@ -67,7 +67,7 @@ Route::group([
     'prefix' => 'user',
     'middleware' => [
         'auth:api',
-    ],
+    ],  
 ], function () {
     Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
     Route::put('/modify-password', [App\Http\Controllers\UserController::class, 'modifyPassword']);
@@ -76,6 +76,8 @@ Route::group([
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::get("/my-badges", [App\Http\Controllers\UserController::class, "getMyBadges"]);
+    Route::get("/new-badges", [App\Http\Controllers\UserController::class, "getMyNewBadges"]);
+    Route::put("/new-badges/seen", [App\Http\Controllers\UserController::class, "notifyHasSeenBadges"]);
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/edit-background', [App\Http\Controllers\UserController::class, 'editBackground']);
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);

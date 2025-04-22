@@ -1,0 +1,13 @@
+.badge-achievement-popup-container {
+    height: 50% !important;
+}
+
+.confetti-wrapper {
+    display: none !important;
+    position: absolute !important;
+    z-index: 5000 !important;
+}
+
+.confetti-wrapper.active {
+    display: block !important;
+}

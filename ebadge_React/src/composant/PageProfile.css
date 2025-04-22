@@ -83,7 +83,6 @@ html, body  {
 
     .BadgeArray {
         overflow-x: scroll;
-        overflow-y: hidden;
         white-space: nowrap;
         display: block !important;
         padding-bottom: 0px !important;
@@ -179,7 +178,6 @@ html, body  {
 }
 
 .Badge {
-    width: 200px;
     height: 150px;
     display: flex;
     justify-content: center;
@@ -193,7 +191,7 @@ html, body  {
 .badgeIcon:hover + .hideDisplay {
     display: block;
     animation: fadeIn .35s;
-    z-index: 10;
+    z-index: 50000;
   }
 
   @keyframes fadeIn {

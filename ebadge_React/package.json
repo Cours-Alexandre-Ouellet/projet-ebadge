@@ -6,6 +6,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@fireworks-js/react": "^2.10.8",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
@@ -19,8 +20,10 @@
     "dotenv": "^16.0.3",
     "is-image": "^3.1.0",
     "react": "^18.2.0",
+    "react-confetti": "^6.4.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",
+    "react-material-ui-carousel": "^3.4.2",
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
