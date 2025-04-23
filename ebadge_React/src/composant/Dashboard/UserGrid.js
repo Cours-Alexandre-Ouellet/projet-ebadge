@@ -17,7 +17,6 @@ class UserGrid extends React.Component {
       confirmDelete: false,
       selectedUser: null,
       columns: [
-        { field: 'id', headerName: 'ID', flex: 1 },
         {
           field: 'role_id',
           headerName: 'Rôle',
