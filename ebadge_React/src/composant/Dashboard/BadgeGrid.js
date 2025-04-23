@@ -21,13 +21,6 @@ class BadgeGrid extends React.Component {
       selectedBadge: null,
       columns: [
         {
-          field: "id",
-          headerName: "ID",
-          flex: 1,
-          align: "center",
-          headerAlign: "center",
-        },
-        {
           field: "imagePath",
           headerName: "Image",
           sortable: false,
@@ -56,7 +49,7 @@ class BadgeGrid extends React.Component {
         {
           field: "description",
           headerName: "Description",
-          flex: 4,
+          flex: 3,
           headerAlign: "center",
         },
         { field: "category", headerName: "Catégorie", flex: 4, headerAlign: "center" },
@@ -83,6 +76,7 @@ class BadgeGrid extends React.Component {
           field: "BadgeEditAction",
           minWidth: 150,
           headerName: "",
+          flex: 1,
           align: "center",
           headerAlign: "center",
           sortable: false,
@@ -112,6 +106,7 @@ class BadgeGrid extends React.Component {
           field: "BadgeDeleteAction",
           minWidth: 150,
           headerName: "",
+          flex: 1,
           align: "center",
           headerAlign: "center",
           sortable: false,
