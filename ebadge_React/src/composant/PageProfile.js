@@ -478,7 +478,7 @@ export default function PageProfile() {
           </Dialog>
 
           <Dialog open={openBadges} onClose={handleCloseBadge}>
-            <DialogTitle>Badges à épinglés</DialogTitle>
+            <DialogTitle>Badges à épingler</DialogTitle>
             {(!loadingBadge || loaded) && <Loading />}
             <DialogContent className={"badge-popup"}>
               <Autocomplete
@@ -516,14 +516,14 @@ export default function PageProfile() {
             />
             <p>{badgeIdToFavoriteErrorMessage}</p>
             <FormControl fullWidth>
-            {currentFavoriteBadges.length >= badgeQuantity && <Typography>Vous épinglé le maximum possible de badges.</Typography>}
+            {currentFavoriteBadges.length >= badgeQuantity && <Typography>Vous épinglez le maximum possible de badges.</Typography>}
               <Button
                 variant="contained"
                 className={"mt-2"}
                 onClick={handleSubmit}
                 disabled={currentFavoriteBadges.length >= badgeQuantity}
               >
-                épingler le badge
+                Épingler le badge
               </Button>
             </FormControl>
             
