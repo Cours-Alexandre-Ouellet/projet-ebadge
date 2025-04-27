@@ -22,7 +22,7 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => "Administrateur",
+            'name' => fake()->randomElement([Role::ETUDIANT, Role::ENSEIGNANT, Role::ADMIN, Role::ADMIN_CONTACT]),
             'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
         ];

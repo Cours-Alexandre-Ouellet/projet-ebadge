@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Database\Factories\CategoryFactory as FactoriesCategoryFactory;
 
 
 /**
@@ -25,6 +26,7 @@ class Category extends Model
     // Les attributs qui sont assignables au modèle.
     protected $fillable = [
         'name',
+        'color',
     ];
 
     /**
@@ -42,7 +44,7 @@ class Category extends Model
      */
     protected static function newFactory()
     {
-        return CategoryBadge::new();
+        return FactoriesCategoryFactory::new();
 
     }
 }

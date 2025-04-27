@@ -6,29 +6,28 @@ namespace Database\Factories;
 
 use App\Models\Badge;
 use App\Models\User;
+use App\Models\UserBadge;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BadgeFactory extends Factory{
+class UserBadgeFactory extends Factory{
     
 
-    protected $model = Badge::class;
+    protected $model = UserBadge::class;
 
     /**
-     * fonction qui génère des données aléatoire pour un Badge
+     * fonction qui génère des données aléatoire pour un userbadge
      * 
      * @author Vincent Houle
-     * @return Badge avec des données aléatoire
+     * @return UserBadge avec des données aléatoire
      */    
     public function definition(): array
     {
         return [
-            'title' => fake()->name(),
-            'description' => fake()->text(),
-            'imagePath' => fake()->imageUrl(),
-            'teacher_id' => User::factory()->make(['name' == 'Enseignant']),
+            'user_id' => User::factory()->make(['name' == 'Étudiant']),
+            'badge_id' => Badge::factory(),
+            'favorite' => fake()->boolean(),
             'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
-            'activated' => fake()->boolean()
         ];
     }
 }
