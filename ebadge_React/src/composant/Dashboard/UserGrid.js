@@ -55,9 +55,13 @@ class UserGrid extends React.Component {
               
               <MenuItem onClick={() => this.handleBadgeManagement(params.row)}>Gestion des badges</MenuItem>
               <MenuItem onClick={() => this.setState({ openPasswordPopup: true, selectedUser: params.row })}>Modifier le mot de passe</MenuItem>
-              <MenuItem onClick={() => this.setState({ confirmDelete: true, selectedUser: params.row })}>Supprimer</MenuItem>
-              <MenuItem onClick={() => this.toggleUserStatus(params.row)}>
-                {params.row.active === 1 ? 'Désactiver' : 'Activer'}
+              <MenuItem onClick={() => this.setState({ confirmDelete: true, selectedUser: params.row })}
+                disabled={[1, 2].includes(params.row.role_id)}
+              >Supprimer
+              </MenuItem>
+              <MenuItem onClick={() => this.toggleUserStatus(params.row)}
+              disabled={[1, 2].includes(params.row.role_id)}
+              >{params.row.active === 1 ? 'Désactiver' : 'Activer'}
               </MenuItem>
             </Select>
           )

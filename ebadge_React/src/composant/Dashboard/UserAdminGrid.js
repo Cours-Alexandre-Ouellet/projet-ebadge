@@ -152,8 +152,9 @@ class UserAdminGrid extends React.Component {
               Rétrograder en professeur
               {params.row.role_id === RoleIds.AdminContact && <Tooltip title="Impossible de rétrograder un contact administrateur"><Info style={{ marginLeft: 5, pointerEvents: 'auto' }} /></Tooltip>}
             </MenuItem>
-            <MenuItem onClick={() => this.setState({ openPasswordPopup: true, selectedAdmin: params.row })}>Modifier le mot de passe</MenuItem>
-            <MenuItem onClick={() => this.handleConfirmDelete(params.row.id)} disabled={this.props.rows.length <= 1}>
+            <MenuItem onClick={() => this.handleConfirmDelete(params.row.id)} 
+              disabled={this.props.rows.length <= 1 || [RoleIds.Admin, RoleIds.AdminContact].includes(params.row.role_id)}
+            >
               Supprimer
             </MenuItem>
           </Select>
