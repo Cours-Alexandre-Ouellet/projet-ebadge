@@ -110,8 +110,11 @@ class UserAdminGrid extends React.Component {
   // Rétrograde un admin en professeur (2)
   downgradeAdmin = () => {
     const { adminToAffect, targetRole } = this.state;
-
-    Api.post("/user/remove-admin", { user_id: adminToAffect.id, new_role: targetRole })
+  
+    Api.post('/user/update-role', { 
+      user_id: adminToAffect.id,
+      role_id: targetRole
+    })
       .then(() => {
         this.props.refreshAdmins();
         this.handleCloseConfirmDowngrade();

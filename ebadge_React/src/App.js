@@ -53,6 +53,7 @@ function App() {
               <Route path="/admin/admin_users" element={<UsersAdminTab />} />
               <Route path="/admin/badges" element={<BadgesTab />} />
               <Route path="/admin/categories" element={<CategoriesTab />} />
+              <Route path="/admin/stats" element={<Stats />} />
               <Route
                 path="/admin/teacher_codes"
                 element={ProtectedRoute(Role.Admin)}

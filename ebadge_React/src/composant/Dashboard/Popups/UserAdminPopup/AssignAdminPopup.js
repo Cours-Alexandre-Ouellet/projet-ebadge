@@ -58,7 +58,10 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
 
   const handleRemoveAdmin = (adminId) => {
     setLoading(true);
-    Api.post("/user/remove-admin", { user_id: adminId })
+    Api.post('/user/update-role', {
+      user_id: adminId,
+      role_id: RoleIds.Teacher
+    })
       .then(() => {
         setMessage("Administrateur rétrogradé !");
         setTimeout(() => {

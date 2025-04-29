@@ -581,4 +581,25 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Statut mis à jour avec succès.']);
     }
+
+    /**
+     * Change dynamiquement le rôle d'un utilisateur
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateRole(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:user,id',
+            'role_id' => 'required|exists:role,id',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return response()->json(['message' => 'Rôle mis à jour avec succès.']);
+    }
 }
