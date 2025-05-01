@@ -43,12 +43,15 @@ class BadgesTab extends React.Component {
      * Recupere la liste des badges depuis l'API
      */
     getBadges() {
-        Api.get('/badge/category/names').then(res => {
+        Api.get('/badge/my-badges-prof').then(res => {
             const badges = res.data;
             this.setState({ badges: badges });
             this.setState({charge : true});
         }
         )
+        .catch(err => {
+            this.errorBadge("Erreur lors de la récupération des badges.");
+          });
     }
 
     handleBadgeForm() {
@@ -101,7 +104,7 @@ class BadgesTab extends React.Component {
                         <BadgeCreateForm handleClose={this.handleBadgeForm} addBadge={this.addBadge} errorBadge={this.errorBadge} />
                     </Dialog>
                 </div>
-                <BadgeGrid rows={this.state.badges} refresh={this.getBadges} deleteBadge={this.deleteBadge} editBadge={this.editBadge} errorBadge={this.errorBadge} />
+                <BadgeGrid rows={this.state.badges} refresh={this.state.badges.length === 0 ? this.getBadges :() => {}} deleteBadge={this.deleteBadge} editBadge={this.editBadge} errorBadge={this.errorBadge} />
                 <Snackbar onClose={this.handleCloseSuccessMessage} open={this.state.showSuccessMessage} autoHideDuration={3000}>
                     <Alert onClose={this.handleCloseSuccessMessage} severity="success" sx={{ width: '100%' }} md={{ minWidth: '300px' }}>
                         {this.state.successMessage}

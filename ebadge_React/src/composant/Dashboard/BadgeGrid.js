@@ -142,11 +142,17 @@ class BadgeGrid extends React.Component {
 
   /**
    * donne une valeur a this.state.row lorsque props est chargé
+   * ce code a été géner en partie par chatGPT https://chatgpt.com
    */
   componentDidUpdate(prevState) {
-    if (this.state.rows.length == 0 || this.props.rows != prevState.rows) {
-      this.setState({ rows: this.props.rows.map((row) => ({ ...row })) });
-    }
+    const newRows = this.props.rows;
+
+  if (
+    newRows.length !== prevState.rows.length ||
+    !this.state.rows.every((row, i) => row.id === newRows[i]?.id)
+  ) {
+    this.setState({ rows: newRows.map((row) => ({ ...row })) });
+  }
 
   }
   

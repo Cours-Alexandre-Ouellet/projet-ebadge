@@ -562,6 +562,10 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Renvoie tous les utilisateur ayant un certain status d'activation
+     * @param Request $request
+     */
     public function getUsersByActiveStatus($status)
     {
         $users = User::where('active', $status)->get();
@@ -569,6 +573,10 @@ class UserController extends Controller
         return response()->json(['users' => $users]);
     }
 
+    /**
+     * Change la valeur d'activation d'un compte
+     * @param Request $request
+     */
     public function toggleActiveStatus($id)
     {
         $user = User::find($id);
@@ -581,4 +589,6 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Statut mis à jour avec succès.']);
     }
+
+    
 }
