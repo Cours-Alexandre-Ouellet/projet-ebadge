@@ -52,38 +52,6 @@ export default function Leaderboard() {
   }, []);
 
   /**
-   * fonction qui permet de mettre à jour le classement quand on change de session
-   * @param {*} event
-   */
-  function handleChangeSession(event) {
-    setSession(event.target.value);
-    console.log(
-      "/stats/leaderboard/" +
-        sessions[event.target.value - 1].dateDebut +
-        "/" +
-        sessions[event.target.value - 1].dateFin
-    );
-    Api.get(
-      "/stats/leaderboard/" +
-        sessions[event.target.value - 1].dateDebut +
-        "/" +
-        sessions[event.target.value - 1].dateFin
-    )
-      .then((response) => {
-        const valeursLeaderboard = response.data;
-
-        for (let i = 0; i < valeursLeaderboard.length; i++) {
-          valeursLeaderboard[i].position = i + 1;
-        }
-        setLeaderboard(valeursLeaderboard);
-
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-
-  /**
    * fonction qui permet de mettre à jour la valeur du search
    * @param {*} event
    */
@@ -121,22 +89,6 @@ export default function Leaderboard() {
           </div>
           <div className="leaderboard-table">
             <div className="leaderboard-table-header">
-              <Select
-                native
-                value={session}
-                onChange={handleChangeSession}
-                inputProps={{
-                  name: "session",
-                  id: "session",
-                }}
-                sx={{ margin: "5px", width: "100%" }}
-              >
-                {sessions.map((session) => (
-                  <option key={session.id} value={session.id}>
-                    {session.name}
-                  </option>
-                ))}
-              </Select>
 
               <TextField
                 id="search"
