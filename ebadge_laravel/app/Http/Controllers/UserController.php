@@ -219,7 +219,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if ($user == null) {
-            return response()->json(['error' => 'Utilisateur non trouvé'], 404);
+            return response()->json(['error' => 'Utilisateur non trouvé get'], 404);
         }
 
         return response()->json([
@@ -417,7 +417,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+            return response()->json(['message' => 'Utilisateur non trouvé delete'], 404);
         }
 
         $user->delete();
@@ -524,7 +524,7 @@ class UserController extends Controller
 
         $user = User::find($id);
         if (!$user) {
-            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+            return response()->json(['message' => 'Utilisateur non trouvé. change'], 404);
         }
 
         $user->password = Hash::make($request->password);
@@ -573,12 +573,22 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if (!$user) {
-            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+            return response()->json(['message' => 'Utilisateur non trouvé. getstatus'], 404);
         }
 
         $user->active = $user->active ? 0 : 1;
         $user->save();
 
         return response()->json(['message' => 'Statut mis à jour avec succès.']);
+    }
+    /**
+     * Supprime tous les liens entre les badges et les utilisateurs étudiants
+     * @return mixed|\Illuminate\Http\JsonResponse un message de réussite
+     */
+    public function deleteAllLinks(){
+        UserBadge::truncate();
+        
+
+        return response()->json(['message' => 'Liens supprimés avec succès']);
     }
 }
