@@ -10,18 +10,28 @@ use Illuminate\Database\Eloquent\Model;
 class CategoryBadge extends Model
 {
     /**
-     * The table associated with the model.
+     * La table associée au modèle.
      *
      * @var string
      */
 
     protected $table = 'category_badge';
 
+    /**
+     * Les attributs qui peuvent être assignés en masse.
+     * 
+     * @var array
+     */
     protected $fillable = [
         'badge_id',
         'category_id'
     ];
 
+    /**
+     * Définition de la relation entre le badge et la catégorie pour faker.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function definition(): array
     {
         return [

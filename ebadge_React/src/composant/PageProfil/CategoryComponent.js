@@ -1,5 +1,7 @@
 import React from "react";
 /**
+ * Composant de la catégorie
+ * 
  * @param {Object} props
  * @param {Object} props.category - Objet category
  * @param {string} props.category.name - Nom de la catégorie

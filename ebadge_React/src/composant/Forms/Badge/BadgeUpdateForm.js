@@ -40,8 +40,10 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
 
         Api.get('/category/').then((response) => {
             setCategories(response.data.categories);
+            
             Api.get(`/badge/category/name/${badge.id}`).then((response) => {
                 setLoading(false);
+
                 if (response.data != null)
                     setBadge((prevState => (
                         {
