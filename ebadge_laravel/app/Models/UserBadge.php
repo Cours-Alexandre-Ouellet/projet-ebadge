@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Badge;
 
 /**
  * Classe du lien entre un utilisateur et un badge
@@ -16,14 +18,25 @@ class UserBadge extends Model
      */
     protected $table = 'user_badge';
 
-    public function definition(): array
+    public $timestamps = true;
+
+    /**
+     * Relation vers l'utilisateur
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
     {
-        return [
-            'user_id' => $this->faker->numberBetween(1, 100),
-            'badge_id' => $this->faker->numberBetween(1, 100),
-            'favorite' => $this->facker->boolean(),
-            'created_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
-            'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
-        ];
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Relation vers le badge
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function badge()
+    {
+        return $this->belongsTo(Badge::class, 'badge_id');
     }
 }

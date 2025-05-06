@@ -131,6 +131,7 @@ Route::group([
     Route::get('/assigned-count', [App\Http\Controllers\StatsController::class, 'totalAssignedBadges']);
     Route::get('/average-badges', [App\Http\Controllers\StatsController::class, 'averageBadgesPerStudent']);
     Route::get('/top-bottom-badges', [App\Http\Controllers\StatsController::class, 'mostAndLeastAssignedBadges']);
+    Route::get('/top-category', [App\Http\Controllers\StatsController::class, 'TopByCategory']);
     Route::get('/last-badge', [App\Http\Controllers\StatsController::class, 'lastAssignedBadge']); 
     Route::get('/distribution/badges', [App\Http\Controllers\StatsController::class, 'badgeDistributionByCategory']);
 });

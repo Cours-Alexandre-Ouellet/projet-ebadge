@@ -11,6 +11,7 @@ use App\Models\Role;
 use App\Models\Badge;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Badge\BadgeUpdateFavoriteRequest;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -414,14 +415,40 @@ class UserController extends Controller
 
     public function deleteUser($id)
     {
+        // Récupère l'utilisateur par son ID
         $user = User::find($id);
-
+    
+        // Si l'utilisateur n'existe pas, retourne une erreur 404
         if (!$user) {
             return response()->json(['message' => 'Utilisateur non trouvé'], 404);
         }
-
-        $user->delete();
-
+    
+        // Utilisation d'une transaction pour garantir l'intégrité des données
+        DB::transaction(function () use ($user) {
+    
+            // Si c'est un professeur
+            if ($user->role_id == 3) {
+                // On récupère les badges qu'il a créés
+                $badges = Badge::where('teacher_id', $user->id)->get();
+    
+                foreach ($badges as $badge) {
+                    // On supprime tous les liens user-badge pour ce badge
+                    $badge->userBadges()->delete();
+                    // Puis on supprime le badge lui-même
+                    $badge->delete();
+                }
+            }
+    
+            // Si c'est un étudiant
+            if ($user->role_id == 4) {
+                // On supprime toutes ses associations avec des badges
+                $user->userBadges()->delete();
+            }
+    
+            // Enfin, on supprime l'utilisateur
+            $user->delete();
+        });
+    
         return response()->json(['message' => 'Utilisateur supprimé avec succès']);
     }
 
@@ -500,7 +527,7 @@ class UserController extends Controller
         ]);
 
         $user = User::find($request->user_id);
-        $defaultRole = Role::where('name', 'Étudiant')->first(); // Par défaut, remet en étudiant
+        $defaultRole = Role::where('name', 'Étudiant')->first(); 
 
         if (!$defaultRole) {
             return response()->json(['message' => 'Le rôle Étudiant est introuvable.'], 500);

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Select, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Tooltip } from '@mui/material';
 import Api from '../../../src/utils/Api';
-import UserAdminPopup from './Popups/UserAdminPopup/UserAdminPopup'; // Popup des détails
+import UserAdminPopup from './Popups/UserAdminPopup/UserAdminPopup'; 
 import ChangePasswordPopup from './Popups/UserAdminPopup/ChangePasswordPopup';
 import Role, { RoleIds } from '../../policies/Role';
 import EmailIcon from '@mui/icons-material/Email';

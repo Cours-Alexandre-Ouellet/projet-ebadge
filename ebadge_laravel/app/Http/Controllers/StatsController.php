@@ -162,4 +162,90 @@ class StatsController extends Controller
     
         return response()->json($distribution);
     }
+
+    /**
+     * Retourne les 5 meilleurs élèves par catégorie de badge
+     * (ex-aequo inclus), selon le nombre de badges obtenus dans chaque catégorie.
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function TopByCategory()
+    {
+        // Étape 1 : Récupération brute des données
+        $results = DB::table('user_badge as ub')
+            ->join('badge as b', 'ub.badge_id', '=', 'b.id')
+            ->join('category_badge as cb', 'b.id', '=', 'cb.badge_id')
+            ->join('category as c', 'cb.category_id', '=', 'c.id')
+            ->join('user as u', 'ub.user_id', '=', 'u.id')
+            ->where('u.role_id', Role::Student()->id)  // uniquement les étudiants
+            ->where('u.privacy', 0)                    // profil public uniquement
+            ->where('u.active', 1)                     // utilisateur actif
+            ->select(
+                'ub.user_id',
+                'c.name as category',
+                DB::raw('COUNT(*) as count'),
+                'u.first_name',
+                'u.last_name',
+                'u.avatarImagePath'
+            )
+            ->groupBy('ub.user_id', 'c.name', 'u.first_name', 'u.last_name', 'u.avatarImagePath')
+            ->get();
+
+        // Étape 2 : Organisation des données par catégorie
+        $grouped = [];
+
+        foreach ($results as $row) {
+            $grouped[$row->category][] = [
+                'user' => [
+                    'id' => $row->user_id,
+                    'first_name' => $row->first_name,
+                    'last_name' => $row->last_name,
+                    'avatarImagePath' => $row->avatarImagePath,
+                ],
+                'count' => $row->count,
+            ];
+        }
+
+        // Étape 3 : Tri des utilisateurs par catégorie et gestion des rangs avec ex-aequo
+        $final = [];
+
+        foreach ($grouped as $category => $users) {
+            // Tri décroissant par nombre de badges
+            usort($users, fn($a, $b) => $b['count'] <=> $a['count']);
+
+            $ranked = [];
+            $currentRank = 1;
+            $previousCount = null;
+            $sameRankCount = 0;
+
+            foreach ($users as $index => $entry) {
+                // Si le nombre est égal au précédent, conserver le même rang
+                if ($previousCount !== null && $entry['count'] === $previousCount) {
+                    $rank = $currentRank;
+                    $sameRankCount++;
+                } else {
+                    $currentRank = $index + 1;
+                    $rank = $currentRank;
+                    $sameRankCount = 1;
+                }
+
+                // Ajout des infos à l'entrée
+                $entry['category'] = $category;
+                $entry['rank'] = $rank;
+
+                $ranked[] = $entry;
+                $previousCount = $entry['count'];
+
+                // Si on dépasse la 5e position (hors ex-aequo), on arrête
+                if ($rank > 5) break;
+            }
+
+            // Fusion dans la réponse finale
+            $final = array_merge($final, $ranked);
+        }
+
+        // Étape 4 : Envoi de la réponse
+        return response()->json($final);
+    }
+
 }

@@ -9,6 +9,8 @@ use App\Models\Role;
 use Database\Factories\UserFactory as FactoriesUserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Badge;
+use App\Models\UserBadge;
 
 /**
  * Classe représentant un utilisateur
@@ -55,13 +57,34 @@ class User extends Authenticatable
     }
 
     /**
-     * Relation entre l'utilisateur et ses badges
+     * Relation entre l'utilisateur et ses badges reçus (étudiant)
      *
      * @return BelongsToMany les badges de l'utilisateur
      */
     public function badges()
     {
         return $this->belongsToMany('App\Models\Badge', 'user_badge', 'user_id', 'badge_id')->withTimestamps();
+    }
+
+    /**
+     * Relation directe vers les enregistrements de la table pivot user_badge
+     * (utile pour suppression)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userBadges()
+    {
+        return $this->hasMany(UserBadge::class, 'user_id');
+    }
+
+    /**
+     * Relation vers les badges créés en tant que professeur (teacher_id)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function createdBadges()
+    {
+        return $this->hasMany(Badge::class, 'teacher_id');
     }
 
     /**

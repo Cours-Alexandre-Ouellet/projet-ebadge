@@ -61,6 +61,8 @@ class AdminLayout extends React.Component {
                     sectionName: "Données analytiques",
                     tabs: this.policiesHelper.getvisibleRoutes([
                         { id: 4, label: 'Statistiques', icon: <InsertChartIcon />, path: "/admin/stats", minimumRole: Role.Admin },
+                        { id: 8, label: 'Top 10 collectionneurs', icon: <InsertChartIcon />, path: "/admin/top-collectors", minimumRole: Role.Teacher },
+                        { id: 9, label: 'Top 5 par catégorie', icon: <InsertChartIcon />, path: "/admin/top-by-category", minimumRole: Role.Teacher }
                     ])
                 }
             ],
