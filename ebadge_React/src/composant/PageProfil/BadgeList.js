@@ -29,7 +29,7 @@ export default function BadgeList(props) {
           return <BadgeComponent badge={badge} key={index} />;
         })
       ) : (
-        <h1 className="message">Aucun badge affiché.</h1>
+        <h1 className="message">Aucun badge épinglé.</h1>
       )}
     </div>
   );
