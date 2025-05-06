@@ -127,8 +127,8 @@ class UserGrid extends React.Component {
             Êtes-vous sûr de vouloir supprimer {this.state.selectedUser?.first_name} {this.state.selectedUser?.last_name} ?
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.setState({ confirmDelete: false })} variant="outlined">Annuler</Button>
             <Button onClick={this.deleteUser} variant="contained" color="error">Confirmer</Button>
+            <Button onClick={() => this.setState({ confirmDelete: false })} variant="outlined">Annuler</Button>
           </DialogActions>
         </Dialog>
       </div>

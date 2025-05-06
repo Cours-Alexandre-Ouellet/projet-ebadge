@@ -305,15 +305,16 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                 </Dialog>
                             </div>
                             <div className="badge-create-form-button-submit">
-                                <Button variant="outlined" onClick={handleClose} sx={{
+                                <Button onClick={handleSubmit} variant="contained" sx={{
                                     width: '100%',
                                     marginTop: '20px',
                                     marginRight: '20px'
-                                }}>Annuler</Button>
-                                <Button onClick={handleSubmit} variant="contained" sx={{
-                                    width: '100%',
-                                    marginTop: '20px'
                                 }}>Modifier</Button>
+                                <Button variant="outlined" onClick={handleClose} sx={{
+                                    width: '100%',
+                                    marginTop: '20px', 
+                                }}>Annuler</Button>
+                                
                             </div>
                         </form>
                     </div>

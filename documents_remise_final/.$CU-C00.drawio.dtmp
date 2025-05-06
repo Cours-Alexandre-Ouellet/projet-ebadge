@@ -1,0 +1,37 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.2.15 Chrome/134.0.6998.205 Electron/35.2.1 Safari/537.36" version="26.2.15">
+  <diagram name="Page-1" id="6RnLBB9mH91zvuS7s35B">
+    <mxGraphModel dx="2048" dy="814" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-1" value="" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.browserWindow;rSize=0;strokeColor=#666666;strokeColor2=#008cff;strokeColor3=#c4c4c4;mainText=,;recursiveResize=0;" vertex="1" parent="1">
+          <mxGeometry x="-60" y="80" width="930" height="570" as="geometry" />
+        </mxCell>
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-2" value="E-Badge" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;fontSize=17;fontColor=#666666;align=left;whiteSpace=wrap;" vertex="1" parent="0WwKwdDL4AJeuOoNfSEz-1">
+          <mxGeometry x="60" y="12" width="110" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-3" value="ebadge.cegepvicto.ca" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.containers.anchor;rSize=0;fontSize=17;fontColor=#666666;align=left;" vertex="1" parent="0WwKwdDL4AJeuOoNfSEz-1">
+          <mxGeometry x="130" y="60" width="250" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-4" value="Créer une catégorie" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=35;" vertex="1" parent="0WwKwdDL4AJeuOoNfSEz-1">
+          <mxGeometry x="50" y="180" width="375" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-5" value="Nom de la catégorie" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.text.textBox;fontColor=#666666;align=left;fontSize=17;spacingLeft=4;spacingTop=-3;whiteSpace=wrap;strokeColor=#666666;mainText=" vertex="1" parent="0WwKwdDL4AJeuOoNfSEz-1">
+          <mxGeometry x="80" y="265" width="390" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-7" value="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; #FFFFFF" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.text.textBox;fontColor=#666666;align=left;fontSize=17;spacingLeft=4;spacingTop=-3;whiteSpace=wrap;strokeColor=#666666;mainText=" vertex="1" parent="0WwKwdDL4AJeuOoNfSEz-1">
+          <mxGeometry x="80" y="330" width="390" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-6" value="" style="verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;strokeWidth=1;shape=mxgraph.mockup.forms.colorPicker;chosenColor=#aaddff;" vertex="1" parent="0WwKwdDL4AJeuOoNfSEz-1">
+          <mxGeometry x="85" y="334.5" width="36" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-8" value="CRÉER" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#ffffff;mainText=;buttonStyle=round;fontSize=17;fontStyle=1;fillColor=#008cff;whiteSpace=wrap;" vertex="1" parent="0WwKwdDL4AJeuOoNfSEz-1">
+          <mxGeometry x="290" y="390" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="0WwKwdDL4AJeuOoNfSEz-9" value="&lt;font style=&quot;color: rgb(51, 51, 255); font-size: 16px;&quot;&gt;ANNULER&lt;/font&gt;" style="strokeWidth=1;shadow=0;dashed=0;align=center;html=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#ffffff;mainText=;buttonStyle=round;fontSize=17;fontStyle=1;fillColor=#FFFFFF;whiteSpace=wrap;" vertex="1" parent="0WwKwdDL4AJeuOoNfSEz-1">
+          <mxGeometry x="80" y="390" width="180" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -320,3 +320,13 @@ body {
 .listFavorite {
     min-height: 250px
 }
+
+.deleteButton {
+    background-color: #FF3333 !important;
+}
+
+.rowButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

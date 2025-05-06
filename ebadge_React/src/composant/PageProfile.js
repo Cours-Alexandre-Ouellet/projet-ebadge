@@ -450,6 +450,7 @@ export default function PageProfile() {
                 Vous pouvez également importé une image.
               </DialogContentText>
               <br />
+              <row className="rowButtons">
               <Button variant="contained" component="label">
                 Importer une image
                 <input
@@ -461,6 +462,10 @@ export default function PageProfile() {
                   }}
                 />
               </Button>
+              <Button className="deleteButton" variant="contained" component="label" onClick={handleDelete}>
+                  Supprimer l'arrière plan
+                </Button>
+              </row>
               <div hidden={backgroundImageFile === null}>
                 <Check></Check> Image importée
               </div>
@@ -471,9 +476,8 @@ export default function PageProfile() {
               </div>
             </DialogContent>
             <DialogActions>
+              <Button onClick={handleModify}>Enregistrer</Button>
               <Button onClick={handleClose}>Annuler</Button>
-              <Button onClick={handleDelete}>Supprimer</Button>
-              <Button onClick={handleModify}>Modifier</Button>
             </DialogActions>
           </Dialog>
 
@@ -567,17 +571,22 @@ export default function PageProfile() {
                 Vous pouvez également importé une image.
               </DialogContentText>
               <br />
-              <Button variant="contained" component="label">
-                Importer une image
-                <input
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  hidden
-                  onChange={(e) => {
-                    setAvatarImageFile(e.target.files[0]);
-                  }}
-                />
-              </Button>
+              <row className="rowButtons">
+                <Button variant="contained" component="label">
+                  Importer une image
+                  <input
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    hidden
+                    onChange={(e) => {
+                      setAvatarImageFile(e.target.files[0]);
+                    }}
+                  />
+                </Button>
+                <Button className="deleteButton" variant="contained" component="label" onClick={handleDeleteAvatar}>
+                  Supprimer l'avatar
+                </Button>
+              </row>
               <div hidden={avatarImageFile === null}>
                 <Check></Check> Image importée
               </div>
@@ -588,9 +597,8 @@ export default function PageProfile() {
               </div>
             </DialogContent>
             <DialogActions>
+              <Button onClick={handleModifyAvatar} component="label">Enregistrer</Button>
               <Button onClick={handleCloseAvatar}>Annuler</Button>
-              <Button onClick={handleDeleteAvatar}>Supprimer</Button>
-              <Button onClick={handleModifyAvatar}>Modifier</Button>
             </DialogActions>
           </Dialog>
         </div>

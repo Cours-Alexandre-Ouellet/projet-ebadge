@@ -54,7 +54,7 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
                         paddingLeft: '10px',
                     }}
                 >
-                        {params.row.name}
+                    {params.row.name}
                 </div>
             )
         },
