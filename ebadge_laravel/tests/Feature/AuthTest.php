@@ -2,10 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Models\Organisation;
-use App\Models\Program;
+
+use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Laravel\Passport\Bridge\AccessToken;
 use Tests\TestCase;
 class AuthTest extends TestCase
@@ -13,41 +14,25 @@ class AuthTest extends TestCase
 
     private $user;
     private $userToken;
-    private $program;
-    private $organisation;
+    // private $program;
+    // private $organisation;
 
     public function setUp() : void
     {
         parent::setUp();
 
         $this->user = User::factory()->create();
-
+        $this->user->role_id = Role::Student()->id;
+        $this->user->save();
+        
         $token = $this->user->createToken('Personal Access Token');
         $token->token->expires_at = Carbon::now()->addMinutes(30);
         $token->token->save();
         $this->userToken = $token->accessToken;
 
-        $this->program = Program::factory()->create();
-        $this->organisation = Organisation::factory()->create();
+        // $this->program = Program::factory()->create();
+        // $this->organisation = Organisation::factory()->create();
     }
-
-    public function testUserCanLogin()
-    {
-        $response = $this->post('/api/auth/login', [
-            'email' => $this->user->email,
-            'password' => $this->user->password
-        ]);
-
-        $response->assertStatus(200);
-        $response->assertJsonStructure([
-            'token_type',
-            'expires_at',
-            'access_token',
-            'username',
-            'role',
-        ]);
-    }
-
     public function testUserCanRegister()
     {
         $user = User::factory()->make();
@@ -67,10 +52,28 @@ class AuthTest extends TestCase
         ]);
     }
 
+    public function testUserCanLogin()
+    {
+        $response = $this->post('/api/auth/login', [
+            'email' => $this->user->email,
+            'password' => $this->user->password
+        ]);
+        
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'token_type',
+            'expires_at',
+            'access_token',
+            'username',
+            'role',
+        ]);
+    }
+
+
     public function testCurrentUser()
     {
         $response = $this->get('/api/auth/current_user', [
-            'Authorization' => 'Bearer ' . $this->userToken,
+            'Authorization' => 'Bearer' . $this->userToken,
         ]);
 
         $response->assertStatus(200);

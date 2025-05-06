@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'username' => fake()->unique()->userName(),
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->email(),
-            'password' => Hash::make(fake()->password()),
+            'password' => fake()->password(),
             'role_id' => 1,
             'program_id' => 0,
             'organisation_id' => 0,

@@ -13,10 +13,12 @@ use Carbon\Carbon;
 class OrganisationTest extends TestCase
 {
 
+    /*
+    ---- Les organisations ne sont plus dans le projet ----
     private $organisation;
     private $admin;
     private $adminToken;
-    /*
+   
     public function setUp(): void
     {
         parent::setUp();
