@@ -215,7 +215,6 @@ class BadgeController extends Controller
             $url = $_ENV['APP_URL'];
 
             $nameImage = str_replace($url . ":" . $port . "/storage", '', $badge->imagePath);
-            
             if (Storage::disk('public')->exists($nameImage)) {
                 return Storage::disk('public')->delete($nameImage);
             }
