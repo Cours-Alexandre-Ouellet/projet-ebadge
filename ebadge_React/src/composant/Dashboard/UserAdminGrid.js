@@ -123,7 +123,6 @@ class UserAdminGrid extends React.Component {
 
   render() {
     const columns = [
-      { field: 'id', headerName: 'ID', flex: 1 },
       { field: 'first_name', headerName: 'Prénom', flex: 1 },
       { field: 'last_name', headerName: 'Nom', flex: 1 },
       {

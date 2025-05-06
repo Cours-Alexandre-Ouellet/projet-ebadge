@@ -68,7 +68,7 @@ export default function BadgeAchievementPopup() {
     };
 
     return (
-        <div className="badge-achievement-popup-container">
+        <div className="badge-achievement-popup-container" style={{ display: isOpen ? "block" : "none" }}>
             <Confetti
                 className={`confetti-wrapper ${isOpen ? "active" : ""}`}
                 width={width}
@@ -78,7 +78,7 @@ export default function BadgeAchievementPopup() {
                 style={{
                     display: isOpen ? "block" : "none",
                     position: "absolute",
-                    zIndex: 5000,
+                    zIndex: 1000,
                     top: 0,
                     left: 0,
                     width: "100%",
@@ -114,7 +114,7 @@ export default function BadgeAchievementPopup() {
                     </Carousel>
                 </DialogContent>
                 <DialogActions>
-                    <Button className={"mt-2"} onClick={onClose}>
+                    <Button className={"mt-2"} variant="outlined" onClick={onClose} style={{ display: 'block', margin: '0 auto' }}>
                         Fermer
                     </Button>
                 </DialogActions>
