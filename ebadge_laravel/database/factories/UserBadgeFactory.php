@@ -23,7 +23,7 @@ class UserBadgeFactory extends Factory{
     public function definition(): array
     {
         return [
-            'user_id' => User::factory()->make(['name' == 'Étudiant']),
+            'user_id' => User::factory(),
             'badge_id' => Badge::factory(),
             'favorite' => fake()->boolean(),
             'created_at' => fake()->dateTimeBetween('-1 years', 'now'),

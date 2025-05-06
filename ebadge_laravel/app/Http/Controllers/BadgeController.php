@@ -207,12 +207,15 @@ class BadgeController extends Controller
     {
         // nombre de badge avec la même image
         $badges = Badge::where('imagePath', '=', $badge->imagePath);
-        $port = $_SERVER['SERVER_PORT'];
-        $url = $_ENV['APP_URL'];
+        Log::debug($badges->count());
+
         // Supprimer l'image seulement si elle est dans un seul badge
         if ($badges->count() < 2) {
+            $port = $_SERVER['SERVER_PORT'];
+            $url = $_ENV['APP_URL'];
+
             $nameImage = str_replace($url . ":" . $port . "/storage", '', $badge->imagePath);
-            // le 8000 sera à supprimer si il est en ligne
+            
             if (Storage::disk('public')->exists($nameImage)) {
                 return Storage::disk('public')->delete($nameImage);
             }

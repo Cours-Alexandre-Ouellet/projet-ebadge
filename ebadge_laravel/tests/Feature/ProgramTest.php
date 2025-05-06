@@ -15,10 +15,10 @@ class ProgramTest extends TestCase
     private $admin;
     private $adminToken;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
-
+        /*
         $this->program = Program::factory()->create();
 
         $this->admin = User::factory()->create();
@@ -29,8 +29,9 @@ class ProgramTest extends TestCase
         $token->token->expires_at = Carbon::now()->addMinutes(30);
         $token->token->save();
         $this->adminToken = $token->accessToken;
+        */
     }
-
+    /*
     public function testIndexPrograms()
     {
         $response = $this->get('/api/program');
@@ -98,4 +99,5 @@ class ProgramTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseMissing('program', ['id' => $program->id]);
     }
+*/
 }

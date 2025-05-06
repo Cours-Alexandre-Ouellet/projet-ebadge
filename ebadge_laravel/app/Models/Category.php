@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-
+use Database\Factories\CategoryFactory as FactoriesCategoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use Database\Factories\CategoryFactory as FactoriesCategoryFactory;
 
 
 /**

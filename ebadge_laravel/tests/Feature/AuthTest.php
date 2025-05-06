@@ -33,7 +33,6 @@ class AuthTest extends TestCase
 
     public function testUserCanLogin()
     {
-        print_r($this->user);
         $response = $this->post('/api/auth/login', [
             'email' => $this->user->email,
             'password' => $this->user->password
@@ -58,9 +57,7 @@ class AuthTest extends TestCase
             "email" => $user->email,
             "password" =>  $user->password,
             "first_name" => $user->first_name,
-            "last_name" =>  $user->last_name,
-            "organisation_id" => $this->organisation->id,
-            "program_id" => $this->program->id,
+            "last_name" =>  $user->last_name
         ]);
 
         $response->assertStatus(201);
@@ -77,7 +74,16 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        $response->assertJsonFragment($this->user->toArray());
+        $response->assertJsonFragment([
+            'id' => $this->user->id,
+            'first_name' => $this->user->first_name,
+            'last_name' => $this->user->last_name,
+            'username' => $this->user->username,
+            'role_id' => $this->user->role_id,
+            'privacy' => $this->user->privacy,
+            'avatarImagePath' => $this->user->avatarImagePath,
+            'backgroundImagePath' => $this->user->backgroundImagePath,
+        ]);
     }
 
     public function testUserCanLogout()
