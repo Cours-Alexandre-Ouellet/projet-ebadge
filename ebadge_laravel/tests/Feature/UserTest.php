@@ -28,17 +28,16 @@ class UserTest extends TestCase
     {
         parent::setUp();
         $this->user = User::factory()->create();
+        $this->user->role_id = Role::Student()->id;
 
         $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
-
         $this->teacher = User::factory()->create();
         $this->teacher->role_id = Role::Teacher()->id;
         $this->teacher->save();
         $this->badge = Badge::factory()->create();
-
 
         $token = $this->user->createToken('Personal Access Token');
         $token->token->expires_at = Carbon::now()->addWeeks(1);
@@ -57,6 +56,8 @@ class UserTest extends TestCase
         $token->token->save();
         $token->expires_at = now()->addMinutes(30);
         $this->adminToken = $token->accessToken;
+
+        $this->user->save();
     }
 
 
@@ -149,10 +150,11 @@ class UserTest extends TestCase
 
     public function testGetUserBadgesLeft()
     {
-        $this->user->badges()->attach($this->badge->id);
+        $this->user->badges()->attach(Badge::all());
+        $this->user->badges()->detach($this->badge->id);
         $response = $this->get('/api/user/' . $this->user->id . '/badges-left', ['Authorization' => 'Bearer ' . $this->teacherToken]);
         $response->assertStatus(200);
-        $response->assertJsonMissing($this->badge->toArray());
+        $response->assertJsonFragment($this->badge->toArray());
     }
 
     public function testEditPrivacy()

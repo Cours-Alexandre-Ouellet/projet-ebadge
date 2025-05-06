@@ -3,14 +3,14 @@
 namespace Tests\Feature;
 
 use App\Models\Badge;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Models\Category;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Role;
 use Carbon\Carbon;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\ErrorHandler\Debug;
 
 class BadgeTest extends TestCase
 {
@@ -19,6 +19,8 @@ class BadgeTest extends TestCase
     private $user;
     private $teacher;
     private $admin;
+    private $category;
+    private $student;
     private $badge;
     private $teacherToken;
 
@@ -35,14 +37,15 @@ class BadgeTest extends TestCase
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
-
         $this->teacher = User::factory()->create();
         $this->teacher->role_id = Role::Teacher()->id;
         $this->teacher->save();
 
+        $this->category = Category::factory()->create();
+        $this->category->save();
+
         $this->badge = Badge::factory()->create();
         $this->badge->save();
-
         $token = $this->teacher->createToken('Personal Access Token');
         $token->token->expires_at = Carbon::now()->addWeeks(1);
         $token->token->save();
@@ -59,7 +62,6 @@ class BadgeTest extends TestCase
             '/api/badge',
             [
                 'title' => $this->badge->title,
-                'description' => $this->badge->description,
             ],
             ['Authorization' => 'Bearer ' . $this->teacherToken],
         );
@@ -73,16 +75,104 @@ class BadgeTest extends TestCase
     public function testCreateBadgeWithRequiredFields(): void
     {
         $response = $this->post('/api/badge', [
-            'title' => $this->badge->title,
+            'title' => $this->badge->title . "creer",
             'description' => $this->badge->description,
             'imagePath' => $this->badge->imagePath,
+            'category_id' => $this->category->id,
+            'category_name' => $this->category->name,
         ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(200);
+        
+        // Si le badge a été modifié
+        $this->assertDatabaseHas('badge', [
+            'title' => $this->badge->title . "creer",
+            'description' => $this->badge->description,
+            'imagePath' => $this->badge->imagePath,
+        ]);
+
+
+        $idTemp = Badge::where(['title' => $this->badge->title . "creer", 'description' => $this->badge->description])->first()->id;
+
+        // Si le lien avec le badge et la catégorie existe
+        $this->assertDatabaseHas('category_badge', [
+            'badge_id' => $idTemp,
+            'category_id' =>$this->category->id
+        ]);
+    }
+
+    /**
+     * Modification d’un badge sans certains champs obligatoires
+     */
+    public function testUpdateBadgeWithoutRequiredFields(): void
+    {
+        $response = $this->post('/api/badge/image', [
+            "id" => $this->badge->id,
+            'title' => $this->badge->title . "test",
+        ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(422);
+        
+        // Si le badge n'a pas été modifié.
+        $this->assertDatabaseHas('badge', [
+            'id' => $this->badge->id,
+            'title' => $this->badge->title,
+        ]);
+    }
+
+    /**
+     * Modfiier un badge avec tous les champs obligatoires
+     */
+    public function testUpdateBadgeWithRequiredFields(): void
+    {
+        $response = $this->post('/api/badge/image', [
+            "id" => $this->badge->id,
+            "title" => $this->badge->title . "test",
+            "description" => $this->badge->description,
+            "imagePath" => $this->badge->imagePath,
+            "category_id" => 0,
+        ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(200);
+
+        // Si le badge a été modifié.
+        $this->assertDatabaseHas('badge', [
+            'title' => $this->badge->title . "test",
+            'description' => $this->badge->description,
+            'imagePath' => $this->badge->imagePath,
+        ]);
+
+        // Si le lien entre le badge et la catégorie n'existe plus
+        $this->assertDatabaseMissing('category_badge', [
+            "badge_id" => $this->badge->id,
+            'category_id' =>$this->category->id
+        ]);
+    }
+
+    /**
+     * Récupérer un badge retourne bien tous les champs visibles du badge
+     */
+    public function testGetBadge(): void
+    {
+        $response = $this->get('/api/badge', ['Authorization' => 'Bearer ' . $this->teacherToken]);
 
         $response->assertStatus(200);
     }
 
     /**
-     * ○Scénario 2 : Suppression d’un badge alors qu’il est lié à des étudiants
+     * Récupérer tous les badges avec les catégories
+     */
+    public function testGetBadgesWithCategory(): void
+    {
+        $response = $this->get('/api/badge/category/names', ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(200);
+    }
+
+    public function testUpdateBadgeActivate(): void {}
+
+    /**
+     * Suppression d’un badge alors qu’il est lié à des étudiants
      */
     public function testDeleteBadge(): void
     {
@@ -94,60 +184,9 @@ class BadgeTest extends TestCase
 
         $response->assertStatus(200);
 
+        // Si le badge a été supprimé.
         $this->assertDatabaseMissing('badge', [
             'id' => $this->badge->id,
-        ]);
-    }
-
-
-    /**
-     * ○Scénario 3 : Modification d’un badge sans certains champs obligatoires
-     */
-    public function testUpdateBadgeWithoutRequiredFields(): void
-    {
-        $response = $this->post('/api/badge', [
-            "id" => $this->badge->id,
-            "title" => $this->badge->title . "Test",
-        ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
-
-        $response->assertStatus(422);
-
-
-        //check if the badge has not been updated
-        $this->assertDatabaseHas('badge', [
-            'id' => $this->badge->id,
-            'title' => $this->badge->title,
-        ]);
-    }
-
-    /**
-     * ○Scénario 4 : Récupérer un badge retourne bien tous les champs visibles du badge
-     */
-    public function testGetBadge()
-    {
-        $response = $this->get('/api/badge', ['Authorization' => 'Bearer ' . $this->teacherToken]);
-
-        $response->assertStatus(200);
-    }
-
-    /**
-     * Modfiier un badge avec tous les champs obligatoires
-     */
-    public function testUpdateBadgeWithRequiredFields(): void
-    {
-        $response = $this->put('/api/badge', [
-            "id" => $this->badge->id,
-            "title" => $this->badge->title . "test",
-            "description" => $this->badge->description,
-            "imagePath" => $this->badge->imagePath,
-        ], ['Authorization' => 'Bearer ' . $this->teacherToken]);
-
-        $response->assertStatus(200);
-
-        //check if the badge has been updated
-        $this->assertDatabaseHas('badge', [
-            'id' => $this->badge->id,
-            'title' => $this->badge->title . "test",
         ]);
     }
 }

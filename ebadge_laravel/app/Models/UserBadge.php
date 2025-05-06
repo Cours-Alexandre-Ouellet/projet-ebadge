@@ -2,28 +2,38 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+
+use Database\Factories\UserBadgeFactory as FactoriesUserBadgeFactory;
+
 
 /**
  * Classe du lien entre un utilisateur et un badge
  */
 class UserBadge extends Model
 {
-    /**
-     * La table associée avec le modèle.
-     *
-     * @var string
-     */
+
+    use HasApiTokens; //Pour l'authentification par token
+    use HasFactory, Notifiable;
+
+
     protected $table = 'user_badge';
 
-    public function definition(): array
+
+    protected $fillable = [
+        'user_id',
+        'badge_id',
+        'favorite',
+    ];
+
+    /**
+     * Créer une nouvelle instance à la factory
+     */
+    protected static function newFactory()
     {
-        return [
-            'user_id' => $this->faker->numberBetween(1, 100),
-            'badge_id' => $this->faker->numberBetween(1, 100),
-            'favorite' => $this->facker->boolean(),
-            'created_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
-            'updated_at' => $this->faker->dateTimeBetween('-1 years', 'now'),
-        ];
+        return FactoriesUserBadgeFactory::new();
     }
 }
