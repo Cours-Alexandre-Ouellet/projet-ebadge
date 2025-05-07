@@ -429,7 +429,7 @@ export default function PageProfile() {
             <DialogTitle>Modifier l'arrière plan</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Pour changer l'arrière plan, veuillez entrer l'URL de l'image.
+                Pour changer l'arrière-plan, veuillez entrer l'URL de l'image.
               </DialogContentText>
               <TextField
                 autoFocus
@@ -447,7 +447,7 @@ export default function PageProfile() {
               <br />
               <br />
               <DialogContentText>
-                Vous pouvez également importé une image.
+                Vous pouvez également importer une image.
               </DialogContentText>
               <br />
               <row className="rowButtons">
@@ -568,7 +568,7 @@ export default function PageProfile() {
               <br />
               <br />
               <DialogContentText>
-                Vous pouvez également importé une image.
+                Vous pouvez également importer une image.
               </DialogContentText>
               <br />
               <row className="rowButtons">

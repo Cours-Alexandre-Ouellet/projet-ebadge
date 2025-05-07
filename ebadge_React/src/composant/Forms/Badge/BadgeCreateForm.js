@@ -270,7 +270,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                         <br />
                                         <br />
                                         <DialogContentText>
-                                            Vous pouvez également importé une image.
+                                            Vous pouvez également importer une image.
                                         </DialogContentText>
                                         <br />
                                         <Button

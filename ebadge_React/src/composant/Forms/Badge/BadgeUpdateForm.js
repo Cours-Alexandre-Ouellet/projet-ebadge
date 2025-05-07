@@ -270,7 +270,7 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                         <br />
                                         <br />
                                         <DialogContentText>
-                                            Vous pouvez également importé une image.
+                                            Vous pouvez également importer une image.
                                         </DialogContentText>
                                         <br />
                                         <Button
