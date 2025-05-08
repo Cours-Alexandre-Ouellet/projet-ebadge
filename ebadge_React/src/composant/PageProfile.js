@@ -1,7 +1,13 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import "./PageProfile.css";
 import "@mui/material";
-import { FormControl, Button, Autocomplete, Avatar, Typography } from "@mui/material";
+import {
+  FormControl,
+  Button,
+  Autocomplete,
+  Avatar,
+  Typography,
+} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -34,8 +40,9 @@ export default function PageProfile() {
   const [badgeIdToFavorite, setBadgeIdToFavorite] = useState(0);
   const [badgeIdToFavoriteErrorMessage, setBadgeIdToFavoriteErrorMessage] =
     useState("");
-  const {currentFavoriteBadges, updateFavoriteBadges} = useContext(BadgeListContext);
-  const { userContext, setUserContext} = useContext(BadgeListContext);
+  const { currentFavoriteBadges, updateFavoriteBadges } =
+    useContext(BadgeListContext);
+  const { userContext, setUserContext } = useContext(BadgeListContext);
   const [otherBadges, setOtherBadges] = useState([]);
   const [favoriteBadges, setFavoriteBadges] = useState([]);
   const [openBackground, setOpenBackground] = useState(false);
@@ -49,7 +56,7 @@ export default function PageProfile() {
   const [backgroundUrlField, setBackgroundUrlField] = useState("");
   const [backgroundImageFile, setBackgroundImageFile] = useState(null);
   const [loadingBadge, setLoadingBadge] = useState(false);
-  const {loaded, setLoaded} = useContext(BadgeListContext);
+  const { loaded, setLoaded } = useContext(BadgeListContext);
   const columns = useMemo(
     () => [
       {
@@ -113,7 +120,7 @@ export default function PageProfile() {
         setUser(response.data);
         setUserContext(response.data.id);
         updatePrivacyMessage();
-        updateFavoriteBadges()
+        updateFavoriteBadges();
         Api.get("/user/" + response.data.id + "/notFavoriteBadges")
           .then((response) => {
             setOtherBadges(response.data.badges);
@@ -122,15 +129,15 @@ export default function PageProfile() {
           .catch((error) => {
             console.error(error);
           });
-           
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-  useEffect(()=>{
-    updateFavoriteBadges(); 
-  },[userContext])
+
+  useEffect(() => {
+    updateFavoriteBadges();
+  }, [userContext]);
 
   /**
    * Fonction qui met à jour le message de confirmation de modification de l'anonymat
@@ -350,7 +357,6 @@ export default function PageProfile() {
       });
     setBadgeIdToFavorite(0);
     setLoadingBadge(false);
-    
   }
 
   //recharge les badges favoris et non-favoris
@@ -364,7 +370,6 @@ export default function PageProfile() {
       .catch((error) => {
         console.error(error);
       });
-    
   }
 
   if (user == null || !user.id) {
@@ -486,63 +491,66 @@ export default function PageProfile() {
             {(!loadingBadge || loaded) && <Loading />}
             <DialogContent className={"badge-popup"}>
               <Autocomplete
-              id="badge-select"
-              className="badge-selector"
-              options={otherBadges}
-              getOptionLabel={(option) => option.title}
-              value={
-                otherBadges.find((badge) => badge.id === badgeIdToFavorite) ||
-                null
-              }
-              onChange={(event, newValue) =>
-                setBadgeIdToFavorite(newValue ? newValue.id : null)
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Badge à épingler"
-                  variant="outlined"
-                  error={!!badgeIdToFavoriteErrorMessage}
-                  labelId="badge-select-label"
-                />
-              )}
-              renderOption={(props, option) => (
-                <li {...props}>
-                  <Avatar
-                    alt={option.title}
-                    src={option.imagePath}
-                    sx={{ marginRight: 1 }}
+                id="badge-select"
+                className="badge-selector"
+                options={otherBadges}
+                getOptionLabel={(option) => option.title}
+                value={
+                  otherBadges.find((badge) => badge.id === badgeIdToFavorite) ||
+                  null
+                }
+                onChange={(event, newValue) =>
+                  setBadgeIdToFavorite(newValue ? newValue.id : null)
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Badge à épingler"
+                    variant="outlined"
+                    error={!!badgeIdToFavoriteErrorMessage}
+                    labelId="badge-select-label"
                   />
-                  {option.title}
-                </li>
-              )}
-              noOptionsText="Aucun badge disponible"
-            />
-            <p>{badgeIdToFavoriteErrorMessage}</p>
-            <FormControl fullWidth>
-            {currentFavoriteBadges.length >= badgeQuantity && <Typography>Vous épinglez le maximum possible de badges.</Typography>}
-              <Button
-                variant="contained"
-                className={"mt-2"}
-                onClick={handleSubmit}
-                disabled={currentFavoriteBadges.length >= badgeQuantity}
-              >
-                Épingler le badge
-              </Button>
-            </FormControl>
-            
-            <hr />
-            Liste des badges épinglés
-            <DataGrid
-              className="listFavorite"
-              autoHeight={true}
-              rows={currentFavoriteBadges ?? []}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-            />
+                )}
+                renderOption={(props, option) => (
+                  <li {...props}>
+                    <Avatar
+                      alt={option.title}
+                      src={option.imagePath}
+                      sx={{ marginRight: 1 }}
+                    />
+                    {option.title}
+                  </li>
+                )}
+                noOptionsText="Aucun badge disponible"
+              />
+              <p>{badgeIdToFavoriteErrorMessage}</p>
+              <FormControl fullWidth>
+                {currentFavoriteBadges.length >= badgeQuantity && (
+                  <Typography>
+                    Vous épinglez le maximum possible de badges.
+                  </Typography>
+                )}
+                <Button
+                  variant="contained"
+                  className={"mt-2"}
+                  onClick={handleSubmit}
+                  disabled={currentFavoriteBadges.length >= badgeQuantity}
+                >
+                  Épingler le badge
+                </Button>
+              </FormControl>
+              <hr />
+              Liste des badges épinglés
+              <DataGrid
+                className="listFavorite"
+                autoHeight={true}
+                rows={currentFavoriteBadges ?? []}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5]}
+              />
             </DialogContent>
-            
+
             <DialogActions>
               <Button onClick={handleCloseBadge}>Fermer</Button>
             </DialogActions>
