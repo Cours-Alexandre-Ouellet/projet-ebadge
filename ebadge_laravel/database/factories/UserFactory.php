@@ -31,16 +31,14 @@ class UserFactory extends Factory
     {
         return [
             'first_name' => fake()->firstName(),
-            'username' => fake()->userName(),
+            'username' => fake()->unique()->userName(),
             'last_name' => fake()->lastName(),
-            'email' => fake()->email(),
-            'password' => Hash::make(fake()->password()),
-            'role_id' => Role::factory(),
-            'program_id' => Program::factory(),
-            'organisation_id' => Organisation::factory(),
-            'privacy' => 1,
-            'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
-            'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
+            'email' => fake()->unique()->email(),
+            'password' => fake()->password(),
+            'role_id' => 1,
+            'program_id' => 0,
+            'organisation_id' => 0,
+            'privacy' => 1
         ];
     }
 }

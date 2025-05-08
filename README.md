@@ -46,3 +46,18 @@ Création d'un utilisateur admin avec l'api ou le site web. (changer le role dan
 ```bash
  php artisan test
 ```
+
+
+#### 4: Déploiement
+
+- Exécuter la commande pour build l'application React
+```bash
+ npm run build
+```
+
+- Ajuster le .env puis exécuter les migrations sur la base de données distante
+```bash
+ php artisan migrate
+```
+
+- Envoyer le web.config, build/ et api/ (au complet) au serveur FTP
