@@ -82,7 +82,6 @@ Route::group([
     Route::post('/edit-background', [App\Http\Controllers\UserController::class, 'editBackground']);
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);
     Route::post('/edit-privacy', [App\Http\Controllers\UserController::class, 'editPrivacy']);
-
     Route::get("/{id}", [App\Http\Controllers\UserController::class, "getUser"]);
     Route::get("/{id}/badges", [App\Http\Controllers\UserController::class, "getUserBadges"]);
     Route::get("/{id}/favoriteBadges", [App\Http\Controllers\UserController::class, "getUserBadgesFavorite"]);
