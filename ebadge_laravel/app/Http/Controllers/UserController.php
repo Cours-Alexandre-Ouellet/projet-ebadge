@@ -219,7 +219,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if ($user == null) {
-            return response()->json(['error' => 'Utilisateur non trouvé'], 404);
+            return response()->json(['error' => 'Utilisateur non trouvé.'], 404);
         }
 
         return response()->json([
@@ -417,7 +417,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
         }
 
         $user->delete();
@@ -590,5 +590,15 @@ class UserController extends Controller
         return response()->json(['message' => 'Statut mis à jour avec succès.']);
     }
 
-    
+    /**
+     * Supprime tous les liens entre les badges et les utilisateurs étudiants
+     * @return mixed|\Illuminate\Http\JsonResponse un message de réussite
+     */
+    public function deleteAllLinks(){
+        UserBadge::truncate();
+        
+
+        return response()->json(['message' => 'Liens supprimés avec succès']);
+    }
+
 }
