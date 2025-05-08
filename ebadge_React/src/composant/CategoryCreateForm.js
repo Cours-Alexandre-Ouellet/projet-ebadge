@@ -108,15 +108,15 @@ export default function CategoryCreateForm({ addCategory, errorCategory, handleC
                 </Box>
                 
                 <div className="category-create-form-button-submit">
-                    <Button variant="outlined" onClick={handleClose} sx={{
-                        width: '100%',
-                        marginTop: '20px',
-                        marginRight: '20px',
-                    }}>Annuler</Button>
                     <Button type="submit" variant="contained" onClick={handleSubmit} sx={{
                         width: '100%',
                         marginTop: '20px',
+                        marginRight: '20px',
                     }}>Créer</Button>
+                    <Button variant="outlined" onClick={handleClose} sx={{
+                        width: '100%',
+                        marginTop: '20px',
+                    }}>Annuler</Button>
                 </div>
                 
             </FormControl>

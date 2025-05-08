@@ -44,7 +44,7 @@ class Navbar extends React.Component {
 
         { name: 'Liste des badges', href: '/badges', minimumRole: Role.User },
 
-        { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher },
+        { name: 'Administration', href: '/admin/users', minimumRole: Role.Teacher },
         
         { name: 'Contactez-nous', href: '/contactez-nous', minimumRole: Role.Guest }
 
@@ -52,7 +52,7 @@ class Navbar extends React.Component {
       initials: 'ND',
       userSettings: [
         { name: 'Mon profil', href: '/' },
-        { name: 'Paramètres', href:'/modify_profile'},
+        { name: 'Paramètres', href:'/modify-profile'},
         { name: 'Se déconnecter', href: '/auth/logout' }
       ]
     };

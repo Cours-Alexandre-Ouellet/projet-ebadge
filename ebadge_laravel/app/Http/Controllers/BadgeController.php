@@ -207,12 +207,14 @@ class BadgeController extends Controller
     {
         // nombre de badge avec la même image
         $badges = Badge::where('imagePath', '=', $badge->imagePath);
-        $port = $_SERVER['SERVER_PORT'];
-        $url = $_ENV['APP_URL'];
+        Log::debug($badges->count());
+
         // Supprimer l'image seulement si elle est dans un seul badge
         if ($badges->count() < 2) {
+            $port = $_SERVER['SERVER_PORT'];
+            $url = $_ENV['APP_URL'];
+
             $nameImage = str_replace($url . ":" . $port . "/storage", '', $badge->imagePath);
-            // le 8000 sera à supprimer si il est en ligne
             if (Storage::disk('public')->exists($nameImage)) {
                 return Storage::disk('public')->delete($nameImage);
             }
@@ -277,19 +279,17 @@ class BadgeController extends Controller
     }
 
     /**
-     * Retourne un badge spécifique avec son ID, sans affecter la méthode show()
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * Renvoie tous les badges créé par un professeur
+     * @param Request $request
+     * @return Badge[] les badges créé par l'utilisateur
      */
-    public function getBadgeById($id)
-    {
-        $badge = Badge::find($id);
+    public function getMyBadgesProf(Request $request){
+        $badges = Badge::leftJoin('category_badge', 'category_badge.badge_id', '=', 'badge.id')
+            ->leftJoin('category', 'category.id', '=', 'category_badge.category_id')
+            ->select(['badge.*', 'category.name AS category', 'category.color AS categoryColor'])
+            ->where('teacher_id', '=', $request->user()->id)
+            ->get();
+        return $badges;
 
-        if (!$badge) {
-            return response()->json(['error' => 'Badge introuvable'], 404);
-        }
-
-        return response()->json(['badge' => $badge]);
     }
 }

@@ -220,7 +220,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if ($user == null) {
-            return response()->json(['error' => 'Utilisateur non trouvé'], 404);
+            return response()->json(['error' => 'Utilisateur non trouvé.'], 404);
         }
 
         return response()->json([
@@ -318,7 +318,7 @@ class UserController extends Controller
     }
 
     /**
-     * Change la variable privé d'un uilisateur
+     * Change la variable "privé" d'un utilisateur
      * 
      * @return JsonResponse un message de confirmation
      */
@@ -420,7 +420,7 @@ class UserController extends Controller
     
         // Si l'utilisateur n'existe pas, retourne une erreur 404
         if (!$user) {
-            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
         }
     
         // Utilisation d'une transaction pour garantir l'intégrité des données
@@ -585,10 +585,14 @@ class UserController extends Controller
                 return response()->json(['errorNewPassword' => 'Votre nouveau mot de passe est identique à votre ancien.']);
             }
         } else {
-            return response()->json(['errorOldPassword' => 'Votre ancien mot de passe est incorrecte.']);
+            return response()->json(['errorOldPassword' => 'Votre ancien mot de passe est incorrect.']);
         }
     }
 
+    /**
+     * Renvoie tous les utilisateur ayant un certain status d'activation
+     * @param Request $request
+     */
     public function getUsersByActiveStatus($status)
     {
         $users = User::where('active', $status)->get();
@@ -596,6 +600,10 @@ class UserController extends Controller
         return response()->json(['users' => $users]);
     }
 
+    /**
+     * Change la valeur d'activation d'un compte
+     * @param Request $request
+     */
     public function toggleActiveStatus($id)
     {
         $user = User::find($id);
@@ -629,4 +637,14 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Rôle mis à jour avec succès.']);
     }
+
+     * Supprime tous les liens entre les badges et les utilisateurs étudiants
+     * @return mixed|\Illuminate\Http\JsonResponse un message de réussite
+     */
+    public function deleteAllLinks(){
+        UserBadge::truncate();
+        return response()->json(['message' => 'Liens supprimés avec succès']);
+    }
+
+
 }

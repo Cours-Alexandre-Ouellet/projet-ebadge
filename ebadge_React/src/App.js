@@ -29,49 +29,51 @@ import TopByCategory from './pages/Admin/TopByCategory';
 const estConnecter = localStorage.getItem("token");
 
 function App() {
-  console.log(process.env);
 
   return (
-    <BrowserRouter>
-      <DefaultTheme>
-        <Routes>
-          <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
-            <Route index path="/" element={<PageProfile />} />
-            <Route path="/modify_profile" element={<PageProfileModify/>}/>
-            <Route path="leaderboard" element={<Leaderboard />} />
-            <Route path="contactez-nous" element={<Contact />} />
-            <Route path="badges" element={<ListeBadge />} />
-            <Route path="utilisateur/:id" element={<PageUser />} />
-            <Route path="*" element={<h1>404: Page non trouvée</h1>} />
-          </Route>
-          <Route path="/auth">
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/logout" element={<Logout />} />
-            <Route path="signup" element={<Signup />} />
-          </Route>
-          <Route path="/admin" element={ProtectedRoute(Role.Teacher)}>
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route path="/admin/users" element={<UsersTab />} />
-              <Route path="/admin/admin_users" element={<UsersAdminTab />} />
-              <Route path="/admin/badges" element={<BadgesTab />} />
-              <Route path="/admin/categories" element={<CategoriesTab />} />
-              <Route path="/admin/stats" element={<Stats />} />
-              <Route path="/admin/top-collectors" element={<TopCollectors />} />
-              <Route path="/admin/top-by-category" element={<TopByCategory />} />
-              <Route
-                path="/admin/teacher_codes"
-                element={ProtectedRoute(Role.Admin)}
-              >
-                <Route
-                  path="/admin/teacher_codes"
-                  element={<TeacherCodesTab />}
-                />
+    <>
+      <BrowserRouter>
+        <DefaultTheme>
+          <BadgeListContextProvider>
+            <Routes>
+              <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
+                <Route index path="/" element={<PageProfile />} />
+                <Route path="/modify-profile" element={<PageProfileModify/>}/>
+                <Route path="leaderboard" element={<Leaderboard />} />
+                <Route path="contactez-nous" element={<Contact />} />
+                <Route path="badges" element={<ListeBadge />} />
+                <Route path="utilisateur/:id" element={<PageUser />} />
+                <Route path="*" element={<h1>404: Page non trouvée</h1>} />
+              </Route>
+              <Route path="/auth">
+                <Route path="/auth/login" element={<Login />} />
+                
+                <Route path="/auth/logout" element={<Logout />} />
+                <Route path="signup" element={<Signup />} />
+              </Route>
+              <Route path="/admin" element={ProtectedRoute(Role.Teacher)}>
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route path="/admin/users" element={<UsersTab />} />
+                  <Route path="/admin/admin_users" element={<UsersAdminTab />} />
+                  <Route path="/admin/badges" element={<BadgesTab />} />
+                  <Route path="/admin/categories" element={<CategoriesTab />} />
+                  <Route
+                    path="/admin/teacher_codes"
+                    element={ProtectedRoute(Role.Admin)}
+                  >
+                    <Route
+                      path="/admin/teacher_codes"
+                      element={<TeacherCodesTab />}
+                    />
+                  </Route>
+                </Route>
               </Route>
             </Route>
           </Route>
         </Routes>
       </DefaultTheme>
     </BrowserRouter>
+  </>
   );
 }
 

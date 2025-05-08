@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Laravel\Passport\PersonalAccessTokenResult;
 
 /**
@@ -61,9 +62,12 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials))
+        {
             return response()->json([
                 'message' => 'Unauthorized'
             ], 401);
+        }
+
         $user = $request->user();
 
         //Verification du statut de l'utilisateur -> actif ou inactif

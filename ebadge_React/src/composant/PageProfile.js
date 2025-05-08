@@ -414,7 +414,7 @@ export default function PageProfile() {
                 onClick={handleClickBadge}
                 className="badgeButton"
               >
-                Modifier les badges favoris
+                Modifier les badges épinglés
               </Button>
             </div>
           )}
@@ -429,7 +429,7 @@ export default function PageProfile() {
             <DialogTitle>Modifier l'arrière plan</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Pour changer l'arrière plan, veuillez entrer l'URL de l'image.
+                Pour changer l'arrière-plan, veuillez entrer l'URL de l'image.
               </DialogContentText>
               <TextField
                 autoFocus
@@ -447,9 +447,10 @@ export default function PageProfile() {
               <br />
               <br />
               <DialogContentText>
-                Vous pouvez également importé une image.
+                Vous pouvez également importer une image.
               </DialogContentText>
               <br />
+              <row className="rowButtons">
               <Button variant="contained" component="label">
                 Importer une image
                 <input
@@ -461,6 +462,10 @@ export default function PageProfile() {
                   }}
                 />
               </Button>
+              <Button className="deleteButton" variant="contained" component="label" onClick={handleDelete}>
+                  Supprimer l'arrière plan
+                </Button>
+              </row>
               <div hidden={backgroundImageFile === null}>
                 <Check></Check> Image importée
               </div>
@@ -471,14 +476,13 @@ export default function PageProfile() {
               </div>
             </DialogContent>
             <DialogActions>
+              <Button onClick={handleModify}>Enregistrer</Button>
               <Button onClick={handleClose}>Annuler</Button>
-              <Button onClick={handleDelete}>Supprimer</Button>
-              <Button onClick={handleModify}>Modifier</Button>
             </DialogActions>
           </Dialog>
 
           <Dialog open={openBadges} onClose={handleCloseBadge}>
-            <DialogTitle>Badges à afficher</DialogTitle>
+            <DialogTitle>Badges à épingler</DialogTitle>
             {(!loadingBadge || loaded) && <Loading />}
             <DialogContent className={"badge-popup"}>
               <Autocomplete
@@ -496,7 +500,7 @@ export default function PageProfile() {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Badge à afficher"
+                  label="Badge à épingler"
                   variant="outlined"
                   error={!!badgeIdToFavoriteErrorMessage}
                   labelId="badge-select-label"
@@ -516,19 +520,19 @@ export default function PageProfile() {
             />
             <p>{badgeIdToFavoriteErrorMessage}</p>
             <FormControl fullWidth>
-            {currentFavoriteBadges.length >= badgeQuantity && <Typography>Vous afficher le maximum possible de badges.</Typography>}
+            {currentFavoriteBadges.length >= badgeQuantity && <Typography>Vous épinglez le maximum possible de badges.</Typography>}
               <Button
                 variant="contained"
                 className={"mt-2"}
                 onClick={handleSubmit}
                 disabled={currentFavoriteBadges.length >= badgeQuantity}
               >
-                afficher le badge
+                Épingler le badge
               </Button>
             </FormControl>
             
             <hr />
-            Liste des badges favoris
+            Liste des badges épinglés
             <DataGrid
               className="listFavorite"
               autoHeight={true}
@@ -564,20 +568,25 @@ export default function PageProfile() {
               <br />
               <br />
               <DialogContentText>
-                Vous pouvez également importé une image.
+                Vous pouvez également importer une image.
               </DialogContentText>
               <br />
-              <Button variant="contained" component="label">
-                Importer une image
-                <input
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  hidden
-                  onChange={(e) => {
-                    setAvatarImageFile(e.target.files[0]);
-                  }}
-                />
-              </Button>
+              <row className="rowButtons">
+                <Button variant="contained" component="label">
+                  Importer une image
+                  <input
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    hidden
+                    onChange={(e) => {
+                      setAvatarImageFile(e.target.files[0]);
+                    }}
+                  />
+                </Button>
+                <Button className="deleteButton" variant="contained" component="label" onClick={handleDeleteAvatar}>
+                  Supprimer l'avatar
+                </Button>
+              </row>
               <div hidden={avatarImageFile === null}>
                 <Check></Check> Image importée
               </div>
@@ -588,9 +597,8 @@ export default function PageProfile() {
               </div>
             </DialogContent>
             <DialogActions>
+              <Button onClick={handleModifyAvatar} component="label">Enregistrer</Button>
               <Button onClick={handleCloseAvatar}>Annuler</Button>
-              <Button onClick={handleDeleteAvatar}>Supprimer</Button>
-              <Button onClick={handleModifyAvatar}>Modifier</Button>
             </DialogActions>
           </Dialog>
         </div>

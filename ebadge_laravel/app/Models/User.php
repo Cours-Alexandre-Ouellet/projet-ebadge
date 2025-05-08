@@ -27,6 +27,22 @@ class User extends Authenticatable
      */
     protected $table = 'user';
 
+    protected $fillable = [
+        'frist_name',
+        'last_name',
+        'username',
+        'email',
+        'password',
+        'role_id',
+        'privacy',
+        'active',
+        'avatarImagePath',
+        'backgroundImagePath',
+        'created_at',
+        'updated_at'
+
+    ];
+
     public $timestamps = true;
 
     /**

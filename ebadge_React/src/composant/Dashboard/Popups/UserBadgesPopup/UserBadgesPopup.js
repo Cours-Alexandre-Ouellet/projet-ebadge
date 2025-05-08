@@ -27,7 +27,17 @@ class UserBadgesPopup extends React.Component {
                 {
                     field: 'imagePath', headerName: 'Image', width: 70,
                     renderCell: (params) => {
-                        return <Avatar alt={params.row.title} src={params.row.imagePath} sx={{ boxShadow: `0 0 4px 8px ${params.row.category_color}` }}/>;
+                        return(
+                            <div style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center' 
+                              }}>
+                                <Avatar alt={params.row.title} src={params.row.imagePath} sx={{ boxShadow: `0 0 4px 6px ${params.row.category_color}` }}/>;
+                            </div>
+                        ) 
                     }
                 },
                 { field: 'title', headerName: 'Titre', flex: 1 },

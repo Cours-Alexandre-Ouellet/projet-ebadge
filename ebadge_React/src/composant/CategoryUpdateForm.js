@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { Button, FormControl, TextField, Box } from '@mui/material';
+import { Button, TextField, Box } from '@mui/material';
 import Api from '../utils/Api.js';
 import './CategoryCreateForm.css';
 import { MuiColorInput } from 'mui-color-input'
@@ -96,16 +96,17 @@ export default function CategoryUpdateForm ({ selectedCategory, editCategory, er
                             </Box>
                             <div className="category-create-form-button-submit">
                                 <Button
-                                    variant="outlined"
-                                    onClick={handleClose}
-                                    sx={{ width: '100%', marginTop: '20px', marginRight: '20px' }}
-                                >Annuler</Button>
-                                <Button
                                     type="submit"
                                     variant="contained"
                                     disabled={isUnchanged}
-                                    sx={{ width: '100%', marginTop: '20px' }}
+                                    sx={{ width: '100%', marginTop: '20px', marginRight: '20px' }}
                                 >Modifier</Button>
+                                <Button
+                                    variant="outlined"
+                                    onClick={handleClose}
+                                    sx={{ width: '100%', marginTop: '20px' }}
+                                >Annuler</Button>
+                                
                             </div>
                         </form>
                     </div>
