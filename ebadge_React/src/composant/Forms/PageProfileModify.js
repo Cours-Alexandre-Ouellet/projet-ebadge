@@ -155,7 +155,7 @@ export default function PageProfileModify() {
         <div className="profile-modify-form">
             <div className="profile-modify-form-container">
                 <div className="profile-modify-form-background">
-                {loading ? <Loading></Loading> : null}
+                    {loading ? <Loading></Loading> : null}
                     <div className="profile-modify-form-content">
                         <h1>Modification de mot de passe</h1>
                         <form className='profile-modify' >
@@ -211,15 +211,15 @@ export default function PageProfileModify() {
                             <InformationPopup onClose={onClosePopupInformation} isOpen={isOpenInformation} message={messageInfo} severity={severity} />
                             <UserModifyPasswordPopup handleClose={handleCloseConfirmation} isOpen={isOpenConfirmation} handleSubmit={handleSubmit} />
                             <div className="profile-modify-form-button-submit">
-                                <Button variant="outlined" component={Link} to={route} sx={{
-                                    width: '100%',
-                                    marginTop: '20px',
-                                    marginRight: '20px'
-                                }}>Retour</Button>
                                 <Button onClick={handleOpenConfirmation} variant="contained" sx={{
                                     width: '100%',
+                                    marginRight: '20px',
                                     marginTop: '20px'
                                 }}>Modifier</Button>
+                                <Button variant="outlined" component={Link} to={route} sx={{
+                                    width: '100%',
+                                    marginTop: '20px'
+                                }}>Retour</Button>
                             </div>
                         </form>
                     </div>
