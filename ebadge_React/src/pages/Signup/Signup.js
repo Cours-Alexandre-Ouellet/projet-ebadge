@@ -118,7 +118,7 @@ export default function Signup() {
         else if (!formatEmail.test(email)) {
             setErrors((prevState) => ({
                 ...prevState,
-                email: "Votre format d'adresse électronique est incorrecte."
+                email: "Votre format d'adresse électronique est incorrect."
             }));
             return false;
         }

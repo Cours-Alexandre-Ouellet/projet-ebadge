@@ -32,7 +32,7 @@ export default function PageProfileModify() {
     const [isOpenInformation, setIsOpenInformation] = useState(false);
     const [messageInfo, setMessageInfo] = useState("");
 
-    // Va chercher l'utilisateur connecter
+    // Va chercher l'utilisateur connecté
     useEffect(() => {
         Api.get('/auth/current_user').then((response) => {
             setUser(response.data);
@@ -43,7 +43,7 @@ export default function PageProfileModify() {
 
         }).catch((_) => {
             setSeverity("error");
-            setMessageInfo("Une erreur est survenue avec nos serveur. Veuillez ressayer plus tard ou contactez un admin sur l'onglet contactez-nous.");
+            setMessageInfo("Une erreur est survenue avec nos serveurs. Veuillez ressayer plus tard ou contactez un admin sur l'onglet contactez-nous.");
             setIsOpenInformation(true);
         })
     }, [])
@@ -64,7 +64,7 @@ export default function PageProfileModify() {
     const validateNewPassword = () => {
         setNewPasswordError("");
         if (newPassword.length < 6) {
-            setNewPasswordError("Veuillez choisir un mot de passe de 6 caractère et plus");
+            setNewPasswordError("Veuillez choisir un mot de passe de six caractères et plus");
             return false;
         } else {
             return true;
@@ -122,7 +122,7 @@ export default function PageProfileModify() {
             }).catch((_) => {
                 setLoading(false);
                 setSeverity("error");
-                setMessageInfo("Une erreur est survenue avec nos serveur. Veuillez ressayer plus tard ou contactez un admin sur l'onglet contactez-nous.");
+                setMessageInfo("Une erreur est survenue avec nos serveurs. Veuillez ressayer plus tard ou contactez un admin sur l'onglet contactez-nous.");
                 setIsOpenInformation(true);
 
             });
