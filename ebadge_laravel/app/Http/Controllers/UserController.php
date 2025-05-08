@@ -637,10 +637,10 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Rôle mis à jour avec succès.']);
     }
-
-     * Supprime tous les liens entre les badges et les utilisateurs étudiants
-     * @return mixed|\Illuminate\Http\JsonResponse un message de réussite
-     */
+    /**
+    * Supprime tous les liens entre les badges et les utilisateurs étudiants
+    * @return mixed|\Illuminate\Http\JsonResponse un message de réussite
+    */
     public function deleteAllLinks(){
         UserBadge::truncate();
         return response()->json(['message' => 'Liens supprimés avec succès']);
