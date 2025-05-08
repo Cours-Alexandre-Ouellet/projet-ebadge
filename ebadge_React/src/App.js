@@ -37,7 +37,7 @@ function App() {
             <Routes>
               <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
                 <Route index path="/" element={<PageProfile />} />
-
+                <Route path="/modify-profile" element={<PageProfileModify/>}/>
                 <Route path="leaderboard" element={<Leaderboard />} />
                 <Route path="contactez-nous" element={<Contact />} />
                 <Route path="badges" element={<ListeBadge />} />
@@ -46,6 +46,7 @@ function App() {
               </Route>
               <Route path="/auth">
                 <Route path="/auth/login" element={<Login />} />
+                
                 <Route path="/auth/logout" element={<Logout />} />
                 <Route path="signup" element={<Signup />} />
               </Route>
