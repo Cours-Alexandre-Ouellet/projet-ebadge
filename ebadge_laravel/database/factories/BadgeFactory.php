@@ -5,6 +5,7 @@
 namespace Database\Factories;
 
 use App\Models\Badge;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BadgeFactory extends Factory{
@@ -24,8 +25,10 @@ class BadgeFactory extends Factory{
             'title' => fake()->name(),
             'description' => fake()->text(),
             'imagePath' => fake()->imageUrl(),
+            'teacher_id' => User::factory(),
             'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
+            'activated' => fake()->randomElement([0,1])
         ];
     }
 }

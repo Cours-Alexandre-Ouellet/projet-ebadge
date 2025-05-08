@@ -6,7 +6,6 @@ use Database\Factories\RoleFactory as FactoriesRoleFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
-use RoleFactory;
 
 /**
  * Classe représentant un role

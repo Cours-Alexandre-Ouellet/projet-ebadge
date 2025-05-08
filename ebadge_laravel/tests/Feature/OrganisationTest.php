@@ -13,10 +13,12 @@ use Carbon\Carbon;
 class OrganisationTest extends TestCase
 {
 
+    /*
+    ---- Les organisations ne sont plus dans le projet ----
     private $organisation;
     private $admin;
     private $adminToken;
-
+   
     public function setUp(): void
     {
         parent::setUp();
@@ -89,4 +91,5 @@ class OrganisationTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseMissing('organisation', ['id' => $org->id]);
     }
+        */
 }

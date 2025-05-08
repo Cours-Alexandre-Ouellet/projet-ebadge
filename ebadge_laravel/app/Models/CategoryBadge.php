@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Database\Factories\CategoryBadgeFactory as FactoriesCategoryBadgeFactory;
 
 /**
  * Lien entre un utilisateur et un badge
  */
 class CategoryBadge extends Model
 {
+
+    use HasFactory, Notifiable;
+
     /**
      * La table associée au modèle.
      *
      * @var string
      */
-
     protected $table = 'category_badge';
 
     /**
@@ -28,15 +33,11 @@ class CategoryBadge extends Model
     ];
 
     /**
-     * Définition de la relation entre le badge et la catégorie pour faker.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Créer une nouvelle instance à la factory
      */
-    public function definition(): array
+    protected static function newFactory()
     {
-        return [
-            'badge_id' => $this->faker->numberBetween(1, 100),
-            'category_id' => $this->faker->numberBetween(1, 100),
-        ];
+        return FactoriesCategoryBadgeFactory::new();
     }
+
 }

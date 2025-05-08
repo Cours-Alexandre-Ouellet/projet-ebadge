@@ -36,6 +36,7 @@ Route::group([
     ], function () {
         Route::get('/category/names', [App\Http\Controllers\BadgeController::class, 'getAllBadgesWithCategory']);
         Route::get('/category/name/{id}', [App\Http\Controllers\BadgeController::class, 'getBadgeCategory']);
+        Route::get('my-badges-prof', [App\Http\Controllers\BadgeController::class, 'getMyBadgesProf'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
         Route::post('/', [App\Http\Controllers\BadgeController::class, 'create']);
         Route::post('/image', [App\Http\Controllers\BadgeController::class, 'updateImage']);
         Route::put('/', [App\Http\Controllers\BadgeController::class, 'update']);
@@ -69,6 +70,7 @@ Route::group([
         'auth:api',
     ],  
 ], function () {
+    Route::delete('/delete-all-links', [App\Http\Controllers\UserController::class, 'deleteAllLinks'])->middleware('roles:' . Role::ALL_ADMINS);
     Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
     Route::put('/modify-password', [App\Http\Controllers\UserController::class, 'modifyPassword']);
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
@@ -97,6 +99,7 @@ Route::group([
     Route::post('/{id}/change-password', [App\Http\Controllers\UserController::class, 'changePassword'])->middleware('roles:' . Role::ALL_ADMINS);
     Route::get('/active/{status}', [App\Http\Controllers\UserController::class, 'getUsersByActiveStatus'])->middleware('roles:' . Role::ALL_ADMINS. ',' . Role::ENSEIGNANT);
     Route::post('/{id}/toggle-active', [App\Http\Controllers\UserController::class, 'toggleActiveStatus'])->middleware('roles:' . Role::ALL_ADMINS);
+    
 });
 
 

@@ -4,25 +4,28 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
+use App\Models\Badge;
+use App\Models\User;
+use App\Models\UserBadge;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-
-class RoleFactory extends Factory
-{
+class UserBadgeFactory extends Factory{
     
-    protected $model = Role::class;
+
+    protected $model = UserBadge::class;
 
     /**
-     * fonction qui génère des données aléatoire pour un role
+     * fonction qui génère des données aléatoire pour un userbadge
      * 
      * @author Vincent Houle
-     * @return Role avec des données aléatoire
-     */
+     * @return UserBadge avec des données aléatoire
+     */    
     public function definition(): array
     {
         return [
-            'name' => fake()->randomElement([Role::ETUDIANT, Role::ENSEIGNANT, Role::ADMIN, Role::ADMIN_CONTACT]),
+            'user_id' => User::factory(),
+            'badge_id' => Badge::factory(),
+            'favorite' => fake()->boolean(),
             'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
         ];
