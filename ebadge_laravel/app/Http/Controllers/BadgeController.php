@@ -25,7 +25,7 @@ use function Psy\debug;
 class BadgeController extends Controller
 {
     /**
-     * la liste de tous les badges avec le pourcentage de possession
+     * La liste de tous les badges avec le pourcentage de possession
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,6 +37,32 @@ class BadgeController extends Controller
         }
         return response()->json(['badges' => $badges]);
     }
+    
+    /**
+     * La liste de tous les badges activés pour un professeur
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getActiveBadges(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $badges = Badge::where('activated', 1)->where('teacher_id', $user_id)->get();
+        return response()->json(['badges' => $badges]);
+    }
+    
+    /**
+     * La liste de tous les utilisateurs qui n'ont pas des badges données
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUsersWithoutBadges(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $badges = Badge::where('activated', 1)->where('teacher_id', $user_id)->get();
+        return response()->json(['badges' => $badges]);
+    }
+
+    
 
     /**
      * Création d'un nouveau badge

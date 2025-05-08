@@ -28,6 +28,7 @@ Route::group([
 ], function () {
     Route::get('/', [App\Http\Controllers\BadgeController::class, 'index']);
     Route::get('/{id}', [App\Http\Controllers\BadgeController::class, 'getBadgeById']);
+    Route::get('/all-active', [App\Http\Controllers\BadgeController::class, 'getActiveBadges']);
     Route::group([
         'middleware' => [
             'auth:api',
@@ -74,12 +75,13 @@ Route::group([
     Route::get('/', [App\Http\Controllers\UserController::class, 'index']);
     Route::put('/modify-password', [App\Http\Controllers\UserController::class, 'modifyPassword']);
     Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
+    Route::post('/assign-multiple-badges', [App\Http\Controllers\UserController::class, 'assignMultipleBadges'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
-    Route::post('/assign-badge', [App\Http\Controllers\UserController::class, 'assignBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/remove-badge', [App\Http\Controllers\UserController::class, 'removeBadge'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::get("/my-badges", [App\Http\Controllers\UserController::class, "getMyBadges"]);
     Route::get("/new-badges", [App\Http\Controllers\UserController::class, "getMyNewBadges"]);
-    Route::put("/new-badges/seen", [App\Http\Controllers\UserController::class, "notifyHasSeenBadges"]);
+    Route::get('/without-badges', [App\Http\Controllers\UserController::class, 'getAllWithoutBadges']);
+    Route::put("/new-badges/seen", [App\Http\Controllers\UserController::class, "notifyHasSeenBadges"])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::get('/{id}', [App\Http\Controllers\UserController::class, 'show'])->middleware('roles:' . Role::ALL_ADMINS . ',' . Role::ENSEIGNANT);
     Route::post('/edit-background', [App\Http\Controllers\UserController::class, 'editBackground']);
     Route::post('/edit-avatar', [App\Http\Controllers\UserController::class, 'editAvatar']);
