@@ -39,7 +39,25 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
     // Définition des colonnes du tableau
     const columns = [
         // Colonne pour le nom de la catégorie
-        { field: 'name', headerName: 'Nom', flex: 1, headerAlign: 'center' },
+        { 
+            field: 'name',
+            headerName: 'Nom',
+            flex: 1,
+            headerAlign: 'center',
+            renderCell: (params) => (
+                <div
+                    style={{
+                        borderLeft: `15px solid ${params.row.color || 'transparent'}`,
+                        width: '100%',
+                        textAlign: 'left',
+                        lineHeight: '100px',
+                        paddingLeft: '10px',
+                    }}
+                >
+                    {params.row.name}
+                </div>
+            )
+        },
 
         // Colonne pour l'action d'assignation de badge
         {

@@ -40,8 +40,10 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
 
         Api.get('/category/').then((response) => {
             setCategories(response.data.categories);
+            
             Api.get(`/badge/category/name/${badge.id}`).then((response) => {
                 setLoading(false);
+
                 if (response.data != null)
                     setBadge((prevState => (
                         {
@@ -268,7 +270,7 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                         <br />
                                         <br />
                                         <DialogContentText>
-                                            Vous pouvez également importé une image.
+                                            Vous pouvez également importer une image.
                                         </DialogContentText>
                                         <br />
                                         <Button
@@ -303,15 +305,16 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                 </Dialog>
                             </div>
                             <div className="badge-create-form-button-submit">
-                                <Button variant="outlined" onClick={handleClose} sx={{
+                                <Button onClick={handleSubmit} variant="contained" sx={{
                                     width: '100%',
                                     marginTop: '20px',
                                     marginRight: '20px'
-                                }}>Annuler</Button>
-                                <Button onClick={handleSubmit} variant="contained" sx={{
-                                    width: '100%',
-                                    marginTop: '20px'
                                 }}>Modifier</Button>
+                                <Button variant="outlined" onClick={handleClose} sx={{
+                                    width: '100%',
+                                    marginTop: '20px', 
+                                }}>Annuler</Button>
+                                
                             </div>
                         </form>
                     </div>
