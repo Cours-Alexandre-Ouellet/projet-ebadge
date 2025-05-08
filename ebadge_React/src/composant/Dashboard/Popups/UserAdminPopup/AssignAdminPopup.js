@@ -21,8 +21,10 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
   const fetchUsers = () => {
     Api.get("/user")
       .then((res) => {
-        const nonAdmins = res.data.users.filter(user => ![RoleIds.Admin, RoleIds.AdminContact].includes(user.role_id));
-        setUsers(nonAdmins);
+        const profsOnly = res.data.users.filter(
+          user => user.role_id === RoleIds.Teacher
+        );
+        setUsers(profsOnly);
       })
       .catch(() => setUsers([]));
   };
@@ -56,7 +58,10 @@ const AssignAdminPopup = ({ isOpen, handleClose, refreshAdmins }) => {
 
   const handleRemoveAdmin = (adminId) => {
     setLoading(true);
-    Api.post("/user/remove-admin", { user_id: adminId })
+    Api.post('/user/update-role', {
+      user_id: adminId,
+      role_id: RoleIds.Teacher
+    })
       .then(() => {
         setMessage("Administrateur rétrogradé !");
         setTimeout(() => {

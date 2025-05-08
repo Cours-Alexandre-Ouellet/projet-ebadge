@@ -290,5 +290,6 @@ class BadgeController extends Controller
             ->where('teacher_id', '=', $request->user()->id)
             ->get();
         return $badges;
+
     }
 }

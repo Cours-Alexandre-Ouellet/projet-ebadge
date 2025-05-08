@@ -40,4 +40,10 @@ class CategoryBadge extends Model
         return FactoriesCategoryBadgeFactory::new();
     }
 
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }

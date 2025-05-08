@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Button, Select, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Tooltip } from '@mui/material';
 import Api from '../../../src/utils/Api';
-import UserAdminPopup from './Popups/UserAdminPopup/UserAdminPopup'; // Popup des détails
+import UserAdminPopup from './Popups/UserAdminPopup/UserAdminPopup'; 
 import ChangePasswordPopup from './Popups/UserAdminPopup/ChangePasswordPopup';
 import Role, { RoleIds } from '../../policies/Role';
 import EmailIcon from '@mui/icons-material/Email';
@@ -110,8 +110,11 @@ class UserAdminGrid extends React.Component {
   // Rétrograde un admin en professeur (2)
   downgradeAdmin = () => {
     const { adminToAffect, targetRole } = this.state;
-
-    Api.post("/user/remove-admin", { user_id: adminToAffect.id, new_role: targetRole })
+  
+    Api.post('/user/update-role', { 
+      user_id: adminToAffect.id,
+      role_id: targetRole
+    })
       .then(() => {
         this.props.refreshAdmins();
         this.handleCloseConfirmDowngrade();
@@ -148,8 +151,9 @@ class UserAdminGrid extends React.Component {
               Rétrograder en professeur
               {params.row.role_id === RoleIds.AdminContact && <Tooltip title="Impossible de rétrograder un contact administrateur"><Info style={{ marginLeft: 5, pointerEvents: 'auto' }} /></Tooltip>}
             </MenuItem>
-            <MenuItem onClick={() => this.setState({ openPasswordPopup: true, selectedAdmin: params.row })}>Modifier le mot de passe</MenuItem>
-            <MenuItem onClick={() => this.handleConfirmDelete(params.row.id)} disabled={this.props.rows.length <= 1}>
+            <MenuItem onClick={() => this.handleConfirmDelete(params.row.id)} 
+              disabled={this.props.rows.length <= 1 || [RoleIds.Admin, RoleIds.AdminContact].includes(params.row.role_id)}
+            >
               Supprimer
             </MenuItem>
           </Select>

@@ -16,13 +16,15 @@ import ProtectedRoute from "./policies/ProtectedRoute";
 import Role from "./policies/Role";
 import Signup from "./pages/Signup/Signup";
 import { BadgeListContextProvider } from "./context/BadgeListContext";
-
+import Stats from "./pages/Dashboard/tabs/Stats"; 
 import ListeBadge from "./pages/ListeBadge";
 import TeacherCodesTab from "./pages/Dashboard/tabs/TeacherCodesTab";
 import PageUser from "./pages/PageUser";
 import DefaultTheme from "./theme";
 import PageProfileModify from "./composant/Forms/PageProfileModify";
 import Contact from "./pages/Contact";
+import TopCollectors from './pages/Admin/TopCollectors';
+import TopByCategory from './pages/Admin/TopByCategory';
 
 const estConnecter = localStorage.getItem("token");
 
@@ -66,11 +68,11 @@ function App() {
                   </Route>
                 </Route>
               </Route>
-            </Routes>
-          </BadgeListContextProvider>
-        </DefaultTheme>
-      </BrowserRouter>
-    </>
+        </Routes>
+        </BadgeListContextProvider>
+      </DefaultTheme>
+    </BrowserRouter>
+  </>
   );
 }
 
