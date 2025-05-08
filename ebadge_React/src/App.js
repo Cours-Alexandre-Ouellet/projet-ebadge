@@ -68,9 +68,8 @@ function App() {
                   </Route>
                 </Route>
               </Route>
-            </Route>
-          </Route>
         </Routes>
+        </BadgeListContextProvider>
       </DefaultTheme>
     </BrowserRouter>
   </>
