@@ -104,7 +104,7 @@ class UsersTab extends React.Component {
                     )}
                 </Box>
                 {(this.state.role === RoleIds.Admin || this.state.role === RoleIds.AdminContact)&& (
-                <Box className='deleteButton'>
+                <Box className='linkDeleteButton'>
                     <Button variant="contained" onClick={() => this.setState({ confirmDelete: true })}>Supprimer les liens badges-étudiants</Button>
                 </Box>
                 )}
