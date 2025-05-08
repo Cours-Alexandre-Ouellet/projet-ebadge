@@ -15,10 +15,10 @@ function isImage(url) {
 
 /**
  * Formulaire de modification de badge
- * @param {Object} errorBadge - Popup d'erreur dans la modificaiton du Badge
- * @param {Object} editBadge - Popup odification de badge
+ * @param {Object} errorBadge - Popup d'erreur dans la modification du Badge
+ * @param {Object} editBadge - Popup modification de badge
  * @param {Object} handleClose - Ferme une fenêtre
- * @param {Object} selectedBadge - Badge a modifié
+ * @param {Object} selectedBadge - Badge a modifier
  * @returns Le react de la page du formulaire de modification
  * @author Vincent Houle /partiellement
  */

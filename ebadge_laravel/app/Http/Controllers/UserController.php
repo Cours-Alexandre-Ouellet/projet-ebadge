@@ -317,7 +317,7 @@ class UserController extends Controller
     }
 
     /**
-     * Change la variable privé d'un uilisateur
+     * Change la variable "privé" d'un utilisateur
      * 
      * @return JsonResponse un message de confirmation
      */
@@ -558,7 +558,7 @@ class UserController extends Controller
                 return response()->json(['errorNewPassword' => 'Votre nouveau mot de passe est identique à votre ancien.']);
             }
         } else {
-            return response()->json(['errorOldPassword' => 'Votre ancien mot de passe est incorrecte.']);
+            return response()->json(['errorOldPassword' => 'Votre ancien mot de passe est incorrect.']);
         }
     }
 

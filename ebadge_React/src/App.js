@@ -27,7 +27,6 @@ import Contact from "./pages/Contact";
 const estConnecter = localStorage.getItem("token");
 
 function App() {
-  console.log(process.env);
 
   return (
     <>
