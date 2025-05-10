@@ -176,7 +176,7 @@ const CategoryBadgesPopup = ({ isOpen, handleClose, selectedCategory }) => {
                                 />
                         </FormControl>
                         
-                        <FormControl fullWidth>
+                        <FormControl fullWidth sx={{ paddingTop: '20px' }}>
                             {/* Bouton de soumission du formulaire */}
                             <Button variant="contained" className="mt-2" type="submit">Assigner le badge</Button>
                         </FormControl>
