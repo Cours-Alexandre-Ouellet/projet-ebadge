@@ -7,6 +7,7 @@ use App\Models\Role;
 use Database\Factories\BadgeFactory as FactoriesBadgeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use App\Models\UserBadge;
 
 /**
  * Classe représentant un badge
@@ -64,5 +65,15 @@ class Badge extends Model
     protected static function newFactory()
     {
         return FactoriesBadgeFactory::new();
+    }
+    
+    /**
+     * Relation entre le badge et les utilisateurs qui l'ont reçu
+     * 
+     * @return HasMany les utilisateurs ayant reçu le badge
+     */
+        public function userBadges()
+    {
+        return $this->hasMany(UserBadge::class, 'badge_id');
     }
 }

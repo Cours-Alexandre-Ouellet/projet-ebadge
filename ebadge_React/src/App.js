@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./App.css";
@@ -16,7 +15,7 @@ import ProtectedRoute from "./policies/ProtectedRoute";
 import Role from "./policies/Role";
 import Signup from "./pages/Signup/Signup";
 import { BadgeListContextProvider } from "./context/BadgeListContext";
-import Stats from "./pages/Dashboard/tabs/Stats"; 
+// import Stats from "./pages/Dashboard/tabs/Stats"; 
 import ListeBadge from "./pages/ListeBadge";
 import TeacherCodesTab from "./pages/Dashboard/tabs/TeacherCodesTab";
 import PageUser from "./pages/PageUser";
@@ -57,6 +56,8 @@ function App() {
                   <Route path="/admin/admin_users" element={<UsersAdminTab />} />
                   <Route path="/admin/badges" element={<BadgesTab />} />
                   <Route path="/admin/categories" element={<CategoriesTab />} />
+                  <Route path="/admin/top-collectors" element={<TopCollectors />} />
+                  <Route path="/admin/top-by-category" element={<TopByCategory />} />
                   <Route
                     path="/admin/teacher_codes"
                     element={ProtectedRoute(Role.Admin)}

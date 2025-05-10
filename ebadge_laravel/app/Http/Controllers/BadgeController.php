@@ -318,4 +318,13 @@ class BadgeController extends Controller
         return $badges;
 
     }
+    
+    public function getBadgeById($id){
+        $badge = Badge::leftJoin('category_badge', 'category_badge.badge_id', '=', 'badge.id')
+            ->leftJoin('category', 'category.id', '=', 'category_badge.category_id')
+            ->select(['badge.*', 'category.name AS category', 'category.color AS categoryColor'])
+            ->where('badge.id', '=', $id)
+            ->first();
+        return $badge;
+    }
 }

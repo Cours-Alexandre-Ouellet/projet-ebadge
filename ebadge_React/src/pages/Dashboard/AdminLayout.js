@@ -25,6 +25,7 @@ import { School } from "@mui/icons-material";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import BadgeAssignationPopup from "../../composant/Dashboard/Popups/BadgeAssignationPopup";
 
+
 const drawerWidth = 240;
 
 class AdminLayout extends React.Component {
@@ -124,6 +125,7 @@ class AdminLayout extends React.Component {
   render() {
     return (
       <>
+      
         <Box sx={{ display: "flex" }}>
           <CssBaseline />
           <AppBar

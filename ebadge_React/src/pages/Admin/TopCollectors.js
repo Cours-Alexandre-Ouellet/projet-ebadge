@@ -18,7 +18,7 @@ const TopCollectors = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
-        🏆 Top 10 des meilleurs collectionneurs
+        Top 10 des meilleurs collectionneurs
       </Typography>
 
       <Paper elevation={2} sx={{ padding: 3, mt: 2 }}>

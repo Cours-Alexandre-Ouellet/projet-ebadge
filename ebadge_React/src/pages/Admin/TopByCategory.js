@@ -45,7 +45,7 @@ const TopByCategory = () => {
   
     return (
       <div>
-        <Typography variant="h4" gutterBottom>🏆 Top 5 des pros de la catégorie</Typography>
+        <Typography variant="h4" gutterBottom>Top 5 des pros de la catégorie</Typography>
         <Grid container spacing={3}>
           {Object.entries(limitedByRank).map(([category, users]) => (
             <Grid item xs={12} md={6} key={category}>
