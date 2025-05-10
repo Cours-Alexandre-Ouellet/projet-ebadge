@@ -28,6 +28,9 @@ class BadgeComponent extends React.Component {
     return `${firstInitial}${lastInitial}`;
   }
 
+  /// Fonction pour obtenir les couleurs pour le style du badge
+  /// @returns {Object} Un objet contenant les couleurs pour le style du badge
+  /// Codé par VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage] 
   getBadgeStyle() {
     const categoryColor = this.props.badge.category_color || '#839489';
 
@@ -43,7 +46,11 @@ class BadgeComponent extends React.Component {
     };
   }
 
-  adjustColor(color, brightnessFactor, saturationFactor = 1) {
+  /// Fonction pour ajuster les couleurs du style du badge
+  /// @param {string} color - La couleur à ajuster
+  /// @param {number} brightnessFactor - Le facteur de luminosité
+  /// Codé par VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage] 
+  adjustColor(color, brightnessFactor) {
     if(!color || color === 'transparent') return '#C0C0C0';
 
     if(color.length === 4) {
@@ -54,33 +61,28 @@ class BadgeComponent extends React.Component {
     let g = parseInt(color.substring(3, 5), 16);
     let b = parseInt(color.substring(5, 7), 16);
 
-    // Convert to HSL for better control
-  let [h, s, l] = this.rgbToHsl(r, g, b);
+    let [h, s, l] = this.rgbToHsl(r, g, b);
   
-  // Adjust lightness
-  l = Math.max(0, Math.min(1, l + (brightnessFactor / 100)));
+
+    l = Math.max(0, Math.min(1, l + (brightnessFactor / 100)));
   
-  // Adjust saturation
-  s = Math.max(0, Math.min(1, s * saturationFactor));
+    s = Math.max(0, Math.min(1, s));
   
-  // Convert back to RGB
-  [r, g, b] = this.hslToRgb(h, s, l);
+    [r, g, b] = this.hslToRgb(h, s, l);
   
-  // Format as hex
-  const rHex = Math.round(r).toString(16).padStart(2, '0');
-  const gHex = Math.round(g).toString(16).padStart(2, '0');
-  const bHex = Math.round(b).toString(16).padStart(2, '0');
+    const rHex = Math.round(r).toString(16).padStart(2, '0');
+    const gHex = Math.round(g).toString(16).padStart(2, '0');
+    const bHex = Math.round(b).toString(16).padStart(2, '0');
 
     return `#${rHex}${gHex}${bHex}`;
   }
 
-  /**
- * Converts RGB to HSL color model
- * @param {number} r - Red (0-255)
- * @param {number} g - Green (0-255)
- * @param {number} b - Blue (0-255)
- * @returns {Array} - [h, s, l] values
- */
+ /// Fonction pour convertir RGB en HSL
+  /// @param {number} r - La valeur rouge
+  /// @param {number} g - La valeur verte
+  /// @param {number} b - La valeur bleue
+  /// @returns {Array} Un tableau contenant les valeurs HSL
+  /// Codé par VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage]
 rgbToHsl(r, g, b) {
   r /= 255;
   g /= 255;
@@ -107,7 +109,13 @@ rgbToHsl(r, g, b) {
   
   return [h, s, l];
 }
-  
+
+/// Fonction pour convertir HSL en RGB
+/// @param {number} h - La valeur de teinte
+/// @param {number} s - La valeur de saturation
+/// @param {number} l - La valeur de luminosité
+/// @returns {Array} Un tableau contenant les valeurs RGB
+/// Codé par VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage]
 hslToRgb(h, s, l) {
   let r, g, b;
   

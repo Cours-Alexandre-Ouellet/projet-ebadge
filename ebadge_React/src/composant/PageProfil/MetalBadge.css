@@ -1,3 +1,7 @@
+/* CSS pour le badge métallique */
+/* Auteur: Alexandre del Fabbro */
+/* Inspiré du code de Eric Karkovack - https://speckyboy.com/metallic-effects-css-javascript/ - [Consulté le 10 mai 2025] */
+/* Inspiré du code de VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage] */
 :root {
   --badge-color: #838489;
   --badge-color-light: #f3f4ff;
@@ -5,14 +9,12 @@
   --badge-color-dark: #212134;
 }
 
-/* Base Badge Container */
 .Badge {
   position: relative;
   display: inline-block;
   margin: 10px;
 }
 
-/* Badge Wrapper with Scaling */
 .badge-wrapper {
   width: 15em;
   height: 15em;
@@ -22,7 +24,6 @@
   filter: drop-shadow(0 20px 15px rgba(0,0,0,0.8));
 }
 
-/* NEW APPROACH - Simplified for better consistency */
 .badge {
   position: relative;
   width: 15em;
@@ -64,14 +65,12 @@
   filter: brightness(1.2) contrast(1.1);
 }
 
-/* Main metallic effect using multiple backgrounds */
 .metal-badge {
   background:
     var(--badge-color);
   position: relative;
 }
 
-/* Glossy highlight overlay */
 .glossy {
   position: absolute;
   top: 0;
@@ -83,7 +82,6 @@
   pointer-events: none;
 }
 
-/* First circular gradient overlay */
 .metal-badge::before {
   content: "";
   position: absolute;
@@ -93,16 +91,14 @@
   height: 100%;
   border-radius: 50%;
   background: 
-    /* Center radial gradient for depth */
     radial-gradient(
       circle at center,
       var(--badge-color-light) 0%,
       var(--badge-color) 40%,
       var(--badge-color-dark) 100%
     ),
-    /* Even metallic look with more balance */
     conic-gradient(
-      from 45deg, /* Changed angle to fix imbalance */
+      from 45deg, 
       var(--badge-color-light) 0%, 
       var(--badge-color) 10%,
       var(--badge-color-medium) 20%,
@@ -120,7 +116,6 @@
   z-index: 2;
 }
 
-/* Second circular gradient overlay for shimmer */
 .metal-badge::after {
   content: "";
   position: absolute;
@@ -164,7 +159,6 @@
   z-index: 1;
 }
 
-/* Inner Badge Circle */
 .inner {
   position: absolute;
   border-radius: 50%;
@@ -184,7 +178,6 @@
     0 0 8px rgba(0,0,0,0.3);
 }
 
-/* Badge Image Styling */
 .inner img.badgeIcon {
   width: 100%;
   height: 100%;
@@ -193,7 +186,6 @@
   z-index: 11;
 }
 
-/* Teacher Circle Styling */
 .Badge .teacher-circle {
   position: absolute;
   right: 0;
@@ -213,13 +205,11 @@
   cursor: help;
 }
 
-/* Shine animation */
 @keyframes rotate {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-/* Edge shadow */
 .badge::before {
   content: "";
   position: absolute;
@@ -235,7 +225,6 @@
   pointer-events: none;
 }
 
-/* Additional shine effect */
 .umbrella {
   position: absolute;
   top: 0;
@@ -244,21 +233,18 @@
   height: 100%;
   border-radius: 50%;
   background: 
-    /* Top-left highlight */
     radial-gradient(
       ellipse at 30% 30%,
       rgba(255, 255, 255, 0.5) 0%,
       rgba(255, 255, 255, 0.1) 20%,
       transparent 50%
     ),
-    /* Bottom-right highlight for balance */
     radial-gradient(
       ellipse at 70% 70%,
       rgba(255, 255, 255, 0.4) 0%,
       rgba(255, 255, 255, 0.05) 25%,
       transparent 50%
     ),
-    /* Center highlight for even distribution */
     radial-gradient(
       circle at center,
       rgba(255, 255, 255, 0.2) 0%,
@@ -269,7 +255,6 @@
   pointer-events: none;
 }
 
-/* Color distribution for different parts of badge */
 @media (prefers-reduced-motion: no-preference) {
   .metal-badge::after {
     animation: rotate 20s linear infinite;
