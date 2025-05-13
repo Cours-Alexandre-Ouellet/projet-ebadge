@@ -40,7 +40,7 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
 
         Api.get('/category/').then((response) => {
             setCategories(response.data.categories);
-            
+
             Api.get(`/badge/category/name/${badge.id}`).then((response) => {
                 setLoading(false);
 
@@ -273,21 +273,26 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                             Vous pouvez également importer une image.
                                         </DialogContentText>
                                         <br />
-                                        <Button
-                                            variant="contained"
-                                            component="label"
-                                        >
-                                            Importer une image
-                                            <input
-                                                type="file"
-                                                accept="image/png, image/jpeg"
-                                                hidden
-                                                onChange={e => {
-                                                    setImageFile(e.target.files[0]);
-                                                    setImageUrlField("");
-                                                }}
-                                            />
-                                        </Button>
+                                        <row className="rowButtons">
+                                            <Button
+                                                variant="contained"
+                                                component="label"
+                                            >
+                                                Importer une image
+                                                <input
+                                                    type="file"
+                                                    accept="image/png, image/jpeg"
+                                                    hidden
+                                                    onChange={e => {
+                                                        setImageFile(e.target.files[0]);
+                                                        setImageUrlField("");
+                                                    }}
+                                                />
+                                            </Button>
+                                            <Button className="deleteButton" variant="contained" component="label" onClick={handleImageDelete}>
+                                                Supprimer l'arrière plan
+                                            </Button>
+                                        </row>
                                         <div hidden={imageFile === null}>
                                             <Check></Check> Image importée
                                         </div>
@@ -298,9 +303,8 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                         </div>
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button onClick={handleImageDialog}>Annuler</Button>
-                                        <Button onClick={handleImageDelete}>Supprimer</Button>
                                         <Button onClick={handleImageModify}>Modifier</Button>
+                                        <Button onClick={handleImageDialog}>Annuler</Button>
                                     </DialogActions>
                                 </Dialog>
                             </div>
@@ -312,9 +316,9 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                 }}>Modifier</Button>
                                 <Button variant="outlined" onClick={handleClose} sx={{
                                     width: '100%',
-                                    marginTop: '20px', 
+                                    marginTop: '20px',
                                 }}>Annuler</Button>
-                                
+
                             </div>
                         </form>
                     </div>
