@@ -11,6 +11,7 @@ use App\Models\Role;
 use App\Models\Badge;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Badge\BadgeUpdateFavoriteRequest;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -89,6 +90,38 @@ class UserController extends Controller
     }
 
     /**
+     * Assigne plusieurs badges à un ou plusieurs utilisateurs
+     * 
+     * @param Request $request
+     * @return JsonResponse un message de confirmation
+     */
+    public function assignMultipleBadges(Request $request)
+    {
+        $request->validate([
+            'badge_ids' => 'array',
+            'badge_ids.*' => 'exists:badge,id',
+            'user_ids' => 'array',
+            'user_ids.*' => 'exists:user,id',
+        ]);
+
+        $user_ids = $request->user_ids ?? [];
+        $badge_ids = $request->badge_ids ?? [];
+
+        foreach ($user_ids as $user_id) {
+            $user = User::find($user_id);
+            $user_badges = $user->badges();
+
+            foreach ($badge_ids as $badge_id) {
+                $user_badges->attach($badge_id);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Badge(s) assigné(s)'
+        ]);
+    }
+
+    /**
      * Enleve un badge à un utilisateur
      * 
      * @param $request 
@@ -115,7 +148,7 @@ class UserController extends Controller
         $badges = Badge::select('badge.*', 'c.color as category_color', 'c.name as category_name')
             ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'badge.id')
             ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
-            ->join('user_badge','badge.id','=','user_badge.badge_id')
+            ->join('user_badge', 'badge.id', '=', 'user_badge.badge_id')
             ->where('user_badge.user_id', $id)
             ->get();
 
@@ -135,15 +168,15 @@ class UserController extends Controller
     public function getUserBadgesFavorite(int $id)
     {
         $badges = Badge::select('b.*', 'c.color as category_color', 'c.name as category_name', 'u.first_name as creator_name', 'u.last_name as creator_last_name')
-        ->join('user_badge', 'user_badge.user_id','=','user.id')
-        ->join('badge as b', 'b.id','=','user_badge.badge_id')
-        ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'b.id')
-        ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
-        ->leftJoin('user as u', 'u.id', '=', 'b.teacher_id')
-        ->from('user')
-        ->where('user_badge.favorite','1')
-        ->where('user.id', $id)
-        ->get();
+            ->join('user_badge', 'user_badge.user_id', '=', 'user.id')
+            ->join('badge as b', 'b.id', '=', 'user_badge.badge_id')
+            ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'b.id')
+            ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
+            ->leftJoin('user as u', 'u.id', '=', 'b.teacher_id')
+            ->from('user')
+            ->where('user_badge.favorite', '1')
+            ->where('user.id', $id)
+            ->get();
 
         if ($badges == null) {
             return response()->json(['error' => 'User not found'], 404);
@@ -250,10 +283,10 @@ class UserController extends Controller
 
         $badges = $user->badges;
         $missingBadges = Badge::select('badge.*', 'c.color as category_color', 'c.name as category_name')
-        ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'badge.id')
-        ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
-        ->whereNotIn('badge.id', $badges->pluck('id'))
-        ->get();
+            ->leftJoin('category_badge as cb', 'cb.badge_id', '=', 'badge.id')
+            ->leftJoin('category as c', 'c.id', '=', 'cb.category_id')
+            ->whereNotIn('badge.id', $badges->pluck('id'))
+            ->get();
         return response()->json([
             'badges' => $missingBadges
         ]);
@@ -400,6 +433,38 @@ class UserController extends Controller
     }
 
     /**
+     * Retourne les utilisateurs n'ayant pas des badges
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllWithoutBadges(Request $request)
+    {
+        $request->validate([
+            'badge_ids' => 'array',
+            'badge_ids.*' => 'exists:badge,id'
+        ]);
+
+        $badgeIds = $request->badge_ids;
+        if (!$badgeIds) {
+            $badgeIds = [];
+        }
+
+        // Get users that don't have the specified badges
+        $users = User::whereDoesntHave('badges', function ($query) use ($badgeIds) {
+            $query->whereIn('badge_id', $badgeIds);
+        })->get();
+
+        $users = $users->filter(function ($user) {
+            if (in_array($user->getRoleName(), [Role::ADMIN, Role::ADMIN_CONTACT, Role::ENSEIGNANT])) {
+                return null;
+            }
+            return $user;
+        });
+        return response()->json(['users' => $users]);
+    }
+
+    /**
      * Supprime un utilisateur
      * 
      * @param int $id Id de l'utilisateur
@@ -414,14 +479,40 @@ class UserController extends Controller
 
     public function deleteUser($id)
     {
+        // Récupère l'utilisateur par son ID
         $user = User::find($id);
-
+    
+        // Si l'utilisateur n'existe pas, retourne une erreur 404
         if (!$user) {
             return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
         }
-
-        $user->delete();
-
+    
+        // Utilisation d'une transaction pour garantir l'intégrité des données
+        DB::transaction(function () use ($user) {
+    
+            // Si c'est un professeur
+            if ($user->role_id == 3) {
+                // On récupère les badges qu'il a créés
+                $badges = Badge::where('teacher_id', $user->id)->get();
+    
+                foreach ($badges as $badge) {
+                    // On supprime tous les liens user-badge pour ce badge
+                    $badge->userBadges()->delete();
+                    // Puis on supprime le badge lui-même
+                    $badge->delete();
+                }
+            }
+    
+            // Si c'est un étudiant
+            if ($user->role_id == 4) {
+                // On supprime toutes ses associations avec des badges
+                $user->userBadges()->delete();
+            }
+    
+            // Enfin, on supprime l'utilisateur
+            $user->delete();
+        });
+    
         return response()->json(['message' => 'Utilisateur supprimé avec succès']);
     }
 
@@ -500,7 +591,7 @@ class UserController extends Controller
         ]);
 
         $user = User::find($request->user_id);
-        $defaultRole = Role::where('name', 'Étudiant')->first(); // Par défaut, remet en étudiant
+        $defaultRole = Role::where('name', 'Étudiant')->first(); 
 
         if (!$defaultRole) {
             return response()->json(['message' => 'Le rôle Étudiant est introuvable.'], 500);
@@ -591,14 +682,34 @@ class UserController extends Controller
     }
 
     /**
+     * Change dynamiquement le rôle d'un utilisateur
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateRole(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:user,id',
+            'role_id' => 'required|exists:role,id',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return response()->json(['message' => 'Rôle mis à jour avec succès.']);
+    }
+
+    /**
      * Supprime tous les liens entre les badges et les utilisateurs étudiants
      * @return mixed|\Illuminate\Http\JsonResponse un message de réussite
      */
     public function deleteAllLinks(){
         UserBadge::truncate();
-        
-
         return response()->json(['message' => 'Liens supprimés avec succès']);
     }
+
 
 }
