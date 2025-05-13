@@ -1,7 +1,7 @@
 /* CSS pour le badge métallique */
 /* Auteur: Alexandre del Fabbro */
 /* Inspiré du code de Eric Karkovack - https://speckyboy.com/metallic-effects-css-javascript/ - [Consulté le 10 mai 2025] */
-/* Inspiré du code de VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage] */
+/* Inspiré du code de VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage] - [Consulté le 12 mai 2025] */
 :root {
   --badge-color: #838489;
   --badge-color-light: #f3f4ff;
@@ -269,4 +269,82 @@
   0% { opacity: 0.5; }
   50% { opacity: 0.8; }
   100% { opacity: 0.5; }
+}
+
+.particle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 25;
+  overflow: hidden;
+}
+
+/* Particle styling */
+.particle {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+/* Particle animations */
+@keyframes particle-animation {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + var(--x-travel)),
+      calc(-50% + var(--y-travel))
+    ) scale(1);
+  }
+}
+
+/* Make the particles shine in different colors */
+.particle:nth-child(4n) {
+  background: var(--badge-color-light);
+  box-shadow: 0 0 3px var(--badge-color-light);
+}
+
+.particle:nth-child(4n+1) {
+  background: white;
+  box-shadow: 0 0 4px white;
+}
+
+.particle:nth-child(4n+2) {
+  background: var(--badge-color);
+  box-shadow: 0 0 3px var(--badge-color);
+}
+
+.particle:nth-child(4n+3) {
+  background: var(--badge-color-medium);
+  box-shadow: 0 0 2px var(--badge-color-medium);
+}
+
+/* Improve badge hover effect with particles */
+.badge-wrapper:hover .badge {
+  transform: scale(1.05);
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Update the shine effect during hover */
+.badge-wrapper:hover .umbrella {
+  opacity: 0.9;
+  animation: shine-pulse 1.5s ease-in-out infinite;
+}
+
+/* Add a subtle glow effect during hover */
+.badge-wrapper:hover .metal-badge::before {
+  opacity: 0.95;
 }

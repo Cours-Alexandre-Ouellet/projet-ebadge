@@ -1,6 +1,7 @@
 import React from "react";
 import { getResource } from "../../utils/Api";
 import "./MetalBadge.css";
+import { initParticleEffect } from './ParticulesBadge.js';
 /**
  * @param {Object} props
  * @param {Object} props.badge - Objet badge
@@ -12,7 +13,20 @@ import "./MetalBadge.css";
  * @param {string} props.badge.creator_name - Le nom de l'enseignant
  * @param {string} props.badge.creator_last_name - Le prénom de l'enseignant
  */
+
+/**
+ * Composant BadgeComponent
+ * 
+ * Ce composant affiche un badge avec une image, un titre, une description,
+ * un pourcentage d'obtention et le nom de l'enseignant qui l'a créé.
+ */
 class BadgeComponent extends React.Component {
+
+  componentDidMount() {
+    // Initialiser l'effet de particules après le rendu du composant
+    // Codé par VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage]
+    setTimeout(initParticleEffect, 100);
+  }
 
   /// Fonction pour obtenir les initiales de l'enseignant
   /// @returns {string} Les initiales de l'enseignant
