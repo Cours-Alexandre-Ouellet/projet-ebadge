@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import "./PageProfile.css";
+import "./PageProfil/MetalBadge.css";
 import "@mui/material";
 import {
   FormControl,
