@@ -47,7 +47,7 @@ class BadgeController extends Controller
     {
         $user_id = $request->user()->id;
         $badges = Badge::where('activated', 1)->where('teacher_id', $user_id)->get();
-        return response()->json(['badges' => $badges]);
+        return response()->json(['badges' => $badges ?? []]);
     }
     
     /**
@@ -59,7 +59,7 @@ class BadgeController extends Controller
     {
         $user_id = $request->user()->id;
         $badges = Badge::where('activated', 1)->where('teacher_id', $user_id)->get();
-        return response()->json(['badges' => $badges]);
+        return response()->json(['badges' => $badges ?? []]);
     }
 
     

@@ -76,7 +76,7 @@ export default function BadgeAssignationPopup({
 
     Api.get("/badge/all-active")
       .then((response) => {
-        setBadgesLeft(response.data.badges);
+        setBadgesLeft(response.data.badges || []);
       })
       .catch((error) => {
         console.error(error);
