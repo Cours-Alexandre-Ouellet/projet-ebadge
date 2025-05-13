@@ -61,7 +61,8 @@ class UserGrid extends React.Component {
               <MenuItem onClick={() => this.toggleUserStatus(params.row)}
               disabled={[1, 2].includes(params.row.role_id)}
               >{params.row.active === 1 ? 'Désactiver' : 'Activer'}
-              </MenuItem>
+              </MenuItem> 
+              
             </Select>
           )
         }
@@ -103,6 +104,8 @@ class UserGrid extends React.Component {
   render() {
     return (
       <div style={{ height: 400, width: '100%' }}>
+
+
         <DataGrid
           rows={this.props.rows ?? []}
           columns={this.state.columns}

@@ -46,12 +46,12 @@ function App() {
               </Route>
               <Route path="/auth">
                 <Route path="/auth/login" element={<Login />} />
-                
                 <Route path="/auth/logout" element={<Logout />} />
                 <Route path="signup" element={<Signup />} />
               </Route>
               <Route path="/admin" element={ProtectedRoute(Role.Teacher)}>
                 <Route path="/admin" element={<AdminLayout />}>
+                  {/* <Route path="/admin/users" element={ProtectedRoute(Role.Admin)} /> */}
                   <Route path="/admin/users" element={<UsersTab />} />
                   <Route path="/admin/admin_users" element={<UsersAdminTab />} />
                   <Route path="/admin/badges" element={<BadgesTab />} />

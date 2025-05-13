@@ -87,7 +87,7 @@ class UsersTab extends React.Component {
         return (
             <Item className="bordered">
                 <h4>Liste des utilisateurs</h4>
-
+                
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={tabIndex} onChange={this.handleTabChange}>
                         <Tab label="Utilisateurs actifs" />

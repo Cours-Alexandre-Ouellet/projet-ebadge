@@ -49,7 +49,7 @@ class AdminLayout extends React.Component {
               label: "Utilisateurs",
               icon: <PeopleIcon />,
               path: "/admin/users",
-              minimumRole: Role.Teacher,
+              minimumRole: Role.Admin,
             },
             {
               id: 2,
@@ -89,13 +89,13 @@ class AdminLayout extends React.Component {
         {
           sectionName: "Données analytiques",
           tabs: this.policiesHelper.getvisibleRoutes([
-            {
-              id: 4,
-              label: "Statistiques",
-              icon: <InsertChartIcon />,
-              path: "/admin/stats",
-              minimumRole: Role.Admin,
-            },
+            // {
+            //   id: 4,
+            //   label: "Statistiques",
+            //   icon: <InsertChartIcon />,
+            //   path: "/admin/stats",
+            //   minimumRole: Role.Admin,
+            // },
             {
               id: 8,
               label: "Top 10 collectionneurs",
