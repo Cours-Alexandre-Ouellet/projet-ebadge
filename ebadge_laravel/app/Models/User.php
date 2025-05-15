@@ -78,6 +78,28 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Models\Badge', 'user_badge', 'user_id', 'badge_id')->withTimestamps();
     }
+        /**
+     * Relation directe vers les enregistrements de la table pivot user_badge
+     * (utile pour suppression)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Elyas Benyssad
+     */
+    public function userBadges()
+    {
+        return $this->hasMany(UserBadge::class, 'user_id');
+    }
+
+    /**
+     * Relation vers les badges créés en tant que professeur (teacher_id)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @author Elyas Benyssad
+     */
+    public function createdBadges()
+    {
+        return $this->hasMany(Badge::class, 'teacher_id');
+    }
 
     /**
      * Créer une nouvelle instance à la factory
