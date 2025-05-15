@@ -25,7 +25,7 @@ use function Psy\debug;
 class BadgeController extends Controller
 {
     /**
-     * la liste de tous les badges avec le pourcentage de possession
+     * La liste de tous les badges avec le pourcentage de possession
      *
      * @return \Illuminate\Http\Response
      */
@@ -35,6 +35,30 @@ class BadgeController extends Controller
         foreach ($badges as $badge) {
             $badge->setPossessionPercentage();
         }
+        return response()->json(['badges' => $badges]);
+    }
+
+    /**
+     * La liste de tous les badges activés pour un professeur
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getActiveBadges(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $badges = Badge::where('activated', 1)->where('teacher_id', $user_id)->get();
+        return response()->json(['badges' => $badges]);
+    }
+
+    /**
+     * La liste de tous les utilisateurs qui n'ont pas des badges données
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getUsersWithoutBadges(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $badges = Badge::where('activated', 1)->where('teacher_id', $user_id)->get();
         return response()->json(['badges' => $badges]);
     }
 
@@ -55,7 +79,8 @@ class BadgeController extends Controller
         if ($request->hasFile('image')) {
             $path = $request->file('image')->storeAs('public/badges', $request->file('image')->getClientOriginalName());
             $badge->imagePath = asset(Storage::url($path));
-        } else $badge->imagePath = $request->imagePath;
+        } else
+            $badge->imagePath = $request->imagePath;
 
 
         $badge->save();
@@ -119,10 +144,10 @@ class BadgeController extends Controller
         $badge = Badge::updateOrCreate(
             ['id' => $request->id],
             [
-                'activated' =>$request->activated
+                'activated' => $request->activated
             ]
         );
-        
+
         return response()->json($badge);
     }
 
@@ -283,12 +308,14 @@ class BadgeController extends Controller
      * @param Request $request
      * @return Badge[] les badges créé par l'utilisateur
      */
-    public function getMyBadgesProf(Request $request){
+    public function getMyBadgesProf(Request $request)
+    {
         $badges = Badge::leftJoin('category_badge', 'category_badge.badge_id', '=', 'badge.id')
             ->leftJoin('category', 'category.id', '=', 'category_badge.category_id')
             ->select(['badge.*', 'category.name AS category', 'category.color AS categoryColor'])
             ->where('teacher_id', '=', $request->user()->id)
             ->get();
         return $badges;
+
     }
 }
