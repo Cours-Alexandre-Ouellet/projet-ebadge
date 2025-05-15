@@ -62,8 +62,6 @@ class BadgeController extends Controller
         return response()->json(['badges' => $badges]);
     }
 
-
-
     /**
      * Création d'un nouveau badge
      *

@@ -6,6 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -22,8 +23,6 @@ import PoliciesHelper from "../../policies/PoliciesHelper";
 import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { School } from "@mui/icons-material";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
-import BadgeAssignationPopup from "../../composant/Dashboard/Popups/BadgeAssignationPopup/BadgeAssignationPopup";
 
 const drawerWidth = 240;
 
@@ -85,32 +84,6 @@ class AdminLayout extends React.Component {
             },
           ]),
         },
-        {
-          sectionName: "Données analytiques",
-          tabs: this.policiesHelper.getvisibleRoutes([
-            {
-              id: 4,
-              label: "Statistiques",
-              icon: <InsertChartIcon />,
-              path: "/admin/stats",
-              minimumRole: Role.Admin,
-            },
-            {
-              id: 8,
-              label: "Top 10 collectionneurs",
-              icon: <InsertChartIcon />,
-              path: "/admin/top-collectors",
-              minimumRole: Role.Teacher,
-            },
-            {
-              id: 9,
-              label: "Top 5 par catégorie",
-              icon: <InsertChartIcon />,
-              path: "/admin/top-by-category",
-              minimumRole: Role.Teacher,
-            },
-          ]),
-        },
       ],
       mobileOpen: false,
       isBadgeAssignationOpen: false,
@@ -157,15 +130,6 @@ class AdminLayout extends React.Component {
               <Typography variant="h6" noWrap component="div">
                 E-Badge | Administration
               </Typography>
-
-              <Button
-                variant="contained"
-                color="secondary"
-                sx={{ ml: "auto" }}
-                onClick={() => this.setState({ isBadgeAssignationOpen: true })}
-              >
-                Assigner des badges
-              </Button>
             </Toolbar>
           </AppBar>
           <Box
@@ -226,6 +190,14 @@ class AdminLayout extends React.Component {
               }}
               open
             >
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ ml: "auto" }}
+                onClick={() => this.setState({ isBadgeAssignationOpen: true })}
+              >
+                Assigner des badges
+              </Button>
               <Toolbar />
               <Divider />
               {this.state.tabs.map((tab, index) => (
