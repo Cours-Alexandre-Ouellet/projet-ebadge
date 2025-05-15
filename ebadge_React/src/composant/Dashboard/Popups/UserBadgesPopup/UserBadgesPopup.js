@@ -27,7 +27,17 @@ class UserBadgesPopup extends React.Component {
                 {
                     field: 'imagePath', headerName: 'Image', width: 70,
                     renderCell: (params) => {
-                        return <Avatar alt={params.row.title} src={params.row.imagePath} />;
+                        return(
+                            <div style={{ 
+                                width: '100%', 
+                                height: '100%', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center' 
+                              }}>
+                                <Avatar alt={params.row.title} src={params.row.imagePath} sx={{ boxShadow: `0 0 4px 6px ${params.row.category_color}` }}/>;
+                            </div>
+                        ) 
                     }
                 },
                 { field: 'title', headerName: 'Titre', flex: 1 },
@@ -84,7 +94,7 @@ class UserBadgesPopup extends React.Component {
             this.setState({ showSuccessMessage: true });
         })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.removeStep();
             });
@@ -116,7 +126,7 @@ class UserBadgesPopup extends React.Component {
                 this.setState({ leftBadges: response.data.badges });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.removeStep();
             });
@@ -137,7 +147,7 @@ class UserBadgesPopup extends React.Component {
             this.refreshBadgesAssignation();
         })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.removeStep();
             });
@@ -155,7 +165,7 @@ class UserBadgesPopup extends React.Component {
                 this.setState({ ownBadges: response.data.badges });
             })
             .catch((error) => {
-                console.log(error);
+                console.error(error);
             }).finally(() => {
                 this.removeStep();
             });
@@ -235,7 +245,7 @@ class UserBadgesPopup extends React.Component {
                                                 return (
                                                     <MenuItem value={badge.id} key={badge.id}>
                                                         <div className="badge-row">
-                                                            <Avatar className="badge" alt={badge.title} src={badge.imagePath} />
+                                                            <Avatar className="badge" alt={badge.title} src={badge.imagePath} sx={{ boxShadow: `0 0 4px 8px ${badge.category_color}` }}/>
                                                             {badge.title}
                                                         </div>
 
@@ -255,7 +265,7 @@ class UserBadgesPopup extends React.Component {
                         </form>
 
                         <hr />
-                        Liste des badges obtenues
+                        Liste des badges obtenus
 
                         <DataGrid
                             autoHeight={true}
