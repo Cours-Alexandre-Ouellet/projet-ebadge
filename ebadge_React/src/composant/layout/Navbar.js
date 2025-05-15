@@ -53,7 +53,7 @@ class Navbar extends React.Component {
         {
           name: "Contactez-nous",
           href: "/contactez-nous",
-          minimumRole: Role.Guest,
+          minimumRole: Role.User,
         },
       ]),
       initials: "ND",
