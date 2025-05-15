@@ -21,7 +21,7 @@ class CategoryTest extends TestCase
     private $category;
     private $student;
     private $badge;
-    private $teacherToken;
+    private $adminToken;
 
     /**
      * SETUP
@@ -29,31 +29,104 @@ class CategoryTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        /*
+        
         $this->user = User::factory()->create();
 
         $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
-        $this->teacher = User::factory()->create();
-        $this->teacher->role_id = Role::Teacher()->id;
-        $this->teacher->save();
-
-        $this->student = User::factory()->create();
-        $this->student->role_id = Role::Student()->id;
-
         $this->category = Category::factory()->create();
 
         $this->badge = Badge::factory()->create();
 
-        $token = $this->teacher->createToken('Personal Access Token');
+        $token = $this->admin->createToken('Personal Access Token');
         $token->token->expires_at = Carbon::now()->addWeeks(1);
         $token->token->save();
         $token->expires_at = now()->addMinutes(30);
-        $this->teacherToken = $token->accessToken;
-        */
+        $this->adminToken = $token->accessToken;
+        
     }
 
-   
+     /**
+     * Créer une catégorie avec tous les champs obligatoires
+     */
+    public function testCreateCategoryWithRequiredFields(): void
+    {
+        $response = $this->post('/api/category', [
+            'name' => $this->category->name . "test",
+            'color' => $this->category->color,
+        ], ['Authorization' => 'Bearer ' . $this->adminToken]);
+
+        $response->assertStatus(200);
+        
+        // Si la catégorie a été modifiée
+        $this->assertDatabaseHas('category', [
+            'name' => $this->category->name . "test",
+            'color' => $this->category->color,
+        ]);
+
+
+        $idTemp = Category::where(['name' => $this->category->name . "test", 'color' => $this->category->color])->first()->id;
+    }
+
+    /**
+     * Créer une catégorie sans champ 'name' obligatoire
+     */
+    public function testCreateCategoryWithRequiredFieldsWithoutName(): void
+    {
+        $response = $this->post('/api/category', [
+            'color' => $this->category->color,
+        ], ['Authorization' => 'Bearer ' . $this->adminToken]);
+
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Créer une catégorie sans champ 'color' obligatoire
+     */
+    public function testCreateCategoryWithRequiredFieldsWithoutColor(): void
+    {
+        $response = $this->post('/api/category', [
+            'name' => $this->category->name . "test",
+        ], ['Authorization' => 'Bearer ' . $this->adminToken]);
+
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Créer une catégorie sans champ 'name' et 'color' obligatoire
+     */
+    public function testCreateCategoryWithRequiredFieldsWithoutNameAndColor(): void
+    {
+        $response = $this->post('/api/category', [
+        ], ['Authorization' => 'Bearer ' . $this->adminToken]);
+
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Créer une catégorie avec un nom trop long
+     */
+    public function testCreateCategoryWithNameTooLong(): void
+    {
+        $response = $this->post('/api/category', [
+            'name' => str_repeat('a', 256),
+            'color' => $this->category->color,
+        ], ['Authorization' => 'Bearer ' . $this->adminToken]);
+
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Créer une catégorie avec un nom à la limite de la longueur
+     */
+    public function testCreateCategoryWithNameAtLimit(): void
+    {
+        $response = $this->post('/api/category', [
+            'name' => str_repeat('a', 255),
+            'color' => $this->category->color,
+        ], ['Authorization' => 'Bearer ' . $this->adminToken]);
+        $response->assertStatus(200);
+    }
 }
