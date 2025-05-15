@@ -16,12 +16,17 @@ class CategoryBadge extends Model
     use HasFactory, Notifiable;
 
     /**
-     * The table associated with the model.
+     * La table associée au modèle.
      *
      * @var string
      */
     protected $table = 'category_badge';
 
+    /**
+     * Les attributs qui peuvent être assignés en masse.
+     * 
+     * @var array
+     */
     protected $fillable = [
         'badge_id',
         'category_id'
@@ -33,7 +38,6 @@ class CategoryBadge extends Model
     protected static function newFactory()
     {
         return FactoriesCategoryBadgeFactory::new();
-
     }
 
 }

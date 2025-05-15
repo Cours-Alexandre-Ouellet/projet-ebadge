@@ -72,8 +72,8 @@ const ChangePasswordPopup = ({ isOpen, handleClose, userId }) => {
         {success && <p className="success-text">{success}</p>} {/* Affichage du succès */}
       </DialogContent>
       <DialogActions className="admin-actions">
-        <Button onClick={handleCloseReset} variant="outlined">Annuler</Button>
         <Button onClick={handleSubmit} variant="contained" color="primary">Modifier</Button>
+        <Button onClick={handleCloseReset} variant="outlined">Annuler</Button>       
       </DialogActions>
     </Dialog>
   );

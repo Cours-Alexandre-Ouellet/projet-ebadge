@@ -43,12 +43,15 @@ class BadgesTab extends React.Component {
      * Recupere la liste des badges depuis l'API
      */
     getBadges() {
-        Api.get('/badge/category/names').then(res => {
+        Api.get('/badge/my-badges-prof').then(res => {
             const badges = res.data;
             this.setState({ badges: badges });
             this.setState({charge : true});
         }
         )
+        .catch(err => {
+            this.errorBadge("Erreur lors de la récupération des badges.");
+          });
     }
 
     handleBadgeForm() {

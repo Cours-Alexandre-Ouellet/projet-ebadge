@@ -44,7 +44,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
 
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
-    
+
 
     useEffect(() => {
         Api.get('/category/').then((response) => {
@@ -270,24 +270,29 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                         <br />
                                         <br />
                                         <DialogContentText>
-                                            Vous pouvez également importé une image.
+                                            Vous pouvez également importer une image.
                                         </DialogContentText>
                                         <br />
-                                        <Button
-                                            variant="contained"
-                                            component="label"
-                                        >
-                                            Importer une image
-                                            <input
-                                                type="file"
-                                                accept="image/png, image/jpeg"
-                                                hidden
-                                                onChange={e => {
-                                                    setImageFile(e.target.files[0]);
-                                                    setImageUrlField("");
-                                                }}
-                                            />
-                                        </Button>
+                                        <row className="rowButtons">
+                                            <Button
+                                                variant="contained"
+                                                component="label"
+                                            >
+                                                Importer une image
+                                                <input
+                                                    type="file"
+                                                    accept="image/png, image/jpeg"
+                                                    hidden
+                                                    onChange={e => {
+                                                        setImageFile(e.target.files[0]);
+                                                        setImageUrlField("");
+                                                    }}
+                                                />
+                                            </Button>
+                                            <Button className="deleteButton" variant="contained" component="label" onClick={handleImageDelete}>
+                                                Supprimer l'arrière plan
+                                            </Button>
+                                        </row>
                                         <div hidden={imageFile === null}>
                                             <Check></Check> Image importée
                                         </div>
@@ -298,25 +303,24 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                         </div>
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button onClick={handleImageDialog}>Annuler</Button>
-                                        <Button onClick={handleImageDelete}>Supprimer</Button>
                                         <Button onClick={handleImageModify}>Modifier</Button>
+                                        <Button onClick={handleImageDialog}>Annuler</Button>
                                     </DialogActions>
                                 </Dialog>
                             </div>
                             <div className="badge-create-form-button-submit">
+                                <Button onClick={handleSubmit} variant="contained" sx={{
+                                    width: '100%',
+                                    marginTop: '20px',
+                                    marginRight: '20px'
+                                }}>Créer</Button>
                                 <Button variant="outlined" onClick={() => {
                                     setBadge(badgeDummy);
                                     handleClose();
                                 }} sx={{
                                     width: '100%',
-                                    marginTop: '20px',
-                                    marginRight: '20px'
-                                }}>Annuler</Button>
-                                <Button onClick={handleSubmit} variant="contained" sx={{
-                                    width: '100%',
                                     marginTop: '20px'
-                                }}>Créer</Button>
+                                }}>Annuler</Button>
                             </div>
                         </form>
                     </div>

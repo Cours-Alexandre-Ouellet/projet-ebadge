@@ -38,37 +38,33 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
 
     // Définition des colonnes du tableau
     const columns = [
-        // Colonne pour l'ID de la catégorie
+        // Colonne pour le nom de la catégorie
         { 
-            field: 'id',
-            headerName: 'ID', 
-            flex: 0.2, 
-            align: 'center', 
+            field: 'name',
+            headerName: 'Nom',
+            flex: 1,
             headerAlign: 'center',
-            renderCell: (params) => {
-                return (
+            renderCell: (params) => (
                 <div
                     style={{
                         borderLeft: `15px solid ${params.row.color || 'transparent'}`,
                         width: '100%',
-                        textAlign: 'center',
+                        textAlign: 'left',
                         lineHeight: '100px',
+                        paddingLeft: '10px',
                     }}
-                    >
-                        {params.value}
-                    </div>
-                );
-            },
+                >
+                    {params.row.name}
+                </div>
+            )
         },
-
-        // Colonne pour le nom de la catégorie
-        { field: 'name', headerName: 'Nom', flex: 2, headerAlign: 'center' },
 
         // Colonne pour l'action d'assignation de badge
         {
             field: 'assignAction',
             minWidth: 150,
             headerName: '',
+            flex: 0.5,
             sortable: false,
             align: 'center',
             renderCell: (params) => {
@@ -90,6 +86,7 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
                 field: 'editAction',
                 minWidth: 150,
                 headerName: '',
+                flex: 0.5,
                 align: 'center',
                 headerAlign: 'center',
                 sortable: false,
@@ -113,6 +110,7 @@ const CategoryGrid = ({ rows = [], deleteCategory, editCategory, errorCategory }
                 field: 'deleteAction',
                 minWidth: 150,
                 headerName: '',
+                flex: 0.5,
                 align: 'center',
                 headerAlign: 'center',
                 sortable: false,

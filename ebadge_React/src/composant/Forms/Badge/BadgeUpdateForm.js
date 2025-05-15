@@ -15,10 +15,10 @@ function isImage(url) {
 
 /**
  * Formulaire de modification de badge
- * @param {Object} errorBadge - Popup d'erreur dans la modificaiton du Badge
- * @param {Object} editBadge - Popup odification de badge
+ * @param {Object} errorBadge - Popup d'erreur dans la modification du Badge
+ * @param {Object} editBadge - Popup modification de badge
  * @param {Object} handleClose - Ferme une fenêtre
- * @param {Object} selectedBadge - Badge a modifié
+ * @param {Object} selectedBadge - Badge a modifier
  * @returns Le react de la page du formulaire de modification
  * @author Vincent Houle /partiellement
  */
@@ -40,8 +40,10 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
 
         Api.get('/category/').then((response) => {
             setCategories(response.data.categories);
+
             Api.get(`/badge/category/name/${badge.id}`).then((response) => {
                 setLoading(false);
+
                 if (response.data != null)
                     setBadge((prevState => (
                         {
@@ -268,24 +270,29 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                         <br />
                                         <br />
                                         <DialogContentText>
-                                            Vous pouvez également importé une image.
+                                            Vous pouvez également importer une image.
                                         </DialogContentText>
                                         <br />
-                                        <Button
-                                            variant="contained"
-                                            component="label"
-                                        >
-                                            Importer une image
-                                            <input
-                                                type="file"
-                                                accept="image/png, image/jpeg"
-                                                hidden
-                                                onChange={e => {
-                                                    setImageFile(e.target.files[0]);
-                                                    setImageUrlField("");
-                                                }}
-                                            />
-                                        </Button>
+                                        <row className="rowButtons">
+                                            <Button
+                                                variant="contained"
+                                                component="label"
+                                            >
+                                                Importer une image
+                                                <input
+                                                    type="file"
+                                                    accept="image/png, image/jpeg"
+                                                    hidden
+                                                    onChange={e => {
+                                                        setImageFile(e.target.files[0]);
+                                                        setImageUrlField("");
+                                                    }}
+                                                />
+                                            </Button>
+                                            <Button className="deleteButton" variant="contained" component="label" onClick={handleImageDelete}>
+                                                Supprimer l'arrière plan
+                                            </Button>
+                                        </row>
                                         <div hidden={imageFile === null}>
                                             <Check></Check> Image importée
                                         </div>
@@ -296,22 +303,22 @@ export default function BadgeUpdateForm({ handleClose, editBadge, selectedBadge,
                                         </div>
                                     </DialogContent>
                                     <DialogActions>
-                                        <Button onClick={handleImageDialog}>Annuler</Button>
-                                        <Button onClick={handleImageDelete}>Supprimer</Button>
                                         <Button onClick={handleImageModify}>Modifier</Button>
+                                        <Button onClick={handleImageDialog}>Annuler</Button>
                                     </DialogActions>
                                 </Dialog>
                             </div>
                             <div className="badge-create-form-button-submit">
-                                <Button variant="outlined" onClick={handleClose} sx={{
+                                <Button onClick={handleSubmit} variant="contained" sx={{
                                     width: '100%',
                                     marginTop: '20px',
                                     marginRight: '20px'
-                                }}>Annuler</Button>
-                                <Button onClick={handleSubmit} variant="contained" sx={{
-                                    width: '100%',
-                                    marginTop: '20px'
                                 }}>Modifier</Button>
+                                <Button variant="outlined" onClick={handleClose} sx={{
+                                    width: '100%',
+                                    marginTop: '20px',
+                                }}>Annuler</Button>
+
                             </div>
                         </form>
                     </div>

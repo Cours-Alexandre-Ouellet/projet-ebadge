@@ -277,4 +277,18 @@ class BadgeController extends Controller
 
         return response()->json($badges);
     }
+
+    /**
+     * Renvoie tous les badges créé par un professeur
+     * @param Request $request
+     * @return Badge[] les badges créé par l'utilisateur
+     */
+    public function getMyBadgesProf(Request $request){
+        $badges = Badge::leftJoin('category_badge', 'category_badge.badge_id', '=', 'badge.id')
+            ->leftJoin('category', 'category.id', '=', 'category_badge.category_id')
+            ->select(['badge.*', 'category.name AS category', 'category.color AS categoryColor'])
+            ->where('teacher_id', '=', $request->user()->id)
+            ->get();
+        return $badges;
+    }
 }

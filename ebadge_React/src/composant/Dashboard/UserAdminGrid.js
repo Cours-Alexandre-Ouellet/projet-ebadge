@@ -123,7 +123,6 @@ class UserAdminGrid extends React.Component {
 
   render() {
     const columns = [
-      { field: 'id', headerName: 'ID', flex: 1 },
       { field: 'first_name', headerName: 'Prénom', flex: 1 },
       { field: 'last_name', headerName: 'Nom', flex: 1 },
       {
@@ -201,8 +200,8 @@ class UserAdminGrid extends React.Component {
             Êtes-vous sûr de vouloir supprimer cet administrateur ?
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleCloseConfirmDelete} variant="outlined">Annuler</Button>
             <Button onClick={this.deleteAdmin} variant="contained" color="error">Confirmer</Button>
+            <Button onClick={this.handleCloseConfirmDelete} variant="outlined">Annuler</Button>
           </DialogActions>
         </Dialog>
 
@@ -215,8 +214,8 @@ class UserAdminGrid extends React.Component {
             L'ancien utilisateur assigné sera rétrogradé en administrateur.
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleCloseConfirmUpgrade} variant="outlined">Annuler</Button>
             <Button onClick={this.upgradeAdminContact} variant="contained" color="warning">Confirmer</Button>
+            <Button onClick={this.handleCloseConfirmUpgrade} variant="outlined">Annuler</Button>
           </DialogActions>
         </Dialog>
 
@@ -229,8 +228,8 @@ class UserAdminGrid extends React.Component {
             en <strong>{this.state.targetRole === RoleIds.Teacher ? Role.Teacher : Role.User}</strong> ?
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.handleCloseConfirmDowngrade} variant="outlined">Annuler</Button>
             <Button onClick={this.downgradeAdmin} variant="contained" color="warning">Confirmer</Button>
+            <Button onClick={this.handleCloseConfirmDowngrade} variant="outlined">Annuler</Button>
           </DialogActions>
         </Dialog>
 

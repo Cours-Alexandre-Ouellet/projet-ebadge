@@ -12,7 +12,6 @@ const TeacherCodeGrid = ({ rows = [], deleteTeacherCode, refresh }) => {
   });
 
   const [columns] = useState([
-    { field: 'id', headerName: 'ID', flex: 1 },
     { field: 'code', headerName: 'Code', flex: 1 },
     { field: 'user_id', headerName: 'Utilisateur assigné', flex: 1 },
     {
