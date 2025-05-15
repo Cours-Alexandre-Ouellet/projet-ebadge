@@ -16,9 +16,7 @@ class BadgeTest extends TestCase
 {
     use DatabaseTransactions;
 
-    private $user;
     private $teacher;
-    private $admin;
     private $category;
     private $student;
     private $badge;
@@ -30,12 +28,6 @@ class BadgeTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->user = User::factory()->create();
-
-        $this->admin = User::factory()->create();
-        $this->admin->role_id = Role::Admin()->id;
-        $this->admin->save();
 
         $this->teacher = User::factory()->create();
         $this->teacher->role_id = Role::Teacher()->id;
