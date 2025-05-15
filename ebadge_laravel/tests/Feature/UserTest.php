@@ -8,12 +8,14 @@ use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UserTest extends TestCase
 {
     use DatabaseTransactions;
 
     private $user;
+    private $password;
     private $admin;
     private $teacher;
     private $badge;
@@ -29,6 +31,8 @@ class UserTest extends TestCase
         parent::setUp();
         $this->user = User::factory()->create();
         $this->user->role_id = Role::Student()->id;
+        $this->password = $this->user->password;
+        $this->user->password = Hash::make($this->user->password);
 
         $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
@@ -180,5 +184,55 @@ class UserTest extends TestCase
     {
         $response = $this->get('/api/user', ['Authorization' => 'Bearer ' . $this->adminToken]);
         $response->assertStatus(200);
+    }
+
+    /**
+     * Modification de mot de passe par soi-même
+     */
+    public function testUserModifyPassword()
+    {
+        $response = $this->put('/api/user/modify-password', [
+            'id' => $this->user->id,
+            'oldPassword' => $this->password,
+            'newPassword' => "123456"
+        ], ['Authorization' => 'Bearer ' . $this->userToken]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment(['sucess' => 'Votre mot de passe a été mis à jour.']);
+    }
+
+    /**
+     * Modification de mot de passe par soi-même avec mauvais mot de passe
+     */
+    public function testUserModifyPasswordWithWrongPassword()
+    {
+        $response = $this->put('/api/user/modify-password', [
+            'id' => $this->user->id,
+            'oldPassword' => "mauvais mot de passe",
+            'newPassword' => "123456"
+        ], ['Authorization' => 'Bearer ' . $this->userToken]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure(['errorOldPassword']);
+
+    }
+
+    /**
+     * Modification de mot de passe par soi-même avec le même mot de passe
+     */
+    public function testUserModifyPasswordWithSamePassword()
+    {
+        $response = $this->put('/api/user/modify-password', [
+            'id' => $this->user->id,
+            'oldPassword' => $this->password,
+            'newPassword' => $this->password
+        ], ['Authorization' => 'Bearer ' . $this->userToken]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment(['errorNewPassword' => 'Votre nouveau mot de passe est identique à votre ancien.']);
+
     }
 }

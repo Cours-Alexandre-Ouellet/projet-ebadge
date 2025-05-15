@@ -6,14 +6,18 @@ namespace Tests\Feature;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Laravel\Passport\Bridge\AccessToken;
 use Tests\TestCase;
 class AuthTest extends TestCase
 {
 
+    use DatabaseTransactions;
     private $user;
     private $userToken;
+    private $password;
     // private $program;
     // private $organisation;
 
@@ -22,6 +26,8 @@ class AuthTest extends TestCase
         parent::setUp();
 
         $this->user = User::factory()->create();
+        $this->password = $this->user->password;
+        $this->user->password = Hash::make($this->user->password);
         $this->user->role_id = Role::Student()->id;
         $this->user->save();
         
@@ -56,7 +62,7 @@ class AuthTest extends TestCase
     {
         $response = $this->post('/api/auth/login', [
             'email' => $this->user->email,
-            'password' => $this->user->password
+            'password' => $this->password
         ]);
         
         $response->assertStatus(200);
@@ -73,7 +79,7 @@ class AuthTest extends TestCase
     public function testCurrentUser()
     {
         $response = $this->get('/api/auth/current_user', [
-            'Authorization' => 'Bearer' . $this->userToken,
+            'Authorization' => 'Bearer ' . $this->userToken,
         ]);
 
         $response->assertStatus(200);
