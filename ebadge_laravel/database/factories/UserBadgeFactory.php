@@ -25,7 +25,7 @@ class UserBadgeFactory extends Factory{
         return [
             'user_id' => User::factory(),
             'badge_id' => Badge::factory(),
-            'favorite' => fake()->boolean(),
+            'favorite' => 0,
             'created_at' => fake()->dateTimeBetween('-1 years', 'now'),
             'updated_at' => fake()->dateTimeBetween('-1 years', 'now'),
         ];
