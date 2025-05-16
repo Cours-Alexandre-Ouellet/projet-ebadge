@@ -290,7 +290,7 @@ export default function BadgeCreateForm({ handleClose, addBadge, errorBadge }) {
                                                 />
                                             </Button>
                                             <Button className="deleteButton" variant="contained" component="label" onClick={handleImageDelete}>
-                                                Supprimer l'arrière plan
+                                                Supprimer l'image
                                             </Button>
                                         </row>
                                         <div hidden={imageFile === null}>
