@@ -181,4 +181,130 @@ class UserTest extends TestCase
         $response = $this->get('/api/user', ['Authorization' => 'Bearer ' . $this->adminToken]);
         $response->assertStatus(200);
     }
+
+    /**
+     * Vérifie qu’un professeur peut être promu administrateur avec succès.
+     * @author Elyas Benyssad
+     */
+    public function testPromoteTeacherToAdmin()
+    {
+        $newTeacher = User::factory()->create(['role_id' => Role::Teacher()->id]);
+
+        $response = $this->postJson('/api/user/assign-admin', [
+            'user_id' => $newTeacher->id
+        ], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('user', [
+            'id' => $newTeacher->id,
+            'role_id' => Role::Admin()->id
+        ]);
+    }
+
+    /**
+     * Vérifie qu’un professeur peut être supprimé correctement par un administrateur.
+     * @author Elyas Benyssad
+     */
+    public function testDeleteTeacher()
+    {
+        $teacherToDelete = User::factory()->create(['role_id' => Role::Teacher()->id]);
+
+        $response = $this->delete('/api/user/' . $teacherToDelete->id, [], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('user', [
+            'id' => $teacherToDelete->id
+        ]);
+    }
+
+    /**
+     * Vérifie qu’un utilisateur actif peut être désactivé via le toggle.
+     * @author Elyas Benyssad
+     */
+    public function testDeactivateUser()
+    {
+        $activeUser = User::factory()->create(['active' => 1]);
+
+        $response = $this->post('/api/user/' . $activeUser->id . '/toggle-active', [], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('user', [
+            'id' => $activeUser->id,
+            'active' => 0
+        ]);
+    }
+
+    /**
+     * Vérifie que la promotion d’un utilisateur inexistant échoue proprement.
+     * @author Elyas Benyssad
+     */
+    public function testPromoteNonexistentUserFails()
+    {
+        $response = $this->postJson('/api/user/assign-admin', [
+            'user_id' => 999999, // ID invalide
+        ], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Vérifie qu’un professeur ne peut pas promouvoir un autre utilisateur en administrateur.
+     * @author Elyas Benyssad
+     */
+    public function testTeacherCannotPromoteToAdmin()
+    {
+        $anotherTeacher = User::factory()->create(['role_id' => Role::Teacher()->id]);
+
+        $response = $this->postJson('/api/user/assign-admin', [
+            'user_id' => $anotherTeacher->id,
+        ], [
+            'Authorization' => 'Bearer ' . $this->teacherToken,
+        ]);
+
+        $response->assertStatus(401); 
+    }
+
+    /**
+     * Vérifie que la tentative de suppression d’un utilisateur inexistant retourne bien une erreur 404.
+     * @author Elyas Benyssad
+     */
+    public function testDeleteNonexistentUser()
+    {
+        $response = $this->delete('/api/user/999999', [], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Vérifie que le toggle de l'état actif d’un utilisateur fonctionne même si l’utilisateur est déjà inactif.
+     * @author Elyas Benyssad
+     */
+    public function testDeactivateAlreadyInactiveUser()
+    {
+        $inactiveUser = User::factory()->create(['active' => 0]);
+
+        $response = $this->post('/api/user/' . $inactiveUser->id . '/toggle-active', [], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(200); 
+        $this->assertDatabaseHas('user', [
+            'id' => $inactiveUser->id,
+            'active' => 1
+        ]);
+    }
+
 }
