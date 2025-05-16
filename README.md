@@ -50,9 +50,9 @@ Création d'un utilisateur admin avec l'api ou le site web. (changer le role dan
 - Si des problèmes survienent
 
 ```bash
-    php artisan cache:clear
-    php artisan config:clear
-    php artisan clear-compiled
+ php artisan cache:clear
+ php artisan config:clear
+ php artisan clear-compiled
 ```
 
 #### 4: Déploiement
