@@ -11,10 +11,10 @@ class CategoryFactory extends Factory{
     protected $model = Category::class;
 
     /**
-     * fonction qui génère des données aléatoire pour une Catégory
+     * Fonction qui génère des données aléatoire pour une catégorie
      * 
      * @author Vincent Houle
-     * @return Category avec des données aléatoire
+     * @return Category avec des données aléatoires
      */    
     public function definition(): array
     {
