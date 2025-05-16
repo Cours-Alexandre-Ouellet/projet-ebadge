@@ -47,6 +47,13 @@ Création d'un utilisateur admin avec l'api ou le site web. (changer le role dan
  php artisan test
 ```
 
+- Si des problèmes survienent
+
+```bash
+    php artisan cache:clear
+    php artisan config:clear
+    php artisan clear-compiled
+```
 
 #### 4: Déploiement
 
@@ -61,3 +68,23 @@ Création d'un utilisateur admin avec l'api ou le site web. (changer le role dan
 ```
 
 - Envoyer le web.config, build/ et api/ (au complet) au serveur FTP
+
+#### 5: Erreurs à corriger
+
+- Correction de la Navbar quand la page est rapetisser
+
+- Absence de mise a jour de la liste de badge quand un badge est créé ou modifié
+
+- Réparer le teste qui ne marche pas
+
+#### 6: Feature à ajouter
+
+- Le changement de mot de passe avec un courriel
+
+- Uniformatisation des badges ( les badges sont différents dans les liste et dans le BadgeComponent)
+
+- Génération des code enseignant en lot
+
+- Épinglé des badges en lot
+
+- Combiner les tableaux d'affichage de tous les badges (griser les nons obtenus)
