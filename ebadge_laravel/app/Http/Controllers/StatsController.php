@@ -63,17 +63,23 @@ class StatsController extends Controller
         return response()->json($users);
     }
 
-    public function leaderboardByCategory(string $category)
+    public function leaderboardByCategory(string $categoryId)
     {
-        $users = User::where('role_id', '=', Role::Student()->id)
-        ->where('privacy', '=', 0)
-        ->where('active', '=', 1)
-        ->withCount([
-            'badges' => function ($query) use ($category) {
-                $query->where('category', '=', $category);
-            }
-        ])->orderBy('badges_count', 'desc')->get();
+        $users = User::where('role_id', Role::Student()->id)
+            ->where('privacy', 0)
+            ->where('active', 1)
+            ->withCount([
+                'badges as badges_count' => function ($query) use ($categoryId) {
+                    $query->whereHas('categories', function ($q) use ($categoryId) {
+                        $q->where('category.id', $categoryId);
+                    });
+                }
+            ])
+            ->orderByDesc('badges_count')
+            ->get();
+
         $users = array_map([$this, 'CleanUp'], $users->toArray());
+
         return response()->json($users);
     }
 
