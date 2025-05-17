@@ -90,13 +90,13 @@ export default function ListeBadge() {
   }
 
   let columns = [
-    { field: "title", headerName: "titre", width: 150 },
-    { field: "description", headerName: "description", width: 150 },
+    { field: "title", headerName: "titre",flex: 3, width: 150 },
+    { field: "description", headerName: "description",flex: 5, width: 150 },
     {
       field: "imagePath",
       headerName: "Image",
       sortable: false,
-      flex: 2,
+      flex: 1,
       align: "center",
       renderCell: (params) => {
         return (

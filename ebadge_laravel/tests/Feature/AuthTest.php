@@ -9,10 +9,12 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\Bridge\AccessToken;
 use Tests\TestCase;
 class AuthTest extends TestCase
 {
+    use DatabaseTransactions;
 
     use DatabaseTransactions;
     private $user;

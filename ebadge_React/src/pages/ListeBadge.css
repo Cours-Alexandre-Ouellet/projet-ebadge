@@ -75,8 +75,12 @@ h1 {
     margin-bottom: 10px;
 }
 
-
-@media screen and (max-width: 900px) {
+.listeBadge-listes{
+        flex-direction: column;
+        gap: 100px;
+        padding-bottom: 80px;
+    }
+@media screen and (max-width: 1100px) {
     .listeBadge-container {
         width: 100%;
     }
@@ -85,11 +89,7 @@ h1 {
         flex-direction: column;
     }
 
-    .listeBadge-listes{
-        flex-direction: column;
-        gap: 100px;
-        padding-bottom: 80px;
-    }
+    
 
     
 }
