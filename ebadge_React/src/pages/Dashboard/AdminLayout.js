@@ -158,6 +158,15 @@ class AdminLayout extends React.Component {
               <Typography variant="h6" noWrap component="div">
                 E-Badge | Administration
               </Typography>
+              
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{ ml: "auto" }}
+                onClick={() => this.setState({ isBadgeAssignationOpen: true })}
+              >
+                Assigner des badges
+              </Button>
             </Toolbar>
           </AppBar>
           <Box
@@ -218,14 +227,6 @@ class AdminLayout extends React.Component {
               }}
               open
             >
-              <Button
-                variant="contained"
-                color="secondary"
-                sx={{ ml: "auto" }}
-                onClick={() => this.setState({ isBadgeAssignationOpen: true })}
-              >
-                Assigner des badges
-              </Button>
               <Toolbar />
               <Divider />
               {this.state.tabs.map((tab, index) => (

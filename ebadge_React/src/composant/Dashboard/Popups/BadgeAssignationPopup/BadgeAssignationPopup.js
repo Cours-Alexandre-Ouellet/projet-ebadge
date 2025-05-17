@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Alert, Snackbar } from "@mui/material";
 import Api from "../../../../utils/Api";
+import { Box } from "@mui/system";
 
 export default function BadgeAssignationPopup({
   isOpen,
@@ -233,13 +234,23 @@ export default function BadgeAssignationPopup({
                     handleChangeUsers(newValue);
                   }}
                 />
-                <Button
-                  variant="contained"
-                  className={"mt-2"}
-                  onClick={handleSubmit}
-                >
-                  Confirmer l'assignation
-                </Button>
+                <Box sx={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+                  <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                    disabled={
+                      badgesSelected.length === 0 || usersSelected.length === 0
+                    }
+                  >
+                    Confirmer l'assignation
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={handleClose}
+                  >
+                    Annuler
+                  </Button>
+                </Box>
               </FormControl>
             </form>
           </DialogContentText>
