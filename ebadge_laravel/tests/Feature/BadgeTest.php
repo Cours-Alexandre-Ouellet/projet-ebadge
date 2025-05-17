@@ -18,11 +18,11 @@ class BadgeTest extends TestCase
 
     private $user;
     private $teacher;
-    private $admin;
     private $category;
     private $student;
     private $badge;
     private $teacherToken;
+    private $userToken;
 
     /**
      * SETUP
@@ -31,15 +31,21 @@ class BadgeTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
-
-        $this->admin = User::factory()->create();
-        $this->admin->role_id = Role::Admin()->id;
-        $this->admin->save();
-
         $this->teacher = User::factory()->create();
         $this->teacher->role_id = Role::Teacher()->id;
         $this->teacher->save();
+
+        
+        $this->user = User::factory()->create();
+        $this->user->role_id = Role::Student()->id;
+        $this->user->save();
+
+        $token = $this->user->createToken('Personal Access Token');
+        $token->token->expires_at = Carbon::now()->addWeeks(1);
+        $token->token->save();
+        $token->expires_at = now()->addMinutes(30);
+        $this->userToken = $token->accessToken;
+
 
         $this->category = Category::factory()->create();
         $this->category->save();
@@ -99,6 +105,24 @@ class BadgeTest extends TestCase
             'badge_id' => $idTemp,
             'category_id' =>$this->category->id
         ]);
+    }
+
+    /**
+     * Créer un badge en tant qu'étudiant
+     */
+    public function testCreateBadgeWrongRole(): void
+    {
+        $response = $this->post('/api/badge', [
+            'title' => $this->badge->title . "creer",
+            'description' => $this->badge->description,
+            'imagePath' => $this->badge->imagePath,
+            'category_id' => $this->category->id,
+            'category_name' => $this->category->name,
+        ], ['Authorization' => 'Bearer ' . $this->userToken]);
+
+        // Utilisateur non autorisé
+        $response->assertStatus(403);
+        
     }
 
     /**
@@ -169,8 +193,6 @@ class BadgeTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function testUpdateBadgeActivate(): void {}
-
     /**
      * Suppression d’un badge alors qu’il est lié à des étudiants
      */
@@ -178,7 +200,6 @@ class BadgeTest extends TestCase
     {
         $response = $this->delete(
             '/api/badge/' . $this->badge->id,
-            [],
             ['Authorization' => 'Bearer ' . $this->teacherToken]
         );
 
