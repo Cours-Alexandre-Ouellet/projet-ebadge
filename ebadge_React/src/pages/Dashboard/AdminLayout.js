@@ -24,6 +24,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { School } from "@mui/icons-material";
 import BadgeAssignationPopup from "../../composant/Dashboard/Popups/BadgeAssignationPopup/BadgeAssignationPopup"
+import InsertChartIcon from "@mui/icons-material/InsertChart";
 
 const drawerWidth = 240;
 
@@ -81,6 +82,32 @@ class AdminLayout extends React.Component {
               label: "Liste des catégories",
               icon: <AssignmentIcon />,
               path: "/admin/categories",
+              minimumRole: Role.Teacher,
+            },
+          ]),
+        },
+                {
+          sectionName: "Données analytiques",
+          tabs: this.policiesHelper.getvisibleRoutes([
+            // {
+            //   id: 4,
+            //   label: "Statistiques",
+            //   icon: <InsertChartIcon />,
+            //   path: "/admin/stats",
+            //   minimumRole: Role.Admin,
+            // },
+            {
+              id: 8,
+              label: "Top 10 collectionneurs",
+              icon: <InsertChartIcon />,
+              path: "/admin/top-collectors",
+              minimumRole: Role.Teacher,
+            },
+            {
+              id: 9,
+              label: "Top 5 par catégorie",
+              icon: <InsertChartIcon />,
+              path: "/admin/top-by-category",
               minimumRole: Role.Teacher,
             },
           ]),

@@ -8,18 +8,29 @@ use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UserTest extends TestCase
 {
     use DatabaseTransactions;
 
     private $user;
+
+    private $password;
+
+
+    private $otherUser;
+
     private $admin;
     private $teacher;
     private $badge;
+    private $badge2;
+    private $badge3;
+    private $badge4;
     private $userToken;
     private $teacherToken;
     private $adminToken;
+
 
     /**
      * SETUP
@@ -29,6 +40,11 @@ class UserTest extends TestCase
         parent::setUp();
         $this->user = User::factory()->create();
         $this->user->role_id = Role::Student()->id;
+        $this->password = $this->user->password;
+        $this->user->password = Hash::make($this->user->password);
+
+        $this->otherUser = User::factory()->create();
+        $this->otherUser->role_id = Role::Student()->id;
 
         $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
@@ -38,6 +54,9 @@ class UserTest extends TestCase
         $this->teacher->role_id = Role::Teacher()->id;
         $this->teacher->save();
         $this->badge = Badge::factory()->create();
+        $this->badge2 = Badge::factory()->create();
+        $this->badge3 = Badge::factory()->create();
+        $this->badge4 = Badge::factory()->create();
 
         $token = $this->user->createToken('Personal Access Token');
         $token->token->expires_at = Carbon::now()->addWeeks(1);
@@ -58,6 +77,7 @@ class UserTest extends TestCase
         $this->adminToken = $token->accessToken;
 
         $this->user->save();
+        $this->otherUser->save();
     }
 
 

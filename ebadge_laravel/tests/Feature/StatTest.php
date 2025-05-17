@@ -15,6 +15,7 @@ use Carbon\Carbon;
 
 class StatTest extends TestCase
 {
+    use DatabaseTransactions;
 
     private $admin;
     private $students;

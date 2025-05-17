@@ -111,7 +111,7 @@ class UsersTab extends React.Component {
                 <Dialog open={this.state.confirmDelete} onClose={() => this.setState({ confirmDelete: false })}>
                     <DialogTitle>Confirmer la suppression</DialogTitle>
                     <DialogContent>
-                        Êtes-vous sûr de vouloir supprimer tous les liens badges-utilisateurs? Cette action est irréversible. 
+                        Êtes-vous sûr de vouloir supprimer tous les liens badges-utilisateurs? Cette action est irréversible et enlevera tout les badges de chaques utilisateurs. 
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.deleteLink} variant="contained" color="error">Confirmer</Button>
