@@ -23,6 +23,8 @@ import PageUser from "./pages/PageUser";
 import DefaultTheme from "./theme";
 import PageProfileModify from "./composant/Forms/PageProfileModify";
 import Contact from "./pages/Contact";
+import TopCollectors from './pages/Dashboard/Tops_score/TopCollectors';
+import TopByCategory from './pages/Dashboard/Tops_score/TopByCategory';
 
 const estConnecter = localStorage.getItem("token");
 
@@ -55,6 +57,8 @@ function App() {
                   <Route path="/admin/admin_users" element={<UsersAdminTab />} />
                   <Route path="/admin/badges" element={<BadgesTab />} />
                   <Route path="/admin/categories" element={<CategoriesTab />} />
+                  <Route path="/admin/top-collectors" element={<TopCollectors />} />
+                  <Route path="/admin/top-by-category" element={<TopByCategory />} />
                   <Route
                     path="/admin/teacher_codes"
                     element={ProtectedRoute(Role.Admin)}

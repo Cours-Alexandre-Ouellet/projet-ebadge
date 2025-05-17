@@ -133,6 +133,7 @@ Route::group([
     Route::get('/leaderboard', [App\Http\Controllers\StatsController::class, 'Leaderboard']);
     Route::get('/leaderboard/{startDate}/{endDate}', [App\Http\Controllers\StatsController::class, 'LeaderboardBySession']);
     Route::get('/leaderboard/{category}', [App\Http\Controllers\StatsController::class, 'LeaderboardByCategory']);
+    Route::get('/top-category', [App\Http\Controllers\StatsController::class, 'TopByCategory']);
 });
 
 Route::group([

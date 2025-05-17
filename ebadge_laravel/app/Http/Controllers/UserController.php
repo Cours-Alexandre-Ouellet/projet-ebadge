@@ -477,18 +477,51 @@ class UserController extends Controller
         return response()->json(['message' => 'Utilisateur supprimé']);
     }
 
+    /**
+     * Supprime un utilisateur
+     * 
+     * @param int $id Id de l'utilisateur
+     * @return \Illuminate\Http\Response
+     * @author Elyas Benyssad
+     */
     public function deleteUser($id)
-    {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+        {
+            // Récupère l'utilisateur par son ID
+            $user = User::find($id);
+        
+            // Si l'utilisateur n'existe pas, retourne une erreur 404
+            if (!$user) {
+                return response()->json(['message' => 'Utilisateur non trouvé.'], 404);
+            }
+        
+            // Utilisation d'une transaction pour garantir l'intégrité des données
+            DB::transaction(function () use ($user) {
+        
+                // Si c'est un professeur
+                if ($user->role_id == 3) {
+                    // On récupère les badges qu'il a créés
+                    $badges = Badge::where('teacher_id', $user->id)->get();
+        
+                    foreach ($badges as $badge) {
+                        // On supprime tous les liens user-badge pour ce badge
+                        $badge->userBadges()->delete();
+                        // Puis on supprime le badge lui-même
+                        $badge->delete();
+                    }
+                }
+        
+                // Si c'est un étudiant
+                if ($user->role_id == 4) {
+                    // On supprime toutes ses associations avec des badges
+                    $user->userBadges()->delete();
+                }
+        
+                // Enfin, on supprime l'utilisateur
+                $user->delete();
+            });
+        
+            return response()->json(['message' => 'Utilisateur supprimé avec succès']);
         }
-
-        $user->delete();
-
-        return response()->json(['message' => 'Utilisateur supprimé avec succès']);
-    }
 
     /**
      * Assigne le rôle d'admin à un utilisateur

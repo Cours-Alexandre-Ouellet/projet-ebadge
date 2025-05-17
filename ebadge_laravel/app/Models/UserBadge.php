@@ -23,6 +23,29 @@ class UserBadge extends Model
     protected $table = 'user_badge';
 
 
+        /**
+     * Relation vers l'utilisateur
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @author Elyas Benyssad
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Relation vers le badge
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @author Elyas Benyssad
+     */
+    public function badge()
+    {
+        return $this->belongsTo(Badge::class, 'badge_id');
+
+    }
+
     protected $fillable = [
         'user_id',
         'badge_id',
