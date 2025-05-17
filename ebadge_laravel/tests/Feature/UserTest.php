@@ -144,6 +144,63 @@ class UserTest extends TestCase
         $this->assertTrue($userBadges->contains($this->badge));
     }
 
+    public function testUserAssignMultipleBadgesMultipleUsers() {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [$this->badge->id, $this->badge2->id], 'user_ids' => [$this->user->id, $this->otherUser->id]],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(200);
+        $userBadges = $this->user->badges()->get();
+        $otherUserBadges = $this->otherUser->badges()->get();
+        $this->assertTrue($userBadges->contains($this->badge));
+        $this->assertTrue($otherUserBadges->contains($this->badge2));
+    }
+
+    public function testUserMultipleAssignOneBadgeOneUser()
+    {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [$this->badge->id], 'user_ids' => [$this->user->id]],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(200);
+
+        $userBadges = $this->user->badges()->get();
+        $this->assertTrue($userBadges->contains($this->badge));
+    }
+
+    public function testUserMultipleAssignOneUserNoBadge()
+    {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [], 'user_ids' => [$this->user->id]],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(422);
+        $userBadges = $this->user->badges()->get();
+        $this->assertFalse($userBadges->contains($this->badge));
+    }
+
+    public function testUserMultipleAssignNoUserOneBadge()
+    {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [$this->badge->id], 'user_ids' => []],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(422);
+        $userBadges = $this->user->badges()->get();
+        $this->assertFalse($userBadges->contains($this->badge));
+    }
+
+    public function testUserMultipleAssignNoUserNoBadge()
+    {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [], 'user_ids' => []],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(422);
+        $userBadges = $this->user->badges()->get();
+        $this->assertFalse($userBadges->contains($this->badge));
+    }
+
     public function testUserRemoveBadge()
     {
         $this->user->badges()->attach($this->badge->id);

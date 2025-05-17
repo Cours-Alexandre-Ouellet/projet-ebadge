@@ -107,6 +107,12 @@ class UserController extends Controller
         $user_ids = $request->user_ids ?? [];
         $badge_ids = $request->badge_ids ?? [];
 
+        if (empty($user_ids) || empty($badge_ids)) {
+            return response()->json([
+                'message' => 'Aucun badge ou utilisateur sélectionné'
+            ], 422);
+        }
+
         foreach ($user_ids as $user_id) {
             $user = User::find($user_id);
             $user_badges = $user->badges();
