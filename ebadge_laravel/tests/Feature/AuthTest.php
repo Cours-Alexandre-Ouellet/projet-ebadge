@@ -7,10 +7,12 @@ use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Passport\Bridge\AccessToken;
 use Tests\TestCase;
 class AuthTest extends TestCase
 {
+    use DatabaseTransactions;
 
     private $user;
     private $userToken;

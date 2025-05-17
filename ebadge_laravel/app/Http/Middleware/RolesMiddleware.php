@@ -14,7 +14,7 @@ class RolesMiddleware
     /**
      * Vérifie si l'utilisateur a le rôle requis
      * Si l'utilisateur n'est pas connecté, on renvoie une erreur 500
-     * Si l'utilisateur n'a pas le rôle requis, on renvoie une erreur 401
+     * Si l'utilisateur n'a pas le rôle requis, on renvoie une erreur 403
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -36,6 +36,6 @@ class RolesMiddleware
                 return $next($request);
             }
         }
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return response()->json(['message' => 'Forbidden'], 403);
     }
 }

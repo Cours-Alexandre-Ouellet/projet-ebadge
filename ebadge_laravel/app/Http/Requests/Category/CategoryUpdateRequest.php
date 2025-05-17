@@ -17,9 +17,13 @@ class CategoryUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|exists:badge,id',
-            'name' => 'required|string|max:45',
-            'color' => 'required|string|max:7',
+            'id' => 'required|exists:category,id',
+            'name' => 'sometimes|required|string|max:255',
+            'color' => ['sometimes', 'required', function ($attribute, $value, $fail) {
+                if (!preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value)) {
+                    $fail('Le format de la couleur est invalide. Utilisez le format hexadécimal (#RGB ou #RRGGBB).');
+                }
+            }],
         ];
     }
 }

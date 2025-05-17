@@ -144,17 +144,24 @@ class CategoryController extends Controller
     /**
      * Met à jour la catégorie avec l'id donné
      *
-     * @param  \App\Badge  $badge
+     * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function update(CategoryUpdateRequest $request)
     {
-        $category = Category::find($request->id);
+        $category = Category::findOrFail($request->id);
 
-        $category->name = $request->name;
-        $category->color = $request->color;
+        $updateValues = [];
 
-        $category->save();
+        if ($request->has('name')) {
+        $updateValues['name'] = $request->name;
+        }
+    
+        if ($request->has('color')) {
+            $updateValues['color'] = $request->color;
+        }
+
+        $category->update($updateValues);
 
         return response()->json($category);
     }
@@ -168,10 +175,15 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Category::find($id);
+
+        if ($category == null) {
+            return response()->json(['error' => 'Category not found'], 404);
+        }
+
         CategoryBadge::where('category_id', $category->id)->delete();
 
         $category->delete();
-        return response()->json($category);
+
         return response()->json($category);
     }
 }
