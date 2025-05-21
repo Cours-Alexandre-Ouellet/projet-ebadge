@@ -20,6 +20,8 @@ import PoliciesHelper from "../../policies/PoliciesHelper";
 import { Link } from "react-router-dom";
 import BadgeAssignationPopup from "../Dashboard/Popups/BadgeAssignationPopup/BadgeAssignationPopup";
 
+const isConnected = !!localStorage.getItem("token");
+
 /**
  * Composant Navbar
  */
@@ -240,49 +242,53 @@ class Navbar extends React.Component {
               >
                 Assigner des badges
               </Button>
-              <Tooltip title="Mon compte">
-                <IconButton
-                  size="large"
-                  component={Link}
-                  onClick={this.handleOpenUserMenu}
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                >
-                  <Avatar sx={{ bgcolor: "secondary.main" }}>
-                    {this.state.initials}
-                  </Avatar>
-                </IconButton>
-              </Tooltip>
+              {isConnected && (
+                <>
+                  <Tooltip title="Mon compte">
+                    <IconButton
+                      size="large"
+                      component={Link}
+                      onClick={this.handleOpenUserMenu}
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      <Avatar sx={{ bgcolor: "secondary.main" }}>
+                        {this.state.initials}
+                      </Avatar>
+                    </IconButton>
+                  </Tooltip>
 
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={this.state.anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={this.state.anchorElUser}
-                onClose={this.handleCloseUserMenu}
-              >
-                {this.state.userSettings.map((setting) => (
-                  <MenuItem
-                    key={setting.name}
-                    component={Link}
-                    to={setting.href}
-                    onClick={this.handleCloseUserMenu}
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={this.state.anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={this.state.anchorElUser}
+                    onClose={this.handleCloseUserMenu}
                   >
-                    <Typography textAlign="center">{setting.name}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+                    {this.state.userSettings.map((setting) => (
+                      <MenuItem
+                        key={setting.name}
+                        component={Link}
+                        to={setting.href}
+                        onClick={this.handleCloseUserMenu}
+                      >
+                        <Typography textAlign="center">{setting.name}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
+              )}
             </Box>
           </Toolbar>
         </Container>

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import './Signup.css';
 import '@mui/material';
-import { Button, TextField, Checkbox, FormControlLabel } from '@mui/material';
+import { Button, TextField, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import Api from '../../utils/Api';
 import Loading from '../../composant/Loading/LoadingComponent';
 import { Navigate } from "react-router-dom";
+import { Box } from "@mui/system";
 
 /**
  * Page de création de compte
@@ -20,6 +21,7 @@ export default function Signup() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [teacherCode, setTeacherCode] = useState("");
+    const [consent, setConsent] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
     const [redirect, setRedirect] = useState(false);
@@ -198,7 +200,7 @@ export default function Signup() {
             return false;
         }
 
-        else if (lastName.length > 60 || lastName.length<2) {
+        else if (lastName.length > 60 || lastName.length < 2) {
             setErrors((prevState) => ({
                 ...prevState,
                 last_name: "Votre nom de famille ne peut contenir qu'entre 2 à 60 caractères."
@@ -234,7 +236,7 @@ export default function Signup() {
                                 margin="normal"
                                 helperText={errors.email}
                                 error={errors.email.length != 0}
-                                onChange={(e) =>setEmail(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
                                 onBlur={validateEmail}
                                 required
                                 sx={{ width: '100%' }}
@@ -321,8 +323,8 @@ export default function Signup() {
                                     onChange={(e) => setShowTeacherCode(e.target.checked)}
                                 />
                             } label="Compte enseignant" />
-                            <div hidden={!showTeacherCode} className="hidden-div">
 
+                            <div hidden={!showTeacherCode} className="hidden-div">
                                 <TextField
                                     id="teacher_code"
                                     name="teacher_code"
@@ -337,10 +339,31 @@ export default function Signup() {
                                 />
                             </div>
 
+                            <Box
+                                sx={{
+                                    backgroundColor: '#f5f5f5',
+                                    padding: 2,
+                                    marginTop: 1,
+                                    marginBottom: 1,
+                                    borderRadius: 1,
+                                    display: 'inline-block',
+                                }}
+                            >
+                                <FormControlLabel
+                                    control={<Checkbox color="primary" required onChange={(e) => setConsent(e.target.checked)} />}
+                                    label={
+                                        <Typography variant="body2">
+                                            Je consens à ce que l'équipe de gestion d'E-Badge utilise les renseignements fournis conformément à <a href="/politique-de-confidentialite" target="_blank">l'énoncé de confidentialité du site</a>. Mon consentement est révocable en tout temps en communiquant avec l'administration du site : <a href="/contactez-nous" target="_blank">https://ebadge.cegepvicto.ca/contactez-nous</a>
+                                        </Typography>
+                                    }
+                                />
+                            </Box>
+
                             <Button
                                 variant="contained"
                                 form="signup-form"
                                 onClick={(e) => handleSubmit(e)}
+                                disabled={!consent}
                             >
                                 Créer un compte
                             </Button>
