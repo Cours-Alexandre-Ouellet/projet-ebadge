@@ -1,0 +1,18 @@
+.badge-achievement-popup-container {
+    z-index: 2000 !important;
+    height: 50% !important;
+}
+
+.badge-achievement-popup .badge-achievement-carousel-badge {
+    text-align: center !important;
+}
+
+.confetti-wrapper {
+    display: none !important;
+    position: absolute !important;
+    z-index: 1000 !important;
+}
+
+.confetti-wrapper.active {
+    display: block !important;
+}

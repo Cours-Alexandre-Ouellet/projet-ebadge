@@ -26,21 +26,18 @@ class Login extends React.Component {
         this.redirectUser = this.redirectUser.bind(this);
     }
 
-    /**
-     * fonction qui change la valeur du champ quand on tape dedans
-     * @param {*} event 
-     */
+    /* fonction qui change la valeur du champ quand on tape dedans
+    * @param {*} event 
+    */
     handleChange(event) {
         const { name, value } = event.target;
         this.setState({
             [name]: value
         });
     }
-
-    /**
-     * fonction qui valide l'identifiant
-     * @returns boolean 
-     */
+    /* fonction qui valide l'identifiant
+    * @returns boolean 
+    */
     validateIdentifier() {
         if (this.state.identifier.length === 0) {
             this.setState({ identifierError: 'Veuillez renseigner votre identifiant' });
@@ -54,8 +51,7 @@ class Login extends React.Component {
             return true;
         }
     }
-
-    /**
+    /** 
      * fonction qui valide le mot de passe
      * @returns 
      */
@@ -69,15 +65,12 @@ class Login extends React.Component {
         }
     }
 
-    /**
-     * fonction qui gère la soumission du formulaire
-     * @param {*} event 
-     */
+    /** fonction qui gère la soumission du formulaire
+    * @param {*} event 
+    */
     redirectUser() {
         this.setState({ isLoading: false });
-
         var policiesHelper = new PoliciesHelper();
-
         window.location = policiesHelper.getDefaultRoute();
     }
 
@@ -92,15 +85,18 @@ class Login extends React.Component {
                 localStorage.setItem('token', response.data.access_token);
                 localStorage.setItem('username', response.data.username);
                 localStorage.setItem('role', response.data.role);
-
                 this.redirectUser();
             }).catch((error) => {
-                this.setState({isLoading: false})
+                this.setState({ isLoading: false });
                 if (error.response) {
                     switch (error.response.status) {
                         case 401:
                             this.setState({ identifierError: 'Identifiant ou mot de passe incorrect' });
                             this.setState({ passwordError: 'Identifiant ou mot de passe incorrect' });
+                            break;
+                        case 403:
+                            this.setState({ identifierError: 'Votre compte est désactivé. Veuillez contacter un administrateur.' });
+                            this.setState({ passwordError: '' });
                             break;
                         case 422:
                             this.setState({ identifierError: 'Le format de l\'adresse couriel est invalide' });
@@ -110,23 +106,20 @@ class Login extends React.Component {
                             this.setState({ passwordError: 'Une erreur est survenue' });
                             break;
                     }
-                    console.log(error.response.data);
+                    console.error(error.response.data);
                 } else {
                     console.error(error);
                 }
             });
         }
     }
-
-    /**
+     /**
      * Si l'utilisateur est déjà connecté, on le redirige vers la page d'accueil
      */
     componentDidMount() {
         if (localStorage.getItem('token')) {
             Api.get('/auth/current_user').then((response) => {
-
                 this.redirectUser();
-
             }).catch((error) => {
                 console.error(error);
             });
@@ -143,7 +136,7 @@ class Login extends React.Component {
                     <div className="login-right">
                         <div className="login-right-content">
                             <h1>E-Badge</h1>
-                            <form className='form-login'>
+                            <form onSubmit={this.handleSubmit.bind(this)} className='form-login'>
                                 <TextField
                                     id="identifier"
                                     name="identifier"
@@ -175,6 +168,7 @@ class Login extends React.Component {
                                     sx={{ width: '100%' }}
                                 />
                                 <Button
+                                    type='submit'
                                     variant="contained"
                                     size="Large"
                                     disabled={this.state.identifier === '' || this.state.password === ''}

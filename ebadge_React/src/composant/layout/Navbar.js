@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import {
   AppBar,
   Box,
@@ -11,19 +11,21 @@ import {
   Button,
   Tooltip,
   MenuItem,
-} from '@mui/material';
+} from "@mui/material";
 
-import AdbIcon from '@mui/icons-material/Adb';
-import MenuIcon from '@mui/icons-material/Menu';
-import Role from '../../policies/Role';
-import PoliciesHelper from '../../policies/PoliciesHelper';
-import { Link } from 'react-router-dom';
+import AdbIcon from "@mui/icons-material/Adb";
+import MenuIcon from "@mui/icons-material/Menu";
+import Role from "../../policies/Role";
+import PoliciesHelper from "../../policies/PoliciesHelper";
+import { Link } from "react-router-dom";
+import BadgeAssignationPopup from "../Dashboard/Popups/BadgeAssignationPopup/BadgeAssignationPopup";
+
+const isConnected = !!localStorage.getItem("token");
 
 /**
  * Composant Navbar
  */
 class Navbar extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -38,34 +40,51 @@ class Navbar extends React.Component {
       anchorElNav: false,
       anchorElUser: false,
       pages: this.PoliciesHelper.getvisibleRoutes([
-        { name: 'Mon profil', href: '/', minimumRole: Role.User },
-        { name: 'Classement', href: '/classement', minimumRole: Role.User },
-        { name: 'Tableau de bord', href: '/admin/users', minimumRole: Role.Teacher }
+        { name: "Mon profil", href: "/", minimumRole: Role.User },
+
+        { name: "Classement", href: "/leaderboard", minimumRole: Role.User },
+
+        { name: "Liste des badges", href: "/badges", minimumRole: Role.User },
+
+        {
+          name: "Administration",
+          href: "/admin/users",
+          minimumRole: Role.Teacher,
+        },
+
+        {
+          name: "Contactez-nous",
+          href: "/contactez-nous",
+          minimumRole: Role.User,
+        },
       ]),
-      initials: 'ND',
+      initials: "ND",
       userSettings: [
-        { name: 'Mon profil', href: '/' },
-        { name: 'Se déconnecter', href: '/auth/logout' }
-      ]
+        { name: "Mon profil", href: "/" },
+        { name: "Paramètres", href: "/modify-profile" },
+        { name: "Se déconnecter", href: "/auth/logout" },
+      ],
     };
   }
 
   componentDidMount() {
-    this.setState({ initials: this.getInitials(localStorage.getItem('username') ?? "na") });
+    this.setState({
+      initials: this.getInitials(localStorage.getItem("username") ?? "na"),
+    });
   }
 
   /**
    * Fonction pour ouvrir le menu
-   * @param {*} event 
+   * @param {*} event
    */
   handleOpenNavMenu = (event) => {
     this.setState({ anchorElNav: true });
   };
 
-/**
- * Fonction pour ouvrir le menu utilisateur
- * @param {*} event
- */
+  /**
+   * Fonction pour ouvrir le menu utilisateur
+   * @param {*} event
+   */
   handleOpenUserMenu = (event) => {
     this.setState({ anchorElUser: true });
   };
@@ -88,21 +107,37 @@ class Navbar extends React.Component {
 
   /**
    * Fonction pour récupérer les initiales
-   * @param {*} name 
-   * @returns 
+   * @param {*} name
+   * @returns
    */
   getInitials = (name) => {
     let initials = name.match(/\b\w/g) || [];
-    initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+    initials = (
+      (initials.shift() || "") + (initials.pop() || "")
+    ).toUpperCase();
     return initials;
-  }
+  };
+
+  /**
+   * Fonction pour vérifier si l'utilisateur peut assigner des badges
+   * @returns {boolean} true si l'utilisateur peut assigner des badges
+   */
+  canAssignBadges = () => {
+    if (this.PoliciesHelper.hasRole(Role.Teacher)) return true;
+    if (this.PoliciesHelper.hasRole(Role.Admin)) return true;
+    if (this.PoliciesHelper.hasRole(Role.AdminContact)) return true;
+    return false;
+  };
 
   render() {
     return (
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
             <Typography
               variant="h6"
               noWrap
@@ -110,18 +145,18 @@ class Navbar extends React.Component {
               href="/"
               sx={{
                 mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
+                display: { xs: "none", md: "flex" },
+                fontFamily: "monospace",
                 fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
               }}
             >
               E-badge
             </Typography>
 
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
                 size="large"
                 aria-label="account of current user"
@@ -136,29 +171,33 @@ class Navbar extends React.Component {
                 id="menu-appbar"
                 anchorEl={this.state.anchorElNav}
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
+                  vertical: "top",
+                  horizontal: "left",
                 }}
                 open={this.state.anchorElNav}
                 onClose={this.handleCloseNavMenu}
                 sx={{
-                  display: { xs: 'block', md: 'none' },
+                  display: { xs: "block", md: "none" },
                 }}
               >
                 {this.state.pages.map((page) => (
-                  <MenuItem key={page.href} component={Link}
-                    to={page.href} onClick={this.handleCloseNavMenu}>
+                  <MenuItem
+                    key={page.href}
+                    component={Link}
+                    to={page.href}
+                    onClick={this.handleCloseNavMenu}
+                  >
                     <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
             </Box>
-            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
             <Typography
               variant="h5"
               noWrap
@@ -166,73 +205,99 @@ class Navbar extends React.Component {
               href=""
               sx={{
                 mr: 2,
-                display: { xs: 'flex', md: 'none' },
+                display: { xs: "flex", md: "none" },
                 flexGrow: 1,
-                fontFamily: 'monospace',
+                fontFamily: "monospace",
                 fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
               }}
             >
               E-badge
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {this.state.pages.map((page) => (
                 <Button
                   component={Link}
                   to={page.href}
                   key={page.name}
                   onClick={this.handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page.name}
                 </Button>
               ))}
             </Box>
 
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Tooltip title="Mon compte">
-                <IconButton
-                  size="large"
-                  component={Link}
-                  onClick={this.handleOpenUserMenu}
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                >
-                  <Avatar sx={{ bgcolor: 'secondary.main' }}>{this.state.initials}</Avatar>
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={this.state.anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+            <Box sx={{ display: "flex" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  display: this.canAssignBadges() ? "block" : "none",
+                  margin: "5px 0",
+                  mr: 2,
                 }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={this.state.anchorElUser}
-                onClose={this.handleCloseUserMenu}
+                onClick={() => this.setState({ isBadgeAssignationOpen: true })}
               >
-                {this.state.userSettings.map((setting) => (
-                  <MenuItem key={setting.name} component={Link}
-                    to={setting.href} onClick={this.handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting.name}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+                Assigner des badges
+              </Button>
+              {isConnected && (
+                <>
+                  <Tooltip title="Mon compte">
+                    <IconButton
+                      size="large"
+                      component={Link}
+                      onClick={this.handleOpenUserMenu}
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      color="inherit"
+                    >
+                      <Avatar sx={{ bgcolor: "secondary.main" }}>
+                        {this.state.initials}
+                      </Avatar>
+                    </IconButton>
+                  </Tooltip>
 
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={this.state.anchorElUser}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={this.state.anchorElUser}
+                    onClose={this.handleCloseUserMenu}
+                  >
+                    {this.state.userSettings.map((setting) => (
+                      <MenuItem
+                        key={setting.name}
+                        component={Link}
+                        to={setting.href}
+                        onClick={this.handleCloseUserMenu}
+                      >
+                        <Typography textAlign="center">{setting.name}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
+              )}
+            </Box>
           </Toolbar>
         </Container>
-      </AppBar>)
+        <BadgeAssignationPopup
+          isOpen={this.state.isBadgeAssignationOpen}
+          onClose={() => this.setState({ isBadgeAssignationOpen: false })}
+        />
+      </AppBar>
+    );
   }
 }
 

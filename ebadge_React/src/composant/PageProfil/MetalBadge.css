@@ -1,0 +1,350 @@
+/* CSS pour le badge métallique */
+/* Auteur: Alexandre del Fabbro */
+/* Inspiré du code de Eric Karkovack - https://speckyboy.com/metallic-effects-css-javascript/ - [Consulté le 10 mai 2025] */
+/* Inspiré du code de VSCode Copilot - Claude 3.7 Sonnet - [Modèle massif de langage] - [Consulté le 12 mai 2025] */
+:root {
+  --badge-color: #838489;
+  --badge-color-light: #f3f4ff;
+  --badge-color-medium: #516262;
+  --badge-color-dark: #212134;
+}
+
+.Badge {
+  position: relative;
+  display: inline-block;
+  margin: 10px;
+}
+
+.badge-wrapper {
+  width: 15em;
+  height: 15em;
+  position: relative;
+  transform: scale(0.8);
+  transform-origin: center center;
+  filter: drop-shadow(0 20px 15px rgba(0,0,0,0.8));
+}
+
+.badge {
+  position: relative;
+  width: 15em;
+  height: 15em;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--badge-color-medium);
+  box-shadow: 
+    inset 0 0 10px var(--badge-color-dark),
+    inset 0 3px 30px var(--badge-color),
+    0 0 50px rgba(0, 0, 0, 0.3),
+    0 10px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    transparent 50%,
+    rgba(0,0,0,0.2) 80%,
+    rgba(0,0,0,0.3) 100%
+  );
+  box-shadow: 
+    inset 0 0 30px var(--badge-color-dark),
+    inset 0 0 60px rgba(0,0,0,0.3);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.badge:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2) contrast(1.1);
+}
+
+.metal-badge {
+  background:
+    var(--badge-color);
+  position: relative;
+}
+
+.glossy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.metal-badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: 
+    radial-gradient(
+      circle at center,
+      var(--badge-color-light) 0%,
+      var(--badge-color) 40%,
+      var(--badge-color-dark) 100%
+    ),
+    conic-gradient(
+      from 45deg, 
+      var(--badge-color-light) 0%, 
+      var(--badge-color) 10%,
+      var(--badge-color-medium) 20%,
+      var(--badge-color-dark) 30%,
+      var(--badge-color-medium) 40%,
+      var(--badge-color) 50%,
+      var(--badge-color-light) 60%,
+      var(--badge-color) 70%,
+      var(--badge-color-medium) 80%,
+      var(--badge-color-dark) 90%,
+      var(--badge-color-light) 100%
+    );
+  opacity: 0.85;
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+.metal-badge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 135deg,
+    var(--badge-color-dark) 0%,
+    var(--badge-color-medium) 12.5%,
+    var(--badge-color) 25%, 
+    var(--badge-color-light) 37.5%,
+    var(--badge-color) 50%,
+    var(--badge-color-medium) 62.5%,
+    var(--badge-color-dark) 75%,
+    var(--badge-color-medium) 87.5%,
+    var(--badge-color-dark) 100%
+  );
+  opacity: 0.8;
+  z-index: 3;
+  animation: rotate 20s linear infinite;
+}
+
+.metal-badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    transparent 30%,
+    var(--badge-color-medium) 70%,
+    var(--badge-color-dark) 100%
+  );
+  opacity: 0.3;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.inner {
+  position: absolute;
+  border-radius: 50%;
+  left: calc(50% - 5.5em);
+  top: calc(50% - 5.5em);
+  width: 11em;
+  height: 11em;
+  background: var(--badge-color-medium);
+  border: 2px solid var(--badge-color-medium);
+  z-index: 10;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 
+    inset 0 0 10px rgba(0,0,0,0.2),
+    0 0 8px rgba(0,0,0,0.3);
+}
+
+.inner img.badgeIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  z-index: 11;
+}
+
+.Badge .teacher-circle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 3em;
+  height: 3em;
+  background-color: #3f51b5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  cursor: help;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 0 30px var(--badge-color-dark),
+    inset 0 0 60px rgba(0,0,0,0.3);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.umbrella {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: 
+    radial-gradient(
+      ellipse at 30% 30%,
+      rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0.1) 20%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 70% 70%,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.05) 25%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 60%
+    );
+  z-index: 4;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .metal-badge::after {
+    animation: rotate 20s linear infinite;
+  }
+  
+  .metal-badge .umbrella {
+    animation: shine-pulse 3s ease-in-out infinite;
+  }
+}
+
+@keyframes shine-pulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.5; }
+}
+
+.particle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 25;
+  overflow: hidden;
+}
+
+/* Particle styling */
+.particle {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+/* Particle animations */
+@keyframes particle-animation {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + var(--x-travel)),
+      calc(-50% + var(--y-travel))
+    ) scale(1);
+  }
+}
+
+/* Make the particles shine in different colors */
+.particle:nth-child(4n) {
+  background: var(--badge-color-light);
+  box-shadow: 0 0 3px var(--badge-color-light);
+}
+
+.particle:nth-child(4n+1) {
+  background: white;
+  box-shadow: 0 0 4px white;
+}
+
+.particle:nth-child(4n+2) {
+  background: var(--badge-color);
+  box-shadow: 0 0 3px var(--badge-color);
+}
+
+.particle:nth-child(4n+3) {
+  background: var(--badge-color-medium);
+  box-shadow: 0 0 2px var(--badge-color-medium);
+}
+
+/* Improve badge hover effect with particles */
+.badge-wrapper:hover .badge {
+  transform: scale(1.05);
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Update the shine effect during hover */
+.badge-wrapper:hover .umbrella {
+  opacity: 0.9;
+  animation: shine-pulse 1.5s ease-in-out infinite;
+}
+
+/* Add a subtle glow effect during hover */
+.badge-wrapper:hover .metal-badge::before {
+  opacity: 0.95;
+}

@@ -2,15 +2,35 @@
 
 namespace Tests\Feature;
 
+use App\Models\Badge;
 use App\Models\Role;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UserTest extends TestCase
 {
     use DatabaseTransactions;
+
+    private $user;
+
+    private $password;
+
+
+    private $otherUser;
+
+    private $admin;
+    private $teacher;
+    private $badge;
+    private $badge2;
+    private $badge3;
+    private $badge4;
+    private $userToken;
+    private $teacherToken;
+    private $adminToken;
+
 
     /**
      * SETUP
@@ -18,18 +38,25 @@ class UserTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = factory(\App\Models\User::class)->create();
+        $this->user = User::factory()->create();
+        $this->user->role_id = Role::Student()->id;
+        $this->password = $this->user->password;
+        $this->user->password = Hash::make($this->user->password);
 
-        $this->admin = factory(\App\Models\User::class)->create();
+        $this->otherUser = User::factory()->create();
+        $this->otherUser->role_id = Role::Student()->id;
+
+        $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
-
-        $this->teacher = factory(\App\Models\User::class)->create();
+        $this->teacher = User::factory()->create();
         $this->teacher->role_id = Role::Teacher()->id;
         $this->teacher->save();
-        $this->badge = factory(\App\Models\Badge::class)->create();
-
+        $this->badge = Badge::factory()->create();
+        $this->badge2 = Badge::factory()->create();
+        $this->badge3 = Badge::factory()->create();
+        $this->badge4 = Badge::factory()->create();
 
         $token = $this->user->createToken('Personal Access Token');
         $token->token->expires_at = Carbon::now()->addWeeks(1);
@@ -48,6 +75,9 @@ class UserTest extends TestCase
         $token->token->save();
         $token->expires_at = now()->addMinutes(30);
         $this->adminToken = $token->accessToken;
+
+        $this->user->save();
+        $this->otherUser->save();
     }
 
 
@@ -114,6 +144,63 @@ class UserTest extends TestCase
         $this->assertTrue($userBadges->contains($this->badge));
     }
 
+    public function testUserAssignMultipleBadgesMultipleUsers() {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [$this->badge->id, $this->badge2->id], 'user_ids' => [$this->user->id, $this->otherUser->id]],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(200);
+        $userBadges = $this->user->badges()->get();
+        $otherUserBadges = $this->otherUser->badges()->get();
+        $this->assertTrue($userBadges->contains($this->badge));
+        $this->assertTrue($otherUserBadges->contains($this->badge2));
+    }
+
+    public function testUserMultipleAssignOneBadgeOneUser()
+    {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [$this->badge->id], 'user_ids' => [$this->user->id]],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(200);
+
+        $userBadges = $this->user->badges()->get();
+        $this->assertTrue($userBadges->contains($this->badge));
+    }
+
+    public function testUserMultipleAssignOneUserNoBadge()
+    {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [], 'user_ids' => [$this->user->id]],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(422);
+        $userBadges = $this->user->badges()->get();
+        $this->assertFalse($userBadges->contains($this->badge));
+    }
+
+    public function testUserMultipleAssignNoUserOneBadge()
+    {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [$this->badge->id], 'user_ids' => []],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(422);
+        $userBadges = $this->user->badges()->get();
+        $this->assertFalse($userBadges->contains($this->badge));
+    }
+
+    public function testUserMultipleAssignNoUserNoBadge()
+    {
+        $response = $this->post('/api/user/assign-multiple-badges',
+        ['badge_ids' => [], 'user_ids' => []],
+        ['Authorization' => 'Bearer ' . $this->teacherToken]);
+
+        $response->assertStatus(422);
+        $userBadges = $this->user->badges()->get();
+        $this->assertFalse($userBadges->contains($this->badge));
+    }
+
     public function testUserRemoveBadge()
     {
         $this->user->badges()->attach($this->badge->id);
@@ -140,10 +227,11 @@ class UserTest extends TestCase
 
     public function testGetUserBadgesLeft()
     {
-        $this->user->badges()->attach($this->badge->id);
+        $this->user->badges()->attach(Badge::all());
+        $this->user->badges()->detach($this->badge->id);
         $response = $this->get('/api/user/' . $this->user->id . '/badges-left', ['Authorization' => 'Bearer ' . $this->teacherToken]);
         $response->assertStatus(200);
-        $response->assertJsonMissing($this->badge->toArray());
+        $response->assertJsonFragment($this->badge->toArray());
     }
 
     public function testEditPrivacy()
@@ -170,4 +258,319 @@ class UserTest extends TestCase
         $response = $this->get('/api/user', ['Authorization' => 'Bearer ' . $this->adminToken]);
         $response->assertStatus(200);
     }
+
+
+    /**
+     * Modification de mot de passe par soi-même
+     */
+    public function testUserModifyPassword()
+    {
+        $response = $this->put('/api/user/modify-password', [
+            'id' => $this->user->id,
+            'oldPassword' => $this->password,
+            'newPassword' => "123456"
+        ], ['Authorization' => 'Bearer ' . $this->userToken]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment(['sucess' => 'Votre mot de passe a été mis à jour.']);
+    }
+
+    /**
+     * Modification de mot de passe par soi-même avec mauvais mot de passe
+     */
+    public function testUserModifyPasswordWithWrongPassword()
+    {
+        $response = $this->put('/api/user/modify-password', [
+            'id' => $this->user->id,
+            'oldPassword' => "mauvais mot de passe",
+            'newPassword' => "123456"
+        ], ['Authorization' => 'Bearer ' . $this->userToken]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure(['errorOldPassword']);
+
+    }
+
+    /**
+     * Modification de mot de passe par soi-même avec le même mot de passe
+     */
+    public function testUserModifyPasswordWithSamePassword()
+    {
+        $response = $this->put('/api/user/modify-password', [
+            'id' => $this->user->id,
+            'oldPassword' => $this->password,
+            'newPassword' => $this->password
+        ], ['Authorization' => 'Bearer ' . $this->userToken]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment(['errorNewPassword' => 'Votre nouveau mot de passe est identique à votre ancien.']);
+
+    }
+
+    /**
+     * Teste si un utilisateur peut se visiter
+     * @return void
+     */
+    public function testUserVisitItself(){
+        $response = $this->get('/api/user/' . $this->user->id, ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+                'id' => $this->user->id,
+                'first_name' => $this->user->first_name,
+                'last_name' => $this->user->last_name,
+                'role_id' => $this->user->role_id,
+                'username' => $this->user->username,
+                'privacy' => $this->user->privacy,
+                'avatarImagePath' => $this->user->avatarImagePath,
+                'backgroundImagePath' => $this->user->backgroundImagePath,
+        ]);
+    }
+
+    /**
+     * Teste si un utilisateur peut en visiter un autre
+     * @return void
+     */
+    public function testUserVisitUser(){
+        $response = $this->get('/api/user/' . $this->otherUser->id, ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+                'id' => $this->otherUser->id,
+                'first_name' => $this->otherUser->first_name,
+                'last_name' => $this->otherUser->last_name,
+                'role_id' => $this->otherUser->role_id,
+                'username' => $this->otherUser->username,
+                'privacy' => $this->otherUser->privacy,
+                'avatarImagePath' => $this->otherUser->avatarImagePath,
+                'backgroundImagePath' => $this->otherUser->backgroundImagePath,
+        ]);
+    }
+
+    /**
+     * Test si un utilisateur écoura a visiter un utilisateur inexistant
+     * @return void
+     */
+    public function testUserVisitInexistant(){
+        $response = $this->get('/api/user/' . -1, ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Vérifie qu'un utilisateur peut ajouter un badge a ses favories
+     * @return void
+     */
+    public function testAddFavoriteBadge(){
+        $this->user->badges()->attach($this->badge->id);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Vérifie que l'ajout d'un badge épinglé fonctionne
+     * @return void
+     */
+    public function testAddBadFavoriteBadge(){
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>-1,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Vérifie que l'épinglage d'un badge déja épingle ne cause pas d'erreurs
+     * @return void
+     */
+    public function testAddFavoriteBadgeTwice(){
+        $this->user->badges()->attach($this->badge->id);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Vérifie qu'enlever un badge épinglé fonctionne
+     * @return void
+     */
+    public function testRemoveFavoriteBadge(){
+        $this->user->badges()->attach($this->badge->id);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>0], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Vérifie qu'enlever un badge pas épinglé ne causera pas d'erreurs
+     * @return void
+     */
+    public function testRemoveFavoriteBadgeTwice(){
+        $this->user->badges()->attach($this->badge->id);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>0], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>0], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Vérifie qu'épingler plusieurs badge ne cause pas d'erreurs
+     * @return void
+     */
+    public function testAddThreeFavoriteBadge(){
+        $this->user->badges()->attach($this->badge->id);
+        $this->user->badges()->attach($this->badge2->id);
+        $this->user->badges()->attach($this->badge3->id);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge2->id,'user_id' => $this->user->id, 'favorite'=>0], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge3->id,'user_id' => $this->user->id, 'favorite'=>0], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+    }
+    /**
+     * Vérifie qu'épingler trop de badges lance une erreur
+     * @return void
+     */
+    public function testAddFourFavoriteBadge(){
+        $this->user->badges()->attach($this->badge->id);
+        $this->user->badges()->attach($this->badge2->id);
+        $this->user->badges()->attach($this->badge3->id);
+        $this->user->badges()->attach($this->badge4->id);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge2->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge3->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(200);
+        $response = $this->put('/api/user/changeFavoriteBadge',['badge_id' =>$this->badge4->id,'user_id' => $this->user->id, 'favorite'=>1], ['Authorization' => 'Bearer ' . $this->userToken]);
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Vérifie qu’un professeur peut être promu administrateur avec succès.
+     * @author Elyas Benyssad
+     */
+    public function testPromoteTeacherToAdmin()
+    {
+        $newTeacher = User::factory()->create(['role_id' => Role::Teacher()->id]);
+
+        $response = $this->postJson('/api/user/assign-admin', [
+            'user_id' => $newTeacher->id
+        ], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('user', [
+            'id' => $newTeacher->id,
+            'role_id' => Role::Admin()->id
+        ]);
+    }
+
+    /**
+     * Vérifie qu’un professeur peut être supprimé correctement par un administrateur.
+     * @author Elyas Benyssad
+     */
+    public function testDeleteTeacher()
+    {
+        $teacherToDelete = User::factory()->create(['role_id' => Role::Teacher()->id]);
+
+        $response = $this->delete('/api/user/' . $teacherToDelete->id, [], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('user', [
+            'id' => $teacherToDelete->id
+        ]);
+    }
+
+    /**
+     * Vérifie qu’un utilisateur actif peut être désactivé via le toggle.
+     * @author Elyas Benyssad
+     */
+    public function testDeactivateUser()
+    {
+        $activeUser = User::factory()->create(['active' => 1]);
+
+        $response = $this->post('/api/user/' . $activeUser->id . '/toggle-active', [], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('user', [
+            'id' => $activeUser->id,
+            'active' => 0
+        ]);
+    }
+
+    /**
+     * Vérifie que la promotion d’un utilisateur inexistant échoue proprement.
+     * @author Elyas Benyssad
+     */
+    public function testPromoteNonexistentUserFails()
+    {
+        $response = $this->postJson('/api/user/assign-admin', [
+            'user_id' => 999999, // ID invalide
+        ], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    /**
+     * Vérifie qu’un professeur ne peut pas promouvoir un autre utilisateur en administrateur.
+     * @author Elyas Benyssad
+     */
+    public function testTeacherCannotPromoteToAdmin()
+    {
+        $anotherTeacher = User::factory()->create(['role_id' => Role::Teacher()->id]);
+
+        $response = $this->postJson('/api/user/assign-admin', [
+            'user_id' => $anotherTeacher->id,
+        ], [
+            'Authorization' => 'Bearer ' . $this->teacherToken,
+        ]);
+
+        $response->assertStatus(401); 
+    }
+
+    /**
+     * Vérifie que la tentative de suppression d’un utilisateur inexistant retourne bien une erreur 404.
+     * @author Elyas Benyssad
+     */
+    public function testDeleteNonexistentUser()
+    {
+        $response = $this->delete('/api/user/999999', [], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(404);
+    }
+
+    /**
+     * Vérifie que le toggle de l'état actif d’un utilisateur fonctionne même si l’utilisateur est déjà inactif.
+     * @author Elyas Benyssad
+     */
+    public function testDeactivateAlreadyInactiveUser()
+    {
+        $inactiveUser = User::factory()->create(['active' => 0]);
+
+        $response = $this->post('/api/user/' . $inactiveUser->id . '/toggle-active', [], [
+            'Authorization' => 'Bearer ' . $this->adminToken,
+        ]);
+
+        $response->assertStatus(200); 
+        $this->assertDatabaseHas('user', [
+            'id' => $inactiveUser->id,
+            'active' => 1
+        ]);
+    }
+
 }

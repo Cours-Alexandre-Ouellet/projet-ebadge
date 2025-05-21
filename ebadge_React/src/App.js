@@ -1,74 +1,82 @@
-import React, { useEffect } from 'react'
+import React, { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import './App.css';
+import "./App.css";
 import Layout from "./pages/Layout";
 import Login from "./pages/Login/Login";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UsersTab from "./pages/Dashboard/tabs/UsersTab";
+import UsersAdminTab from "./pages/Dashboard/tabs/UsersAdminTab";
 import AdminLayout from "./pages/Dashboard/AdminLayout";
 import PageProfile from "./composant/PageProfile";
-import Classement from "./pages/Classement";
+import Leaderboard from "./pages/Leaderboard";
 import BadgesTab from "./pages/Dashboard/tabs/BadgesTab";
+import CategoriesTab from "./pages/Dashboard/tabs/CategoriesTab";
 import Logout from "./pages/Logout";
 import ProtectedRoute from "./policies/ProtectedRoute";
-import Role from './policies/Role';
+import Role from "./policies/Role";
 import Signup from "./pages/Signup/Signup";
-import ProgramTab from "./pages/Dashboard/tabs/ProgramTab";
-import OrganisationTab from "./pages/Dashboard/tabs/OrganisationTab";
+import { BadgeListContextProvider } from "./context/BadgeListContext";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#3949B5',
-    },
-    secondary: {
-      main: '#FAC710',
-    },
-  },
-  typography: {
-    fontFamily: [
-      'Barlow',
-      'sans-serif',
-    ].join(','),
-  },
-});
+import ListeBadge from "./pages/ListeBadge";
+import TeacherCodesTab from "./pages/Dashboard/tabs/TeacherCodesTab";
+import PageUser from "./pages/PageUser";
+import DefaultTheme from "./theme";
+import PageProfileModify from "./composant/Forms/PageProfileModify";
+import Contact from "./pages/Contact";
+import TopCollectors from './pages/Dashboard/Tops_score/TopCollectors';
+import TopByCategory from './pages/Dashboard/Tops_score/TopByCategory';
+import Confidentiality from "./pages/Confidentiality";
+
+const estConnecter = localStorage.getItem("token");
 
 function App() {
-  console.log(process.env);
 
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index path="/" element={<PageProfile />} />
-            <Route path="classement" element={<Classement />} />
+    <>
+      <BrowserRouter>
+        <DefaultTheme>
+          <BadgeListContextProvider>
+            <Routes>
+              <Route path="contactez-nous" element={<Contact />} />
+              <Route path="politique-de-confidentialite" element={<Confidentiality />} />
+              <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
+                <Route index path="/" element={<PageProfile />} />
+                <Route path="/modify-profile" element={<PageProfileModify />} />
+                <Route path="leaderboard" element={<Leaderboard />} />
+                <Route path="badges" element={<ListeBadge />} />
+                <Route path="utilisateur/:id" element={<PageUser />} />
+                <Route path="*" element={<h1>404: Page non trouvée</h1>} />
+              </Route>
+              <Route path="/auth">
+                <Route path="/auth/login" element={<Login />} />
 
-            <Route path="*" element={<h1>404: Page non trouvée</h1>} />
-          </Route>
-          <Route path="/auth" >
-            <Route path="/auth/login" element={<Login />} />
-            <Route path="/auth/logout" element={<Logout />} />
-            <Route path="signup" element={<Signup />} />
-
-          </Route>
-          <Route path="/admin" element={ProtectedRoute(Role.Teacher)}>
-            <Route path="/admin" element={<AdminLayout />} >
-              <Route path="/admin/users" element={<UsersTab />} />
-              <Route path="/admin/badges" element={<BadgesTab />} />
-              <Route path="/admin/programs" element={ProtectedRoute(Role.Admin)}>
-                <Route path="/admin/programs" element={<ProgramTab />} />
-              </Route> 
-              <Route path="/admin/organisations" element={ProtectedRoute(Role.Admin)}>
-                <Route path="/admin/organisations" element={<OrganisationTab />} />
-              </Route>       
-            </Route>
-          </Route>
-        </Routes>
-      </ThemeProvider>
-    </BrowserRouter>
-
+                <Route path="/auth/logout" element={<Logout />} />
+                <Route path="signup" element={<Signup />} />
+              </Route>
+              <Route path="/admin" element={ProtectedRoute(Role.Teacher)}>
+                <Route path="/admin" element={<AdminLayout />}>
+                  <Route path="/admin/users" element={<UsersTab />} />
+                  <Route path="/admin/admin_users" element={<UsersAdminTab />} />
+                  <Route path="/admin/badges" element={<BadgesTab />} />
+                  <Route path="/admin/categories" element={<CategoriesTab />} />
+                  <Route path="/admin/top-collectors" element={<TopCollectors />} />
+                  <Route path="/admin/top-by-category" element={<TopByCategory />} />
+                  <Route
+                    path="/admin/teacher_codes"
+                    element={ProtectedRoute(Role.Admin)}
+                  >
+                    <Route
+                      path="/admin/teacher_codes"
+                      element={<TeacherCodesTab />}
+                    />
+                  </Route>
+                </Route>
+              </Route>
+            </Routes>
+          </BadgeListContextProvider>
+        </DefaultTheme>
+      </BrowserRouter>
+    </>
   );
 }
 

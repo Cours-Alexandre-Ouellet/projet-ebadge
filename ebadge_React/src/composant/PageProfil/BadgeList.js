@@ -1,47 +1,36 @@
-import React from 'react';
-import BadgeComponent from './BadgeComponent';
-import Api from '../../utils/Api';
+import "./BadgeList.css";
+import React, { useContext, useEffect,useState } from "react";
+import BadgeComponent from "./BadgeComponent";
+import Api from "../../utils/Api";
+import { BadgeListContext } from "../../context/BadgeListContext";
 
-export default class BadgeList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            user: this.props.user,
-            badges: [],
-            loading: true
-        }
-    }
+/**
+ * Élément affichant la liste de tous les badges d'un utilisateur
+ * @returns la liste de badge
+ */
+export default function BadgeList(props) {
+  const [user, setUser] = useState(props.user);
+  const {currentFavoriteBadges, updateFavoriteBadges} = useContext(BadgeListContext);
+  const {loaded} = useContext(BadgeListContext)
 
-    componentDidMount() {
-        Api.get('/user/my-badges')
-            .then((response) => {
-                console.log(response.data);
-                this.setState({
-                    badges: response.data.badges,
-                    loading: false
-                })
-                console.log(this.state.badges);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
 
-    render() {
-        if (this.state.loading) {
-            return (
-                <div className='BadgeArray'>
-                    <h1>Chargement des badges...</h1>
-                </div>
-            )
-        }
+  if (loaded) {
+    return (
+      <div className="BadgeArray">
+        <h1>Chargement des badges...</h1>
+      </div>
+    );
+  }
 
-        return (
-            <div className='BadgeArray'>
-                {this.state.badges.length ? this.state.badges.map((badge, index) => {
-                    return <BadgeComponent badge={badge} key={index}/>
-                }) : <h1>Vous n'avez aucun badge</h1>}
-            </div>
-        )
-    }
+  return (
+    <div className="BadgeArray">
+      {currentFavoriteBadges.length ? (
+        currentFavoriteBadges.map((badge, index) => {
+          return <BadgeComponent badge={badge} key={index} />;
+        })
+      ) : (
+        <h1 className="message">Aucun badge épinglé.</h1>
+      )}
+    </div>
+  );
 }

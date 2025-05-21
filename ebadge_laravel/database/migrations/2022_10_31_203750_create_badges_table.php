@@ -20,9 +20,10 @@ class CreateBadgesTable extends Migration
             $table->id();
             $table->string('title', 45);
             $table->string('description', 255);
-            $table->string('imagePath', 2048);
-            $table->char('color', 6);
+            $table->string('imagePath', 2048)->nullable();
+            $table->foreignId('teacher_id')->constrained('user');
             $table->timestamps();
+            $table->boolean('activated')->default(true);
         });
     }
 

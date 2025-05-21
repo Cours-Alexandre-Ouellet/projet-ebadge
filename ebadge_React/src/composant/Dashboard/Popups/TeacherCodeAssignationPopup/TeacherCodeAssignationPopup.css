@@ -1,0 +1,36 @@
+.teacher-code-popup {
+    min-width: 500px;
+    min-height: 100px;
+    margin: 25px;
+}
+
+.teacher-code-popup hr {
+    margin: 35px;
+    border: 1px solid #e0e0e0;
+}
+
+.mt-2 {
+    margin-top: 10px;
+}
+
+form  {
+    padding: 5px;
+}
+
+.teacher-code-selector {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.teacher-code-row {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.teacher-code-row .badge {
+    margin: 10px;
+}

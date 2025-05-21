@@ -6,15 +6,23 @@ use Tests\TestCase;
 use Illuminate\Support\Carbon;
 use App\Models\Role;
 use App\Models\Program;
+use App\Models\User;
+
 class ProgramTest extends TestCase
 {
-    public function setUp() : void
+    /*
+    ---- Les programmes ne sont plus dans le projet ----
+    private $program;
+    private $admin;
+    private $adminToken;
+
+    public function setUp(): void
     {
         parent::setUp();
+        
+        $this->program = Program::factory()->create();
 
-        $this->program = factory(\App\Models\Program::class)->create();
-
-        $this->admin = factory(\App\Models\User::class)->create();
+        $this->admin = User::factory()->create();
         $this->admin->role_id = Role::Admin()->id;
         $this->admin->save();
 
@@ -22,8 +30,9 @@ class ProgramTest extends TestCase
         $token->token->expires_at = Carbon::now()->addMinutes(30);
         $token->token->save();
         $this->adminToken = $token->accessToken;
+        
     }
-
+    
     public function testIndexPrograms()
     {
         $response = $this->get('/api/program');
@@ -80,7 +89,7 @@ class ProgramTest extends TestCase
 
     public function testDeleteProgram()
     {
-        $program = factory(\App\Models\Program::class)->create();
+        $program = Program::factory()->create();
 
         $response = $this->delete(
             '/api/program',
@@ -91,4 +100,5 @@ class ProgramTest extends TestCase
         $response->assertStatus(200);
         $this->assertDatabaseMissing('program', ['id' => $program->id]);
     }
+*/
 }
