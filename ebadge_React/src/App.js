@@ -25,6 +25,7 @@ import PageProfileModify from "./composant/Forms/PageProfileModify";
 import Contact from "./pages/Contact";
 import TopCollectors from './pages/Dashboard/Tops_score/TopCollectors';
 import TopByCategory from './pages/Dashboard/Tops_score/TopByCategory';
+import Confidentiality from "./pages/Confidentiality";
 
 const estConnecter = localStorage.getItem("token");
 
@@ -36,18 +37,19 @@ function App() {
         <DefaultTheme>
           <BadgeListContextProvider>
             <Routes>
+              <Route path="contactez-nous" element={<Contact />} />
+              <Route path="politique-de-confidentialite" element={<Confidentiality />} />
               <Route path="/" element={estConnecter ? <Layout /> : <Login />}>
                 <Route index path="/" element={<PageProfile />} />
-                <Route path="/modify-profile" element={<PageProfileModify/>}/>
+                <Route path="/modify-profile" element={<PageProfileModify />} />
                 <Route path="leaderboard" element={<Leaderboard />} />
-                <Route path="contactez-nous" element={<Contact />} />
                 <Route path="badges" element={<ListeBadge />} />
                 <Route path="utilisateur/:id" element={<PageUser />} />
                 <Route path="*" element={<h1>404: Page non trouvée</h1>} />
               </Route>
               <Route path="/auth">
                 <Route path="/auth/login" element={<Login />} />
-                
+
                 <Route path="/auth/logout" element={<Logout />} />
                 <Route path="signup" element={<Signup />} />
               </Route>

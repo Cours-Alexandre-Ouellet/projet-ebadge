@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom";
 import Navbar from '../composant/layout/Navbar';
 import BadgeAchievementPopup from '../composant/Dashboard/Popups/BadgeAchievementPopup/BadgeAchievementPopup';
 
+const isConnected = !!localStorage.getItem("token");
+
 class Layout extends React.Component {
   render() {
     return (
@@ -10,7 +12,7 @@ class Layout extends React.Component {
         <Navbar />
         <div className="main">
           <Outlet />
-          <BadgeAchievementPopup />
+          {isConnected && <BadgeAchievementPopup />}
         </div>
       </>
     )
